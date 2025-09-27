@@ -87,10 +87,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Parametriz.AutoNFP:build:production"
+              "buildTarget": "Parametriz.AutoNFP:build:production"
             },
             "development": {
-              "browserTarget": "Parametriz.AutoNFP:build:development"
+              "buildTarget": "Parametriz.AutoNFP:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -98,7 +98,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Parametriz.AutoNFP:build"
+            "buildTarget": "Parametriz.AutoNFP:build"
           }
         },
         "test": {
