@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parametriz.AutoNFP.Api", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parametriz.AutoNFP.Data", "src\Parametriz.AutoNFP.Data\Parametriz.AutoNFP.Data.csproj", "{299F82E4-D3F1-4651-A97F-BC22DE5DE903}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parametriz.AutoNFP.Domain", "src\Parametriz.AutoNFP.Domain\Parametriz.AutoNFP.Domain.csproj", "{2F7B22DC-D754-4213-B2AE-1A344205362E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{299F82E4-D3F1-4651-A97F-BC22DE5DE903}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{299F82E4-D3F1-4651-A97F-BC22DE5DE903}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{299F82E4-D3F1-4651-A97F-BC22DE5DE903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F7B22DC-D754-4213-B2AE-1A344205362E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F7B22DC-D754-4213-B2AE-1A344205362E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F7B22DC-D754-4213-B2AE-1A344205362E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F7B22DC-D754-4213-B2AE-1A344205362E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Identity.Jwt;
+using NetDevPack.Security.Jwt.Core;
 using NetDevPack.Security.PasswordHasher.Core;
-using Parametriz.AutoNFP.Api.Data;
+using Parametriz.AutoNFP.Api.Data.Context;
 using Parametriz.AutoNFP.Api.Extensions;
 
 namespace Parametriz.AutoNFP.Api.Configs
