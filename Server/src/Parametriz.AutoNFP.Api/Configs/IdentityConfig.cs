@@ -26,6 +26,8 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             services.AddIdentity<IdentityUser, IdentityRole>(o =>
                 {
+                    o.SignIn.RequireConfirmedEmail = true;
+
                     o.Password.RequireDigit = true;
                     o.Password.RequireLowercase = true;
                     o.Password.RequireNonAlphanumeric = true;

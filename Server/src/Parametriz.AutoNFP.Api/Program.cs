@@ -1,4 +1,7 @@
 using Parametriz.AutoNFP.Api.Configs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Parametriz.AutoNFP.Api.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 

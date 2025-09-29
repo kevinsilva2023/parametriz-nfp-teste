@@ -11,5 +11,11 @@ namespace Parametriz.AutoNFP.Api.Data.Context
             : base(options) { }
 
         public DbSet<KeyMaterial> SecurityKeys { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            base.OnModelCreating(builder);
+        }
     }
 }

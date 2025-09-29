@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Parametriz.AutoNFP.Data.Context;
 
 namespace Parametriz.AutoNFP.Api.Configs
 {
@@ -6,6 +8,11 @@ namespace Parametriz.AutoNFP.Api.Configs
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<AutoNfpDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             services.AddControllers();
 
             services.AddCors(options =>
