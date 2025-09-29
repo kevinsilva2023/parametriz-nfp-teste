@@ -35,12 +35,12 @@ export class LoginComponent implements OnInit{
       const email = this.loginForm.value.email;
       const senha = this.loginForm.value.senha;
 
-      // this.authLogin.autenticarUsuario(email, senha)
-      //   .subscribe({
-      //     next: (value) => {
-      //       this.router.navigateByUrl('/');
-      //     },
-      //     error: (err) => console.error(err)
-      //   })
+      this.authLogin.autenticarUsuario(email, senha)
+        .subscribe({
+          next: (value) => {
+            this.router.navigateByUrl('/home');
+          },
+          error: (err) => console.error(err)
+        })
   }
 }
