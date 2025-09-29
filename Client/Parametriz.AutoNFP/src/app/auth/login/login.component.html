@@ -1,0 +1,84 @@
+<div class="d-flex">
+  <form class="d-flex flex-column" [formGroup]="loginForm">
+    <mat-form-field appearance="outline">
+      <mat-label class="">
+        <i class="fa-solid fa-envelope"></i>
+        E-mail
+      </mat-label>
+      <input matInput formControlName="email" type="email" placeholder="seu@email.com">
+      <mat-error *ngIf="loginForm.get('email')?.errors?.['required']">
+        E-mail é obrigatório.
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">
+        E-mail inválido.
+      </mat-error>
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" >
+      <mat-label class="">
+        <i class="fa-solid fa-lock"></i>
+        Senha
+      </mat-label>
+      <input matInput formControlName="senha" type="password" placeholder="••••••••">
+      <mat-error *ngIf="loginForm.get('senha')?.errors?.['required']">
+        Senha é obrigatória.
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('senha')?.errors?.['minlength']">
+        Senha deve conter pelo menos 8 caracteres.
+      </mat-error>
+    </mat-form-field>
+  
+    <div class="d-flex justify-content-between">
+        <mat-checkbox class="example-margin">Lembrar de mim?</mat-checkbox>
+        <p routerLink="/esqueceu-a-senha">Esqueceu a Senha?</p>
+    </div>
+  
+    <button class="btn btn-primary" (click)="fazerLogin()">
+      Logar
+    </button>
+  
+    <p>Não tem um conta?
+      <strong>Cadastre-se agora</strong>
+    </p>
+  
+    <hr>
+  
+    <h3>Logar com</h3>
+    <div class="d-flex gap-5">
+      <i class="fa-brands fa-facebook"></i>
+      <i class="fa-brands fa-google"></i>
+      <i class="fa-brands fa-apple"></i>
+    </div>
+  </form>
+  
+  <div>
+    <h1>Automatize, Otimize e Cresça.</h1>
+    <h2>Junte-se a milhares de empresas que já transformaram seus projetos com nossa plataforma.</h2>
+  
+    <!-- card carousel -->
+    <div>
+      <p>"O AutoNFP reduziu nosso tempo de processamento em 80% e eliminou completamente todos erros manuais."</p>
+  
+      <div>
+        <img src="">
+        <p>Kevin Silva</p>
+        <p>Cofundador, Parametriz</p>
+      </div>
+    </div>
+  
+    <ul>
+      <li>
+        <i class="fa-solid fa-circle-check"></i>
+        Configuração em minutos
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-check"></i>
+        Suporte 24/7
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-check"></i>
+        Segurança enterprise
+      </li>
+    </ul>
+  </div>
+</div>

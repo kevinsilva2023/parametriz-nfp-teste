@@ -1,0 +1,8 @@
+.btn-primary {
+  background-color: var(--royal-blue);
+  border: none;
+
+  &:hover {
+    background-color: var(--royal-blue-dark-blur);
+  }
+}
