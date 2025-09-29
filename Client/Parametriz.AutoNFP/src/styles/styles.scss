@@ -1,7 +1,18 @@
 @use 'reset';
 @use 'variables';
 @use 'bootstrap';
+@use 'material';
 
 body {
   background-color: lightgray;
+  color: var(--gray-600);
+  font-family: var(--font-primary);
+}
+
+label {
+  color: var(--royal-blue) !important;
+}
+
+input {
+  border-color: var(--royal-blue) !important;
 }

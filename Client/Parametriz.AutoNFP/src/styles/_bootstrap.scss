@@ -2,7 +2,14 @@
   background-color: var(--royal-blue);
   border: none;
 
-  &:hover {
-    background-color: var(--royal-blue-dark-blur);
-  }
+  &:hover { background-color: var(--royal-blue-dark-blur); }
 }
+
+.bg-primary { background: var(--royal-blue) !important; }
+.bg-primary-light { background: var(--royal-blue-dark-blur) !important; }
+
+.text-primary { color: var(--royal-blue) !important; }
+.text-light { color: var(--gray-400) !important; }
+
+.fs-small { font-size: 12px !important; }
+
