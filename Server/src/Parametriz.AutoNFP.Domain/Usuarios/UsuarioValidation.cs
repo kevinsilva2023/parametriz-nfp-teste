@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Parametriz.AutoNFP.Domain.Core.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace Parametriz.AutoNFP.Domain.Usuarios
 {
-    public class UsuarioValidation : AbstractValidator<Usuario>
+    public class UsuarioValidation : InstituicaoEntityValidation<Usuario>
     {
         public UsuarioValidation()
+            : base()
         {
             ValidarNome();
         }

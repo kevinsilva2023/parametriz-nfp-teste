@@ -15,6 +15,12 @@ namespace Parametriz.AutoNFP.Data.Mappings
         {
             builder.HasKey(pk => pk.Id);
 
+            builder.HasOne(p => p.Instituicao)
+                .WithMany(p => p.Usuarios)
+                .HasForeignKey(p => p.InstituicaoId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+
             builder.Property(p => p.Nome)
                 .HasMaxLength(256);
 
@@ -28,6 +34,9 @@ namespace Parametriz.AutoNFP.Data.Mappings
                 e.HasIndex(i => i.Conta)
                     .IsUnique();
             });
+
+            builder.HasIndex(i => new { i.InstituicaoId, i.Nome })
+                .IsUnique();
 
             builder.ToTable("Usuarios");
         }

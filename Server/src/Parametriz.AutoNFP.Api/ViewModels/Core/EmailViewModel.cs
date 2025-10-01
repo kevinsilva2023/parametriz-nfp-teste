@@ -1,4 +1,4 @@
-﻿using Parametriz.AutoNFP.Domain.Core.DomainObjects;
+﻿using Parametriz.AutoNFP.Domain.Core.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
 namespace Parametriz.AutoNFP.Api.ViewModels.Core

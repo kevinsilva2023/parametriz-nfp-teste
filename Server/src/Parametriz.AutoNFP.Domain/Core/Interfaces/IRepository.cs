@@ -10,8 +10,7 @@ namespace Parametriz.AutoNFP.Domain.Core.Interfaces
     public interface IRepository<TEntity> : IDisposable where TEntity : Entity 
     {
         Task<bool> EhUnico(TEntity obj);
-        Task<TEntity> ObterPorId(Guid id);
-        
+                
         Task Cadastrar(TEntity obj);
 
         Task CadastrarLista(IEnumerable<TEntity> objs);

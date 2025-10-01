@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parametriz.AutoNFP.Data.Repository
+namespace Parametriz.AutoNFP.Data.Repository.Core
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
@@ -20,13 +20,6 @@ namespace Parametriz.AutoNFP.Data.Repository
         }
 
         public abstract Task<bool> EhUnico(TEntity obj);
-
-        public virtual async Task<TEntity> ObterPorId(Guid id)
-        {
-            return await _context.Set<TEntity>()
-                .AsNoTracking()
-                .SingleOrDefaultAsync(e => e.Id == id);
-        }
 
         public virtual async Task Cadastrar(TEntity obj)
         {

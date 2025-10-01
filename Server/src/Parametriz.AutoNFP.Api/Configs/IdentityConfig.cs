@@ -4,7 +4,7 @@ using NetDevPack.Identity.Jwt;
 using NetDevPack.Security.Jwt.Core;
 using NetDevPack.Security.PasswordHasher.Core;
 using Parametriz.AutoNFP.Api.Data.Context;
-using Parametriz.AutoNFP.Api.Extensions;
+using Parametriz.AutoNFP.Api.Extensions.Identity;
 
 namespace Parametriz.AutoNFP.Api.Configs
 {
@@ -33,7 +33,7 @@ namespace Parametriz.AutoNFP.Api.Configs
                     o.Password.RequireNonAlphanumeric = true;
                     o.Password.RequireUppercase = true;
                     o.Password.RequiredUniqueChars = 0;
-                    o.Password.RequiredLength = 8;
+                    o.Password.RequiredLength = 6;
                 })
                 .AddErrorDescriber<IdentityMensagensPortugues>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

@@ -13,6 +13,9 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+            services.Configure<SmtpConfig>(configuration.GetSection("SmtpConfig"));
+            services.Configure<UrlsConfig>(configuration.GetSection("UrlsConfig"));
+
             services.AddControllers();
 
             services.AddCors(options =>

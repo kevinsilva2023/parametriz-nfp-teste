@@ -1,4 +1,6 @@
 ﻿using Parametriz.AutoNFP.Domain.Core.DomainObjects;
+using Parametriz.AutoNFP.Domain.Core.ValueObjects;
+using Parametriz.AutoNFP.Domain.Instituicoes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace Parametriz.AutoNFP.Domain.Usuarios
 {
-    public class Usuario : Entity
+    public class Usuario : InstituicaoEntity
     {
         public string Nome { get; private set; }
         public Email Email { get; private set; }
 
-        public Usuario(Guid id, string nome, Email email)
-            : base(id)
+        public Instituicao Instituicao { get; private set; }
+
+        public Usuario(Guid id, Guid instituicaoId, string nome, Email email)
+            : base(id, instituicaoId)
         {
             Email = email;
             AlterarNome(nome);

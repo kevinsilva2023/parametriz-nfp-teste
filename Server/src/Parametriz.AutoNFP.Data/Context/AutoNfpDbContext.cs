@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Parametriz.AutoNFP.Data.Context
             ChangeTracker.LazyLoadingEnabled = false;
         }
 
+        public DbSet<Instituicao> Instituicoes { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

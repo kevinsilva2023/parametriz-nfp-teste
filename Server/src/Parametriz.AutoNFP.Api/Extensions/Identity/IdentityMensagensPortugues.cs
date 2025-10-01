@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Parametriz.AutoNFP.Api.Extensions
+namespace Parametriz.AutoNFP.Api.Extensions.Identity
 {
     public class IdentityMensagensPortugues : IdentityErrorDescriber
     {

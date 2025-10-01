@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parametriz.AutoNFP.Domain.Core.DomainObjects
+namespace Parametriz.AutoNFP.Domain.Core.ValueObjects
 {
     public class Email
     {
