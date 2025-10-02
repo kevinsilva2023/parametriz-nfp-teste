@@ -1,4 +1,4 @@
-﻿using NetDevPack.Identity.User;
+﻿using Parametriz.AutoNFP.Api.Data.User;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Voluntarios;

@@ -25,6 +25,8 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
         {
             AlterarRazaoSocial(razaoSocial);
             Cnpj = new CnpjCpf(TipoPessoa.Juridica, cnpj);
+
+            _voluntarios = [];
         }
 
         protected Instituicao() { }

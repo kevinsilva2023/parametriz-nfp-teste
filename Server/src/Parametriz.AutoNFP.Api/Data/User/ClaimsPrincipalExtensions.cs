@@ -47,5 +47,16 @@ namespace Parametriz.AutoNFP.Api.Data.User
             var claim = principal.FindFirst("RefreshToken");
             return claim?.Value;
         }
+
+        public static Guid GetInstituicaoId(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+            {
+                throw new ArgumentException(nameof(principal));
+            }
+
+            var claim = principal.FindFirst("instituicaoId");
+            return Guid.Parse(claim?.Value);
+        }
     }
 }

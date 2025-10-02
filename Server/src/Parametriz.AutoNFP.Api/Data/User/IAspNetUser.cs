@@ -9,6 +9,7 @@ namespace Parametriz.AutoNFP.Api.Data.User
         string ObterEmail();
         string ObterToken();
         string ObterRefreshToken();
+        Guid ObterInstituicaoId();
         bool EstaAutenticado();
         bool PossuiRole(string role);
         IEnumerable<Claim> ObterClaims();

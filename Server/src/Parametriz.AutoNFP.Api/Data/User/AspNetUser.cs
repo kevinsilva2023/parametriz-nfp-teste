@@ -34,6 +34,11 @@ namespace Parametriz.AutoNFP.Api.Data.User
             return EstaAutenticado() ? _accessor.HttpContext.User.GetUserRefreshToken() : string.Empty;
         }
 
+        public Guid ObterInstituicaoId()
+        {
+            return EstaAutenticado() ? _accessor.HttpContext.User.GetInstituicaoId() : Guid.Empty;
+        }
+
         public bool EstaAutenticado()
         {
             return _accessor.HttpContext.User.Identity.IsAuthenticated;

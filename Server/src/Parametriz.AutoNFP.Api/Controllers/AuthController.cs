@@ -10,8 +10,10 @@ using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Data.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
+using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Text;
 
 namespace Parametriz.AutoNFP.Api.Controllers
@@ -20,6 +22,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
     public class AuthController : MainController
     {
         private readonly IJwtBuilder _jwtBuilder;
+        private readonly IInstituicaoRepository _instituicaoRepository;
         private readonly IInstituicaoService _instituicaoService;
         private readonly IEmailService _emailService;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -33,7 +36,8 @@ namespace Parametriz.AutoNFP.Api.Controllers
                               IEmailService emailService,
                               SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
-                              IOptions<UrlsConfig> options)
+                              IOptions<UrlsConfig> options,
+                              IInstituicaoRepository instituicaoRepository)
             : base(notificador, user)
         {
             _jwtBuilder = jwtBuilder;
@@ -42,6 +46,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _urlsConfig = options.Value;
+            _instituicaoRepository = instituicaoRepository;
         }
 
         [AllowAnonymous]
@@ -64,6 +69,8 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     return CustomResponse(cadastrarInstituicaoViewModel);
                 }
 
+                await IncluirClaimInstituicaoId(user);
+
                 await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome, definirSenha: true);
             }
 
@@ -72,7 +79,12 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return CustomResponse(cadastrarInstituicaoViewModel);
         }
 
-        
+        private async Task IncluirClaimInstituicaoId(IdentityUser user)
+        {
+            var instituicaoId = await _instituicaoRepository.ObterIdPorVoluntarioId(Guid.Parse(user.Id));
+
+            await _userManager.AddClaimAsync(user, new Claim("instituicaoId", instituicaoId.ToString()));
+        }
 
         private async Task EnviarLinkConfirmarEmail(IdentityUser user, string voluntarioNome, bool definirSenha = false)
         {
@@ -80,10 +92,10 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
             var anexos = GerarAnexosEmail();
 
-            var corpoEmail = GerarCorpoEmail(voluntarioNome, linkConfirmacao);
+            var corpoEmail = GerarCorpoEmail(voluntarioNome.Trim().ToUpper(), linkConfirmacao);
 
-            await _emailService.Enviar(user.Email, "Parametriz - AutoNFP - Confirmação de Senha",
-               corpoEmail);
+            await _emailService.Enviar(user.Email, "Confirmação de Senha - AutoNFP - Parametriz",
+               corpoEmail, anexos);
         }
 
         private async Task<string> GerarLinkConfirmacao(IdentityUser user, bool definirSenha)
@@ -117,7 +129,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 $@"<table align=""center"" width=""80%"" style=""background-color: #fffaf5; border: 2px solid #003366; max-width: 800px;"">" +
                     $@"<tr>" +
                         $@"<td style=""background-color: #003366; text-align: center; padding: 20px;"">" +
-                            $@"<img src=""cid:logoWhiteId"" width=""60%"">" +
+                            $@"<a href=""https://www.parametriz.com.br""><img src=""cid:logoWhiteId"" width=""60%""></a>" +
                         $@"</td>" +
                     $@"</tr>" +
                     $@"<tr>" +
@@ -143,7 +155,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                         $@"<td style=""background-color: #f9f9f9; text-align: center; padding: 20px; font-size: 12px; color: #777777; border-top: 1px solid #e0e0e0;"">" +
                             $@"<p style=""margin:0;"">&copy; {DateTime.Now.Year} Parametriz Soluções Tecnológicas. Todos os direitos reservados.</p>" +
                             $@"<p style=""margin: 5px 0; color: #003366;"">Política de Privacidade | Termos de Serviço</p>" +
-                            $@"<img src=""cid:logoCircleId"" width=""10%"">" +
+                            $@"<a href=""https://www.parametriz.com.br""><img src=""cid:logoCircleId"" width=""10%""></a>" +
                         $@"</td>" +
                     $@"</tr>" +
                 $@"</table>";

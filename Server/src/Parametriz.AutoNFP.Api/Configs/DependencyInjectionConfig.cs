@@ -17,6 +17,8 @@ namespace Parametriz.AutoNFP.Api.Configs
     {
         public static IServiceCollection RegistrarServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddScoped<IAspNetUser, AspNetUser>();
             services.AddScoped<IEmailService, EmailService>();
 

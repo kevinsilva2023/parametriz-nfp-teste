@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using NetDevPack.Identity.User;
+using Parametriz.AutoNFP.Api.Data.User;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 
@@ -11,6 +11,9 @@ namespace Parametriz.AutoNFP.Api.Application
         protected readonly IAspNetUser _user;
         protected readonly IUnitOfWork _uow;
         protected readonly Notificador _notificador;
+
+        protected Guid InstituicaoId => _user.ObterInstituicaoId();
+        protected Guid VoluntarioId => _user.ObterId();
 
         public BaseService(IAspNetUser user, 
                            IUnitOfWork uow, 
