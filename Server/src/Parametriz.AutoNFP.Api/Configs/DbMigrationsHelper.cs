@@ -24,7 +24,7 @@ namespace Parametriz.AutoNFP.Api.Configs
             await DbHealthChecker.TestConnection(applicationDbContext);
 
             if (env.IsDevelopment())
-                await applicationDbContext.Database.EnsureCreatedAsync();                
+                await applicationDbContext.Database.MigrateAsync();                
         }
 
         private static async Task EnsureSeedDataAutoNfpDbContext(IServiceScope scope, IWebHostEnvironment env)
