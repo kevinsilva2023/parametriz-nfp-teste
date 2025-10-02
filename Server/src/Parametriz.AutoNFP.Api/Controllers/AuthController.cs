@@ -284,7 +284,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             if (!ModelStateValida())
             {
                 NotificarErro("Requisição inválida.");
-                return CustomResponse(model);
+                return CustomResponse(enviarDefinirSenhaViewModel);
             }
 
             var user = await _userManager.FindByEmailAsync(enviarDefinirSenhaViewModel.Email);
