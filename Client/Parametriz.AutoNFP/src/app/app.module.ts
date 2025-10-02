@@ -5,9 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient } from '@angular/common/http';
 
+import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RegistrarComponent
   ],
   imports: [
     BrowserModule,
