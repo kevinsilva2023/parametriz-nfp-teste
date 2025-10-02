@@ -17,5 +17,7 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
         public string Nome { get; set; }
 
         public EmailViewModel Email { get; set; }
+
+        public bool Desativado { get; set; }
     }
 }

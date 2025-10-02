@@ -35,6 +35,9 @@ namespace Parametriz.AutoNFP.Data.Mappings
                     .IsUnique();
             });
 
+            builder.Property(p => p.Desativado)
+                .IsRequired();
+
             builder.HasIndex(i => new { i.InstituicaoId, i.Nome })
                 .IsUnique();
 

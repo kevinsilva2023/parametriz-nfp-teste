@@ -1,4 +1,5 @@
 ﻿using Parametriz.AutoNFP.Api.Data.User;
+using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Voluntarios;
@@ -31,14 +32,18 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
 
         private async Task<bool> VoluntarioAptoParaCadastrar(Voluntario voluntario)
         {
+            ValidarInstituicao(voluntario.InstituicaoId);
             await ValidarVoluntario(voluntario);
             await VoluntarioEhUnico(voluntario);
 
             return CommandEhValido();
         }
 
-        public async Task<bool> Cadastrar(Voluntario voluntario)
+        public async Task<bool> Cadastrar(CadastrarVoluntarioViewModel cadastrarVoluntarioViewModel)
         {
+            var voluntario = new Voluntario(Guid.NewGuid(), cadastrarVoluntarioViewModel.InstituicaoId, 
+                cadastrarVoluntarioViewModel.Nome, new Domain.Core.ValueObjects.Email(cadastrarVoluntarioViewModel.Email));
+
             if (!await VoluntarioAptoParaCadastrar(voluntario))
                 return false;
 

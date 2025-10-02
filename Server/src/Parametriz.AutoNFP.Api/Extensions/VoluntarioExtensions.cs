@@ -12,7 +12,8 @@ namespace Parametriz.AutoNFP.Api.Extensions
             {
                 Id = voluntario.Id,
                 Nome = voluntario.Nome,
-                Email = voluntario.Email.ToViewModel()
+                Email = voluntario.Email.ToViewModel(),
+                Desativado = voluntario.Desativado
             };
         }
     }

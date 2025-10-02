@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using NetDevPack.Identity.Interfaces;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
+using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
 using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Data.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
@@ -23,7 +24,9 @@ namespace Parametriz.AutoNFP.Api.Controllers
     {
         private readonly IJwtBuilder _jwtBuilder;
         private readonly IInstituicaoRepository _instituicaoRepository;
+        private readonly IVoluntarioRepository _voluntarioRepository;
         private readonly IInstituicaoService _instituicaoService;
+        private readonly IVoluntarioService _voluntarioService;
         private readonly IEmailService _emailService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -37,7 +40,9 @@ namespace Parametriz.AutoNFP.Api.Controllers
                               SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
                               IOptions<UrlsConfig> options,
-                              IInstituicaoRepository instituicaoRepository)
+                              IInstituicaoRepository instituicaoRepository,
+                              IVoluntarioRepository voluntarioRepository,
+                              IVoluntarioService voluntarioService)
             : base(notificador, user)
         {
             _jwtBuilder = jwtBuilder;
@@ -47,6 +52,8 @@ namespace Parametriz.AutoNFP.Api.Controllers
             _userManager = userManager;
             _urlsConfig = options.Value;
             _instituicaoRepository = instituicaoRepository;
+            _voluntarioRepository = voluntarioRepository;
+            _voluntarioService = voluntarioService;
         }
 
         [AllowAnonymous]
@@ -71,7 +78,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
                 await IncluirClaimInstituicaoId(user);
 
-                await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome, definirSenha: true);
+                await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome);
             }
 
             AdicionarErrosIdentity(result);
@@ -81,7 +88,8 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
         private async Task IncluirClaimInstituicaoId(IdentityUser user)
         {
-            var instituicaoId = await _instituicaoRepository.ObterIdPorVoluntarioId(Guid.Parse(user.Id));
+            var instituicaoId = InstituicaoId != Guid.Empty ? 
+                InstituicaoId : await _instituicaoRepository.ObterIdPorVoluntarioId(Guid.Parse(user.Id));
 
             await _userManager.AddClaimAsync(user, new Claim("instituicaoId", instituicaoId.ToString()));
         }
@@ -92,7 +100,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
             var anexos = GerarAnexosEmail();
 
-            var corpoEmail = GerarCorpoEmail(voluntarioNome.Trim().ToUpper(), linkConfirmacao);
+            var corpoEmail = GerarCorpoEmailConfirmacao(voluntarioNome.Trim().ToUpper(), linkConfirmacao);
 
             await _emailService.Enviar(user.Email, "Confirmação de Senha - AutoNFP - Parametriz",
                corpoEmail, anexos);
@@ -123,7 +131,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return anexos;
         }
 
-        private string GerarCorpoEmail(string voluntarioNome, string linkConfirmacao)
+        private string GerarCorpoEmailConfirmacao(string voluntarioNome, string linkConfirmacao)
         {
             var body =
                 $@"<table align=""center"" width=""80%"" style=""background-color: #fffaf5; border: 2px solid #003366; max-width: 800px;"">" +
@@ -161,6 +169,292 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 $@"</table>";
 
             return body;
+        }
+
+        [HttpPost("enviar-confirmar-email")]
+        public async Task<IActionResult> EnviarConfirmacaoEmail([FromBody] EnviarConfirmarEmailViewModel enviarConfirmarEmailViewModel)
+        {
+            if (!ModelStateValida())
+                return CustomResponse(enviarConfirmarEmailViewModel);
+            
+            var user = await _userManager.FindByIdAsync(enviarConfirmarEmailViewModel.VoluntarioId.ToString());
+            if (user == null)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            if (user.EmailConfirmed)
+            {
+                NotificarErro("Conta de e-mail já confirmada.");
+                return CustomResponse();
+            }
+
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(enviarConfirmarEmailViewModel.VoluntarioId);
+            var voluntario = await _voluntarioRepository.ObterPorId(enviarConfirmarEmailViewModel.VoluntarioId, instituicao.Id);
+
+            if (InstituicaoId != instituicao.Id)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            if (instituicao.Desativada || voluntario.Desativado)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            await EnviarLinkConfirmarEmail(user, voluntario.Nome, enviarConfirmarEmailViewModel.DefinirSenha);
+            return CustomResponse();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("confirmar-email")]
+        public async Task<IActionResult> ConfirmarEmail([FromBody] ConfirmarEmailViewModel model)
+        {
+            if (!ModelStateValida())
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
+            var voluntario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
+
+            if (instituicao.Desativada || voluntario.Desativado)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                if (model.DefinirSenha)
+                    await EnviarLinkDefinirSenha(user, voluntario.Nome);
+
+                return CustomResponse();
+            }
+
+            AdicionarErrosIdentity(result);
+            return CustomResponse();
+        }
+
+        private async Task EnviarLinkDefinirSenha(IdentityUser user, string voluntarioNome)
+        {
+            var linkDefinirSenha = await GerarLinkDefinirSenha(user);
+
+            var anexos = GerarAnexosEmail();
+
+            var corpoEmail = GerarCorpoEmailDefinirSenha(voluntarioNome, linkDefinirSenha);
+
+            await _emailService.Enviar(user.Email, "Definir Senha - AutoNFP - Parametriz",
+               corpoEmail, anexos);
+        }
+
+        private async Task<string> GerarLinkDefinirSenha(IdentityUser user)
+        {
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var link = $"{_urlsConfig.Angular}/definir-senha?email={user.Email}&code={code}";
+
+            return link;
+        }
+
+        private string GerarCorpoEmailDefinirSenha(string voluntarioNome, string linkDefinirSenha)
+        {
+            return $"Prezado {voluntarioNome}, Defina a senha da sua conta clicando <a href='{linkDefinirSenha}'>aqui</a>";
+        }
+
+        [AllowAnonymous]
+        [HttpPost("enviar-definir-senha")]
+        public async Task<IActionResult> EnviarDefinirSenha([FromBody] EnviarDefinirSenhaViewModel enviarDefinirSenhaViewModel)
+        {
+            if (!ModelStateValida())
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(enviarDefinirSenhaViewModel.Email);
+            if (user == null)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            if (!user.EmailConfirmed)
+            {
+                NotificarErro("E-mail não confirmado.");
+                return CustomResponse();
+            }
+
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
+            var voluntario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
+
+            if (instituicao.Desativada || voluntario.Desativado)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            await EnviarLinkDefinirSenha(user, voluntario.Nome);
+            return CustomResponse();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("definir-senha")]
+        public async Task<IActionResult> DefinirSenha([FromBody] DefinirSenhaViewModel model)
+        {
+            if (!ModelStateValida())
+                return CustomResponse(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
+            var voluntario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
+
+            if (instituicao.Desativada || voluntario.Desativado)
+            {
+                NotificarErro("Requisição inválida.");
+                return CustomResponse();
+            }
+
+            var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
+
+            var result = await _userManager.ResetPasswordAsync(user, code, model.Senha);
+            if (result.Succeeded)
+            {
+                return CustomResponse(await _jwtBuilder
+                    .WithEmail(user.Email)
+                    .WithJwtClaims()
+                    .WithUserClaims()
+                    .WithUserRoles()
+                    .WithRefreshToken()
+                    .BuildUserResponse());
+            }
+
+            AdicionarErrosIdentity(result);
+            return CustomResponse();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        {
+            if (!ModelStateValida())
+                return CustomResponse(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
+            {
+                NotificarErro("Verifique sua conta de e-mail e confirme seu cadastro, após a confirmação seu login será liberado.");
+                return CustomResponse(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Senha, false, lockoutOnFailure: true);
+
+            if (result.Succeeded)
+            {
+                var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
+                var voluntario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
+
+                if (instituicao.Desativada)
+                {
+                    NotificarErro("Instituição desativada, favor entrar em contato com o suporte.");
+                    return CustomResponse(model);
+                }
+
+                if (voluntario.Desativado)
+                {
+                    NotificarErro("Voluntário desativado, favor entrar em contato com o administrador do sistema na instituição.");
+                    return CustomResponse(model);
+                }
+
+                return CustomResponse(await _jwtBuilder
+                    .WithEmail(user.Email)
+                    .WithJwtClaims()
+                    .WithUserClaims()
+                    .WithUserRoles()
+                    .WithRefreshToken()
+                    .BuildUserResponse());
+            }
+
+            NotificarErro("Falha ao realizar o login");
+            return CustomResponse(model);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        {
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                NotificarErro("Refresh Token inválido.");
+                return CustomResponse();
+            }
+
+            var token = await _jwtBuilder.ValidateRefreshToken(refreshToken);
+
+            if (!token.IsValid)
+            {
+                NotificarErro("Refresh Token expirado");
+                return CustomResponse();
+            }
+
+            var jwt = await _jwtBuilder
+                .WithUserId(token.UserId)
+                .WithJwtClaims()
+                .WithUserClaims()
+                .WithUserRoles()
+                .WithRefreshToken()
+                .BuildUserResponse();
+
+            return CustomResponse(jwt);
+        }
+
+        
+        [HttpPost("cadastrar-voluntario")]
+        public async Task<IActionResult> Post([FromBody] CadastrarVoluntarioViewModel cadastrarVoluntarioViewModel)
+        {
+            if (!ModelStateValida())
+                return CustomResponse(cadastrarVoluntarioViewModel);
+
+            var user = new IdentityUser { UserName = cadastrarVoluntarioViewModel.Email, Email = cadastrarVoluntarioViewModel.Email };
+            var resultUser = await _userManager.CreateAsync(user);
+
+            if (resultUser.Succeeded)
+            {
+                if (!await _voluntarioService.Cadastrar(cadastrarVoluntarioViewModel))
+                {
+                    await _userManager.DeleteAsync(user);
+                    return CustomResponse(cadastrarVoluntarioViewModel);
+                }
+
+                await IncluirClaimInstituicaoId(user);
+
+                await EnviarLinkConfirmarEmail(user, cadastrarVoluntarioViewModel.Nome.Trim().ToUpper(), definirSenha: true);
+                return CustomResponse(cadastrarVoluntarioViewModel);
+            }
+            AdicionarErrosIdentity(resultUser);
+
+            return CustomResponse(cadastrarVoluntarioViewModel);
         }
     }
 }
