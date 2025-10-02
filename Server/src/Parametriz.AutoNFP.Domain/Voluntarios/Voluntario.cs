@@ -7,23 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parametriz.AutoNFP.Domain.Usuarios
+namespace Parametriz.AutoNFP.Domain.Voluntarios
 {
-    public class Usuario : InstituicaoEntity
+    public class Voluntario : InstituicaoEntity
     {
         public string Nome { get; private set; }
         public Email Email { get; private set; }
 
         public Instituicao Instituicao { get; private set; }
 
-        public Usuario(Guid id, Guid instituicaoId, string nome, Email email)
+        public Voluntario(Guid id, Guid instituicaoId, string nome, Email email)
             : base(id, instituicaoId)
         {
             Email = email;
             AlterarNome(nome);
         }
 
-        protected Usuario() { }
+        protected Voluntario() { }
 
         public void AlterarNome(string nome)
         {

@@ -1,10 +1,9 @@
 ﻿using Parametriz.AutoNFP.Api.ViewModels.Core;
-using Parametriz.AutoNFP.Domain.Usuarios;
 using System.ComponentModel.DataAnnotations;
 
-namespace Parametriz.AutoNFP.Api.ViewModels.Usuarios
+namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
 {
-    public class UsuarioViewModel
+    public class VoluntariosViewModel
     {
         [Key]
         public Guid Id { get; set; }

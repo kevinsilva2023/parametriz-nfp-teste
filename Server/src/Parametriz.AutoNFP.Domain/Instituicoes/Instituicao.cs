@@ -1,7 +1,7 @@
 ﻿using Parametriz.AutoNFP.Domain.Core.DomainObjects;
 using Parametriz.AutoNFP.Domain.Core.Enums;
 using Parametriz.AutoNFP.Domain.Core.ValueObjects;
-using Parametriz.AutoNFP.Domain.Usuarios;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +17,8 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
         public Endereco Endereco { get; private set; }
         public bool Desativada { get; private set; }
 
-        private readonly List<Usuario> _usuarios;
-        public IReadOnlyCollection<Usuario> Usuarios => _usuarios.AsReadOnly();
+        private readonly List<Voluntario> _voluntarios;
+        public IReadOnlyCollection<Voluntario> Voluntarios => _voluntarios.AsReadOnly();
 
         public Instituicao(Guid id, string razaoSocial, string cnpj)
             : base(id)
@@ -39,9 +39,9 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
             Endereco = endereco;
         }
 
-        public void IncluirUsuario(Usuario usuario)
+        public void IncluirVoluntario(Voluntario voluntario)
         {
-            _usuarios.Add(usuario);
+            _voluntarios.Add(voluntario);
         }
 
         public void Desativar()

@@ -1,23 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using NetDevPack.Identity.Interfaces;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
-using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
 using Parametriz.AutoNFP.Api.Data.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
-using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
-using Parametriz.AutoNFP.Domain.Core.DomainObjects;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
-using Parametriz.AutoNFP.Domain.Instituicoes;
-using Parametriz.AutoNFP.Domain.Usuarios;
 using System.Text;
-using System.Text.Encodings.Web;
 
 namespace Parametriz.AutoNFP.Api.Controllers
 {
@@ -47,7 +38,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("novo-usuario")]
+        [HttpPost("cadastrar-instituicao")]
         public async Task<IActionResult> Post([FromBody] CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel)
         {
             if (!ModelStateValida())

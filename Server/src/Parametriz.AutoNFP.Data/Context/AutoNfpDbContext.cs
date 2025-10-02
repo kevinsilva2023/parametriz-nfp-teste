@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Parametriz.AutoNFP.Domain.Instituicoes;
-using Parametriz.AutoNFP.Domain.Usuarios;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace Parametriz.AutoNFP.Data.Context
         }
 
         public DbSet<Instituicao> Instituicoes { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Voluntario> Voluntarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

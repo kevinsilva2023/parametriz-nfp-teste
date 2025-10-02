@@ -14,10 +14,10 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
         [StringLength(14, ErrorMessage = "CNPJ deve ser preenchido com {1} digitos.", MinimumLength = 14)]
         public string Cnpj { get; set; }
 
-        [Display(Name ="Nome Usuário")]
-        [Required(ErrorMessage = "Favor preencher o nome do usuário.")]
+        [Display(Name ="Nome Voluntário")]
+        [Required(ErrorMessage = "Favor preencher o nome do voluntário.")]
         [MaxLength(256, ErrorMessage = "Nome deve ser preenchido com no máximo {1} caracteres.")]
-        public string UsuarioNome { get; set; }
+        public string VoluntarioNome { get; set; }
 
         [Display(Name ="E-mail")]
         [Required(ErrorMessage ="Favor preencher o e-mail.")]
