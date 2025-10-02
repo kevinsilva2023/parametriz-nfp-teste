@@ -2,12 +2,16 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using NetDevPack.Identity.Interfaces;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
+using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Data.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
+using Parametriz.AutoNFP.Domain.Voluntarios;
+using System.Net.Mail;
 using System.Text;
 
 namespace Parametriz.AutoNFP.Api.Controllers
@@ -20,6 +24,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
         private readonly IEmailService _emailService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly UrlsConfig _urlsConfig;
 
         public AuthController(Notificador notificador,
                               IAspNetUser user,
@@ -27,7 +32,8 @@ namespace Parametriz.AutoNFP.Api.Controllers
                               IInstituicaoService instituicaoService,
                               IEmailService emailService,
                               SignInManager<IdentityUser> signInManager,
-                              UserManager<IdentityUser> userManager)
+                              UserManager<IdentityUser> userManager,
+                              IOptions<UrlsConfig> options)
             : base(notificador, user)
         {
             _jwtBuilder = jwtBuilder;
@@ -35,6 +41,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             _emailService = emailService;
             _signInManager = signInManager;
             _userManager = userManager;
+            _urlsConfig = options.Value;
         }
 
         [AllowAnonymous]
@@ -57,7 +64,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     return CustomResponse(cadastrarInstituicaoViewModel);
                 }
 
-                await EnviarLinkConfirmarEmail(user);
+                await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome, definirSenha: true);
             }
 
             AdicionarErrosIdentity(result);
@@ -67,11 +74,13 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
         
 
-        private async Task EnviarLinkConfirmarEmail(IdentityUser user, bool definirSenha = false)
+        private async Task EnviarLinkConfirmarEmail(IdentityUser user, string voluntarioNome, bool definirSenha = false)
         {
             var linkConfirmacao = await GerarLinkConfirmacao(user, definirSenha);
 
-            var corpoEmail = $"Confirme sua conta clicando <a href='{linkConfirmacao}'>aqui</a>";
+            var anexos = GerarAnexosEmail();
+
+            var corpoEmail = GerarCorpoEmail(voluntarioNome, linkConfirmacao);
 
             await _emailService.Enviar(user.Email, "Parametriz - AutoNFP - Confirmação de Senha",
                corpoEmail);
@@ -82,9 +91,64 @@ namespace Parametriz.AutoNFP.Api.Controllers
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            var link = $"{"url_do_site"}/confirmar-email?email={user.Email}&code={code}&definirSenha={definirSenha}";
+            var link = $"{_urlsConfig.Angular}/confirmar-email?email={user.Email}&code={code}&definirSenha={definirSenha}";
 
             return link;
+        }
+
+        private IEnumerable<Attachment> GerarAnexosEmail()
+        {
+            var anexos = new List<Attachment>();
+
+            var logoWhite = new Attachment(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logos", "logo-white.png"));
+            logoWhite.ContentId = "logoWhiteId";
+            anexos.Add(logoWhite);
+
+            var logoCircle = new Attachment(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logos", "logo-circle.png"));
+            logoCircle.ContentId = "logoCircleId";
+            anexos.Add(logoCircle);
+
+            return anexos;
+        }
+
+        private string GerarCorpoEmail(string voluntarioNome, string linkConfirmacao)
+        {
+            var body =
+                $@"<table align=""center"" width=""80%"" style=""background-color: #fffaf5; border: 2px solid #003366; max-width: 800px;"">" +
+                    $@"<tr>" +
+                        $@"<td style=""background-color: #003366; text-align: center; padding: 20px;"">" +
+                            $@"<img src=""cid:logoWhiteId"" width=""60%"">" +
+                        $@"</td>" +
+                    $@"</tr>" +
+                    $@"<tr>" +
+                        $@"<td style=""padding: 30px; text-align: center; color: #333333;"">" +
+                            $@"<h1 style=""color: #003366; text-align: center; margin-bottom: 20px;"">Confirme seu email para ativar o <br> AUTONFP!</h1>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Olá {voluntarioNome},</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Obrigado por se registrar na Parametriz AutoNFP! Para ativar sua conta e começar a aproveitar todos os nossos serviços, por favor, confirme seu endereço de email clicando no botão abaixo:</p>" +
+                            $@"<table align=""center"" cellpadding=""0"" cellspacing=""0"" border=""0"">" +
+                                $@"<tr>" +
+                                    $@"<td bgcolor=""#003366"" style=""padding: 10px; text-align: center;"">" +
+                                        $@"<a href=""{linkConfirmacao}"" style=""color: #ffffff; font-weight: bold; font-size: 20px; text-decoration: none; display: block;"">Confirmar Email</a>" +
+                                    $@"</td>" +
+                                $@"</tr>" +
+                            $@"</table>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Se o botão acima não funcionar, clicar no link abaixo:</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;""><a href=""{linkConfirmacao}"" style=""color: #007bff; text-decoration: underline;"">{linkConfirmacao}</a></p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Este link de confirmação é válido por 24 horas. Se você não se registrou na Parametriz, por favor, ignore este email.</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Atenciosamente,</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 0;"">A Equipe Parametriz</p>" +
+                        $@"</td>" +
+                    $@"</tr>" +
+                    $@"<tr>" +
+                        $@"<td style=""background-color: #f9f9f9; text-align: center; padding: 20px; font-size: 12px; color: #777777; border-top: 1px solid #e0e0e0;"">" +
+                            $@"<p style=""margin:0;"">&copy; {DateTime.Now.Year} Parametriz Soluções Tecnológicas. Todos os direitos reservados.</p>" +
+                            $@"<p style=""margin: 5px 0; color: #003366;"">Política de Privacidade | Termos de Serviço</p>" +
+                            $@"<img src=""cid:logoCircleId"" width=""10%"">" +
+                        $@"</td>" +
+                    $@"</tr>" +
+                $@"</table>";
+
+            return body;
         }
     }
 }
