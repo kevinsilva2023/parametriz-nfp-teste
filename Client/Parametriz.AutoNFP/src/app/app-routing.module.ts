@@ -1,22 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/login.component';
 import { AppComponent } from './app.component';
-import { registerDispatcher } from '@angular/core/event_dispatcher.d-K56StcHr';
+
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
+import { LoginComponent } from './identidade/components/login/login.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AppComponent
+    component: RegistrarComponent
   },
-  {
-    path: 'login',
-    loadChildren: () => import('./auth/login/login.module')
-      .then(m => m.LoginModule)
-  },
-
-  { path: 'cadastro', component: RegistrarComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'registrar', component: RegistrarComponent },
 ]
 
 @NgModule({

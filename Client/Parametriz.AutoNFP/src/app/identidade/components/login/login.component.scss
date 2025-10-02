@@ -17,8 +17,6 @@
   .login-form {
     border-radius: 20px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-
-
   }
 }
 
@@ -71,7 +69,6 @@ input[type="checkbox"]:checked+.checkmark::after {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
 }
 
 @media (min-width: 992px) {

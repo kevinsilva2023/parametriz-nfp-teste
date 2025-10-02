@@ -1,4 +1,86 @@
-<div class="d-flex bg-primary cadastro-container">
-  <div class="cadastro-form col-8 order-2 bg-white"></div>
-  <div class="cadastro-content order-1"></div>
+<div class="cadastro-container d-flex">
+  <div class="cadastro-form d-flex flex-column justify-content-center col-6 bg-white px-5">
+    <div class="d-flex flex-column gap-1 text-center">
+      <h1 class="text-dark fs-3 fw-bolder">Crie sua conta no AutoNFP</h1>
+      <p class="fs-6 fw-semibold text-secondary mb-5">
+        Cadastre-se para começar a automatizar suas notas fiscais de forma rápida e segura
+      </p>
+    </div>    
+    <form class="d-flex flex-column" [formGroup]="registroForm">
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <i class="fa-solid fa-building"></i>
+          &nbsp; Razão Social
+        </mat-label>
+        <input matInput formControlName="razaoSocialInstituicao" type="text" placeholder="Razão Social da Instituição">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <i class="fa-solid fa-envelope"></i>
+          &nbsp; E-mail
+        </mat-label>
+        <input matInput formControlName="email" type="email" placeholder="seuemail@aqui.com.br">
+      </mat-form-field>
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="fa-solid fa-user"></i>
+              &nbsp; Usuário
+            </mat-label>
+            <input matInput formControlName="usuario" type="text" placeholder="Nome de Usuário">
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="fa-solid fa-id-card"></i>
+              &nbsp; CNPJ
+            </mat-label>
+            <input matInput formControlName="cnpj" type="text" placeholder="00.000.000/0000-00">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="fa-solid fa-lock"></i>
+              &nbsp; Senha
+            </mat-label>
+            <input matInput formControlName="senha" type="password" placeholder="Digite sua Senha">
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="fa-solid fa-lock"></i>
+              &nbsp; Confirma Senha
+            </mat-label>
+            <input matInput formControlName="confirmaSenha" type="password" placeholder="Confirme sua Senha">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <i class="fa-solid fa-crown"></i>
+          &nbsp; Selecione um plano
+        </mat-label>
+        <mat-select>
+          <mat-option value="one">Basico - R$ 180/Mês</mat-option>
+          <mat-option value="two">Intermediário - R$ 299/Mês</mat-option>
+          <mat-option value="three">Profissional - R$ 599/Mês</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button class="btn btn-primary p-3 mt-4 mb-2">
+        Registrar
+      </button>
+      <p class="text-primary text-center fs-small">Sua Instituição já está cadastrada?
+        <span routerLink="/login" class="fw-medium">Faça Login</span>
+      </p>
+    </form>
+  </div>
+  <div class="cadastro-content col-6">
+  </div>
 </div>

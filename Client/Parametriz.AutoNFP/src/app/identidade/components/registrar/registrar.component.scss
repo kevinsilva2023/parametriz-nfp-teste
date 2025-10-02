@@ -9,5 +9,19 @@
 .cadastro-container {
   height: 75vh;
   width: 90vw;
-  max-width: 1400px;
+  max-width: 1080px;
+  background: var(--gradient-primary);
+  border-radius: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  .cadastro-content {
+    order: 1 !important;
+
+  }
+  .cadastro-form {
+    order: 2 !important;
+    border-radius: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-right: 5px solid var(--gradient-primary);
+  }
 }

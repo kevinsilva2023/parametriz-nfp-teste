@@ -1,5 +1,5 @@
-<div class="d-flex bg-secondary login-container">
-  <div class="d-flex flex-column justify-content-center col-5 px-5 bg-white login-form">
+<div class="login-container d-flex">
+  <div class="login-form d-flex flex-column justify-content-center col-6 px-5 bg-white">
     <div class="logo-parametriz w-100 mb-3">
       <img src="/assets/logo/logo-blue.png" class="w-100">
     </div>
@@ -46,16 +46,16 @@
         Entrar
       </button>
       <p class="text-primary text-center fs-small">Não tem um conta?
-        <span class="fw-medium">Cadastre-se agora</span>
+        <span routerLink="/registrar" class="fw-medium">Cadastre-se agora</span>
       </p>
     </form>
   </div>
 
-  <div class="d-flex flex-column justify-content-evenly login-content text-white p-5 ">
+  <div class="d-flex flex-column justify-content-evenly login-content text-white p-5">
     <h1 class="fs-2 fw-bolder">Automatize, Otimize e Cresça.</h1>
-    <p class="fs-6 fw-semibold text-light">Junte-se a milhares de empresas que já transformaram seus projetos com nossa
+    <p class="fs-6 fw-semibold text-light mb-4">Junte-se a milhares de empresas que já transformaram seus projetos com nossa
       plataforma.</p>
-    <mat-card class="bg-primary-light p-3">
+    <mat-card class="bg-primary-light p-3 mb-4">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
         <mat-card-title class="text-white fs-5 fw-medium">Kevin Silva</mat-card-title>
@@ -68,7 +68,7 @@
         </p>
       </mat-card-actions>
     </mat-card>
-    <ul class="p-0 d-flex flex-column gap-2">
+    <ul class="p-0 d-flex flex-column gap-2 ">
       <li>
         <i class="fa-solid fa-circle-check text-success"></i>
         Configuração em minutos
