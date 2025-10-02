@@ -8,6 +8,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
 import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
+import { DefinirNovaSenhaComponent } from './identidade/components/definir-nova-senha/definir-nova-senha.component';
 import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senha/esqueceu-a-senha.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,7 +27,8 @@ import { ReactiveFormsModule  } from '@angular/forms';
     RegistrarComponent,
     LoginComponent,
     ConfirmarEmailComponent,
-    EsqueceuASenhaComponent
+    EsqueceuASenhaComponent,
+    DefinirNovaSenhaComponent
   ],
   imports: [
     BrowserModule,
