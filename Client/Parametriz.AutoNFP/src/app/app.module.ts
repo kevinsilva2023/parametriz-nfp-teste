@@ -21,7 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule  } from '@angular/forms';
 
-import { FundoAnimadoComponent } from "src/app/shared/fundo-animado/fundo-animado.component";
+import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
 
 
 @NgModule({
