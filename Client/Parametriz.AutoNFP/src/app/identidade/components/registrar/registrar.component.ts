@@ -14,6 +14,7 @@ export class RegistrarComponent implements OnInit{
   constructor(
     private formBuilder: FormBuilder
   ) {}
+
   ngOnInit(): void {
     this.registroForm = this.formBuilder.group({
       razaoSocial: [null, Validators.required],
@@ -33,7 +34,4 @@ export class RegistrarComponent implements OnInit{
       ]]
     })
   }
-
-
-
 }
