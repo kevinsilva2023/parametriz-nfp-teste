@@ -1,0 +1,6 @@
+@Parametriz.AutoNFP.Api_HostAddress = http://localhost:5084
+
+GET {{Parametriz.AutoNFP.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
