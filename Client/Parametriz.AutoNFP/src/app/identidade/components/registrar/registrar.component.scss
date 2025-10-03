@@ -7,8 +7,8 @@
 }
 
 .cadastro-container {
-  height: 75vh;
-  width: 90vw;
+  height: 80%;
+  width: 80%;
   max-width: 1080px;
   background: var(--gradient-primary);
   border-radius: 20px;
@@ -23,5 +23,6 @@
     border-radius: 20px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-right: 5px solid var(--royal-blue);
+    background: var(--gradient-blur);
   }
 }

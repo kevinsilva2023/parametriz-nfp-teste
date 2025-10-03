@@ -7,14 +7,15 @@
 }
 
 .login-container {
-  height: 75vh;
-  width: 90vw;
+  height: 80%;
+  width: 80%;
   max-width: 1080px;
   background: var(--gradient-primary);
   border-radius: 20px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   .login-form {
+    background: var(--gradient-blur);
     border-radius: 20px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
@@ -69,6 +70,7 @@ input[type="checkbox"]:checked+.checkmark::after {
   display: flex;
   justify-content: center;
   align-items: center;
+  display: none;
 }
 
 @media (min-width: 992px) {

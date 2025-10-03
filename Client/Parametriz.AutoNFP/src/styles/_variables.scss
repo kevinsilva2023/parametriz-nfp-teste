@@ -34,6 +34,9 @@
   --danger: #dc3545;
   --warning: #ffc107;
   --success: #28a745;
-
+  
   --gradient-primary: linear-gradient(135deg, var(--royal-blue) 0%, var(--royal-blue-light) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--sand) 0%, var(--sand-light) 100%);
+  --gradient-hero: linear-gradient(135deg, var(--royal-blue-dark) 0%, var(--royal-blue) 50%, var(--sand-dark) 100%);
+  --gradient-blur: linear-gradient(135deg, rgba(250, 240, 230, 0.6) 0% ,rgba(46, 77, 122, 0.2) 50%, rgba(13, 45, 84, 0.1) 100%);
 }

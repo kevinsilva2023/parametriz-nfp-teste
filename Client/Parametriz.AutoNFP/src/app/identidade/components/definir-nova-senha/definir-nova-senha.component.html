@@ -1,6 +1,16 @@
-<div class="definir-senha d-flex">
-  <div class="definir-senha-form d-flex flex-column justify-content-center px-5 bg-white">
-    <form class="d-flex flex-column">
+<div class="definir-senha-container d-flex flex-column justify-content-center align-items-center gap-4 px-5">
+  <div class="bg-primary p-4 rounded-circle mb-1">
+    <i class="fa-solid fa-lock fs-1 text-white icon-container"></i>
+  </div>
+  
+  <h1 class="text-primary fw-bolder fs-3">Criar Nova Senha!</h1>
+  <div class="text-center text-primary">
+    <p>Digite sua nova senha.</p>
+    <p>Certifique-se de que seja forte e segura!</p>
+  </div>
+  
+  <div class="definir-senha-form d-flex flex-column col-8">
+    <form class="d-flex flex-column" [formGroup]="definirSenhaForm">
       <mat-form-field appearance="outline">
         <mat-label>
           <i class="fa-solid fa-lock"></i>
@@ -15,6 +25,9 @@
         </mat-label>
         <input matInput formControlName="senhaConfirmacao" type="password" placeholder="Confirme a nova senha">
       </mat-form-field>
+      <button class="btn btn-primary p-3 mt-4 mb-2" type="submit">
+        Registrar Senha
+      </button>
     </form>
   </div>
 </div>
