@@ -1,0 +1,18 @@
+:host {
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.esqueceu-senha {
+  color: var(--royal-blue);
+  text-decoration: none;
+  transition: 0.15s ease-in-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+

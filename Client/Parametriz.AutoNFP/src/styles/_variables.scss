@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+:root {
+
+
+  --font-primary: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-logo: 'Nunito';
+
+  --royal-blue: #0d2d54;
+  --royal-blue-light: #2e4d7a;
+  --royal-blue-dark: #081a39;
+  --royal-blue-dark-blur: rgba(13, 45, 84, 0.6);
+  --sand: #f5deb3;
+  --sand-light: #faf0e6;
+  --sand-dark: #deb887;
+  --sand-dark-two: #be8233;
+  --info: #2c3e50;
+
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  --blue: #0081b4;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --success: #28a745;
+
+  --gradient-primary: linear-gradient(135deg, var(--royal-blue) 0%, var(--royal-blue-light) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--sand) 0%, var(--sand-light) 100%);
+  --gradient-hero: linear-gradient(135deg, var(--royal-blue-dark) 0%, var(--royal-blue) 50%, var(--sand-dark) 100%);
+  --gradient-blur: linear-gradient(135deg, rgba(250, 240, 230, 0.6) 0%, rgba(46, 77, 122, 0.2) 50%, rgba(13, 45, 84, 0.1) 100%);
+
+  --shadow-sm: 0 1px 2px 1 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-royal: 0 20px 40px rgba(30, 58, 138, 0.3);
+  --shadow-sand: 0 20px 40px rgba(245, 222, 179, 0.3);
+
+}

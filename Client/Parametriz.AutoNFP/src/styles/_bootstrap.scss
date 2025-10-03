@@ -1,0 +1,21 @@
+.btn-primary {
+  background-color: none !important;
+  background: var(--gradient-primary);
+  font-weight: bolder;
+  border: none;
+  font-size: 16px;
+  &:hover { background-color: var(--royal-blue-dark-blur); }
+}
+
+.bg-primary { background: var(--royal-blue) !important; }
+.bg-primary-light { background: var(--royal-blue-dark-blur) !important; }
+.bg-gradient-sand { background: var(--gradient-secondary) !important; }
+.bg-gradient-royal { background: var(--gradient-primary !important);}
+
+.text-primary { color: var(--royal-blue) !important; }
+.text-light { color: var(--gray-400) !important; }
+
+.fs-small { font-size: 12px !important; }
+
+
+.border-primary { border-color: var(--royal-blue) !important; }

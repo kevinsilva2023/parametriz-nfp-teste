@@ -1,0 +1,144 @@
+@use 'reset';
+@use 'variables';
+@use 'bootstrap';
+@use 'material';
+
+body {
+  background-color: lightgray;
+  color: var(--gray-600);
+  font-family: var(--font-primary);
+}
+
+label {
+  color: var(--royal-blue) !important;
+}
+
+input {
+  border-color: var(--royal-blue) !important;
+}
+
+.identidade {
+  min-height: 100vh;
+  min-width: 100vw;
+  background: var(--gradient-hero);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0px 16px 26px 16px;
+  z-index: 0;
+
+
+  .fundo-animado {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+
+    .formas-flutuantes {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+
+      .forma {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        animation: flutuacao 6s ease-in-out infinite !important;
+      }
+
+      .forma-1 {
+        width: 100px;
+        height: 100px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      .forma-2 {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+      }
+
+      .forma-3 {
+        width: 80px;
+        height: 80px;
+        bottom: 30%;
+        left: 20%;
+        animation-delay: 4s;
+      }
+
+      .forma-4 {
+        width: 120px;
+        height: 120px;
+        top: 10%;
+        right: 30%;
+        animation-delay: 1s;
+      }
+    }
+
+    @keyframes flutuacao {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-60px) rotate(180deg);
+      }
+    }
+  }
+
+  .card-form {
+    width: 30vw;
+    height: 80vh;
+    max-height: 700px;
+    background-color: var(--gray-50);
+    border-radius: 20px;
+    box-shadow: var(--shadow-xl);
+    z-index: 1;
+  }
+}
+
+.logo-circle,
+ .logo-white,
+ .logo-blue {
+  width: 20%;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--gray-300);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.15s ease-in-out;
+  position: relative;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked+.checkmark {
+  background: var(--royal-blue);
+  border-color: var(--royal-blue);
+}
+
+input[type="checkbox"]:checked+.checkmark::after {
+  content: '✓';
+  color: var(--white);
+  font-size: 12px;
+  font-weight: bold;
+}

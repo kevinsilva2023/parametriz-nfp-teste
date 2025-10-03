@@ -1,0 +1,33 @@
+<section class="identidade">
+  <app-fundo-animado></app-fundo-animado>
+
+  <div class="card-form d-flex flex-column justify-content-center align-items-center gap-4 p-5">
+    <div class="bg-primary p-4 mb-1 rounded-circle">
+      <i class="fa-solid fa-key fs-1 text-white"></i>
+    </div>
+
+    <h1 class="text-primary fw-bolder fs-3">Esqueceu sua Senha?</h1>
+    <div class="text-center text-primary">
+      <p>Não se preocupe!</p>
+      <p>Digite seu e-mail e enviaremos</p>
+      <p>instruções para redefinir a senha</p>
+    </div>
+
+    <form [formGroup]="esqueceuASenhaForm">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>
+          <i class="fa-solid fa-envelope"></i>
+          &nbsp; E-mail
+        </mat-label>
+        <input matInput formControlName="email" type="email" placeholder="seu@email.com">
+      </mat-form-field>
+      <button class="btn btn-primary rounded-5 p-3 mt-4 mb-2 w-100">
+        Enviar link de Recuperação
+      </button>
+
+      <p routerLink="/login" class="text-primary text-center fs-small pointer">
+        Deseja efetuar login?
+      </p>
+    </form>
+  </div>
+</section>
