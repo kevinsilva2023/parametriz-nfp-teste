@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthLoginService } from '../../services/auth-login.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +12,6 @@ export class LoginComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    private authLogin: AuthLoginService,
-    private router: Router
   ) {}
   
   ngOnInit(): void {
@@ -29,18 +25,5 @@ export class LoginComponent implements OnInit{
         Validators.minLength(8)
       ]]
     });
-  }
-
-  fazerLogin() {
-      const email = this.loginForm.value.email;
-      const senha = this.loginForm.value.senha;
-
-      this.authLogin.autenticarUsuario(email, senha)
-        .subscribe({
-          next: (value) => {
-            this.router.navigateByUrl('/home');
-          },
-          error: (err) => console.error(err)
-        })
   }
 }

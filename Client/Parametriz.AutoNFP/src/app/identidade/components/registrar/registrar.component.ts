@@ -16,9 +16,9 @@ export class RegistrarComponent implements OnInit{
   ) {}
   ngOnInit(): void {
     this.registroForm = this.formBuilder.group({
-      razaoSocialInstituicao: [null, Validators.required],
+      razaoSocial: [null, Validators.required],
       cnpj: [null, Validators.required],
-      usuario: [null, Validators.required],
+      voluntarioNome: [null, Validators.required],
       email: [null, [
           Validators.required,
           Validators.email
@@ -27,7 +27,7 @@ export class RegistrarComponent implements OnInit{
         Validators.required,
         Validators.minLength(8),
       ]],
-      confirmaSenha: [null, [
+      senhaConfirmacao: [null, [
         Validators.required,
         Validators.minLength(8)
       ]]

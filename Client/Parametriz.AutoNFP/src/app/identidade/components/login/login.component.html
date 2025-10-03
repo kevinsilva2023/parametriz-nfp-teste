@@ -1,54 +1,47 @@
-<div class="login-container d-flex">
-  <div class="login-form d-flex flex-column justify-content-center col-6 px-5 bg-white">
-    <div class="logo-parametriz w-100 mb-3">
-      <img src="/assets/logo/logo-blue.png" class="w-100">
+<section class="identidade">
+  <app-fundo-animado></app-fundo-animado>
+  
+  <div class="card-form d-flex flex-column p-5 overflow-hidden">
+    <div class="d-flex justify-content-center mb-3">
+      <img src="/assets/logo/logo-blue.png" class="w-75">
     </div>
-    <div class="d-flex flex-column gap-1 text-center">
-      <!-- texto -->
-    </div>
-    <form class="d-flex flex-column" [formGroup]="loginForm">
-      <mat-form-field appearance="outline" class="mb-4">
-        <mat-label>
-          <i class="fa-solid fa-envelope"></i>
-          &nbsp;E-mail
-        </mat-label>
-        <input matInput formControlName="email" type="email" placeholder="seu@email.com">
-        <mat-error *ngIf="loginForm.get('email')?.errors?.['required']">
-          E-mail é obrigatório.
-        </mat-error>
-        <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">
-          E-mail inválido.
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="mb-1">
-        <mat-label>
-          <i class="fa-solid fa-lock"></i>
-          &nbsp;Senha
-        </mat-label>
-        <input matInput formControlName="senha" type="password" placeholder="••••••••">
-        <mat-error *ngIf="loginForm.get('senha')?.errors?.['required']">
-          Senha é obrigatória.
-        </mat-error>
-        <mat-error *ngIf="loginForm.get('senha')?.errors?.['minlength']">
-          Senha deve conter pelo menos 8 caracteres.
-        </mat-error>
-      </mat-form-field>
-      <div class="d-flex justify-content-between">
-        <label class="d-flex align-items-center text-primary fs-small">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          &nbsp; Lembrar de mim
-        </label>
-        <a href="#" class="forgot-password fs-small">Esqueceu a senha?</a>
-      </div>
-      <button class="btn btn-primary p-3 mt-4 mb-2" (click)="fazerLogin()">
-        Entrar
-      </button>
-      <p class="text-primary text-center fs-small">Não tem um conta?
-        <span routerLink="/registrar" class="fw-medium">Cadastre-se agora</span>
-      </p>
-    </form>
-  </div>
+    <div class="d-flex flex-column gap-4 mb-5">
+      <h1 class="fs-1 text-primary fw-bolder text-center">Login</h1>
 
-  <div class="login-content"></div>
-</div>
+      <form class="d-flex flex-column" [formGroup]="loginForm">
+        <mat-form-field appearance="outline">
+          <mat-label>
+            <i class="fa-solid fa-envelope"></i>
+            &nbsp;E-mail
+          </mat-label>
+          <input matInput formControlName="email" type="email" placeholder="seu@email.com">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>
+            <i class="fa-solid fa-lock"></i>
+            &nbsp;Senha
+          </mat-label>
+          <input matInput formControlName="senha" type="password" placeholder="••••••••">
+        </mat-form-field>
+  
+        <div class="d-flex justify-content-between">
+          <label class="d-flex align-items-center text-primary fs-small">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+            <span class="pointer">&nbsp; Lembrar de mim</span>
+          </label>
+          <a routerLink="/esqueceu-a-senha" class="esqueceu-senha fs-small">Esqueceu a senha?</a>
+        </div>
+  
+        <button class="btn btn-primary rounded-5 p-3 mt-4 mb-2" (click)="fazerLogin()">
+          Entrar
+        </button>
+  
+        <p class="text-primary text-center fs-small">Não tem um conta?
+          <span routerLink="/registrar" class="fw-bolder pointer" >Cadastre-se agora</span>
+        </p>
+      </form>
+    </div>
+  </div>
+</section>

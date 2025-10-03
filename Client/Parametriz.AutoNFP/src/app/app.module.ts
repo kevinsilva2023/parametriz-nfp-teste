@@ -7,6 +7,7 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
+import { EmailConfirmadoComponent } from './identidade/components/email-confirmado/email-confirmado.component';
 import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
 import { DefinirNovaSenhaComponent } from './identidade/components/definir-nova-senha/definir-nova-senha.component';
 import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senha/esqueceu-a-senha.component';
@@ -20,6 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule  } from '@angular/forms';
 
+import { FundoAnimadoComponent } from "src/app/shared/fundo-animado/fundo-animado.component";
+
 
 @NgModule({
   declarations: [
@@ -28,7 +31,9 @@ import { ReactiveFormsModule  } from '@angular/forms';
     LoginComponent,
     ConfirmarEmailComponent,
     EsqueceuASenhaComponent,
-    DefinirNovaSenhaComponent
+    DefinirNovaSenhaComponent,
+    EmailConfirmadoComponent
+
   ],
   imports: [
     BrowserModule,
@@ -39,8 +44,9 @@ import { ReactiveFormsModule  } from '@angular/forms';
     ReactiveFormsModule,
     MatCheckboxModule,
     MatCardModule,
-    MatSelectModule
-  ],
+    MatSelectModule,
+    FundoAnimadoComponent
+],
   providers: [
     provideHttpClient(),
   ],

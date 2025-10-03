@@ -34,9 +34,17 @@
   --danger: #dc3545;
   --warning: #ffc107;
   --success: #28a745;
-  
+
   --gradient-primary: linear-gradient(135deg, var(--royal-blue) 0%, var(--royal-blue-light) 100%);
   --gradient-secondary: linear-gradient(135deg, var(--sand) 0%, var(--sand-light) 100%);
   --gradient-hero: linear-gradient(135deg, var(--royal-blue-dark) 0%, var(--royal-blue) 50%, var(--sand-dark) 100%);
-  --gradient-blur: linear-gradient(135deg, rgba(250, 240, 230, 0.6) 0% ,rgba(46, 77, 122, 0.2) 50%, rgba(13, 45, 84, 0.1) 100%);
+  --gradient-blur: linear-gradient(135deg, rgba(250, 240, 230, 0.6) 0%, rgba(46, 77, 122, 0.2) 50%, rgba(13, 45, 84, 0.1) 100%);
+
+  --shadow-sm: 0 1px 2px 1 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-royal: 0 20px 40px rgba(30, 58, 138, 0.3);
+  --shadow-sand: 0 20px 40px rgba(245, 222, 179, 0.3);
+
 }
