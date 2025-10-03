@@ -137,7 +137,9 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 $@"<table align=""center"" width=""80%"" style=""background-color: #fffaf5; border: 2px solid #003366; max-width: 800px;"">" +
                     $@"<tr>" +
                         $@"<td style=""background-color: #003366; text-align: center; padding: 20px;"">" +
-                            $@"<a href=""https://www.parametriz.com.br""><img src=""cid:logoWhiteId"" width=""60%""></a>" +
+                            $@"<a href=""https://www.parametriz.com.br"" target=""_blank"">" +
+                                $@"<img src=""cid:logoWhiteId"" width=""60%"">" +
+                            $@"</a>" +
                         $@"</td>" +
                     $@"</tr>" +
                     $@"<tr>" +
@@ -163,7 +165,9 @@ namespace Parametriz.AutoNFP.Api.Controllers
                         $@"<td style=""background-color: #f9f9f9; text-align: center; padding: 20px; font-size: 12px; color: #777777; border-top: 1px solid #e0e0e0;"">" +
                             $@"<p style=""margin:0;"">&copy; {DateTime.Now.Year} Parametriz Soluções Tecnológicas. Todos os direitos reservados.</p>" +
                             $@"<p style=""margin: 5px 0; color: #003366;"">Política de Privacidade | Termos de Serviço</p>" +
-                            $@"<a href=""https://www.parametriz.com.br""><img src=""cid:logoCircleId"" width=""10%""></a>" +
+                            $@"<a href=""https://www.parametriz.com.br"" target=""_blank"">" +
+                                $@"<img src=""cid:logoCircleId"" width=""10%"">" +
+                            $@"</a>" +
                         $@"</td>" +
                     $@"</tr>" +
                 $@"</table>";
@@ -274,7 +278,48 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
         private string GerarCorpoEmailDefinirSenha(string voluntarioNome, string linkDefinirSenha)
         {
-            return $"Prezado {voluntarioNome}, Defina a senha da sua conta clicando <a href='{linkDefinirSenha}'>aqui</a>";
+            var body = 
+                $@"<table align=""center"" width=""80%"" style=""background-color: #fffaf5; border: 2px solid #003366; max-width:  800px;"">" +
+                    $@"<tr>" +
+                        $@"<td style=""background-color: #003366; text-align: center; padding: 20px;"">" +
+                            $@"<a href=""https://www.parametriz.com.br"" target=""_blank"">" +
+                                $@"<img src=""cid:logoWhiteId"" width=""60%"">" +
+                            $@"</a>" +
+                        $@"</td>" +
+                    $@"</tr>" +
+                    $@"<tr>" +
+                        $@"<td style=""padding: 30px; text-align: center; color: #333333;"">" +
+                            $@"<h1 style=""color: #003366; text-align: center; margin-bottom: 20px;"">Solicitação de redefinição de senha</h1>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Olá {voluntarioNome},</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Recebemos uma solicitação para redefinir a senha da sua conta Parametriz. Se você não solicitou esta alteração, por favor, ignore este email.<br><br> Para redefinir sua senha, clique no botão abaixo:</p>" +
+                            $@"<table align=""center"" cellpadding=""0"" cellspacing=""0"" border=""0"">" +
+                                $@"<tr>" +
+                                    $@"<td bgcolor=""#003366"" style=""padding: 10px; text-align: center;"">" +
+                                        $@"<a href=""{linkDefinirSenha}"" style=""color: #ffffff; font-weight: bold; font-size: 20px; text-decoration: none; display: block;"">Definir Senha</a>" +
+                                    $@"</td>" +
+                                $@"</tr>" +
+                            $@"</table>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Se o botão acima não funcionar, clicar no link abaixo:</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">" +
+                                $@"<a href=""{linkDefinirSenha}"" style=""color: #007bff; text-decoration: underline;"">{linkDefinirSenha}</a>" +
+                            $@"</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Este link de confirmação é válido por 24 horas. Se você não se registrou na Parametriz, por favor, ignore este email.</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 15px;"">Atenciosamente,</p>" +
+                            $@"<p style=""font-size: 16px; line-height: 1.6; margin-bottom: 0;"">A Equipe Parametriz</p>" +
+                        $@"</td>" +
+                    $@"</tr>" +
+                    $@"<tr>" +
+                        $@"<td style=""background-color: #f9f9f9; text-align: center; padding: 20px; font-size: 12px; color: #777777; border-top: 1px solid #e0e0e0;"">" +
+                            $@"<p style=""margin: 0;"">&copy; {DateTime.Now.Year} Parametriz Soluções Tecnológicas. Todos os direitos reservados.</p>" +
+                            $@"<p style=""margin: 5px 0; color: #003366;"">Política de Privacidade | Termos de Serviço</p>" +
+                            $@"<a href=""https://www.parametriz.com.br"" target=""_blank"">" +
+                                $@"<img src=""cid:logoCircleId"" width=""10%"">" +
+                            $@"</a>" +
+                        $@"</td>" +
+                    $@"</tr>" +
+                $@"</table>";
+                
+            return body;
         }
 
         [AllowAnonymous]
