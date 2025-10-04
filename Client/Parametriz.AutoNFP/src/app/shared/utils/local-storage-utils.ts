@@ -28,19 +28,15 @@ export class LocalStorageUtils {
         localStorage.removeItem('autoNFP.user');
     }
 
-    public static obterAccessToken(): string {
-        return localStorage.getItem('autoNFP.accessToken')?.toString() ?? '';
-    }
-
-    public static obterRefreshToken() {
-        return JSON.parse(localStorage.getItem('autoNFP.refreshToken')?.toString() ?? '');
-    }
-
     public static obterUsuario() {
         return JSON.parse(localStorage.getItem('autoNFP.user')?.toString() ?? '');
     }
 
-    public static obterAccessTokenExpiration() {
+    public static obterAccessToken(): string {
+        return localStorage.getItem('autoNFP.accessToken')?.toString() ?? '';
+    }
+
+    private static obterAccessTokenExpiration() {
         const accessToken = this.obterAccessToken();
 
         if (!accessToken)
@@ -56,7 +52,20 @@ export class LocalStorageUtils {
         return moment(expiresAt.valueOf());
     }
 
-    public static obterRefreshTokenExpiration() {
+    public static accessTokenEstaExpirado(): boolean {
+        const token = this.obterAccessToken();
+
+        if (!token)
+            return false;
+
+        return moment().isAfter(this.obterAccessTokenExpiration());
+    }
+
+    public static obterRefreshToken() {
+        return JSON.parse(localStorage.getItem('autoNFP.refreshToken')?.toString() ?? '');
+    }
+
+    private static obterRefreshTokenExpiration() {
         const refreshToken = this.obterRefreshToken();
 
         if (!refreshToken)
@@ -70,6 +79,15 @@ export class LocalStorageUtils {
         const expiresAt = moment.unix(payload?.exp ?? 0);
 
         return moment(expiresAt.valueOf());
+    }
+
+    public static refreshTokenEstaExpirado(): boolean {
+        const refreshToken = this.obterRefreshToken();
+
+        if (!refreshToken)
+            return false;
+
+        return moment().isAfter(this.obterRefreshTokenExpiration());
     }
 
     public static obterInstituicaoId(): string {

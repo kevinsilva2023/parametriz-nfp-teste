@@ -1,25 +1,28 @@
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { throwError } from 'rxjs';
 
 import { LocalStorageUtils } from '../utils/local-storage-utils';
 
 import { CustomResponse } from './dtos/custom-response';
+import { inject } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
-export abstract class BaseServiceService {
+export abstract class BaseService {
 
-  LocalStorageUtils = new LocalStorageUtils();
+  protected apiUrl: string = environment.apiUrl;
+  protected httpClient: HttpClient = inject(HttpClient);
   
-  protected ObterHeaderJson() {
+  protected ObterHeaderJson(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json'
     });
   }
 
-  protected ObterAuthHeaderJson() {
+  protected ObterAuthHeaderJson(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.LocalStorageUtils.obterAccessToken()}`
+      'Authorization': `Bearer ${LocalStorageUtils.obterAccessToken()}`
     });
   }
 
