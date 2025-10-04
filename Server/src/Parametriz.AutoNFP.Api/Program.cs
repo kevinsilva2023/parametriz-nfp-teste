@@ -11,13 +11,9 @@ builder.Services.AddSwaggerConfiguration();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 DbMigrationsHelper.EnsureSeedData(app).Wait();
-
 app.UseSwaggerConfiguration();
-
 app.UseApiConfiguration(app.Environment);
-
 app.MapControllers();
 
 app.Run();
