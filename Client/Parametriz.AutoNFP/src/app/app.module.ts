@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule  } from '@angular/forms';
 
 import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
+import { errorInterceptor } from './shared/interceptors/error.interceptor';
 
 
 @NgModule({
@@ -48,7 +49,9 @@ import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/f
     FundoAnimadoComponent
 ],
   providers: [
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([errorInterceptor])
+    )
   ],
   bootstrap: [AppComponent]
 })

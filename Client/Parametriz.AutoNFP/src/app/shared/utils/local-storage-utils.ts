@@ -4,43 +4,43 @@ import { JwtPayloadExtension } from '../models/jwt-payload-extension';
 
 export class LocalStorageUtils {
 
-    public salvarDadosLocaisUsuario(response: any) {
+    public static salvarDadosLocaisUsuario(response: any) {
         this.salvarAccessToken(response.accessToken);
         this.salvarRefreshToken(response.refreshToken);
         this.salvarUsuario(response.userToken);
     }
 
-    public salvarAccessToken(token: string) {
+    public static salvarAccessToken(token: string) {
         localStorage.setItem('autoNFP.accessToken', token);
     }
 
-    public salvarRefreshToken(refreshToken: string) {
+    public static salvarRefreshToken(refreshToken: string) {
         localStorage.setItem('autoNFP.refreshToken', JSON.stringify(refreshToken));
     }
 
-    public salvarUsuario(user: string) {
+    public static salvarUsuario(user: string) {
         localStorage.setItem('autoNFP.user', JSON.stringify(user));
     }
 
-    public limparDadosLocaisUsuario() {
+    public static limparDadosLocaisUsuario() {
         localStorage.removeItem('autoNFP.accessToken');
         localStorage.removeItem('autoNFP.refreshToken');
         localStorage.removeItem('autoNFP.user');
     }
 
-    public obterAccessToken(): string {
+    public static obterAccessToken(): string {
         return localStorage.getItem('autoNFP.accessToken')?.toString() ?? '';
     }
 
-    public obterRefreshToken() {
+    public static obterRefreshToken() {
         return JSON.parse(localStorage.getItem('autoNFP.refreshToken')?.toString() ?? '');
     }
 
-    public obterUsuario() {
+    public static obterUsuario() {
         return JSON.parse(localStorage.getItem('autoNFP.user')?.toString() ?? '');
     }
 
-    public obterAccessTokenExpiration() {
+    public static obterAccessTokenExpiration() {
         const accessToken = this.obterAccessToken();
 
         if (!accessToken)
@@ -56,7 +56,7 @@ export class LocalStorageUtils {
         return moment(expiresAt.valueOf());
     }
 
-    public obterRefreshTokenExpiration() {
+    public static obterRefreshTokenExpiration() {
         const refreshToken = this.obterRefreshToken();
 
         if (!refreshToken)
@@ -72,7 +72,7 @@ export class LocalStorageUtils {
         return moment(expiresAt.valueOf());
     }
 
-    public obterInstituicaoId(): string {
+    public static obterInstituicaoId(): string {
         const accessToken = this.obterAccessToken();
 
         if (!accessToken)
