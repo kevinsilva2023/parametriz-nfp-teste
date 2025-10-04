@@ -15,7 +15,7 @@ export class LocalStorageUtils {
     }
 
     public static salvarRefreshToken(refreshToken: string) {
-        localStorage.setItem('autoNFP.refreshToken', JSON.stringify(refreshToken));
+        localStorage.setItem('autoNFP.refreshToken', refreshToken);
     }
 
     public static salvarUsuario(user: string) {
@@ -61,8 +61,8 @@ export class LocalStorageUtils {
         return moment().isAfter(this.obterAccessTokenExpiration());
     }
 
-    public static obterRefreshToken() {
-        return JSON.parse(localStorage.getItem('autoNFP.refreshToken')?.toString() ?? '');
+    public static obterRefreshToken(): string {
+        return localStorage.getItem('autoNFP.refreshToken')?.toString() ?? '';
     }
 
     private static obterRefreshTokenExpiration() {

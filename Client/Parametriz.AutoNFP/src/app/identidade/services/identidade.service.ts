@@ -7,6 +7,7 @@ import { EnviarConfirmarEmail } from '../models/enviar-confirmar-email';
 import { ConfirmarEmail } from '../models/confirmar-email';
 import { EnviarDefinirSenha } from '../models/enviar-definir-senha';
 import { DefinirSenha } from '../models/definir-senha';
+import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Injectable()
 export class IdentidadeService extends BaseService {
@@ -52,5 +53,13 @@ export class IdentidadeService extends BaseService {
         catchError(this.serviceError));
   }
 
-  
+  utilizarRefreshToken(): Observable<any> {
+    let refreshToken = `\"${LocalStorageUtils.obterRefreshToken()}\"`;
+
+    return this.httpClient
+      .post(`${this.apiUrl}/refresh-token`, refreshToken, { headers: this.ObterHeaderJson() })
+      .pipe(
+        map(super.extractData),
+        catchError(super.serviceError));
+  }
 }
