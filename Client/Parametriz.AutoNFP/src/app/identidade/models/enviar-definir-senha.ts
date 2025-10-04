@@ -1,7 +1,3 @@
-export class EnviarDefinirSenha {
+export interface EnviarDefinirSenha {
     email: string;
-
-    constructor(email: string) {
-        this.email = email;
-    }
 }

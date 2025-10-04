@@ -10,7 +10,8 @@ import { ValidationMessages } from './validation-messages';
 export abstract class BaseFormComponent {
 
   displayMessage: DisplayMessage = {};
-  genericFormValidator: GenericFormValidator | null = null;
+  genericFormValidator!: GenericFormValidator;
+  validationMessages!: ValidationMessages;
 
   protected configurarMensagensValidacaoBase(validationMessages: ValidationMessages) {
     this.genericFormValidator = new GenericFormValidator(validationMessages);

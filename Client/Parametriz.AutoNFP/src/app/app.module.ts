@@ -23,6 +23,10 @@ import { ReactiveFormsModule  } from '@angular/forms';
 
 import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
+import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
+import { IdentidadeService } from './identidade/services/identidade.service';
+import { AutorizacaoService } from './shared/services/autorizacao.service';
+import { autorizacaoGuard } from './shared/services/autorizacao.guard';
 
 
 @NgModule({
@@ -34,7 +38,6 @@ import { errorInterceptor } from './shared/interceptors/error.interceptor';
     EsqueceuASenhaComponent,
     DefinirNovaSenhaComponent,
     EmailConfirmadoComponent
-
   ],
   imports: [
     BrowserModule,
@@ -49,9 +52,12 @@ import { errorInterceptor } from './shared/interceptors/error.interceptor';
     FundoAnimadoComponent
 ],
   providers: [
+    IdentidadeService,
+    AutorizacaoService,
     provideHttpClient(
       withInterceptors([errorInterceptor])
-    )
+    ),
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

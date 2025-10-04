@@ -8,14 +8,14 @@ import { ConfirmarEmail } from '../models/confirmar-email';
 import { EnviarDefinirSenha } from '../models/enviar-definir-senha';
 import { DefinirSenha } from '../models/definir-senha';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
+import moment from 'moment';
 
 @Injectable()
 export class IdentidadeService extends BaseService {
 
-  
-  login(login: Login): Observable<Login> {
+  login(login: Login): Observable<any> {
     return this.httpClient
-      .post(`${this.apiUrl}/login`, login, { headers: super.ObterHeaderJson() })
+      .post(`${this.apiUrl}/identidade/login`, login, { headers: super.ObterHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(super.serviceError));
@@ -23,7 +23,7 @@ export class IdentidadeService extends BaseService {
 
   enviarConfirmarEmail(enviarConfirmarEmail: EnviarConfirmarEmail): Observable<EnviarConfirmarEmail> {
     return this.httpClient
-      .post(`${this.apiUrl}/enviar-confirmar-email`, enviarConfirmarEmail, { headers: this.ObterAuthHeaderJson() })
+      .post(`${this.apiUrl}/identidade/enviar-confirmar-email`, enviarConfirmarEmail, { headers: this.ObterAuthHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(super.serviceError));
@@ -31,7 +31,7 @@ export class IdentidadeService extends BaseService {
 
   confirmarEmail(confirmarEmail: ConfirmarEmail): Observable<ConfirmarEmail> {
     return this.httpClient
-      .post(`${this.apiUrl}/confirmar-email`, confirmarEmail, { headers: this.ObterHeaderJson() })
+      .post(`${this.apiUrl}/identidade/confirmar-email`, confirmarEmail, { headers: this.ObterHeaderJson() })
       .pipe(
         map(this.extractData),
         catchError(this.serviceError));
@@ -39,7 +39,7 @@ export class IdentidadeService extends BaseService {
 
   enviarDefinirSenha(enviarDefinirSenha: EnviarDefinirSenha): Observable<EnviarDefinirSenha> {
     return this.httpClient
-      .post(`${this.apiUrl}/enviar-definir-senha`, enviarDefinirSenha, { headers: this.ObterAuthHeaderJson() })
+      .post(`${this.apiUrl}/identidade/enviar-definir-senha`, enviarDefinirSenha, { headers: this.ObterAuthHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(this.serviceError));
@@ -47,7 +47,7 @@ export class IdentidadeService extends BaseService {
 
   definirSenha(definirSenha: DefinirSenha): Observable<DefinirSenha> {
     return this.httpClient
-      .post(`${this.apiUrl}/definir-senha`, definirSenha, { headers: this.ObterHeaderJson() })
+      .post(`${this.apiUrl}/identidade/definir-senha`, definirSenha, { headers: this.ObterHeaderJson() })
       .pipe(
         map(this.extractData),
         catchError(this.serviceError));
@@ -57,7 +57,7 @@ export class IdentidadeService extends BaseService {
     let refreshToken = `\"${LocalStorageUtils.obterRefreshToken()}\"`;
 
     return this.httpClient
-      .post(`${this.apiUrl}/refresh-token`, refreshToken, { headers: this.ObterHeaderJson() })
+      .post(`${this.apiUrl}/identidade/refresh-token`, refreshToken, { headers: this.ObterHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(super.serviceError));

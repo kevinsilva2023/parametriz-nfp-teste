@@ -408,7 +408,13 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
+            if (user == null)
+            {
+                NotificarErro("Falha ao realizar o login");
+                return CustomResponse(model);
+            }
+
+            if (!await _userManager.IsEmailConfirmedAsync(user))
             {
                 NotificarErro("Verifique sua conta de e-mail e confirme seu cadastro, após a confirmação seu login será liberado.");
                 return CustomResponse(model);

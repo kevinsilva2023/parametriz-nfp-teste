@@ -1,9 +1,4 @@
-export class EnviarConfirmarEmail {
+export interface EnviarConfirmarEmail {
     usuarioId: string;
     definirSenha: boolean;
-
-    constructor(usuarioId: string, definirSenha: boolean) {
-        this.usuarioId = usuarioId;
-        this.definirSenha = definirSenha;
-    }
 }

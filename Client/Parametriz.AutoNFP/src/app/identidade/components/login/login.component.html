@@ -8,7 +8,7 @@
     <div class="d-flex flex-column gap-4 mb-5">
       <h1 class="fs-1 text-primary fw-bolder text-center">Login</h1>
 
-      <form class="d-flex flex-column" [formGroup]="loginForm">
+      <form class="d-flex flex-column" (ngSubmit)="efetuarLogin()" [formGroup]="loginForm">
         <mat-form-field appearance="outline">
           <mat-label>
             <i class="fa-solid fa-envelope"></i>
@@ -34,7 +34,7 @@
           <a routerLink="/esqueceu-a-senha" class="esqueceu-senha fs-small">Esqueceu a senha?</a>
         </div>
   
-        <button class="btn btn-primary rounded-5 p-3 mt-4 mb-2">
+        <button type="submit" class="btn btn-primary rounded-5 p-3 mt-4 mb-2">
           Entrar
         </button>
   

@@ -30,6 +30,6 @@ export class GenericFormValidator {
                 }
             }
         }
-        return messages;
+        return displayMessages;
     }
 }
