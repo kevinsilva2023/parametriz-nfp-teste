@@ -1,17 +1,16 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Security.Jwt.Core.Interfaces;
 using NuGet.Packaging;
 using Parametriz.AutoNFP.Api.Configs;
-using Parametriz.AutoNFP.Api.Data.Context;
-using Parametriz.AutoNFP.Api.Data.User;
+using Parametriz.AutoNFP.Api.Data;
+using Parametriz.AutoNFP.Api.Models;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
 {
@@ -20,17 +19,17 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IJwtService _jwksService;
         private readonly AppJwtConfig _appJwtConfig;
-        //private readonly RefreshTokenSettings _refreshTokenSettings;
-        //private readonly AutoNfpIdentityDbContext _contex;
+        private readonly AutoNfpIdentityDbContext _context;
 
         private IdentityUser _user;
         private ICollection<Claim> _userClaims;
         private ICollection<Claim> _jwtClaims;
         private ClaimsIdentity _identityClaims;
 
-        public JwtTokenService(UserManager<IdentityUser> userManager, 
+        public JwtTokenService(UserManager<IdentityUser> userManager,
                                IJwtService jwksService,
-                               IOptions<AppJwtConfig> options)
+                               IOptions<AppJwtConfig> options,
+                               AutoNfpIdentityDbContext contex)
         {
             _userManager = userManager;
             _jwksService = jwksService;
@@ -39,6 +38,7 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             _userClaims = [];
             _jwtClaims = [];
             _identityClaims = new ClaimsIdentity();
+            _context = contex;
         }
 
         private static long ToUnixEpochDate(DateTime date) => 
@@ -51,7 +51,7 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             await IncluirClaimsUsuario();
             IncluirJwtClaims();
 
-            return GerarLoginResponse(instituicaoId);
+            return await GerarLoginResponse(instituicaoId);
         }
 
         private async Task IncluirRolesUsuario()
@@ -82,7 +82,7 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             _identityClaims.AddClaims(_jwtClaims);
         }
 
-        private LoginResponseViewModel GerarLoginResponse(Guid instituicaoId)
+        private async Task<LoginResponseViewModel> GerarLoginResponse(Guid instituicaoId)
         {
             return new LoginResponseViewModel
             {
@@ -94,7 +94,8 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
                     Email = _user.Email,
                     InstituicaoId = instituicaoId,
                     Claims = _userClaims.Select(c => new TokenUsuarioClaimViewModel { Type = c.Type, Value = c.Value }).ToList()
-                }
+                },
+                RefreshToken = await GerarRefreshToken(instituicaoId)
             };
         }
 
@@ -114,6 +115,32 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             });
 
             return tokenHandler.WriteToken(token);
+        }
+
+        private async Task<Guid> GerarRefreshToken(Guid instituicaoId)
+        {
+            var refreshToken = new RefreshToken
+            {
+                InstituicaoId = instituicaoId,
+                UserName = _user.Email,
+                ExpirationDate = DateTime.UtcNow.AddHours(_appJwtConfig.RefreshTokenExpiration)
+            };
+
+            _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(u => u.UserName == _user.Email));
+            await _context.RefreshTokens.AddAsync(refreshToken);
+
+            await _context.SaveChangesAsync();
+
+            return refreshToken.Token;
+        }
+
+        public async Task<RefreshToken> ObterRefreshToken(Guid refreshToken)
+        {
+            var token = await _context.RefreshTokens
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Token == refreshToken);
+
+            return token != null && token.ExpirationDate.ToLocalTime() > DateTime.Now ? token : null;
         }
     }
 }

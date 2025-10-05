@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Security.Jwt.Core.Interfaces;
 using NetDevPack.Security.Jwt.Core.Jwa;
+using NetDevPack.Security.JwtExtensions;
 using NetDevPack.Security.PasswordHasher.Core;
 using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
-using Parametriz.AutoNFP.Api.Data.Context;
-using Parametriz.AutoNFP.Api.Data.User;
+using Parametriz.AutoNFP.Api.Data;
 using Parametriz.AutoNFP.Api.Extensions.Identity;
+using Parametriz.AutoNFP.Api.Models.User;
 using System.Text;
 
 namespace Parametriz.AutoNFP.Api.Configs
@@ -42,6 +43,7 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             builder.Services
                 .AddJwksManager()
+                .UseJwtValidation()
                 .PersistKeysToDatabaseStore<AutoNfpIdentityDbContext>();
 
             builder.Services
@@ -73,12 +75,10 @@ namespace Parametriz.AutoNFP.Api.Configs
             var appSettingsSection = builder.Configuration.GetSection("AppJwtConfig");
             builder.Services.Configure<AppJwtConfig>(appSettingsSection);
 
-            var appSettings = appSettingsSection.Get<AppJwtConfig>();
-            //var key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
+            var appJwtConfig = appSettingsSection.Get<AppJwtConfig>();
 
-            var serviceProvider = builder.Services.BuildServiceProvider();
-            var jwtService = serviceProvider.GetRequiredService<IJwtService>();
-            var key = jwtService.GetCurrentSigningCredentials();
+            // Caso seja necessário implementar JWKS
+            //var appConfig = builder.Configuration.GetSection("AppConfig").Get<AppConfig>();
 
             builder.Services.AddAuthentication(
                 p =>
@@ -88,17 +88,18 @@ namespace Parametriz.AutoNFP.Api.Configs
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.RequireHttpsMetadata = false;
+                    options.RequireHttpsMetadata = true;
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = key.Result.Key,
                         ValidateIssuer = true,
                         ValidateAudience = true,
-                        ValidAudience = appSettings.Audience,
-                        ValidIssuer = appSettings.Issuer
+                        ValidAudience = appJwtConfig.Audience,
+                        ValidIssuer = appJwtConfig.Issuer
                     };
+                    // Caso seja necessário implementar JWKS
+                    //options.SetJwksOptions(new JwkOptions(appConfig.AutenticacaoJwksUrl));
                 });
 
             return builder;

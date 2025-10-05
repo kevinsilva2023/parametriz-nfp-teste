@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Parametriz.AutoNFP.Api.Data.Context;
+using Parametriz.AutoNFP.Api.Data;
 using Parametriz.AutoNFP.Data.Context;
 
 namespace Parametriz.AutoNFP.Api.Configs

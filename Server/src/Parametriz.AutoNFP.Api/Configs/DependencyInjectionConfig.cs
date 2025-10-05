@@ -2,7 +2,6 @@
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
-using Parametriz.AutoNFP.Api.Data.User;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository;
 using Parametriz.AutoNFP.Data.Uow;

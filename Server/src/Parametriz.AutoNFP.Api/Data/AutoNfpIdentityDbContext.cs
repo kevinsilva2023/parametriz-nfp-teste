@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Security.Jwt.Core.Model;
 using NetDevPack.Security.Jwt.Store.EntityFrameworkCore;
+using Parametriz.AutoNFP.Api.Models;
 
-namespace Parametriz.AutoNFP.Api.Data.Context
+namespace Parametriz.AutoNFP.Api.Data
 {
     public class AutoNfpIdentityDbContext : IdentityDbContext, ISecurityKeyContext
     {
@@ -12,6 +13,7 @@ namespace Parametriz.AutoNFP.Api.Data.Context
         {
         }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<KeyMaterial> SecurityKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

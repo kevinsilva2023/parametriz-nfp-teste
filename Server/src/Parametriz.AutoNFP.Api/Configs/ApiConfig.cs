@@ -68,7 +68,8 @@ namespace Parametriz.AutoNFP.Api.Configs
             app.UseAuthorization();
             app.MapControllers();
 
-            app.UseJwksDiscovery();
+            // Caso seja necessário implementar JWKS
+            //app.UseJwksDiscovery();
 
             return app;
         }

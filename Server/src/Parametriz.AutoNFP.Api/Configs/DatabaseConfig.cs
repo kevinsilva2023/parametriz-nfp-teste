@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Parametriz.AutoNFP.Api.Data.Context;
 using Parametriz.AutoNFP.Data.Context;
-using System.Configuration;
 
 namespace Parametriz.AutoNFP.Api.Configs
 {

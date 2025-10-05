@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Parametriz.AutoNFP.Api.Data.Context;
+using Parametriz.AutoNFP.Api.Data;
+
 
 #nullable disable
 

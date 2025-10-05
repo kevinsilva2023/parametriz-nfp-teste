@@ -8,7 +8,7 @@ using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
 using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
 using Parametriz.AutoNFP.Api.Configs;
-using Parametriz.AutoNFP.Api.Data.User;
+using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Instituicoes;
@@ -439,33 +439,25 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return CustomResponse(model);
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        public async Task<IActionResult> RefreshToken([FromBody] Guid refreshToken)
         {
-            if (string.IsNullOrEmpty(refreshToken))
+            if (refreshToken == Guid.Empty)
             {
                 NotificarErro("Refresh Token inválido.");
                 return CustomResponse();
             }
 
-            //var token = await _jwtBuilder.ValidateRefreshToken(refreshToken);
+            var token = await _jwtTokenService.ObterRefreshToken(refreshToken);
 
-            //if (!token.IsValid)
-            //{
-            //    NotificarErro("Refresh Token expirado");
-            //    return CustomResponse();
-            //}
+            if (token is null)
+            {
+                NotificarErro("Refresh Token expirado");
+                return CustomResponse();
+            }
 
-            //var jwt = await _jwtBuilder
-            //    .WithUserId(token.UserId)
-            //    .WithJwtClaims()
-            //    .WithUserClaims()
-            //    .WithUserRoles()
-            //    .WithRefreshToken()
-            //    .BuildUserResponse();
-
-            //return CustomResponse(jwt);
-            return await Task.FromResult(CustomResponse());
+            return CustomResponse(await _jwtTokenService.ObterLoginResponse(token.InstituicaoId, token.UserName));
         }
 
         [HttpPost("cadastrar-voluntario")]
