@@ -6,19 +6,16 @@ namespace Parametriz.AutoNFP.Api.Configs
 {
     public static class ApiConfig
     {
-        public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static WebApplicationBuilder AddApiConfiguration(this WebApplicationBuilder builder)
         {
-            services.AddDbContext<AutoNfpDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            if (builder == null) throw new ArgumentNullException(nameof(builder));
 
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            builder.Services.AddControllers();
 
-            services.Configure<SmtpConfig>(configuration.GetSection("SmtpConfig"));
-            services.Configure<UrlsConfig>(configuration.GetSection("UrlsConfig"));
+            builder.Services.Configure<SmtpConfig>(builder.Configuration.GetSection("SmtpConfig"));
+            builder.Services.Configure<UrlsConfig>(builder.Configuration.GetSection("UrlsConfig"));
 
-            services.AddControllers();
-
-            services.AddCors(options =>
+            builder.Services.AddCors(options =>
             {
                 options.AddPolicy("Development",
                     builder =>
@@ -36,14 +33,21 @@ namespace Parametriz.AutoNFP.Api.Configs
                                 .AllowCredentials()
                             .AllowAnyMethod()
                             .AllowAnyHeader());
+
+                options.AddPolicy("Total",
+                    builder =>
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
             });
 
-            services.Configure<ApiBehaviorOptions>(options =>
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            return services;
+            return builder;
         }
 
         public static IApplicationBuilder UseApiConfiguration(this WebApplication app, IWebHostEnvironment env)
@@ -60,12 +64,11 @@ namespace Parametriz.AutoNFP.Api.Configs
             if (env.IsProduction())
                 app.UseCors("Production");
 
-            app.UseRouting();
-            
             app.UseAuthentication();
             app.UseAuthorization();
+            app.MapControllers();
 
-            //app.UseJwksDiscovery();
+            app.UseJwksDiscovery();
 
             return app;
         }

@@ -6,9 +6,14 @@ namespace Parametriz.AutoNFP.Api.Configs
 {
     public static class SwaggerConfig
     {
-        public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
+        public static WebApplicationBuilder AddSwaggerConfiguration(this WebApplicationBuilder builder)
         {
-            services.AddSwaggerGen(c =>
+            if (builder == null) 
+                throw new ArgumentNullException(nameof(builder));
+
+            builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo()
                 {
@@ -42,13 +47,47 @@ namespace Parametriz.AutoNFP.Api.Configs
                     }
                 });
 
+                // ToDo: Quando a parte da autenticação estiver tudo pronto, configurar abaixo
+                // Excluding ASP.NET Identity endpoints
+                //s.DocInclusionPredicate((docName, apiDesc) =>
+                //{
+                //    var relativePath = apiDesc.RelativePath;
+
+                //    // List of avoid patches
+                //    var identityEndpoints = new[]
+                //    {
+                //        "register",
+                //        "manage",
+                //        "refresh",
+                //        "login",
+                //        "confirmEmail",
+                //        "resendConfirmationEmail",
+                //        "forgotPassword",
+                //        "resetPassword"
+                //    };
+
+                //    // Validating if the endpoint is avoided
+                //    foreach (var endpoint in identityEndpoints)
+                //    {
+                //        if (relativePath.Contains(endpoint, StringComparison.OrdinalIgnoreCase))
+                //        {
+                //            return false;
+                //        }
+                //    }
+
+                //    return true;
+                //});
+
             });
 
-            return services;
+            return builder;
         }
 
         public static IApplicationBuilder UseSwaggerConfiguration(this IApplicationBuilder app)
         {
+            if (app == null) 
+                throw new ArgumentNullException(nameof(app));
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

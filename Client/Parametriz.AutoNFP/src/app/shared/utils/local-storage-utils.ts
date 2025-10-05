@@ -1,6 +1,5 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import moment from 'moment';
-import { JwtPayloadExtension } from '../models/jwt-payload-extension';
 
 export class LocalStorageUtils {
 
@@ -19,17 +18,17 @@ export class LocalStorageUtils {
     }
 
     public static salvarUsuario(user: string) {
-        localStorage.setItem('autoNFP.user', JSON.stringify(user));
+        localStorage.setItem('autoNFP.userToken', JSON.stringify(user));
     }
 
     public static limparDadosLocaisUsuario() {
         localStorage.removeItem('autoNFP.accessToken');
         localStorage.removeItem('autoNFP.refreshToken');
-        localStorage.removeItem('autoNFP.user');
+        localStorage.removeItem('autoNFP.userToken');
     }
 
     public static obterUsuario() {
-        return JSON.parse(localStorage.getItem('autoNFP.user')?.toString() ?? '');
+        return JSON.parse(localStorage.getItem('autoNFP.userToken')?.toString() ?? '');
     }
 
     public static obterAccessToken(): string {
@@ -91,16 +90,8 @@ export class LocalStorageUtils {
     }
 
     public static obterInstituicaoId(): string {
-        const accessToken = this.obterAccessToken();
+        const userToken = this.obterUsuario();
 
-        if (!accessToken)
-            return '';
-
-        const payload = <JwtPayloadExtension>jwtDecode(accessToken);
-
-        if (!payload)
-            return '';
-
-        return payload?.instituicaoId ?? '';
+        return userToken?.instituicaoId ?? '';
     }
 }

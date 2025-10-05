@@ -6,8 +6,8 @@ using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 
 namespace Parametriz.AutoNFP.Api.Controllers
 {
-    [ApiController]
     [Authorize]
+    [ApiController]
     public abstract class MainController : Controller
     {
         private readonly Notificador _notificador;

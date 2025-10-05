@@ -11,7 +11,7 @@ using Parametriz.AutoNFP.Api.Data.Context;
 
 namespace Parametriz.AutoNFP.Api.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AutoNfpIdentityDbContext))]
     [Migration("20250928022556_Initial")]
     partial class Initial
     {

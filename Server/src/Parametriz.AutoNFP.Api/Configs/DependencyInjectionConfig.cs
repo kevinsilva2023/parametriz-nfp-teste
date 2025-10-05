@@ -15,26 +15,25 @@ namespace Parametriz.AutoNFP.Api.Configs
 {
     public static class DependencyInjectionConfig
     {
-        public static IServiceCollection RegistrarServices(this IServiceCollection services, IConfiguration configuration)
+        public static WebApplicationBuilder AddDependencyInjectionConfiguration(this WebApplicationBuilder builder)
         {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            if (builder == null) 
+                throw new ArgumentNullException(nameof(builder));
 
-            services.AddScoped<IAspNetUser, AspNetUser>();
-            services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
+            builder.Services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
+            builder.Services.AddScoped<IInstituicaoService, InstituicaoService>();
 
-            services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
-            services.AddScoped<IInstituicaoService, InstituicaoService>();
+            builder.Services.AddScoped<IVoluntarioRepository, VoluntarioRepository>();
+            builder.Services.AddScoped<IVoluntarioService, VoluntarioService>();
 
-            services.AddScoped<IVoluntarioRepository, VoluntarioRepository>();
-            services.AddScoped<IVoluntarioService, VoluntarioService>();
+            builder.Services.AddScoped<Notificador>();
 
-            services.AddScoped<Notificador>();
-
-            services.AddScoped<AutoNfpDbContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<AutoNfpDbContext>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             
-            return services;
+            return builder;
         }
     }
 }

@@ -10,7 +10,7 @@ using Parametriz.AutoNFP.Api.Data.Context;
 
 namespace Parametriz.AutoNFP.Api.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AutoNfpIdentityDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

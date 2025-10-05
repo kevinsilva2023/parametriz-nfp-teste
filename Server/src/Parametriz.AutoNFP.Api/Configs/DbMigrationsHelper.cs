@@ -19,7 +19,7 @@ namespace Parametriz.AutoNFP.Api.Configs
 
         public static async Task EnsureSeedDataApplicationDbContext(IServiceScope scope, IWebHostEnvironment env)
         {
-            var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var applicationDbContext = scope.ServiceProvider.GetRequiredService<AutoNfpIdentityDbContext>();
 
             await DbHealthChecker.TestConnection(applicationDbContext);
 
