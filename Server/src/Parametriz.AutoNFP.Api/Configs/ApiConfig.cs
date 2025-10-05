@@ -62,9 +62,10 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             app.UseRouting();
             
-            app.UseAuthConfiguration();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseJwksDiscovery();
+            //app.UseJwksDiscovery();
 
             return app;
         }

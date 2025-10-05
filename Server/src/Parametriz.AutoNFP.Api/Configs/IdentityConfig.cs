@@ -21,7 +21,7 @@ namespace Parametriz.AutoNFP.Api.Configs
                 .AddDataProtection();
 
             services.AddJwtConfiguration(configuration, "AppSettings")
-                .AddNetDevPackIdentity<IdentityUser>()
+                .AddNetDevPackIdentity<IdentityUser>()                
                 .PersistKeysToDatabaseStore<ApplicationDbContext>();
 
             services.AddIdentity<IdentityUser, IdentityRole>(o =>

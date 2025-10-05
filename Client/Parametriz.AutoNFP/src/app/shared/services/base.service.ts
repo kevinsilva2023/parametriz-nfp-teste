@@ -10,8 +10,8 @@ import { environment } from 'src/environments/environment';
 
 export abstract class BaseService {
 
-  protected apiUrl: string = environment.apiUrl;
-  protected httpClient: HttpClient = inject(HttpClient);
+  protected apiUrl = environment.apiUrl;
+  protected httpClient = inject(HttpClient);
   
   protected ObterHeaderJson(): HttpHeaders {
     return new HttpHeaders({

@@ -39,6 +39,8 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
         }
       };
 
+      LocalStorageUtils.limparDadosLocaisUsuario();
+      
       this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
 
       super.configurarMensagensValidacaoBase(this.validationMessages);

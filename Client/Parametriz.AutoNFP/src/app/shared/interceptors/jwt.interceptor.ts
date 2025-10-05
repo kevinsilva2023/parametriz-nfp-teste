@@ -1,63 +1,54 @@
-import { HttpClient, HttpEvent, HttpHandler, HttpHandlerFn, HttpInterceptor, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
-import { BehaviorSubject, filter, Observable, Subject, switchMap, take } from 'rxjs';
+import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { LocalStorageUtils } from '../utils/local-storage-utils';
-import { Injectable } from '@angular/core';
+import { JwtSupport } from './jwt-support';
+import { inject } from '@angular/core';
 import { IdentidadeService } from 'src/app/identidade/services/identidade.service';
+import { filter, switchMap, take } from 'rxjs';
+import { AutorizacaoService } from '../services/autorizacao.service';
 
-@Injectable()
-export class JwtInterceptor implements HttpInterceptor {
+export const jwtInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<any>, 
+  next: HttpHandlerFn) => {
   
-  private refreshTokenInProgress = false;
-  private refreshTokenSubject: Subject<any> = new BehaviorSubject<any>(null);
+    let identidadeService = inject(IdentidadeService);
+    let autorizacaoService = inject(AutorizacaoService);
 
-  constructor(private identidadeService: IdentidadeService) {}
-  
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
-    if (req.url.startsWith(`${environment.apiUrl}/refresh-token`))
-      return next.handle(req);
+    if (!autorizacaoService.usuarioEstaLogado())
+      return next(req);
+
+    // if (req.url.startsWith(`${environment.apiUrl}/refresh-token`))
+    //   return next(req);
 
     const accessTokenExpirado = LocalStorageUtils.accessTokenEstaExpirado();
     const refreshTokenExpirado = LocalStorageUtils.refreshTokenEstaExpirado();
 
     if (!accessTokenExpirado)
-      return next.handle(this.injectAccessToken(req));
+      return next(JwtSupport.injectAccessToken(req));
 
     if (refreshTokenExpirado)
-      return next.handle(req);
+      return next(req);
 
-    if (!this.refreshTokenInProgress) {
-      this.refreshTokenInProgress = true;
-      this.refreshTokenSubject.next(null);
-      return this.identidadeService.utilizarRefreshToken()
+    if (!JwtSupport.refreshTokenInProgress) {
+      JwtSupport.refreshTokenInProgress = true;
+      JwtSupport.refreshTokenSubject.next(null);
+      return identidadeService.utilizarRefreshToken()
         .pipe(
           switchMap((response) => {
             LocalStorageUtils.salvarDadosLocaisUsuario(response);
-            this.refreshTokenInProgress = false;
-            this.refreshTokenSubject.next(response.refreshToken);
-            return next.handle(this.injectAccessToken(req));
-          }),
+            JwtSupport.refreshTokenInProgress = false;
+            JwtSupport.refreshTokenSubject.next(response.refreshToken);
+            return next(JwtSupport.injectAccessToken(req));
+          })
         );
     } else {
-      return this.refreshTokenSubject
+      return JwtSupport.refreshTokenSubject
         .pipe(
           filter(result => result !== null),
           take(1),
           switchMap((res) => {
-            return next.handle(this.injectAccessToken(req))
+            return next(JwtSupport.injectAccessToken(req))
           })
         );
     }
-  }
-
-  injectAccessToken(request: HttpRequest<any>) {
-    const accessToken = LocalStorageUtils.obterAccessToken();
-    return request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    });
-  }
-    
-}
+};

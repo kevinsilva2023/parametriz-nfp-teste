@@ -11,11 +11,9 @@ export class AutorizacaoService {
    usuarioEstaLogado(): boolean {
     const accessTokenEstaExpirado = LocalStorageUtils.accessTokenEstaExpirado();
 
-    if (accessTokenEstaExpirado) {
-      LocalStorageUtils.limparDadosLocaisUsuario();
+    if (accessTokenEstaExpirado)
       return false;
-    }
-
+    
     return true;
   }
 
