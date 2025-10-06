@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Security.Claims;
 
-namespace Parametriz.AutoNFP.Api.Data.User
+namespace Parametriz.AutoNFP.Api.Models.User
 {
     public class AspNetUser : IAspNetUser
     {

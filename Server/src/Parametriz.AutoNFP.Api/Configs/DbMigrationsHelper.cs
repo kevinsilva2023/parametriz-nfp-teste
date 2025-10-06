@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Parametriz.AutoNFP.Api.Data.Context;
+using Parametriz.AutoNFP.Api.Data;
 using Parametriz.AutoNFP.Data.Context;
 
 namespace Parametriz.AutoNFP.Api.Configs
@@ -19,7 +19,7 @@ namespace Parametriz.AutoNFP.Api.Configs
 
         public static async Task EnsureSeedDataApplicationDbContext(IServiceScope scope, IWebHostEnvironment env)
         {
-            var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var applicationDbContext = scope.ServiceProvider.GetRequiredService<AutoNfpIdentityDbContext>();
 
             await DbHealthChecker.TestConnection(applicationDbContext);
 

@@ -1,4 +1,4 @@
-﻿using Parametriz.AutoNFP.Api.Data.User;
+﻿using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;

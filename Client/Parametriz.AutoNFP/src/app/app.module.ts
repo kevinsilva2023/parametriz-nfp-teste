@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
@@ -21,8 +21,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule  } from '@angular/forms';
 
-import { FundoAnimadoComponent } from "src/app/shared/fundo-animado/fundo-animado.component";
-
+import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
+import { errorInterceptor } from './shared/interceptors/error.interceptor';
+import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
+import { IdentidadeService } from './identidade/services/identidade.service';
+import { AutorizacaoService } from './shared/services/autorizacao.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,6 @@ import { FundoAnimadoComponent } from "src/app/shared/fundo-animado/fundo-animad
     EsqueceuASenhaComponent,
     DefinirNovaSenhaComponent,
     EmailConfirmadoComponent
-
   ],
   imports: [
     BrowserModule,
@@ -48,7 +50,13 @@ import { FundoAnimadoComponent } from "src/app/shared/fundo-animado/fundo-animad
     FundoAnimadoComponent
 ],
   providers: [
-    provideHttpClient(),
+    IdentidadeService,
+    AutorizacaoService,
+    provideHttpClient(
+      withInterceptors([
+        errorInterceptor,
+        jwtInterceptor
+      ])),
   ],
   bootstrap: [AppComponent]
 })

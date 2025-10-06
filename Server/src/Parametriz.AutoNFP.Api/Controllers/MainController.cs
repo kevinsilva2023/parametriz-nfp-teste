@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Parametriz.AutoNFP.Api.Data.User;
+using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 
 namespace Parametriz.AutoNFP.Api.Controllers
 {
-    [ApiController]
     [Authorize]
+    [ApiController]
     public abstract class MainController : Controller
     {
         private readonly Notificador _notificador;

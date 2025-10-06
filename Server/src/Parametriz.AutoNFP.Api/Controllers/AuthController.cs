@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using NetDevPack.Identity.Interfaces;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
+using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
 using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
 using Parametriz.AutoNFP.Api.Configs;
-using Parametriz.AutoNFP.Api.Data.User;
+using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Instituicoes;
@@ -22,7 +22,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
     [Route("api/identidade")]
     public class AuthController : MainController
     {
-        private readonly IJwtBuilder _jwtBuilder;
+        private readonly IJwtTokenService _jwtTokenService;
         private readonly IInstituicaoRepository _instituicaoRepository;
         private readonly IVoluntarioRepository _voluntarioRepository;
         private readonly IInstituicaoService _instituicaoService;
@@ -34,7 +34,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
         public AuthController(Notificador notificador,
                               IAspNetUser user,
-                              IJwtBuilder jwtBuilder,
+                              IJwtTokenService jwtTokenService,
                               IInstituicaoService instituicaoService,
                               IEmailService emailService,
                               SignInManager<IdentityUser> signInManager,
@@ -45,7 +45,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                               IVoluntarioService voluntarioService)
             : base(notificador, user)
         {
-            _jwtBuilder = jwtBuilder;
+            _jwtTokenService = jwtTokenService;
             _instituicaoService = instituicaoService;
             _emailService = emailService;
             _signInManager = signInManager;
@@ -54,6 +54,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             _instituicaoRepository = instituicaoRepository;
             _voluntarioRepository = voluntarioRepository;
             _voluntarioService = voluntarioService;
+            _jwtTokenService = jwtTokenService;
         }
 
         [AllowAnonymous]
@@ -76,7 +77,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     return CustomResponse(cadastrarInstituicaoViewModel);
                 }
 
-                await IncluirClaimInstituicaoId(user);
+                //await IncluirClaimInstituicaoId(user);
 
                 await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome);
             }
@@ -86,13 +87,13 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return CustomResponse(cadastrarInstituicaoViewModel);
         }
 
-        private async Task IncluirClaimInstituicaoId(IdentityUser user)
-        {
-            var instituicaoId = InstituicaoId != Guid.Empty ? 
-                InstituicaoId : await _instituicaoRepository.ObterIdPorVoluntarioId(Guid.Parse(user.Id));
+        //private async Task IncluirClaimInstituicaoId(IdentityUser user)
+        //{
+        //    var instituicaoId = InstituicaoId != Guid.Empty ? 
+        //        InstituicaoId : await _instituicaoRepository.ObterIdPorVoluntarioId(Guid.Parse(user.Id));
 
-            await _userManager.AddClaimAsync(user, new Claim("instituicaoId", instituicaoId.ToString()));
-        }
+        //    await _userManager.AddClaimAsync(user, new Claim("instituicaoId", instituicaoId.ToString()));
+        //}
 
         private async Task EnviarLinkConfirmarEmail(IdentityUser user, string voluntarioNome, bool definirSenha = false)
         {
@@ -385,15 +386,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
             var result = await _userManager.ResetPasswordAsync(user, code, model.Senha);
             if (result.Succeeded)
-            {
-                return CustomResponse(await _jwtBuilder
-                    .WithEmail(user.Email)
-                    .WithJwtClaims()
-                    .WithUserClaims()
-                    .WithUserRoles()
-                    .WithRefreshToken()
-                    .BuildUserResponse());
-            }
+                return CustomResponse(await _jwtTokenService.ObterLoginResponse(instituicao.Id, user.Email));
 
             AdicionarErrosIdentity(result);
             return CustomResponse();
@@ -408,7 +401,13 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
+            if (user == null)
+            {
+                NotificarErro("Falha ao realizar o login");
+                return CustomResponse(model);
+            }
+
+            if (!await _userManager.IsEmailConfirmedAsync(user))
             {
                 NotificarErro("Verifique sua conta de e-mail e confirme seu cadastro, após a confirmação seu login será liberado.");
                 return CustomResponse(model);
@@ -433,48 +432,34 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     return CustomResponse(model);
                 }
 
-                return CustomResponse(await _jwtBuilder
-                    .WithEmail(user.Email)
-                    .WithJwtClaims()
-                    .WithUserClaims()
-                    .WithUserRoles()
-                    .WithRefreshToken()
-                    .BuildUserResponse());
+                return CustomResponse(await _jwtTokenService.ObterLoginResponse(instituicao.Id, user.Email));
             }
 
             NotificarErro("Falha ao realizar o login");
             return CustomResponse(model);
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        public async Task<IActionResult> RefreshToken([FromBody] Guid refreshToken)
         {
-            if (string.IsNullOrEmpty(refreshToken))
+            if (refreshToken == Guid.Empty)
             {
                 NotificarErro("Refresh Token inválido.");
                 return CustomResponse();
             }
 
-            var token = await _jwtBuilder.ValidateRefreshToken(refreshToken);
+            var token = await _jwtTokenService.ObterRefreshToken(refreshToken);
 
-            if (!token.IsValid)
+            if (token is null)
             {
                 NotificarErro("Refresh Token expirado");
                 return CustomResponse();
             }
 
-            var jwt = await _jwtBuilder
-                .WithUserId(token.UserId)
-                .WithJwtClaims()
-                .WithUserClaims()
-                .WithUserRoles()
-                .WithRefreshToken()
-                .BuildUserResponse();
-
-            return CustomResponse(jwt);
+            return CustomResponse(await _jwtTokenService.ObterLoginResponse(token.InstituicaoId, token.UserName));
         }
 
-        
         [HttpPost("cadastrar-voluntario")]
         public async Task<IActionResult> Post([FromBody] CadastrarVoluntarioViewModel cadastrarVoluntarioViewModel)
         {
@@ -492,7 +477,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     return CustomResponse(cadastrarVoluntarioViewModel);
                 }
 
-                await IncluirClaimInstituicaoId(user);
+                //await IncluirClaimInstituicaoId(user);
 
                 await EnviarLinkConfirmarEmail(user, cadastrarVoluntarioViewModel.Nome.Trim().ToUpper(), definirSenha: true);
                 return CustomResponse(cadastrarVoluntarioViewModel);

@@ -20,7 +20,9 @@ const routes: Routes = [
   { path: 'esqueceu-a-senha', component: EsqueceuASenhaComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registrar', component: RegistrarComponent },
-
+  // { paht: 'acesso-negado', component: AccessDeniedComponent },
+  // { path: 'nao-encontrado': component: NotFoundComponent },
+  // { path: '**', component: NotFoundComponent }
 ]
 
 @NgModule({
