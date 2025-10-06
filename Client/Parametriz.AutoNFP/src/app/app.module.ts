@@ -22,6 +22,9 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
+import { NaoEncontradoComponent } from './shared/components/nao-encontrado/nao-encontrado.component';
+import { AcessoNegadoComponent } from './shared/components/acesso-negado/acesso-negado.component';
+
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { IdentidadeService } from './identidade/services/identidade.service';
@@ -35,7 +38,10 @@ import { AutorizacaoService } from './shared/services/autorizacao.service';
     ConfirmarEmailComponent,
     EsqueceuASenhaComponent,
     DefinirSenhaComponent,
-    EmailConfirmadoComponent
+    EmailConfirmadoComponent,
+    FundoAnimadoComponent,
+    NaoEncontradoComponent,
+    AcessoNegadoComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +53,6 @@ import { AutorizacaoService } from './shared/services/autorizacao.service';
     MatCheckboxModule,
     MatCardModule,
     MatSelectModule,
-    FundoAnimadoComponent
   ],
   providers: [
     IdentidadeService,

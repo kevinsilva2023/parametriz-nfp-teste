@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'app-definir-senha',
   standalone: false,
   templateUrl: './definir-senha.component.html',
-  styleUrl: './definir-senha.component.scss'
 })
 export class DefinirSenhaComponent implements OnInit {
   definirSenhaForm!: FormGroup;

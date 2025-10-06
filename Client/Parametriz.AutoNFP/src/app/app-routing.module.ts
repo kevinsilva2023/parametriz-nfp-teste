@@ -8,6 +8,8 @@ import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senh
 import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
 import { DefinirSenhaComponent } from './identidade/components/definir-senha/definir-senha.component';
 import { EmailConfirmadoComponent } from './identidade/components/email-confirmado/email-confirmado.component';
+import { AcessoNegadoComponent } from './shared/components/acesso-negado/acesso-negado.component';
+import { NaoEncontradoComponent } from './shared/components/nao-encontrado/nao-encontrado.component';
 
 const routes: Routes = [
   {
@@ -15,14 +17,15 @@ const routes: Routes = [
     component: RegistrarComponent
   },
   { path: 'confirmar-email', component: ConfirmarEmailComponent },
-  { path: 'definir-nova-senha', component: DefinirSenhaComponent },
+  { path: 'definir-senha', component: DefinirSenhaComponent },
   { path: 'email-confirmado', component: EmailConfirmadoComponent },
   { path: 'esqueceu-a-senha', component: EsqueceuASenhaComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registrar', component: RegistrarComponent },
-  // { paht: 'acesso-negado', component: AccessDeniedComponent },
-  // { path: 'nao-encontrado': component: NotFoundComponent },
-  // { path: '**', component: NotFoundComponent }
+  { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule) },
+  { path: 'acesso-negado', component: AcessoNegadoComponent },
+  { path: 'nao-encontrado', component: NaoEncontradoComponent },
+  { path: '**', component: NaoEncontradoComponent }
 ]
 
 @NgModule({

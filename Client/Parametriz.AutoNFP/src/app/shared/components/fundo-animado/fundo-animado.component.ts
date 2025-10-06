@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-fundo-animado',
-  imports: [],
+  standalone: false,
   templateUrl: './fundo-animado.component.html',
 })
 export class FundoAnimadoComponent {
