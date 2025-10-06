@@ -8,15 +8,28 @@
     <div class="d-flex flex-column gap-4 mb-5">
       <h1 class="fs-1 text-primary fw-bolder text-center">Login</h1>
 
+      <!-- Exemplo exibir erros no retorno da API (Arruma isso pelo amor de Deus!!! kkkkkkk) -->
+      <div *ngIf="errors.length > 0">
+        <p *ngFor="let error of errors">{{ error }}</p>
+      </div>
+
+
       <form class="d-flex flex-column" (ngSubmit)="efetuarLogin()" [formGroup]="loginForm">
-        <mat-form-field appearance="outline">
-          <mat-label>
-            <i class="fa-solid fa-envelope"></i>
-            &nbsp;E-mail
-          </mat-label>
-          <input matInput formControlName="email" type="email" placeholder="seu@email.com">
-        </mat-form-field>
-  
+        
+        <!-- Exemplo exibir errors de validação (Arruma isso pelo amor de Deus!!! kkkkkkk) -->
+        <div class="row" [ngClass]="{'has-error': displayMessage['email']}">
+          <mat-form-field appearance="outline">
+            <mat-label>
+              <i class="fa-solid fa-envelope"></i>
+              &nbsp;E-mail
+            </mat-label>
+            <input matInput formControlName="email" type="email" placeholder="seu@email.com">
+          </mat-form-field>
+          <span *ngIf="displayMessage['email']">
+            <p [innerHtml]="displayMessage['email']"></p>
+          </span>
+        </div>
+
         <mat-form-field appearance="outline">
           <mat-label>
             <i class="fa-solid fa-lock"></i>
