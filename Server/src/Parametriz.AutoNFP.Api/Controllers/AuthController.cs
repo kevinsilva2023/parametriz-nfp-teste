@@ -77,8 +77,6 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     return CustomResponse(cadastrarInstituicaoViewModel);
                 }
 
-                //await IncluirClaimInstituicaoId(user);
-
                 await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome);
             }
 
@@ -86,14 +84,6 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
             return CustomResponse(cadastrarInstituicaoViewModel);
         }
-
-        //private async Task IncluirClaimInstituicaoId(IdentityUser user)
-        //{
-        //    var instituicaoId = InstituicaoId != Guid.Empty ? 
-        //        InstituicaoId : await _instituicaoRepository.ObterIdPorVoluntarioId(Guid.Parse(user.Id));
-
-        //    await _userManager.AddClaimAsync(user, new Claim("instituicaoId", instituicaoId.ToString()));
-        //}
 
         private async Task EnviarLinkConfirmarEmail(IdentityUser user, string voluntarioNome, bool definirSenha = false)
         {
@@ -138,9 +128,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 $@"<table align=""center"" width=""80%"" style=""background-color: #fffaf5; border: 2px solid #003366; max-width: 800px;"">" +
                     $@"<tr>" +
                         $@"<td style=""background-color: #003366; text-align: center; padding: 20px;"">" +
-                            $@"<a href=""https://www.parametriz.com.br"" target=""_blank"">" +
-                                $@"<img src=""cid:logoWhiteId"" width=""60%"">" +
-                            $@"</a>" +
+                            $@"<img src=""cid:logoWhiteId"" width=""60%"">" +
                         $@"</td>" +
                     $@"</tr>" +
                     $@"<tr>" +
@@ -166,9 +154,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                         $@"<td style=""background-color: #f9f9f9; text-align: center; padding: 20px; font-size: 12px; color: #777777; border-top: 1px solid #e0e0e0;"">" +
                             $@"<p style=""margin:0;"">&copy; {DateTime.Now.Year} Parametriz Soluções Tecnológicas. Todos os direitos reservados.</p>" +
                             $@"<p style=""margin: 5px 0; color: #003366;"">Política de Privacidade | Termos de Serviço</p>" +
-                            $@"<a href=""https://www.parametriz.com.br"" target=""_blank"">" +
-                                $@"<img src=""cid:logoCircleId"" width=""10%"">" +
-                            $@"</a>" +
+                            $@"<img src=""cid:logoCircleId"" width=""10%"">" +
                         $@"</td>" +
                     $@"</tr>" +
                 $@"</table>";
@@ -283,9 +269,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 $@"<table align=""center"" width=""80%"" style=""background-color: #fffaf5; border: 2px solid #003366; max-width:  800px;"">" +
                     $@"<tr>" +
                         $@"<td style=""background-color: #003366; text-align: center; padding: 20px;"">" +
-                            $@"<a href=""https://www.parametriz.com.br"" target=""_blank"">" +
-                                $@"<img src=""cid:logoWhiteId"" width=""60%"">" +
-                            $@"</a>" +
+                            $@"<img src=""cid:logoWhiteId"" width=""60%"">" +
                         $@"</td>" +
                     $@"</tr>" +
                     $@"<tr>" +
@@ -313,9 +297,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                         $@"<td style=""background-color: #f9f9f9; text-align: center; padding: 20px; font-size: 12px; color: #777777; border-top: 1px solid #e0e0e0;"">" +
                             $@"<p style=""margin: 0;"">&copy; {DateTime.Now.Year} Parametriz Soluções Tecnológicas. Todos os direitos reservados.</p>" +
                             $@"<p style=""margin: 5px 0; color: #003366;"">Política de Privacidade | Termos de Serviço</p>" +
-                            $@"<a href=""https://www.parametriz.com.br"" target=""_blank"">" +
-                                $@"<img src=""cid:logoCircleId"" width=""10%"">" +
-                            $@"</a>" +
+                            $@"<img src=""cid:logoCircleId"" width=""10%"">" +
                         $@"</td>" +
                     $@"</tr>" +
                 $@"</table>";
@@ -457,7 +439,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 return CustomResponse();
             }
 
-            return CustomResponse(await _jwtTokenService.ObterLoginResponse(token.InstituicaoId, token.UserName));
+            return CustomResponse(await _jwtTokenService.ObterLoginResponse(token.InstituicaoId, token.UserName, token));
         }
 
         [HttpPost("cadastrar-voluntario")]
@@ -476,8 +458,6 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     await _userManager.DeleteAsync(user);
                     return CustomResponse(cadastrarVoluntarioViewModel);
                 }
-
-                //await IncluirClaimInstituicaoId(user);
 
                 await EnviarLinkConfirmarEmail(user, cadastrarVoluntarioViewModel.Nome.Trim().ToUpper(), definirSenha: true);
                 return CustomResponse(cadastrarVoluntarioViewModel);

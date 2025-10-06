@@ -44,14 +44,14 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
         private static long ToUnixEpochDate(DateTime date) => 
             (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
-        public async Task<LoginResponseViewModel> ObterLoginResponse(Guid instituicaoId, string email)
+        public async Task<LoginResponseViewModel> ObterLoginResponse(Guid instituicaoId, string email, RefreshToken token = null)
         {
             _user = await _userManager.FindByEmailAsync(email);
             await IncluirRolesUsuario();
             await IncluirClaimsUsuario();
             IncluirJwtClaims();
 
-            return await GerarLoginResponse(instituicaoId);
+            return await GerarLoginResponse(instituicaoId, token);
         }
 
         private async Task IncluirRolesUsuario()
@@ -82,9 +82,9 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             _identityClaims.AddClaims(_jwtClaims);
         }
 
-        private async Task<LoginResponseViewModel> GerarLoginResponse(Guid instituicaoId)
+        private async Task<LoginResponseViewModel> GerarLoginResponse(Guid instituicaoId, RefreshToken token = null)
         {
-            var refreshToken = await GerarRefreshToken(instituicaoId);
+            var refreshToken = token ?? await GerarRefreshToken(instituicaoId);
 
             return new LoginResponseViewModel
             {
