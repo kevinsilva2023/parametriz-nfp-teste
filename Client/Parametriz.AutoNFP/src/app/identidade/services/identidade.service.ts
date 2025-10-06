@@ -54,7 +54,7 @@ export class IdentidadeService extends BaseService {
   }
 
   utilizarRefreshToken(): Observable<any> {
-    let refreshToken = `\"${LocalStorageUtils.obterRefreshToken()}\"`;
+    let refreshToken = `\"${LocalStorageUtils.obterRefreshToken()?.token}\"`;
 
     return this.httpClient
       .post(`${this.apiUrl}/identidade/refresh-token`, refreshToken, { headers: this.ObterHeaderJson() })

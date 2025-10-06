@@ -84,6 +84,8 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
 
         private async Task<LoginResponseViewModel> GerarLoginResponse(Guid instituicaoId)
         {
+            var refreshToken = await GerarRefreshToken(instituicaoId);
+
             return new LoginResponseViewModel
             {
                 AccessToken = GerarJwtToken(),
@@ -95,7 +97,11 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
                     InstituicaoId = instituicaoId,
                     Claims = _userClaims.Select(c => new TokenUsuarioClaimViewModel { Type = c.Type, Value = c.Value }).ToList()
                 },
-                RefreshToken = await GerarRefreshToken(instituicaoId)
+                RefreshToken = new RefreshTokenViewModel
+                {
+                    Token = refreshToken.Token,
+                    ExpirationDate = ToUnixEpochDate(refreshToken.ExpirationDate).ToString()
+                }
             };
         }
 
@@ -117,7 +123,7 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             return tokenHandler.WriteToken(token);
         }
 
-        private async Task<Guid> GerarRefreshToken(Guid instituicaoId)
+        private async Task<RefreshToken> GerarRefreshToken(Guid instituicaoId)
         {
             var refreshToken = new RefreshToken
             {
@@ -131,7 +137,7 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
 
             await _context.SaveChangesAsync();
 
-            return refreshToken.Token;
+            return refreshToken;
         }
 
         public async Task<RefreshToken> ObterRefreshToken(Guid refreshToken)

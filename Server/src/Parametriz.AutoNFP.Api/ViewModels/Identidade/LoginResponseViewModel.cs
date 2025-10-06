@@ -5,6 +5,6 @@
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
         public TokenUsuarioViewModel UserToken { get; set; }
-        public Guid RefreshToken { get; set; }
+        public RefreshTokenViewModel RefreshToken { get; set; }
     }
 }
