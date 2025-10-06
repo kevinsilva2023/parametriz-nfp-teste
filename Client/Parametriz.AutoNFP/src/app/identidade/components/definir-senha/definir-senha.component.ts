@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-definir-nova-senha',
+  selector: 'app-definir-senha',
   standalone: false,
-  templateUrl: './definir-nova-senha.component.html',
-  styleUrl: './definir-nova-senha.component.scss'
+  templateUrl: './definir-senha.component.html',
+  styleUrl: './definir-senha.component.scss'
 })
-export class DefinirNovaSenhaComponent implements OnInit {
+export class DefinirSenhaComponent implements OnInit {
   definirSenhaForm!: FormGroup;
 
   constructor(
@@ -20,7 +20,4 @@ export class DefinirNovaSenhaComponent implements OnInit {
       senhaConfirmacao: [null, Validators.required]    
     })
   }
-
-
-
 }

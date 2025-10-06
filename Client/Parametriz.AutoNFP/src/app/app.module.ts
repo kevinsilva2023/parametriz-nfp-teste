@@ -9,7 +9,7 @@ import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
 import { EmailConfirmadoComponent } from './identidade/components/email-confirmado/email-confirmado.component';
 import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
-import { DefinirNovaSenhaComponent } from './identidade/components/definir-nova-senha/definir-nova-senha.component';
+import { DefinirSenhaComponent } from './identidade/components/definir-senha/definir-senha.component';
 import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senha/esqueceu-a-senha.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +19,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 
 import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule  } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
@@ -34,7 +34,7 @@ import { AutorizacaoService } from './shared/services/autorizacao.service';
     LoginComponent,
     ConfirmarEmailComponent,
     EsqueceuASenhaComponent,
-    DefinirNovaSenhaComponent,
+    DefinirSenhaComponent,
     EmailConfirmadoComponent
   ],
   imports: [
@@ -48,7 +48,7 @@ import { AutorizacaoService } from './shared/services/autorizacao.service';
     MatCardModule,
     MatSelectModule,
     FundoAnimadoComponent
-],
+  ],
   providers: [
     IdentidadeService,
     AutorizacaoService,
