@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren } from '@ang
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
 import { IdentidadeService } from '../../services/identidade.service';
-import { ValidationMessages } from 'src/app/shared/generic-form-validator/validation-messages';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Login } from '../../models/login';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';

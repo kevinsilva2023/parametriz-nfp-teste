@@ -16,10 +16,9 @@
   }
 }
 
-
 .card-form {
   opacity: 0;
-  transform: translateX(-50px); // começa fora da tela à esquerda
+  transform: translateX(-50px);
   animation: slideInLeft 0.8s ease-out forwards;
 }
 
