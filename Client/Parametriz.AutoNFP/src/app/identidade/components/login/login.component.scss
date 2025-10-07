@@ -16,3 +16,20 @@
   }
 }
 
+
+.card-form {
+  opacity: 0;
+  transform: translateX(-50px); // começa fora da tela à esquerda
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

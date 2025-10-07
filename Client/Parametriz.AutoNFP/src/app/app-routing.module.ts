@@ -8,13 +8,14 @@ import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senh
 import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
 import { DefinirSenhaComponent } from './identidade/components/definir-senha/definir-senha.component';
 import { EmailConfirmadoComponent } from './identidade/components/email-confirmado/email-confirmado.component';
-import { AcessoNegadoComponent } from './shared/components/acesso-negado/acesso-negado.component';
-import { NaoEncontradoComponent } from './shared/components/nao-encontrado/nao-encontrado.component';
+import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
+import { NaoEncontradoComponent } from './components/nao-encontrado/nao-encontrado.component';
+import { autorizacaoGuard } from './shared/services/autorizacao.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: RegistrarComponent
+    component: LoginComponent
   },
   { path: 'confirmar-email', component: ConfirmarEmailComponent },
   { path: 'definir-senha', component: DefinirSenhaComponent },
@@ -22,7 +23,12 @@ const routes: Routes = [
   { path: 'esqueceu-a-senha', component: EsqueceuASenhaComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registrar', component: RegistrarComponent },
-  { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule) },
+  { 
+    path: 'layout', 
+    loadChildren: () => import('./layout/layout.module')
+      .then(m => m.LayoutModule), 
+    canActivate: [autorizacaoGuard],
+    },
   { path: 'acesso-negado', component: AcessoNegadoComponent },
   { path: 'nao-encontrado', component: NaoEncontradoComponent },
   { path: '**', component: NaoEncontradoComponent }

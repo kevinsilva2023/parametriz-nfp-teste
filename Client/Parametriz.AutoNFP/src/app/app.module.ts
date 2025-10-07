@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,17 +20,18 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 
 import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
-import { NaoEncontradoComponent } from './shared/components/nao-encontrado/nao-encontrado.component';
-import { AcessoNegadoComponent } from './shared/components/acesso-negado/acesso-negado.component';
+import { NaoEncontradoComponent } from './components/nao-encontrado/nao-encontrado.component';
+import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
 
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { IdentidadeService } from './identidade/services/identidade.service';
 import { AutorizacaoService } from './shared/services/autorizacao.service';
+
+import { AlertModule } from 'ngx-bootstrap/alert';
+
 
 @NgModule({
   declarations: [
@@ -41,7 +44,7 @@ import { AutorizacaoService } from './shared/services/autorizacao.service';
     EmailConfirmadoComponent,
     FundoAnimadoComponent,
     NaoEncontradoComponent,
-    AcessoNegadoComponent
+    AcessoNegadoComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +56,7 @@ import { AutorizacaoService } from './shared/services/autorizacao.service';
     MatCheckboxModule,
     MatCardModule,
     MatSelectModule,
+    AlertModule
   ],
   providers: [
     IdentidadeService,

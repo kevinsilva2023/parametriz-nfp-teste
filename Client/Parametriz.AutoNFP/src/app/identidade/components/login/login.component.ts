@@ -18,7 +18,8 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
   
   errors: any[] = [];
   loginForm!: FormGroup;
-  login!: Login;
+  login!: Login; 
+  verSenha = false;
 
   returnUrl: string;
 
@@ -30,12 +31,12 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
 
       this.validationMessages = {
         email: {
-          required: 'Favor preencher o e-mail',
-          email: 'E-mail inálido'
+          required: 'Favor preencher o e-mail.',
+          email: 'E-mail inválido.'
         },
         senha: {
           required: 'Favor preencher a senha.',
-          minlength: 'A senha deve ser preenchida com no mínimo 6 caracteres'
+          minlength: 'A senha deve ser preenchida com no mínimo 6 caracteres.'
         }
       };
 
@@ -54,7 +55,7 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
       ]],
       senha: [null, [
         Validators.required,
-        Validators.minLength(8)
+        Validators.minLength(6)
       ]]
     });
   }
@@ -68,6 +69,11 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
   }
 
   efetuarLogin() {
+    this.loginForm.markAllAsTouched();
+    this.displayMessage = this.genericFormValidator.processarMensagens(this.loginForm);
+
+    if(this.loginForm.invalid) return;
+
     if (this.loginForm.dirty && this.loginForm.valid) {
 
       this.login = Object.assign({}, this.login, this.loginForm.value);
@@ -88,7 +94,7 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
 
     // Vai enviar o Toastr?
 
-    this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/']);
+    this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/layout']);
   }
 
   processarFalha(fail: any){

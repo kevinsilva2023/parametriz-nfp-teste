@@ -1,5 +1,5 @@
 .header-flutuante {
-  position: sticky; // ou fixed se quiser que fique sempre no topo
+  position: sticky; 
   top: 0;
   left: 0;
   right: 0;
@@ -7,11 +7,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px); // efeito de vidro fosco
+  // background: rgba(255, 255, 255, 0.85);
+  background: var(--gradient-primary);
+  // backdrop-filter: blur(10px); // efeito de vidro fosco
   border-radius: 20px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   z-index: 10; // garante que fique acima do conteúdo
+  color: white;
 }
 
 .page-title {
