@@ -11,22 +11,55 @@
       <p>Digite sua nova senha.</p>
       <p>Certifique-se de que seja forte e segura!</p>
     </div>
-    <form class="d-flex flex-column w-100" [formGroup]="definirSenhaForm">
-      <mat-form-field appearance="outline">
+
+    <alert type="danger" [dismissible]="true" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+      <ul>
+        <li class="fs-small mt-1" *ngFor="let error of errors">
+          {{error}}
+        </li>
+      </ul>
+    </alert>
+
+    <form class="d-flex flex-column w-100" (ngSubmit)="efetuarDefinirSenha()" [formGroup]="definirSenhaForm">
+
+      <mat-form-field appearance="outline" class="mb-2" [ngClass]="{'has-error': displayMessage['senha']}">
         <mat-label>
           <i class="fa-solid fa-lock"></i>
           &nbsp; Nova Senha
         </mat-label>
-        <input matInput formControlName="senha" type="password" placeholder="Digite a nova senha">
+        <input matInput formControlName="senha" [type]="verSenha ? 'text' : 'password'"
+          placeholder="Digite a nova senha">
+        <button mat-icon-button matSuffix type="button" class="btn" (click)="verSenha = !verSenha">
+          <i class="fa-solid" [ngClass]="verSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+        <mat-error *ngIf="displayMessage['senha']" [innerHtml]="displayMessage['senha']"></mat-error>
       </mat-form-field>
-      <mat-form-field appearance="outline">
+
+      <mat-form-field appearance="outline" class="mb-2" [ngClass]="{'has-error': displayMessage['senhaConfirmacao']}">
         <mat-label>
           <i class="fa-solid fa-lock"></i>
           &nbsp; Confirmar Nova Senha
         </mat-label>
-        <input matInput formControlName="senhaConfirmacao" type="password" placeholder="Confirme a nova senha">
+        <input matInput formControlName="senhaConfirmacao" [type]="verSenhaConfirmacao ? 'text' : 'password'"
+          placeholder="Confirme a nova senha">
+        <button mat-icon-button matSuffix type="button" class="btn"
+          (click)="verSenhaConfirmacao = !verSenhaConfirmacao">
+          <i class="fa-solid" [ngClass]="verSenhaConfirmacao ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+        <mat-error *ngIf="displayMessage['senhaConfirmacao']" [innerHtml]="displayMessage['senhaConfirmacao']">
+        </mat-error>
       </mat-form-field>
-      <button class="btn btn-primary rounded-5 p-3 mt-4 mb-2" type="submit">
+
+      <ul class="lista-requisitos mt-2 mb-0">
+        <li [ngClass]="{'valido': requisitosSenha.minuscula}">Uma letra minúscula;</li>
+        <li [ngClass]="{'valido': requisitosSenha.maiuscula}">Uma letra maiúscula;</li>
+        <li [ngClass]="{'valido': requisitosSenha.numero}">Um número;</li>
+        <li [ngClass]="{'valido': requisitosSenha.caracterEspecial}">Um caractere especial (ex: &#64;, !, .);</li>
+        <li [ngClass]="{'valido': requisitosSenha.minimo}">Mínimo 6 caracteres;</li>
+      </ul>
+
+      <button type="submit" class="btn btn-primary rounded-5 p-3 mt-4 mb-2" type="submit">
         Registrar Senha
       </button>
     </form>

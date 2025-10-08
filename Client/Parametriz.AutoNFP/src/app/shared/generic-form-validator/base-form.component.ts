@@ -22,11 +22,17 @@ export abstract class BaseFormComponent {
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
     merge(...controlBlurs).subscribe(() => {
-      this.validarFormulario(formGroup)
+      this.validarFormBase(formGroup)
     });
   }
 
-  protected validarFormulario(formGroup: FormGroup) {
+  private validarFormBase(formGroup: FormGroup) {
     this.displayMessage = this.genericFormValidator?.processarMensagens(formGroup) ?? {};
+  }
+
+  protected validarFormulario(formGroup: FormGroup) {
+    formGroup.markAllAsTouched();
+
+    this.validarFormBase(formGroup);
   }
 }

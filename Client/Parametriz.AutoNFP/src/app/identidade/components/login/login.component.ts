@@ -5,6 +5,7 @@ import { IdentidadeService } from '../../services/identidade.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Login } from '../../models/login';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -12,12 +13,12 @@ import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent extends BaseFormComponent implements OnInit, AfterViewInit{
+export class LoginComponent extends BaseFormComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
-  
+
   errors: any[] = [];
   loginForm!: FormGroup;
-  login!: Login; 
+  login!: Login;
   verSenha = false;
 
   returnUrl: string;
@@ -25,27 +26,28 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
   constructor(private formBuilder: FormBuilder,
     private identidadeService: IdentidadeService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) {
-      super();
+    private router: Router,
+    private toastr: ToastrService) {
 
-      this.validationMessages = {
-        email: {
-          required: 'Favor preencher o e-mail.',
-          email: 'E-mail inválido.'
-        },
-        senha: {
-          required: 'Favor preencher a senha.',
-          minlength: 'A senha deve ser preenchida com no mínimo 6 caracteres.'
-        }
-      };
+    super();
+    this.validationMessages = {
+      email: {
+        required: 'Favor preencher o e-mail.',
+        email: 'E-mail inválido.'
+      },
+      senha: {
+        required: 'Favor preencher a senha.',
+        minlength: 'A senha deve ser preenchida com no mínimo 6 caracteres.'
+      }
+    };
 
-      LocalStorageUtils.limparDadosLocaisUsuario();
-      
-      this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
+    LocalStorageUtils.limparDadosLocaisUsuario();
 
-      super.configurarMensagensValidacaoBase(this.validationMessages);
+    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
+
+    super.configurarMensagensValidacaoBase(this.validationMessages);
   }
-  
+
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       email: [null, [
@@ -68,11 +70,6 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
   }
 
   efetuarLogin() {
-    this.loginForm.markAllAsTouched();
-    this.displayMessage = this.genericFormValidator.processarMensagens(this.loginForm);
-
-    if(this.loginForm.invalid) return;
-
     if (this.loginForm.dirty && this.loginForm.valid) {
 
       this.login = Object.assign({}, this.login, this.loginForm.value);
@@ -91,13 +88,22 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
 
     LocalStorageUtils.salvarDadosLocaisUsuario(response);
 
-    // Vai enviar o Toastr?
+    this.toastr.success('Login realizado com sucesso!', 'Bem-vindo!', {
+      timeOut: 5000,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    });
 
     this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/layout']);
   }
 
-  processarFalha(fail: any){
+  processarFalha(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
+    this.toastr.error('Usuário ou senha incorretos.', 'Erro de Login', {
+      timeOut: 5000,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    });
   }
 
   closeAlert() {

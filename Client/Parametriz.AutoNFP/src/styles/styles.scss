@@ -95,8 +95,8 @@ input {
   }
 
   .card-form {
-    width: 500px;
-    height: 700px;
+    width: 700px;
+    height: 900px;
     background-color: var(--gray-50);
     border-radius: 20px;
     box-shadow: var(--shadow-xl);
@@ -143,3 +143,50 @@ input[type="checkbox"]:checked+.checkmark::after {
   font-weight: bold;
 }
 
+.card-form {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.lista-requisitos {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+
+  li {
+    font-size: 0.9rem;
+    color: #9e9e9e;
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 4px;
+
+    &::before {
+      content: "●";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #ccc;
+      font-size: 0.8rem;
+    }
+
+    &.valido {
+      color: #28a745;
+
+      &::before {
+        color: #28a745;
+      }
+    }
+  }
+}

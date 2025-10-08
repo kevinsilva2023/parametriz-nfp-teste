@@ -9,9 +9,10 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
-import { EmailConfirmadoComponent } from './identidade/components/email-confirmado/email-confirmado.component';
 import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
+import { ConfirmarEmailEnviadoComponent } from './identidade/components/confirmar-email-enviado/confirmar-email-enviado.component';
 import { DefinirSenhaComponent } from './identidade/components/definir-senha/definir-senha.component';
+import { DefinirSenhaEnviadoComponent } from './identidade/components/definir-senha-enviado/definir-senha-enviado.component';
 import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senha/esqueceu-a-senha.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,6 +32,9 @@ import { IdentidadeService } from './identidade/services/identidade.service';
 import { AutorizacaoService } from './shared/services/autorizacao.service';
 
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { ToastrModule } from 'ngx-toastr';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -38,10 +42,11 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     AppComponent,
     RegistrarComponent,
     LoginComponent,
-    ConfirmarEmailComponent,
+    ConfirmarEmailEnviadoComponent,
     EsqueceuASenhaComponent,
     DefinirSenhaComponent,
-    EmailConfirmadoComponent,
+    DefinirSenhaEnviadoComponent,
+    ConfirmarEmailComponent,
     FundoAnimadoComponent,
     NaoEncontradoComponent,
     AcessoNegadoComponent,
@@ -56,7 +61,9 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     MatCheckboxModule,
     MatCardModule,
     MatSelectModule,
-    AlertModule
+    AlertModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     IdentidadeService,

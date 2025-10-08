@@ -1,7 +1,7 @@
 <section class="identidade">
   <app-fundo-animado></app-fundo-animado>
 
-  <div class="card-form d-flex flex-column justify-content-center p-5 overflow-hidden">
+  <div class="card-form animation-right d-flex flex-column justify-content-center p-5 overflow-hidden">
     <div class="d-flex justify-content-center mb-3">
       <img src="/assets/logo/logo-blue.png" class="w-100">
     </div>
@@ -52,7 +52,11 @@
             <span class="checkmark"></span>
             <span class="pointer">&nbsp; Lembrar de mim</span>
           </label>
-          <a routerLink="/esqueceu-a-senha" class="esqueceu-senha fs-small">Esqueceu a senha?</a>
+          <a  routerLink="/esqueceu-a-senha" 
+              class="esqueceu-senha fs-small"
+              [queryParams]="{ email: loginForm.get('email')?.value}"
+              >Esqueceu a senha?    
+          </a>
         </div>
 
         <button type="submit" class="btn btn-primary rounded-5 p-3 mt-4 mb-2">

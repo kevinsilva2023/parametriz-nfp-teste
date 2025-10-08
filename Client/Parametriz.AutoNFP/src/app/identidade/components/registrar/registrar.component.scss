@@ -9,10 +9,10 @@
 .card-form {
   opacity: 0;
   transform: translateX(50px); // começa fora da tela à esquerda
-  animation: slideInLeft 0.8s ease-out forwards;
+  animation: slideInRight 0.8s ease-out forwards;
 }
 
-@keyframes slideInLeft {
+@keyframes slideInRight {
   from {
     opacity: 0;
     transform: translateX(50px);

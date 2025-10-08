@@ -1,15 +1,15 @@
-<section class="identidade">
+<!-- <section class="identidade">
   <app-fundo-animado></app-fundo-animado>
 
   <div class="card-form d-flex flex-column justify-content-center align-items-center gap-4 p-5">
     <div class="bg-primary p-4 rounded-circle mb-1">
-      <i class="fa-solid fa-envelope fs-1 text-white"></i>
+      <i class="fa-solid fa-circle-check fs-1 text-white"></i>
     </div>
 
-    <h1 class="text-primary fw-bolder fs-3">Confirme seu E-mail</h1>
+    <h1 class="text-primary text-center fw-bolder fs-3">E-mail Confirmado com Sucesso!</h1>
     <div class="text-center text-primary">
-      <p>Para acessar sua conta, <br> é necessário confirmar seu e-mail.</p> <br>
-      <p>Verifique sua caixa de entrada e clique no link que enviamos para você.</p>
+      <p>Seu e-mail foi verificado corretamente.</p>
+      <p>Agora você já pode acessar todos os recursos da sua conta.</p>
     </div>
 
     <div class="d-flex card px-4 py-2 rounded-4 border border-primary">
@@ -21,5 +21,64 @@
         </div>
       </div>
     </div>
+
+    <button class="btn btn-primary p-3 mt-4 mb-2 w-75">
+      Acessar <span class="fw-bolder">AutoNFP</span>
+    </button>
+  </div>
+</section> -->
+
+<section class="identidade" *ngIf="emailConfirmado">
+  <app-fundo-animado></app-fundo-animado>
+
+  <div class="card-form d-flex flex-column justify-content-center align-items-center gap-4 p-5">
+    <div class="bg-primary p-4 rounded-circle mb-1">
+      <i class="fa-solid fa-circle-check fs-1 text-white"></i>
+    </div>
+
+    <h1 class="text-primary text-center fw-bolder fs-3">E-mail Confirmado com Sucesso!</h1>
+    <div class="text-center text-primary">
+      <p>Seu e-mail foi verificado corretamente.</p>
+      <p>Agora você já pode acessar todos os recursos da sua conta.</p>
+    </div>
+
+    <div class="d-flex card px-4 py-2 rounded-4 border border-primary">
+      <div class="d-flex justify-content-center align-items-center gap-3">
+        <i class="fa-solid fa-circle-user fs-2 text-primary"></i>
+        <div class="d-flex flex-column">
+          <span class="fw-medium">{{ nomeUsuario }}</span>
+          <span class="text-secondary fs-small">{{ emailUsuario }}</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary p-3 mt-4 mb-2 w-75" routerLink="/layout">
+      Acessar <span class="fw-bolder">AutoNFP</span>
+    </button>
+  </div>
+</section>
+
+<section class="identidade" *ngIf="confirmacaoFalhou">
+  <app-fundo-animado></app-fundo-animado>
+
+  <div class="card-form d-flex flex-column justify-content-center align-items-center gap-4 p-5">
+    <div class="bg-danger p-4 rounded-circle mb-1">
+      <i class="fa-solid fa-circle-xmark fs-1 text-white"></i>
+    </div>
+
+    <h1 class="text-danger text-center fw-bolder fs-3">Falha ao Confirmar E-mail</h1>
+
+    <alert type="danger" [dismissible]="true" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+      <ul>
+        <li class="fs-small mt-1" *ngFor="let error of errors">
+          {{error}}
+        </li>
+      </ul>
+    </alert>
+
+    <button class="btn btn-primary p-3 mt-4 mb-2 w-75" routerLink="/">
+      Voltar ao Login
+    </button>
   </div>
 </section>
