@@ -6,6 +6,7 @@ import { DefinirSenha } from '../../models/definir-senha';
 import { EnviarDefinirSenha } from '../../models/enviar-definir-senha';
 import { IdentidadeService } from '../../services/identidade.service';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-esqueceu-a-senha',
@@ -18,22 +19,18 @@ export class EsqueceuASenhaComponent extends BaseFormComponent implements OnInit
   esqueceuASenhaForm!: FormGroup
   enviarDefinirSenha!: EnviarDefinirSenha;
   errors: any[] = [];
-  returnUrl: string;
 
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private identidadeService: IdentidadeService,
-    private activateRoute: ActivatedRoute,
-    private router: Router
+  constructor(private formBuilder: FormBuilder,
+              private identidadeService: IdentidadeService,
+              private activateRoute: ActivatedRoute,
+              private router: Router,
+              private toastr: ToastrService
   ) {
     super();
 
     this.validationMessages = {
       email: { required: 'Favor preencher e-mail.'}
     }
-
-    this.returnUrl = this.activateRoute.snapshot.queryParams['returnUrl'];
 
     super.configurarMensagensValidacaoBase(this.validationMessages);
   }
@@ -42,10 +39,10 @@ export class EsqueceuASenhaComponent extends BaseFormComponent implements OnInit
     this.esqueceuASenhaForm = this.formBuilder.group({
       email: [null, Validators.required]
     })
-    this.preencheEmailDoLogin();
+    this.preencherForm();
   }
 
-  preencheEmailDoLogin() {
+  preencherForm() {
     const email = this.activateRoute.snapshot.queryParamMap.get('email');
     if (email) {
       this.esqueceuASenhaForm.patchValue({ email });
@@ -78,13 +75,17 @@ export class EsqueceuASenhaComponent extends BaseFormComponent implements OnInit
 
     LocalStorageUtils.limparDadosLocaisUsuario();
 
-    this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/definir-senha-enviado'])
+    let toast = this.toastr.success('Verifique sua caixa de entrada e siga as instruções.', 'Email enviado!');
+    let email = this.enviarDefinirSenha.email;
 
-    //mandar um toastr e ir para o definir-senha-enviado?
+   this.router.navigate(
+          ['/definir-senha-enviado'],
+          { queryParams: { email }}
+        )
   }
 
   processarFalha(fail: any){
     this.errors = fail?.error?.errors?.mensagens;
+    this.toastr.error('Não foi possível enviar o email.', 'Erro!');
   }
-
 }

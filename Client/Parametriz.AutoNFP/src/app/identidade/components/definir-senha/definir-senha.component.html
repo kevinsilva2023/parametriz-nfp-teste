@@ -12,11 +12,11 @@
       <p>Certifique-se de que seja forte e segura!</p>
     </div>
 
-    <alert type="danger" [dismissible]="true" class="text-center anima-alert" *ngIf="errors.length > 0">
+    <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
       <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
       <ul>
-        <li class="fs-small mt-1" *ngFor="let error of errors">
-          {{error}}
+        <li class="fs-small mt-1" >
+          {{ errors }}
         </li>
       </ul>
     </alert>

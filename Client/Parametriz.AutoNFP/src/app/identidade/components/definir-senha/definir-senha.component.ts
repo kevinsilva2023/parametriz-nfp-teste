@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
-import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
@@ -19,12 +19,8 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
   definirSenhaForm!: FormGroup;
   definirSenha!: DefinirSenha;
   errors: any[] = [];
-
   verSenha = false;
   verSenhaConfirmacao = false;
-
-  returnUrl: string;
-
   emailDefinirSenha?: string;
   codeDefinirSenha?: string;
 
@@ -37,11 +33,11 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
   }
 
   constructor(private formBuilder: FormBuilder,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private identidadeService: IdentidadeService,
-    private toastr: ToastrService) {
-
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private identidadeService: IdentidadeService,
+              private toastr: ToastrService) 
+  {
     super();
     this.validationMessages = {
       senha: {
@@ -57,10 +53,7 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
 
     LocalStorageUtils.limparDadosLocaisUsuario();
 
-    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
-
     super.configurarMensagensValidacaoBase(this.validationMessages);
-
   }
 
   ngAfterViewInit(): void {
@@ -80,11 +73,16 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
       ]]
     });
 
-    this.definirSenhaForm.get('senha')?.valueChanges.subscribe((valor: string) => {
-      this.validarRequisitos(valor);
-    });
+    this.senhaForm().valueChanges
+      .subscribe({
+        next: (valor: string) => this.validarRequisitos(valor)
+      });
 
     this.caputurarDadosParaDefinirSenha();
+  }
+
+  senhaForm(): AbstractControl {
+    return this.definirSenhaForm.get('senha')!;
   }
 
   validarRequisitos(valor: string) {
@@ -94,7 +92,6 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
     this.requisitosSenha.caracterEspecial = /[!@#$%^&*(),.?":{}|<>]/.test(valor);
     this.requisitosSenha.minimo = valor?.length >= 6;
   }
-
 
   limparErros() {
     this.errors = [];
@@ -134,29 +131,13 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
 
     LocalStorageUtils.salvarDadosLocaisUsuario(response);
 
-    this.toastr.success(
-      'Aguarde, você será redirecionado para o AutoNFP.',
-      'Senha definida com sucesso!',
-      {
-        timeOut: 5000,
-        progressBar: true,
-        progressAnimation: 'increasing',
-      }
-    );
+    this.toastr.success('Aguarde, você será redirecionado para o AutoNFP.','Senha definida com sucesso!');
 
-    setTimeout(() => {
-      this.returnUrl
-        ? this.router.navigate([this.returnUrl])
-        : this.router.navigate(['/']);
-    }, 5000);
+    this.router.navigate(['/'])
   }
 
   processarFalha(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
-    this.toastr.error('Não foi possível definir a senha.', 'Erro', {
-      timeOut: 5000,
-      progressBar: true,
-      progressAnimation: 'increasing',
-    });
+    this.toastr.error('Não foi possível definir a senha.', 'Erro');
   }
 }

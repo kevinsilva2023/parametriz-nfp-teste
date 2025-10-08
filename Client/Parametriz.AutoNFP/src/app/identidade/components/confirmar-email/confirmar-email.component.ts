@@ -12,19 +12,15 @@ import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 })
 export class ConfirmarEmailComponent implements OnInit {
   errors: any[] = [];
-  returnUrl: string;
-
   emailConfirmado = false;
   confirmacaoFalhou = false;
   nomeUsuario?: string;
   emailUsuario?: string;
 
   constructor(private activatedRoute: ActivatedRoute,
-    private identidadeService: IdentidadeService,
-    private router: Router,
-    private toastr: ToastrService) {
-    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
-  }
+              private identidadeService: IdentidadeService,
+              private router: Router,
+              private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.verificaConfirmacaoDeEmail();
@@ -53,38 +49,29 @@ export class ConfirmarEmailComponent implements OnInit {
     }
   }
 
+  limparErros() {
+    this.errors = [];
+  }
+
   processarSucesso(response: any, confirmarEmail: ConfirmarEmail) {
     if (confirmarEmail.definirSenha) {
-      this.toastr.success('Email confirmado! Aguarde, você será redirecionado...', 'Confirmação', {
-        timeOut: 5000,
-        progressBar: true,
-        progressAnimation: 'increasing',
-      });
+      let toast = this.toastr.success('Email confirmado! Você será redirecionado.', 'Confirmação');
 
-      LocalStorageUtils.salvarDadosLocaisUsuario(response);
-
-      setTimeout(() => {
-        this.returnUrl
-          ? this.router.navigate([this.returnUrl])
-          : this.router.navigate(['/definir-senha-enviado']);
-      }, 5000);
-
+      toast.onHidden
+        .subscribe({
+          next: () => this.router.navigate(['/definir-senha-enviado'])
+        });
     } else {
       this.emailConfirmado = true;
-      this.nomeUsuario = response?.nome ?? 'Usuário';
+      this.nomeUsuario = response?.nome;
       this.emailUsuario = confirmarEmail.email;
 
-      this.toastr.success('Aguarde, você será redirecionado para a página inicial...', 'Email confirmado!', {
-        timeOut: 5000,
-        progressBar: true,
-        progressAnimation: 'increasing',
-      });
-
-      setTimeout(() => {
-        this.returnUrl
-          ? this.router.navigate([this.returnUrl])
-          : this.router.navigate(['/']);
-      }, 5000);
+      let toast = this.toastr.success('Aguarde, clique no botao para acessar o AutoNFP', 'Email confirmado!');
+      
+      toast.onHidden
+        .subscribe({
+          next: () => this.router.navigate(['/'])
+        });
     }
   }
 
@@ -92,10 +79,6 @@ export class ConfirmarEmailComponent implements OnInit {
     this.errors = fail?.error?.errors?.mensagens ?? ['Falha desconhecida'];
     this.confirmacaoFalhou = true;
 
-    this.toastr.error('Não foi possível confirmar o email.', 'Erro', {
-      timeOut: 5000,
-      progressBar: true,
-      progressAnimation: 'increasing',
-    });
+    this.toastr.error('Não foi possível confirmar o email.', 'Erro')
   }
 }

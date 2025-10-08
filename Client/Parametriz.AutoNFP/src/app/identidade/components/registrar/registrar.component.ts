@@ -23,8 +23,6 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
   verSenha = false;
   verSenhaConfirmacao = false;
 
-  returnUrl: string;
-
   requisitosSenha = {
     minuscula: false,
     maiuscula: false,
@@ -34,9 +32,10 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
   }
 
   constructor(private formBuilder: FormBuilder,
-    private identidadeService: IdentidadeService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router) {
+              private identidadeService: IdentidadeService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) 
+  {
     super();
 
     this.validationMessages = {
@@ -66,8 +65,6 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
     };
 
     LocalStorageUtils.limparDadosLocaisUsuario();
-
-    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
 
     super.configurarMensagensValidacaoBase(this.validationMessages);
   }
@@ -108,7 +105,6 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
     this.requisitosSenha.minimo = valor?.length >= 6;
   }
 
-
   ngAfterViewInit(): void {
     super.configurarValidacaoFormularioBase(this.formInputElements, this.registerForm);
   }
@@ -135,7 +131,14 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
   processarSucesso(response: any) {
     this.registerForm.reset();
     this.limparErros();
-    this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/confirmar-email-enviado']);
+
+    let email = this.instituicao.email;
+    let usuario = this.instituicao.voluntarioNome;
+
+    this.router.navigate(
+      ['/confirmar-email-enviado'],
+      { queryParams: { email, usuario }}
+    );
   }
 
   processarErro(fail: any) {

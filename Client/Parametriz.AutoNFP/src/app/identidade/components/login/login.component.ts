@@ -24,12 +24,13 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
   returnUrl: string;
 
   constructor(private formBuilder: FormBuilder,
-    private identidadeService: IdentidadeService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private toastr: ToastrService) {
-
+              private identidadeService: IdentidadeService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private toastr: ToastrService) 
+  {
     super();
+    
     this.validationMessages = {
       email: {
         required: 'Favor preencher o e-mail.',
@@ -48,7 +49,7 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
     super.configurarMensagensValidacaoBase(this.validationMessages);
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.loginForm = this.formBuilder.group({
       email: [null, [
         Validators.required,
@@ -59,7 +60,6 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
         Validators.minLength(6)
       ]]
     });
-
   }
 
   ngAfterViewInit(): void {
@@ -84,27 +84,20 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
   }
 
   processarSucesso(response: any) {
-    this.loginForm.reset();
     this.limparErros();
-
+    
     LocalStorageUtils.salvarDadosLocaisUsuario(response);
-
-    this.toastr.success('Login realizado com sucesso!', 'Bem-vindo!', {
-      timeOut: 5000,
-      progressBar: true,
-      progressAnimation: 'increasing',
-    });
-
+    
+    this.toastr.success('Login realizado com sucesso', 'Sucesso!')
+    
     this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/']);
+
+    this.loginForm.reset();
   }
 
   processarFalha(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
-    this.toastr.error('Usuário ou senha incorretos.', 'Erro de Login', {
-      timeOut: 5000,
-      progressBar: true,
-      progressAnimation: 'increasing',
-    });
+    this.toastr.error('Usuário ou senha incorretos.', 'Erro de Login!');
   }
 
   closeAlert() {

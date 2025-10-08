@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Component({
   selector: 'app-navbar',
@@ -9,9 +11,11 @@ import { Component, Input } from '@angular/core';
 export class NavbarComponent {
   @Input() tituloPagina: string = 'Página';
 
+  constructor(private router: Router) {
+  }
+
   usuario = {
     nome: 'Kevin Marcos'
   };
 
-  logout() {}
 }
