@@ -8,7 +8,7 @@
     <div class="d-flex flex-column gap-4 mb-5">
       <h1 class="fs-1 text-primary fw-bolder text-center">Login</h1>
 
-      <alert type="danger" [dismissible]="true" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
         <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
         <ul>
           <li class="fs-small mt-1" *ngFor="let error of errors">

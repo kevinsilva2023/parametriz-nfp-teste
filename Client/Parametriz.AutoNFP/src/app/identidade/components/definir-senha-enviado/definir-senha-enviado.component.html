@@ -15,8 +15,8 @@
       <div class="d-flex justify-content-center align-items-center gap-3">
         <i class="fa-solid fa-circle-user fs-2 text-primary"></i>
         <div class="d-flex flex-column">
-          <span class="fw-medium">Kevin Silva</span>
-          <span class="text-secondary fs-small">kevinemail.com.br</span>
+          <span *ngIf="usuario" class="fw-medium">{{ usuario }}</span>
+          <span class="text-secondary fs-small">{{ email }}</span>
         </div>
       </div>
     </div>
