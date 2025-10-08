@@ -59,6 +59,7 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
         Validators.minLength(6)
       ]]
     });
+
   }
 
   ngAfterViewInit(): void {
@@ -94,7 +95,7 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
       progressAnimation: 'increasing',
     });
 
-    this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/layout']);
+    this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/']);
   }
 
   processarFalha(fail: any) {

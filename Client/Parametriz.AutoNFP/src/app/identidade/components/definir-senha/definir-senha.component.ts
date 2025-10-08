@@ -135,7 +135,7 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
     LocalStorageUtils.salvarDadosLocaisUsuario(response);
 
     this.toastr.success(
-      'Aguarde, você será redirecionado para o AutoNFP...',
+      'Aguarde, você será redirecionado para o AutoNFP.',
       'Senha definida com sucesso!',
       {
         timeOut: 5000,
