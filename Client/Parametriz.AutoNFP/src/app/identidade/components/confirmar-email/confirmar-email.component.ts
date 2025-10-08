@@ -3,6 +3,7 @@ import { ConfirmarEmail } from '../../models/confirmar-email';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IdentidadeService } from '../../services/identidade.service';
 import { ToastrService } from 'ngx-toastr';
+import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Component({
   selector: 'app-confirmar-email',
@@ -59,6 +60,8 @@ export class ConfirmarEmailComponent implements OnInit {
         progressBar: true,
         progressAnimation: 'increasing',
       });
+
+      LocalStorageUtils.salvarDadosLocaisUsuario(response);
 
       setTimeout(() => {
         this.returnUrl
