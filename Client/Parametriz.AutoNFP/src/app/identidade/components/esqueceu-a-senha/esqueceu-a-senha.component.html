@@ -7,21 +7,32 @@
     </div>
 
     <h1 class="text-primary fw-bolder fs-3">Esqueceu sua Senha?</h1>
+
+    <alert type="danger" [dismissible]="true" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+      <ul>
+        <li class="fs-small mt-1" *ngFor="let error of errors">
+          {{error}}
+        </li>
+      </ul>
+    </alert>
+
     <div class="text-center text-primary">
       <p>Não se preocupe!</p>
       <p>Digite seu e-mail e enviaremos</p>
       <p>instruções para redefinir a senha</p>
     </div>
 
-    <form [formGroup]="esqueceuASenhaForm">
-      <mat-form-field appearance="outline" class="w-100">
+    <form (ngSubmit)="enviarEmailRecuperacaoDeSenha()" [formGroup]="esqueceuASenhaForm">
+      <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['email']}">
         <mat-label>
           <i class="fa-solid fa-envelope"></i>
           &nbsp; E-mail
         </mat-label>
         <input matInput formControlName="email" type="email" placeholder="seu@email.com">
+          <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"> </mat-error>
       </mat-form-field>
-      <button class="btn btn-primary rounded-5 p-3 mt-4 mb-2 w-100">
+      <button type="submit" class="btn btn-primary rounded-5 p-3 mt-4 mb-2 w-100">
         Enviar link de Recuperação
       </button>
 

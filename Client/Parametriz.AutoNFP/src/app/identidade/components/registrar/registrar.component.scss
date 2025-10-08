@@ -5,3 +5,20 @@
   justify-content: center;
   align-items: center;
 }
+
+.card-form {
+  opacity: 0;
+  transform: translateX(50px); // começa fora da tela à esquerda
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,21 @@
+// Alert 
+
+.anima-alert {
+  animation: fadeIn 0.5s ease;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+}
+
+.close {
+  &.btn-close {
+    font-size: 10px !important;
+    transition: 0.5s ease !important;
+
+    &:hover { transform: scale(1.1); }
+    &:active { box-shadow: none !important; }
+  }
+}

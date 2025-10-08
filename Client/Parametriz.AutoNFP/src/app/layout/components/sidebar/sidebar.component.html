@@ -1,0 +1,30 @@
+<div class="menu-lateral" [class.collapsed]="isCollapsed">
+  <div class="header">
+    <div class="d-flex justify-content-center align-items-center">
+      <img src="/assets/logo/logo-solo-white.png">
+      <div class="nome-empresa" *ngIf="!isCollapsed">
+        <h1>PARAMETRIZ</h1>
+        <h2>SOLUÇÕES TECNOLÓGICAS</h2>
+      </div>
+    </div>
+  </div>
+
+  <ul>
+    <li *ngFor="let item of menuItems" 
+        (click)="onMenuItemClick(item)" 
+        [class.item-menu-ativo]="item.active"
+        class="mb-2">
+      <i class="fa-solid" [ngClass]="item.icon"></i>
+      <span *ngIf="!isCollapsed">{{ item.label }}</span>
+    </li>
+  </ul>
+
+  <button class="botao-sidebar" (click)="toggleSidebar()">
+    <i class="fa-solid fa-angles-left" *ngIf="!isCollapsed"></i>
+    <i class="fa-solid fa-angles-right" *ngIf="isCollapsed"></i>
+  </button>
+
+  <div class="footer">
+    <small class="text-secondary">v1.0.0</small>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -7,9 +9,10 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
-import { EmailConfirmadoComponent } from './identidade/components/email-confirmado/email-confirmado.component';
 import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
-import { DefinirNovaSenhaComponent } from './identidade/components/definir-nova-senha/definir-nova-senha.component';
+import { ConfirmarEmailEnviadoComponent } from './identidade/components/confirmar-email-enviado/confirmar-email-enviado.component';
+import { DefinirSenhaComponent } from './identidade/components/definir-senha/definir-senha.component';
+import { DefinirSenhaEnviadoComponent } from './identidade/components/definir-senha-enviado/definir-senha-enviado.component';
 import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senha/esqueceu-a-senha.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,24 +21,35 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule  } from '@angular/forms';
 
 import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
+import { NaoEncontradoComponent } from './components/nao-encontrado/nao-encontrado.component';
+import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
+
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { IdentidadeService } from './identidade/services/identidade.service';
 import { AutorizacaoService } from './shared/services/autorizacao.service';
+
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { ToastrModule } from 'ngx-toastr';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrarComponent,
     LoginComponent,
-    ConfirmarEmailComponent,
+    ConfirmarEmailEnviadoComponent,
     EsqueceuASenhaComponent,
-    DefinirNovaSenhaComponent,
-    EmailConfirmadoComponent
+    DefinirSenhaComponent,
+    DefinirSenhaEnviadoComponent,
+    ConfirmarEmailComponent,
+    FundoAnimadoComponent,
+    NaoEncontradoComponent,
+    AcessoNegadoComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,8 +61,10 @@ import { AutorizacaoService } from './shared/services/autorizacao.service';
     MatCheckboxModule,
     MatCardModule,
     MatSelectModule,
-    FundoAnimadoComponent
-],
+    AlertModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
+  ],
   providers: [
     IdentidadeService,
     AutorizacaoService,

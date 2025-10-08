@@ -6,23 +6,30 @@ import { RegistrarComponent } from './identidade/components/registrar/registrar.
 import { LoginComponent } from './identidade/components/login/login.component';
 import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senha/esqueceu-a-senha.component';
 import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
-import { DefinirNovaSenhaComponent } from './identidade/components/definir-nova-senha/definir-nova-senha.component';
-import { EmailConfirmadoComponent } from './identidade/components/email-confirmado/email-confirmado.component';
+import { ConfirmarEmailEnviadoComponent } from './identidade/components/confirmar-email-enviado/confirmar-email-enviado.component';
+import { DefinirSenhaComponent } from './identidade/components/definir-senha/definir-senha.component';
+import { DefinirSenhaEnviadoComponent } from './identidade/components/definir-senha-enviado/definir-senha-enviado.component';
+import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';
+import { NaoEncontradoComponent } from './components/nao-encontrado/nao-encontrado.component';
+import { autorizacaoGuard } from './shared/services/autorizacao.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: RegistrarComponent
+    loadChildren: () => import('./layout/layout.module')
+      .then(m => m.LayoutModule),
+    canActivate: [autorizacaoGuard],
   },
-  { path: 'confirmar-email', component: ConfirmarEmailComponent },
-  { path: 'definir-nova-senha', component: DefinirNovaSenhaComponent},
-  { path: 'email-confirmado', component: EmailConfirmadoComponent },
+  { path: 'confirmar-email', component: ConfirmarEmailComponent},
+  { path: 'confirmar-email-enviado', component: ConfirmarEmailEnviadoComponent },
+  { path: 'definir-senha', component: DefinirSenhaComponent },
+  { path: 'definir-senha-enviado', component: DefinirSenhaEnviadoComponent },
   { path: 'esqueceu-a-senha', component: EsqueceuASenhaComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registrar', component: RegistrarComponent },
-  // { paht: 'acesso-negado', component: AccessDeniedComponent },
-  // { path: 'nao-encontrado': component: NotFoundComponent },
-  // { path: '**', component: NotFoundComponent }
+  { path: 'acesso-negado', component: AcessoNegadoComponent },
+  { path: 'nao-encontrado', component: NaoEncontradoComponent },
+  { path: '**', component: NaoEncontradoComponent }
 ]
 
 @NgModule({
