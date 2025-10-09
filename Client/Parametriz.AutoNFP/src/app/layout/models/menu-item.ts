@@ -12,7 +12,6 @@ export const MENU_ITEMS: MenuItem[] = [
     label: 'Dashboard',
     icon: 'fa-square-poll-vertical',
     route: `dashboard`,
-    active: true
   },
   {
     id: 'lanca-nfp',
@@ -20,4 +19,10 @@ export const MENU_ITEMS: MenuItem[] = [
     icon: 'fa-robot',
     route: `lanca-nfp`,
   },
+  {
+    id: 'configuracoes',
+    label: 'Configurações',
+    icon: 'fa-gear',
+    route: 'configuracoes'
+  }
 ]
