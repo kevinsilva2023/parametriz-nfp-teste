@@ -19,7 +19,7 @@
     </li>
   </ul>
 
-  <button class="botao-sidebar" (click)="toggleSidebar()">
+  <button class="botao-sidebar" (click)="isCollapsed = !isCollapsed">
     <i class="fa-solid fa-angles-left" *ngIf="!isCollapsed"></i>
     <i class="fa-solid fa-angles-right" *ngIf="isCollapsed"></i>
   </button>
