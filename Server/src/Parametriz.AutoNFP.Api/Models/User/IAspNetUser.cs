@@ -8,7 +8,6 @@ namespace Parametriz.AutoNFP.Api.Models.User
         Guid ObterId();
         string ObterEmail();
         string ObterToken();
-        string ObterRefreshToken();
         Guid ObterInstituicaoId();
         bool EstaAutenticado();
         bool PossuiRole(string role);

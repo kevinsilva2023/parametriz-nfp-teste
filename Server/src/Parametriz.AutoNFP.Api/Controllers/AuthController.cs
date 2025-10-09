@@ -67,22 +67,40 @@ namespace Parametriz.AutoNFP.Api.Controllers
             var user = new IdentityUser { UserName = cadastrarInstituicaoViewModel.Email, Email = cadastrarInstituicaoViewModel.Email };
             var result = await _userManager.CreateAsync(user, cadastrarInstituicaoViewModel.Senha);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                user = await _userManager.FindByEmailAsync(user.Email);
+                AdicionarErrosIdentity(result);
+                return CustomResponse(cadastrarInstituicaoViewModel);
+            }
+                
+            result = await _userManager.AddToRoleAsync(user, "Administrador");
 
-                if (!await _instituicaoService.Cadastrar(cadastrarInstituicaoViewModel, Guid.Parse(user.Id)))
-                {
-                    await _userManager.DeleteAsync(user);
-                    return CustomResponse(cadastrarInstituicaoViewModel);
-                }
-
-                await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.UsuarioNome);
+            if (!result.Succeeded)
+            {
+                AdicionarErrosIdentity(result);
+                return CustomResponse(cadastrarInstituicaoViewModel);
             }
 
-            AdicionarErrosIdentity(result);
+            user = await _userManager.FindByEmailAsync(user.Email);
+
+            if (!await _instituicaoService.Cadastrar(cadastrarInstituicaoViewModel, Guid.Parse(user.Id)))
+            {
+                await _userManager.DeleteAsync(user);
+                return CustomResponse(cadastrarInstituicaoViewModel);
+            }
+
+            var instituicaoId = await _instituicaoRepository.ObterIdPorUsuarioId(Guid.Parse(user.Id));
+
+            await IncluirClaimInstituicaoId(user, instituicaoId);
+
+            await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.UsuarioNome);
 
             return CustomResponse(cadastrarInstituicaoViewModel);
+        }
+
+        private async Task IncluirClaimInstituicaoId(IdentityUser user, Guid instituicaoId)
+        {
+            await _userManager.AddClaimAsync(user, new Claim("instituicaoId", instituicaoId.ToString()));
         }
 
         private async Task EnviarLinkConfirmarEmail(IdentityUser user, string usuarioNome, bool definirSenha = false)
@@ -479,6 +497,8 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     await _userManager.DeleteAsync(user);
                     return CustomResponse(cadastrarUsuarioViewModel);
                 }
+
+                await IncluirClaimInstituicaoId(user, cadastrarUsuarioViewModel.InstituicaoId);
 
                 await EnviarLinkConfirmarEmail(user, cadastrarUsuarioViewModel.Nome.Trim().ToUpper(), definirSenha: true);
                 return CustomResponse(cadastrarUsuarioViewModel);

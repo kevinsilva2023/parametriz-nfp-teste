@@ -24,5 +24,21 @@ namespace Parametriz.AutoNFP.Data.Repository
                                u.Nome == usuario.Nome &&
                                u.Id != usuario.Id);
         }
+
+        public async Task<bool> ExistemOutrosUsuariosNaInstituicao(Guid id, Guid instituicaoId)
+        {
+            return await _context.Usuarios
+                .AnyAsync(u => u.InstituicaoId == instituicaoId &&
+                               u.Id != id);
+        }
+
+        public async Task<IEnumerable<Usuario>> ObterPorFiltros(Guid instituicaoId, string nome = "")
+        {
+            return await _context.Usuarios
+                .AsNoTracking()
+                .Where(u => u.InstituicaoId == instituicaoId &&
+                            u.Nome.ToUpper().Contains(nome.Trim().ToUpper()))
+                .ToListAsync();
+        }
     }
 }
