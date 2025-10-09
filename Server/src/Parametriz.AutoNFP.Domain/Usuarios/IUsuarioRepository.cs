@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parametriz.AutoNFP.Domain.Voluntarios
+namespace Parametriz.AutoNFP.Domain.Usuarios
 {
-    public interface IVoluntarioRepository : IInstituicaoEntityRepository<Voluntario>
+    public interface IUsuarioRepository : IInstituicaoEntityRepository<Usuario>
     {
     }
 }

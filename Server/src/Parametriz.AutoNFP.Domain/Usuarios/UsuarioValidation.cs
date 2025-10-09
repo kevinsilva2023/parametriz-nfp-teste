@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parametriz.AutoNFP.Domain.Voluntarios
+namespace Parametriz.AutoNFP.Domain.Usuarios
 {
-    public class VoluntarioValidation : InstituicaoEntityValidation<Voluntario>
+    public class UsuarioValidation : InstituicaoEntityValidation<Usuario>
     {
-        public VoluntarioValidation()
+        public UsuarioValidation()
             : base()
         {
             ValidarNome();

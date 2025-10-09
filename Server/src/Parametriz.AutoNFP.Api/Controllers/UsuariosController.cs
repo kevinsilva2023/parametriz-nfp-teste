@@ -12,17 +12,6 @@ namespace Parametriz.AutoNFP.Api.Controllers
         {
         }
 
-        [AllowAnonymous]
-        [HttpGet("allow-anonymous")]
-        public async Task<string> AllowAnonimous()
-        {
-            return await Task.FromResult("Teste allowanonimous");
-        }
-
-        [HttpGet("authorize")]
-        public async Task<string> Authorize()
-        {
-            return await Task.FromResult("Teste authorize");
-        }
+        
     }
 }

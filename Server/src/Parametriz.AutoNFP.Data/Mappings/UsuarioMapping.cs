@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Parametriz.AutoNFP.Domain.Voluntarios;
+using Parametriz.AutoNFP.Domain.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Parametriz.AutoNFP.Data.Mappings
 {
-    public class VoluntarioMapping : IEntityTypeConfiguration<Voluntario>
+    public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
     {
-        public void Configure(EntityTypeBuilder<Voluntario> builder)
+        public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.HasKey(pk => pk.Id);
 
             builder.HasOne(p => p.Instituicao)
-                .WithMany(p => p.Voluntarios)
+                .WithMany(p => p.Usuarios)
                 .HasForeignKey(p => p.InstituicaoId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
@@ -41,7 +41,7 @@ namespace Parametriz.AutoNFP.Data.Mappings
             builder.HasIndex(i => new { i.InstituicaoId, i.Nome })
                 .IsUnique();
 
-            builder.ToTable("Voluntarios");
+            builder.ToTable("Usuarios");
         }
     }
 }

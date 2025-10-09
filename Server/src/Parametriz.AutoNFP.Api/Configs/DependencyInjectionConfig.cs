@@ -1,14 +1,14 @@
 ﻿
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
-using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
+using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository;
 using Parametriz.AutoNFP.Data.Uow;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Instituicoes;
-using Parametriz.AutoNFP.Domain.Voluntarios;
+using Parametriz.AutoNFP.Domain.Usuarios;
 
 namespace Parametriz.AutoNFP.Api.Configs
 {
@@ -24,8 +24,8 @@ namespace Parametriz.AutoNFP.Api.Configs
             builder.Services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
             builder.Services.AddScoped<IInstituicaoService, InstituicaoService>();
 
-            builder.Services.AddScoped<IVoluntarioRepository, VoluntarioRepository>();
-            builder.Services.AddScoped<IVoluntarioService, VoluntarioService>();
+            builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
             builder.Services.AddScoped<Notificador>();
 

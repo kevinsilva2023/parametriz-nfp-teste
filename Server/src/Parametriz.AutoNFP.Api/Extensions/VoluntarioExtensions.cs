@@ -1,14 +1,14 @@
 ﻿using Parametriz.AutoNFP.Api.Extensions.Core;
-using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
-using Parametriz.AutoNFP.Domain.Voluntarios;
+using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
+using Parametriz.AutoNFP.Domain.Usuarios;
 
 namespace Parametriz.AutoNFP.Api.Extensions
 {
     public static class VoluntarioExtensions
     {
-        public static VoluntariosViewModel ToViewModel(this Voluntario voluntario)
+        public static UsuarioViewModel ToViewModel(this Usuario voluntario)
         {
-            return new VoluntariosViewModel
+            return new UsuarioViewModel
             {
                 Id = voluntario.Id,
                 Nome = voluntario.Nome,

@@ -2,7 +2,7 @@
 
 namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
 {
-    public class CadastrarVoluntarioViewModel
+    public class CadastrarUsuarioViewModel
     {
         [Display(Name ="Instituição")]
         [Required(ErrorMessage = "Favor preencher a instituição.")]
