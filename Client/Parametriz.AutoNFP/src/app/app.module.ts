@@ -21,7 +21,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 
-
 import { FundoAnimadoComponent } from "src/app/shared/components/fundo-animado/fundo-animado.component";
 import { NaoEncontradoComponent } from './components/nao-encontrado/nao-encontrado.component';
 import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.component';

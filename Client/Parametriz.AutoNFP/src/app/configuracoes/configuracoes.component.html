@@ -1,0 +1,15 @@
+<section class="configuracoes">
+
+  <ul ngbNav #nav="ngbNav" class="nav-tabs" >
+    <li *ngFor="let ngbNav of ngNavItem" [ngbNavItem]="ngbNav.item">
+      <a ngbNavLink [routerLink]="ngbNav.route">
+        {{ ngbNav.label }} &nbsp;
+        <i class="fa-solid" [ngClass]="ngbNav.icon"></i>
+      </a>
+    </li>
+  </ul>
+
+  <div class="configuracoes-content">
+    <router-outlet></router-outlet>
+  </div>
+</section>
