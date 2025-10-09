@@ -37,17 +37,6 @@ namespace Parametriz.AutoNFP.Api.Models.User
             return claim?.Value;
         }
 
-        public static string GetUserRefreshToken(this ClaimsPrincipal principal)
-        {
-            if (principal == null)
-            {
-                throw new ArgumentException(nameof(principal));
-            }
-
-            var claim = principal.FindFirst("RefreshToken");
-            return claim?.Value;
-        }
-
         public static Guid GetInstituicaoId(this ClaimsPrincipal principal)
         {
             if (principal == null)

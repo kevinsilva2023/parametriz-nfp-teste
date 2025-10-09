@@ -11,10 +11,16 @@ namespace Parametriz.AutoNFP.Api.Extensions
             return new UsuarioViewModel
             {
                 Id = usuario.Id,
+                InstituicaoId = usuario.InstituicaoId,
                 Nome = usuario.Nome,
                 Email = usuario.Email.ToViewModel(),
                 Desativado = usuario.Desativado
             };
+        }
+
+        public static IEnumerable<UsuarioViewModel> ToViewModel(this IEnumerable<Usuario> usuarios)
+        {
+            return usuarios.Select(u => u.ToViewModel());
         }
     }
 }

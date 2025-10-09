@@ -29,11 +29,6 @@ namespace Parametriz.AutoNFP.Api.Models.User
             return EstaAutenticado() ? _accessor.HttpContext.User.GetUserToken() : string.Empty;
         }
 
-        public string ObterRefreshToken()
-        {
-            return EstaAutenticado() ? _accessor.HttpContext.User.GetUserRefreshToken() : string.Empty;
-        }
-
         public Guid ObterInstituicaoId()
         {
             return EstaAutenticado() ? _accessor.HttpContext.User.GetInstituicaoId() : Guid.Empty;
