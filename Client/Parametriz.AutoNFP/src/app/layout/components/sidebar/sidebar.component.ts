@@ -11,7 +11,7 @@ import { MENU_ITEMS, MenuItem } from '../../models/menu-item';
 export class SidebarComponent {
   isCollapsed = false;
 
-  menuItems: MenuItem[] = MENU_ITEMS;
+  menuItems = MENU_ITEMS;
   
   constructor(private router: Router,
               private route: ActivatedRoute

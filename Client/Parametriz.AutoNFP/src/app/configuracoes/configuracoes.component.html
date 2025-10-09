@@ -1,23 +1,15 @@
 <section class="configuracoes">
-  
-    <ul ngbNav #nav="ngbNav" class="nav-tabs">
-      <!--da para fazer mesmo esquece de ngfor do menu-->
-      <li [ngbNavItem]="'voluntario'">
-        <a ngbNavLink [routerLink]="['/configuracoes/voluntario']">
-          Voluntário &nbsp;
-          <i class="fa-solid fa-user"></i>
-        </a>
-      </li>
-      <li [ngbNavItem]="'voluntario2'">
-        <a ngbNavLink [routerLink]="['/configuracoes/voluntario2']">
-          Usuários &nbsp;
-          <i class="fa-solid fa-users"></i>
-        </a>
-      </li>
-    </ul>
 
-  
-    <div class="configuracoes-content">
-      <router-outlet></router-outlet>
-    </div>
+  <ul ngbNav #nav="ngbNav" class="nav-tabs" >
+    <li *ngFor="let ngbNav of ngNavItem" [ngbNavItem]="ngbNav.item">
+      <a ngbNavLink [routerLink]="ngbNav.route">
+        {{ ngbNav.label }} &nbsp;
+        <i class="fa-solid" [ngClass]="ngbNav.icon"></i>
+      </a>
+    </li>
+  </ul>
+
+  <div class="configuracoes-content">
+    <router-outlet></router-outlet>
+  </div>
 </section>

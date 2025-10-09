@@ -9,8 +9,8 @@ const routes: Routes = [
     path: '',
     component: ConfiguracoesComponent,
     children: [
-      { path: 'voluntario', component: VoluntarioComponent, data: { title: 'Voluntario' } },
-      { path: 'voluntario2', component: Voluntario2Component, data: { title: 'Voluntario2' } },
+      { path: 'voluntario', component: VoluntarioComponent},
+      { path: 'voluntario2', component: Voluntario2Component },
       { path: '', redirectTo: 'voluntario', pathMatch: 'full' },
     ]
   }

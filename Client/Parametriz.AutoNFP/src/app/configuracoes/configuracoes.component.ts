@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap } from 'rxjs';
+import { NGNAV_ITEMS } from './models/ngnav-item';
 
 @Component({
   selector: 'app-configuracoes',
@@ -10,5 +8,5 @@ import { filter, map, mergeMap } from 'rxjs';
   styleUrl: './configuracoes.component.scss'
 })
 export class ConfiguracoesComponent {
-
+  ngNavItem = NGNAV_ITEMS
 }

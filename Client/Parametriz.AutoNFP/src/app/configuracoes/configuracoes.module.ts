@@ -17,7 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CommonModule,
     ConfiguracoesRoutingModule,
-    NgbModule 
-  ]
+    NgbModule,
+]
 })
 export class ConfiguracoesModule { }
