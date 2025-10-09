@@ -5,7 +5,6 @@ using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
-using Parametriz.AutoNFP.Domain.Voluntarios;
 
 namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
 {

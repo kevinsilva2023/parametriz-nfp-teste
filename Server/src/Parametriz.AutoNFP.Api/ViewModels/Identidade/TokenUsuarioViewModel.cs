@@ -2,9 +2,10 @@
 {
     public class TokenUsuarioViewModel
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Email { get; set; }
-        public Guid InstituicaoId { get; set; }
+        public string Nome { get; set; }
+        public TokenInstituicaoViewModel Instituicao { get; set; }
         public ICollection<TokenUsuarioClaimViewModel> Claims { get; set; }
 
         public TokenUsuarioViewModel()

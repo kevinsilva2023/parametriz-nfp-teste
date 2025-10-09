@@ -8,6 +8,8 @@ using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Data;
 using Parametriz.AutoNFP.Api.Models;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
+using Parametriz.AutoNFP.Domain.Instituicoes;
+using Parametriz.AutoNFP.Domain.Usuarios;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -44,14 +46,14 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
         private static long ToUnixEpochDate(DateTime date) => 
             (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
-        public async Task<LoginResponseViewModel> ObterLoginResponse(Guid instituicaoId, string email, RefreshToken token = null)
+        public async Task<LoginResponseViewModel> ObterLoginResponse(Instituicao instituicao, Usuario usuario, RefreshToken token = null)
         {
-            _user = await _userManager.FindByEmailAsync(email);
+            _user = await _userManager.FindByIdAsync(usuario.Id.ToString());
             await IncluirRolesUsuario();
             await IncluirClaimsUsuario();
             IncluirJwtClaims();
-
-            return await GerarLoginResponse(instituicaoId, token);
+            
+            return await GerarLoginResponse(instituicao, usuario);
         }
 
         private async Task IncluirRolesUsuario()
@@ -82,9 +84,9 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             _identityClaims.AddClaims(_jwtClaims);
         }
 
-        private async Task<LoginResponseViewModel> GerarLoginResponse(Guid instituicaoId, RefreshToken token = null)
+        private async Task<LoginResponseViewModel> GerarLoginResponse(Instituicao instituicao, Usuario usuario, RefreshToken token = null)
         {
-            var refreshToken = token ?? await GerarRefreshToken(instituicaoId);
+            var refreshToken = token ?? await GerarRefreshToken(instituicao.Id);
 
             return new LoginResponseViewModel
             {
@@ -92,9 +94,10 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
                 ExpiresIn = TimeSpan.FromHours(_appJwtConfig.Expiration).TotalSeconds,
                 UserToken = new TokenUsuarioViewModel
                 {
-                    Id = _user.Id,
-                    Email = _user.Email,
-                    InstituicaoId = instituicaoId,
+                    Id = usuario.Id,
+                    Email = usuario.Email.Conta,
+                    Nome = usuario.Nome, 
+                    Instituicao = new TokenInstituicaoViewModel { Id = instituicao.Id, RazaoSocial = instituicao.RazaoSocial },
                     Claims = _userClaims.Select(c => new TokenUsuarioClaimViewModel { Type = c.Type, Value = c.Value }).ToList()
                 },
                 RefreshToken = new RefreshTokenViewModel
@@ -128,11 +131,11 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             var refreshToken = new RefreshToken
             {
                 InstituicaoId = instituicaoId,
-                UserName = _user.Email,
+                UsuarioId = Guid.Parse(_user.Id),
                 ExpirationDate = DateTime.UtcNow.AddHours(_appJwtConfig.RefreshTokenExpiration)
             };
 
-            _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(u => u.UserName == _user.Email));
+            _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(u => u.UsuarioId == Guid.Parse(_user.Id)));
             await _context.RefreshTokens.AddAsync(refreshToken);
 
             await _context.SaveChangesAsync();
