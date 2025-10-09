@@ -6,13 +6,13 @@ using Microsoft.Extensions.Options;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
-using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
+using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
 using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Instituicoes;
-using Parametriz.AutoNFP.Domain.Voluntarios;
+using Parametriz.AutoNFP.Domain.Usuarios;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
@@ -24,9 +24,9 @@ namespace Parametriz.AutoNFP.Api.Controllers
     {
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IInstituicaoRepository _instituicaoRepository;
-        private readonly IVoluntarioRepository _voluntarioRepository;
+        private readonly IUsuarioRepository _voluntarioRepository;
         private readonly IInstituicaoService _instituicaoService;
-        private readonly IVoluntarioService _voluntarioService;
+        private readonly IUsuarioService _voluntarioService;
         private readonly IEmailService _emailService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -41,8 +41,8 @@ namespace Parametriz.AutoNFP.Api.Controllers
                               UserManager<IdentityUser> userManager,
                               IOptions<UrlsConfig> options,
                               IInstituicaoRepository instituicaoRepository,
-                              IVoluntarioRepository voluntarioRepository,
-                              IVoluntarioService voluntarioService)
+                              IUsuarioRepository voluntarioRepository,
+                              IUsuarioService voluntarioService)
             : base(notificador, user)
         {
             _jwtTokenService = jwtTokenService;
@@ -77,7 +77,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                     return CustomResponse(cadastrarInstituicaoViewModel);
                 }
 
-                await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome);
+                await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.UsuarioNome);
             }
 
             AdicionarErrosIdentity(result);
@@ -191,7 +191,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 return CustomResponse();
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(enviarConfirmarEmailViewModel.VoluntarioId);
+            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(enviarConfirmarEmailViewModel.VoluntarioId);
             var voluntario = await _voluntarioRepository.ObterPorId(enviarConfirmarEmailViewModel.VoluntarioId, instituicao.Id);
 
             if (InstituicaoId != instituicao.Id)
@@ -227,7 +227,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 return CustomResponse();
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
+            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(Guid.Parse(user.Id));
             var voluntario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || voluntario.Desativado)
@@ -346,7 +346,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 return CustomResponse();
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
+            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(Guid.Parse(user.Id));
             var voluntario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || voluntario.Desativado)
@@ -373,7 +373,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 return CustomResponse();
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
+            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(Guid.Parse(user.Id));
             var voluntario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || voluntario.Desativado)
@@ -417,7 +417,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
 
             if (result.Succeeded)
             {
-                var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
+                var instituicao = await _instituicaoRepository.ObterPorUsuarioId(Guid.Parse(user.Id));
                 var voluntario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
                 if (instituicao.Desativada)
@@ -461,7 +461,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
         }
 
         [HttpPost("cadastrar-voluntario")]
-        public async Task<IActionResult> Post([FromBody] CadastrarVoluntarioViewModel cadastrarVoluntarioViewModel)
+        public async Task<IActionResult> Post([FromBody] CadastrarUsuarioViewModel cadastrarVoluntarioViewModel)
         {
             if (!ModelStateValida())
                 return CustomResponse(cadastrarVoluntarioViewModel);
