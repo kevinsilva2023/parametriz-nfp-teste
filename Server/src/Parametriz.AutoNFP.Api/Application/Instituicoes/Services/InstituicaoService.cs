@@ -4,7 +4,7 @@ using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Instituicoes;
-using Parametriz.AutoNFP.Domain.Voluntarios;
+using Parametriz.AutoNFP.Domain.Usuarios;
 
 namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
 {
@@ -25,8 +25,8 @@ namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
         {
             await ValidarEntidade(new InstituicaoValidation(), instituicao);
             await ValidarEntidade(new CnpjCpfObrigatorioValidation(), instituicao.Cnpj);
-            await ValidarEntidade(new VoluntarioValidation(), instituicao.Voluntarios.First());
-            await ValidarEntidade(new EmailValidation(), instituicao.Voluntarios.First().Email);
+            await ValidarEntidade(new UsuarioValidation(), instituicao.Usuarios.First());
+            await ValidarEntidade(new EmailValidation(), instituicao.Usuarios.First().Email);
         }
 
         private async Task InstituicaoEhUnica(Instituicao instituicao)
@@ -43,15 +43,15 @@ namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
             return CommandEhValido();
         }
 
-        public async Task<bool> Cadastrar(CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel, Guid voluntarioId)
+        public async Task<bool> Cadastrar(CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel, Guid usuarioId)
         {
             var instituicao = new Instituicao(Guid.NewGuid(), cadastrarInstituicaoViewModel.RazaoSocial,
                 cadastrarInstituicaoViewModel.Cnpj);
 
-            var voluntario = new Voluntario(voluntarioId, instituicao.Id, cadastrarInstituicaoViewModel.VoluntarioNome,
+            var usuario = new Usuario(usuarioId, instituicao.Id, cadastrarInstituicaoViewModel.UsuarioNome,
                 new Domain.Core.ValueObjects.Email(cadastrarInstituicaoViewModel.Email));
 
-            instituicao.IncluirVoluntario(voluntario);
+            instituicao.IncluirUsuario(usuario);
 
             if (!await InstituicaoAptaParaCadastrar(instituicao))
                 return false;

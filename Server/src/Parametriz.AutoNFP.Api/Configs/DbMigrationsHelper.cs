@@ -13,18 +13,18 @@ namespace Parametriz.AutoNFP.Api.Configs
             using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
                         
-            await EnsureSeedDataApplicationDbContext(scope, env);
+            await EnsureSeedDataAutoNfpIdentityDbContext(scope, env);
             await EnsureSeedDataAutoNfpDbContext(scope, env);
         }
 
-        public static async Task EnsureSeedDataApplicationDbContext(IServiceScope scope, IWebHostEnvironment env)
+        public static async Task EnsureSeedDataAutoNfpIdentityDbContext(IServiceScope scope, IWebHostEnvironment env)
         {
-            var applicationDbContext = scope.ServiceProvider.GetRequiredService<AutoNfpIdentityDbContext>();
+            var autoNfpIdentityDbContext = scope.ServiceProvider.GetRequiredService<AutoNfpIdentityDbContext>();
 
-            await DbHealthChecker.TestConnection(applicationDbContext);
+            await DbHealthChecker.TestConnection(autoNfpIdentityDbContext);
 
             if (env.IsDevelopment())
-                await applicationDbContext.Database.MigrateAsync();                
+                await autoNfpIdentityDbContext.Database.MigrateAsync();                
         }
 
         private static async Task EnsureSeedDataAutoNfpDbContext(IServiceScope scope, IWebHostEnvironment env)
