@@ -9,6 +9,7 @@
 
 .bg-primary { background: var(--royal-blue) !important; }
 .bg-primary-light { background: var(--royal-blue-dark-blur) !important; }
+.bg-sand { background-color: var(--sand) !important;}
 .bg-gradient-sand { background: var(--gradient-secondary) !important; }
 .bg-gradient-royal { background: var(--gradient-primary !important);}
 .bg-gradient-hero { background: var(--gradient-hero !important);}
@@ -21,3 +22,24 @@
 
 
 .border-primary { border-color: var(--royal-blue) !important; }
+.border-sand { border: 2px solid var(--sand-dark); }
+
+.card-white {
+  background-color: var(--gray-50);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  height: 100%;
+}
+
+.input-group-text {
+  background: var(--gradient-blur);
+  color: var(--royal-blue);
+  border: 1px solid var(--royal-blue);
+  // width: 30%;
+}
+
+.form-disable {
+  color: var(--gray-500);
+  text-transform: uppercase;
+  
+}
