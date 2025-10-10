@@ -21,8 +21,7 @@ namespace Parametriz.AutoNFP.Api.Configs
             builder
                 .AddIdentityDbContext()
                 .AddIdentityApiSupport()
-                .AddJwtSupport()
-                .AddAspNetUserSupport();
+                .AddJwtSupport();
 
             return builder;
         }
@@ -101,15 +100,6 @@ namespace Parametriz.AutoNFP.Api.Configs
                     // Caso seja necessário implementar JWKS
                     //options.SetJwksOptions(new JwkOptions(appConfig.AutenticacaoJwksUrl));
                 });
-
-            return builder;
-        }
-
-        public static WebApplicationBuilder AddAspNetUserSupport(this WebApplicationBuilder builder)
-        {
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            builder.Services.AddScoped<IAspNetUser, AspNetUser>();
-            builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             return builder;
         }

@@ -30,6 +30,7 @@ namespace Parametriz.AutoNFP.Api.Configs
                 await autoNfpIdentityDbContext.Database.MigrateAsync();
 
             await roleManager.CreateAsync(new IdentityRole("Administrador"));
+            await roleManager.CreateAsync(new IdentityRole("Parametriz"));
         }
 
         private static async Task EnsureSeedDataAutoNfpDbContext(IServiceScope scope, IWebHostEnvironment env)

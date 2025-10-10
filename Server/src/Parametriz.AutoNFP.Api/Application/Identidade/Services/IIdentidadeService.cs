@@ -15,8 +15,5 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
         Task<LoginResponseViewModel> UtilizarRefreshToken(Guid refreshToken);
         
         Task<bool> CadastrarUsuario(UsuarioViewModel usuarioViewModel);
-        
-        Task<bool> CadastrarRoleNoUsuario(Guid usuarioId, string role);
-        Task<bool> RemoverRoleDoUsuario(Guid usuarioId, string role);
     }
 }

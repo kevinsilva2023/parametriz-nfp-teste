@@ -2,7 +2,9 @@
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Identidade.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
+using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
 using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
+using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository;
 using Parametriz.AutoNFP.Data.Uow;
@@ -19,6 +21,10 @@ namespace Parametriz.AutoNFP.Api.Configs
         {
             if (builder == null) 
                 throw new ArgumentNullException(nameof(builder));
+
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddScoped<IAspNetUser, AspNetUser>();
+            builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             builder.Services.AddScoped<IIdentidadeService, IdentidadeService>();
 

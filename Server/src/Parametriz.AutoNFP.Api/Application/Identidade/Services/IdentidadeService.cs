@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
@@ -42,7 +43,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                                  IJwtTokenService jwtTokenService,
                                  SignInManager<IdentityUser> signInManager,
                                  UserManager<IdentityUser> userManager,
-                                 UrlsConfig urlsConfig)
+                                 IOptions<UrlsConfig> options)
             : base(user, uow, notificador)
         {
             _instituicaoRepository = instituicaoRepository;
@@ -53,7 +54,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             _jwtTokenService = jwtTokenService;
             _signInManager = signInManager;
             _userManager = userManager;
-            _urlsConfig = urlsConfig;
+            _urlsConfig = options.Value;
         }
 
         #region Identity
@@ -113,33 +114,6 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return false;
             }
             return true;
-        }
-
-        private void AdicionarErrosIdentity(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                NotificarErro(error.Description);
-            }
-        }
-
-        public async Task<bool> CadastrarRoleNoUsuario(Guid usuarioId, string role)
-        {
-            var user = await _userManager.FindByIdAsync(usuarioId.ToString());
-
-            if (user == null)
-                return NotificarErro("Usuário não encontrado.");
-
-            return await CadastrarRoleNoUsuario(user, role);
-        }
-        public async Task<bool> RemoverRoleDoUsuario(Guid usuarioId, string role)
-        {
-            var user = await _userManager.FindByIdAsync(usuarioId.ToString());
-
-            if (user == null)
-                return NotificarErro("Usuário não encontrado.");
-
-            return await RemoverRoleDoUsuario(user, role);
         }
         #endregion Identity
 

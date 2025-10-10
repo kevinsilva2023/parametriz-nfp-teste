@@ -10,10 +10,10 @@ namespace Parametriz.AutoNFP.Api.Configs
         {
             if (builder == null) throw new ArgumentNullException(nameof(builder));
 
-            builder.Services.AddControllers();
-
             builder.Services.Configure<SmtpConfig>(builder.Configuration.GetSection("SmtpConfig"));
             builder.Services.Configure<UrlsConfig>(builder.Configuration.GetSection("UrlsConfig"));
+
+            builder.Services.AddControllers();
 
             builder.Services.AddCors(options =>
             {

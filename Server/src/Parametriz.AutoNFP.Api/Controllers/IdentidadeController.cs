@@ -27,8 +27,8 @@ namespace Parametriz.AutoNFP.Api.Controllers
         private readonly IIdentidadeService _identidadeService;
 
         public IdentidadeController(Notificador notificador,
-                              IAspNetUser user,
-                              IIdentidadeService identidadeService)
+                                    IAspNetUser user,
+                                    IIdentidadeService identidadeService)
             : base(notificador, user)
         {
             _identidadeService = identidadeService;
