@@ -12,5 +12,10 @@ namespace Parametriz.AutoNFP.Api.Extensions.Core
                 Conta = email.Conta
             };
         }
+
+        public static Email ToDomain(this EmailViewModel emailViewModel)
+        {
+            return new Email(emailViewModel.Conta);
+        }
     }
 }

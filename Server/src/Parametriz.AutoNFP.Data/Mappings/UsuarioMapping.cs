@@ -35,6 +35,9 @@ namespace Parametriz.AutoNFP.Data.Mappings
                     .IsUnique();
             });
 
+            builder.Property(p => p.Administrador)
+                .IsRequired();
+
             builder.Property(p => p.Desativado)
                 .IsRequired();
 

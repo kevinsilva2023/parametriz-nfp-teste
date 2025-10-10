@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Parametriz.AutoNFP.Api.Data;
 using Parametriz.AutoNFP.Data.Context;
@@ -12,7 +13,7 @@ namespace Parametriz.AutoNFP.Api.Configs
             var serviceProvider = app.Services.CreateScope().ServiceProvider;
             using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
-                        
+              
             await EnsureSeedDataAutoNfpIdentityDbContext(scope, env);
             await EnsureSeedDataAutoNfpDbContext(scope, env);
         }
@@ -21,10 +22,15 @@ namespace Parametriz.AutoNFP.Api.Configs
         {
             var autoNfpIdentityDbContext = scope.ServiceProvider.GetRequiredService<AutoNfpIdentityDbContext>();
 
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
             await DbHealthChecker.TestConnection(autoNfpIdentityDbContext);
 
             if (env.IsDevelopment())
-                await autoNfpIdentityDbContext.Database.MigrateAsync();                
+                await autoNfpIdentityDbContext.Database.MigrateAsync();
+
+            await roleManager.CreateAsync(new IdentityRole("Administrador"));
+            await roleManager.CreateAsync(new IdentityRole("Parametriz"));
         }
 
         private static async Task EnsureSeedDataAutoNfpDbContext(IServiceScope scope, IWebHostEnvironment env)
