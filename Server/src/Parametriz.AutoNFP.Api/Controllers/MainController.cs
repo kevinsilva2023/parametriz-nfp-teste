@@ -74,12 +74,6 @@ namespace Parametriz.AutoNFP.Api.Controllers
             }
         }
 
-        protected void AdicionarErrosIdentity(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                NotificarErro(error.Description);
-            }
-        }
+        
     }
 }

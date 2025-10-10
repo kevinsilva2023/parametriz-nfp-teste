@@ -13,15 +13,17 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
     {
         public string Nome { get; private set; }
         public Email Email { get; private set; }
+        public bool Administrador { get; private set; }
         public bool Desativado { get; private set; }
 
         public Instituicao Instituicao { get; private set; }
 
-        public Usuario(Guid id, Guid instituicaoId, string nome, Email email)
+        public Usuario(Guid id, Guid instituicaoId, string nome, Email email, bool administrador)
             : base(id, instituicaoId)
         {
             Email = email;
             AlterarNome(nome);
+            AlterarAdministrador(administrador);
         }
 
         protected Usuario() { }
@@ -31,8 +33,14 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
             Nome = nome.Trim().ToUpper();
         }
 
+        public void AlterarAdministrador(bool administrador)
+        {
+            Administrador = administrador;
+        }
+
         public void Desativar() 
-        { 
+        {
+            Administrador = false;
             Desativado = true;  
         }
 

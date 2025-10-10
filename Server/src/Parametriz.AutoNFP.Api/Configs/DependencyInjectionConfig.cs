@@ -1,5 +1,6 @@
 ﻿
 using Parametriz.AutoNFP.Api.Application.Email.Services;
+using Parametriz.AutoNFP.Api.Application.Identidade.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
 using Parametriz.AutoNFP.Data.Context;
@@ -18,6 +19,8 @@ namespace Parametriz.AutoNFP.Api.Configs
         {
             if (builder == null) 
                 throw new ArgumentNullException(nameof(builder));
+
+            builder.Services.AddScoped<IIdentidadeService, IdentidadeService>();
 
             builder.Services.AddScoped<IEmailService, EmailService>();
 
