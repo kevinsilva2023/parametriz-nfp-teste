@@ -1,0 +1,62 @@
+<div class="card-white">
+  <form (ngSubmit)="efetuarCadastroCertificadoVoluntario()" [formGroup]="voluntarioForm" >
+
+    <div class="mb-4">
+      <div class="upload-area border rounded p-4 text-center bg-light"
+          style="border: 2px dashed var(--royal-blue) !important;"
+          (click)="fileInput.click()"
+          (dragover)="isArquivoArrastado = true; $event.preventDefault()"
+          (dragleave)="isArquivoArrastado = false"
+          (drop)="upload($event)">
+
+        <i class="fa-solid fa-cloud-upload fs-1 text-muted d-block mb-2"></i>
+        <h1 class="fs-6">Selecionar Certificado (.pfx)</h1>
+        <small class="text-muted fs-small">Clique aqui ou arraste o arquivo</small>
+
+        <input #fileInput type="file" class="d-none" accept=".pfx,.p12" (change)="upload($event)">
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <mat-form-field 
+          appearance="outline" class="mb-3" (click)="fileInput.click()"
+          [ngClass]="{'has-error': displayMessage['certificadoDigital']}">
+        <mat-label>
+          <i class="fa-solid fa-address-card"></i>
+          &nbsp; Certificado
+        </mat-label>
+        <input matInput formControlName="certificadoDigital" class="overflow-hidden">
+        <mat-error  
+          *ngIf="displayMessage['certificadoDigital']" 
+          [innerHtml]="displayMessage['certificadoDigital']">
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field 
+          appearance="outline" class="mb-3"
+          [ngClass]="{'has-error': displayMessage['senha']}">
+        <mat-label>
+          <i class="fa-solid fa-lock"></i>
+          &nbsp;Senha
+        </mat-label>
+        <input matInput formControlName="senhaCertificadoDigital"
+              [type]="verSenha ? 'text' : 'password'"
+              placeholder="••••••••"
+              class="overflow-hidden">
+        <button mat-icon-button matSuffix
+                type="button" class="btn"
+                (click)="verSenha = !verSenha">
+          <i class="fa-solid" [ngClass]="verSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+        <mat-error  
+          *ngIf="displayMessage['senhaCertificadoDigital']" 
+          [innerHtml]="displayMessage['senhaCertificadoDigital']">
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <button type="submit" class="btn btn-primary rounded-5 w-100">
+      <i class="fa-solid fa-lock me-2"></i>Gravar Certificado
+    </button>
+  </form>
+</div>

@@ -4,8 +4,12 @@ import { Component } from '@angular/core';
   selector: 'app-voluntario',
   standalone: false,
   templateUrl: './voluntario.component.html',
-  styleUrl: './voluntario.component.scss'
 })
 export class VoluntarioComponent {
+  certificadoCadastrado = false;
+
+  onCertificadoStatusChange(status: boolean) {
+    this.certificadoCadastrado = status;
+  }
 
 }
