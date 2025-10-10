@@ -54,7 +54,6 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
     let arquivo: File;
 
     if (this.isArquivoArrastado) {
-      evento.preventDefault();
       arquivo = evento.dataTransfer?.files?.[0];
     } else {
       arquivo = evento.target.files?.[0];
@@ -73,12 +72,12 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
   }
 
   preencherForm(certificadoName: string, uploadBase64: string) {
-    let instituicaoId = LocalStorageUtils.obterInstituicaoId();
+    // let instituicaoId = LocalStorageUtils.obterInstituicaoId();
 
     this.voluntarioForm.patchValue({
       certificadoDigital: certificadoName,
       upload: uploadBase64,
-      instituicaoId: instituicaoId
+      // instituicaoId: instituicaoId
     });
     this.voluntarioForm.get('certificadoDigital')?.markAsTouched();
   }

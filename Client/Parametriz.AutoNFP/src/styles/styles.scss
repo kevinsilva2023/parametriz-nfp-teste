@@ -29,8 +29,7 @@ input {
   overflow: hidden;
   padding: 0px 16px 26px 16px;
   z-index: 0;
-
-
+  
   .fundo-animado {
     position: absolute;
     inset: 0;
@@ -239,3 +238,6 @@ input[type="checkbox"]:checked+.checkmark::after {
   
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
