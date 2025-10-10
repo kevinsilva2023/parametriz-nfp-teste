@@ -32,6 +32,14 @@ namespace Parametriz.AutoNFP.Data.Repository
                                u.Id != id);
         }
 
+        public async Task<bool> ExistemOutrosAdministradoresNaInstituicao(Guid id, Guid instituicaoId)
+        {
+            return await _context.Usuarios
+                .AnyAsync(u => u.InstituicaoId == instituicaoId &&
+                               u.Id != id &&
+                               u.Administrador);    
+        }
+
         public async Task<IEnumerable<Usuario>> ObterPorFiltros(Guid instituicaoId, string nome = "")
         {
             return await _context.Usuarios

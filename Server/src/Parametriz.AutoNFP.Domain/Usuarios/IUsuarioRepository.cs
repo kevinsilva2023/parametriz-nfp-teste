@@ -9,7 +9,9 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
 {
     public interface IUsuarioRepository : IInstituicaoEntityRepository<Usuario>
     {
+        
         Task<bool> ExistemOutrosUsuariosNaInstituicao(Guid id, Guid instituicaoId);
+        Task<bool> ExistemOutrosAdministradoresNaInstituicao(Guid id, Guid instituicaoId);
         Task<IEnumerable<Usuario>> ObterPorFiltros(Guid instituicaoId, string nome = "");
     }
 }

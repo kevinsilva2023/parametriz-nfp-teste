@@ -45,11 +45,11 @@ namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
 
         public async Task<bool> Cadastrar(CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel, Guid usuarioId)
         {
-            var instituicao = new Instituicao(Guid.NewGuid(), cadastrarInstituicaoViewModel.RazaoSocial,
+            var instituicao = new Instituicao(cadastrarInstituicaoViewModel.Id, cadastrarInstituicaoViewModel.RazaoSocial,
                 cadastrarInstituicaoViewModel.Cnpj);
 
             var usuario = new Usuario(usuarioId, instituicao.Id, cadastrarInstituicaoViewModel.UsuarioNome,
-                new Domain.Core.ValueObjects.Email(cadastrarInstituicaoViewModel.Email));
+                new Domain.Core.ValueObjects.Email(cadastrarInstituicaoViewModel.Email), true);
 
             instituicao.IncluirUsuario(usuario);
 

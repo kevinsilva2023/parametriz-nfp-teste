@@ -8,7 +8,7 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Usuarios
         [Key]
         public Guid Id { get; set; }
 
-        [Display(Name ="Instituição")]
+        [Display(Name = "Instituição")]
         [Required(ErrorMessage = "Favor preencher a instituição.")]
         public Guid InstituicaoId { get; set; }
 
@@ -17,6 +17,8 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Usuarios
         public string Nome { get; set; }
 
         public EmailViewModel Email { get; set; }
+
+        public bool Administrador { get; set; }
 
         public bool Desativado { get; set; }
     }

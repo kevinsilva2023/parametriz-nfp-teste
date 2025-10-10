@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Identity;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
@@ -45,6 +46,15 @@ namespace Parametriz.AutoNFP.Api.Application
             {
                 _notificador.IncluirNotificacao(error.ErrorMessage);
             }
+        }
+
+        protected bool AdicionarErrosIdentity(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                NotificarErro(error.Description);
+            }
+            return false;
         }
 
         protected bool NotificarErro(string value)

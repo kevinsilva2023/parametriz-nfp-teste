@@ -14,6 +14,7 @@ namespace Parametriz.AutoNFP.Api.Extensions
                 InstituicaoId = usuario.InstituicaoId,
                 Nome = usuario.Nome,
                 Email = usuario.Email.ToViewModel(),
+                Administrador = usuario.Administrador,
                 Desativado = usuario.Desativado
             };
         }

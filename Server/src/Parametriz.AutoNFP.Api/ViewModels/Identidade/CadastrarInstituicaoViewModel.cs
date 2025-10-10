@@ -4,6 +4,9 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
 {
     public class CadastrarInstituicaoViewModel
     {
+        [Key]
+        public Guid Id { get; set; }
+
         [Display(Name = "Razão Social")]
         [Required(ErrorMessage = "Favor preencher a razão social.")]
         [MaxLength(256, ErrorMessage = "Razão social deve ser preenchida com no máximo {1} caracteres.")]
@@ -34,5 +37,10 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
         [Compare("Senha", ErrorMessage = "Confirmação de senha não confere.")]
         [DataType(DataType.Password)]
         public string SenhaConfirmacao { get; set; }
+
+        public CadastrarInstituicaoViewModel()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

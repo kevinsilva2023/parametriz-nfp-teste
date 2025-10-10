@@ -1,6 +1,10 @@
-﻿using Parametriz.AutoNFP.Api.Models.User;
+﻿using Microsoft.AspNetCore.Identity;
+using Parametriz.AutoNFP.Api.Application.Identidade.Services;
+using Parametriz.AutoNFP.Api.Extensions.Core;
+using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
+using Parametriz.AutoNFP.Data.Migrations;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
@@ -10,14 +14,17 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
     public class UsuarioService : BaseService, IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public UsuarioService(IAspNetUser user,
-                                 IUnitOfWork uow,
-                                 Notificador notificador,
-                                 IUsuarioRepository usuarioRepository)
+                              IUnitOfWork uow,
+                              Notificador notificador,
+                              UserManager<IdentityUser> userManager,
+                              IUsuarioRepository usuarioRepository)
             : base(user, uow, notificador)
         {
             _usuarioRepository = usuarioRepository;
+            _userManager = userManager;
         }
 
         private async Task ValidarUsuario(Usuario usuario)
@@ -37,6 +44,12 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
                 NotificarErro("Não foram encontrados outros usuários na instituição.");
         }
 
+        private async Task ExistemOutrosAdministradoresNaInstituicao(Guid usuarioId)
+        {
+            if (!await _usuarioRepository.ExistemOutrosAdministradoresNaInstituicao(usuarioId, InstituicaoId))
+                NotificarErro("Não foram encontrados outros administradores na instituição.");
+        }
+
         private async Task<bool> UsuarioAptoParaCadastrar(Usuario usuario)
         {
             ValidarInstituicao(usuario.InstituicaoId);
@@ -46,10 +59,10 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
             return CommandEhValido();
         }
 
-        public async Task<bool> Cadastrar(CadastrarUsuarioViewModel cadastrarUsuarioViewModel)
+        public async Task<bool> Cadastrar(UsuarioViewModel usuarioViewModel, Guid usuarioId)
         {
-            var usuario = new Usuario(Guid.NewGuid(), cadastrarUsuarioViewModel.InstituicaoId, 
-                cadastrarUsuarioViewModel.Nome, new Domain.Core.ValueObjects.Email(cadastrarUsuarioViewModel.Email));
+            var usuario = new Usuario(usuarioId, usuarioViewModel.InstituicaoId, usuarioViewModel.Nome, 
+                usuarioViewModel.Email.ToDomain(), usuarioViewModel.Administrador);
 
             if (!await UsuarioAptoParaCadastrar(usuario))
                 return false;
@@ -66,6 +79,9 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
             await ValidarUsuario(usuario);
             await UsuarioEhUnico(usuario);
 
+            if (!usuario.Administrador)
+                await ExistemOutrosAdministradoresNaInstituicao(usuario.Id);
+
             return CommandEhValido();
         }
 
@@ -75,15 +91,26 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
 
             if (usuario == null)
                 return NotificarErro("Usuário não encontrado.");
+            
+            var eraAdministrador = usuario.Administrador;
 
             usuario.AlterarNome(usuarioViewModel.Nome);
+            usuario.AlterarAdministrador(usuarioViewModel.Administrador);
 
             if (!await UsuarioAptoParaAtualizar(usuario))
                 return false;
 
             _usuarioRepository.Atualizar(usuario);
 
-            await Commit();
+            var resultRole = true;
+            if (eraAdministrador && !usuario.Administrador)
+                resultRole = await RemoverRoleAdministradorDoUsuario(usuario.Id);
+
+            if (!eraAdministrador && usuario.Administrador)
+                resultRole = await AdicionarRoleAdministradorDoUsuario(usuario.Id);
+
+            if (resultRole)
+                await Commit();
 
             return CommandEhValido();
         }
@@ -91,6 +118,8 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
         private async Task<bool> UsuarioAptoParaDesativar(Guid usuarioId)
         {
             await ExistemOutrosUsuariosNaInstituicao(usuarioId);
+            await ExistemOutrosAdministradoresNaInstituicao(usuarioId);
+            
             return CommandEhValido();
         }
 
@@ -104,14 +133,21 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
             if (usuario.Desativado)
                 NotificarErro("Usuário não está ativo.");
 
+            var eraAdministrador = usuario.Administrador;
+
             if (!await UsuarioAptoParaDesativar(usuario.Id))
                 return false;
 
-            usuario.Ativar();
+            usuario.Desativar();
 
             _usuarioRepository.Atualizar(usuario);
 
-            await Commit();
+            var resultRole = true;
+            if (eraAdministrador)
+                resultRole = await RemoverRoleAdministradorDoUsuario(usuario.Id);
+
+            if (resultRole)
+                await Commit();
 
             return CommandEhValido();
         }
@@ -142,5 +178,39 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
 
             return CommandEhValido();
         }
+
+        #region Identity
+
+
+        private async Task<bool> AdicionarRoleAdministradorDoUsuario(Guid usuarioId)
+        {
+            var user = await _userManager.FindByIdAsync(usuarioId.ToString());
+
+            if (user == null)
+                return false;
+
+            var result = await _userManager.AddToRoleAsync(user, "Administrador");
+
+            if (!result.Succeeded)
+                return AdicionarErrosIdentity(result);
+
+            return true;
+        }
+
+        private async Task<bool> RemoverRoleAdministradorDoUsuario(Guid usuarioId)
+        {
+            var user = await _userManager.FindByIdAsync(usuarioId.ToString());
+
+            if (user == null)
+                return false;
+
+            var result = await _userManager.RemoveFromRoleAsync(user, "Administrador");
+
+            if (!result.Succeeded)
+                return AdicionarErrosIdentity(result);
+
+            return true;
+        }
+        #endregion Identity
     }
 }

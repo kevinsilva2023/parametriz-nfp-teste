@@ -9,7 +9,5 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Core
         [Required(ErrorMessage = "Favor preencher o e-mail.")]
         [EmailAddress(ErrorMessage = "E-mail inválido.")]
         public string Conta { get; set; }
-
-        public Email ViewModelToDomain() => new(Conta);
     }
 }
