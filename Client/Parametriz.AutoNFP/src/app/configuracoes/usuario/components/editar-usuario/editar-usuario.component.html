@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <div class="bg-primary text-white fs-5 fw-medium text-uppercase px-4 py-2 rounded">
+    <i class="fa-solid fa-users"></i> &nbsp;
+    Editar Usuário - {{ usuario.nome }}
+  </div>
+</div>
+<div class="modal-body" tabindex="1">
+  <h2 class="fs-6 mb-3">Editar usuário, alterando os dados abaixo:</h2>
+
+  <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+    <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+    <ul>
+      <li class="fs-small mt-1">
+        {{ errors }}
+      </li>
+    </ul>
+  </alert>
+
+  <form [formGroup]="editarUsuarioForm">
+
+    <div class="d-flex gap-3">
+      <mat-form-field class="w-100" appearance="outline" [ngClass]="{'has-error': displayMessage['nome']}">
+        <mat-label>
+          <i class="fa-solid fa-user"></i>
+          &nbsp; Nome Usuário
+        </mat-label>
+        <input matInput formControlName="nome" type="text" placeholder="Digite o nome do Usuário">
+        <mat-error *ngIf="displayMessage['nome']" [innerHtml]="displayMessage['nome']"> </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['email']}">
+        <mat-label>
+          <i class="fa-solid fa-envelope"></i>
+          &nbsp; E-mail
+        </mat-label>
+        <input matInput formControlName="email" type="email" placeholder="seuemail@aqui.com.br">
+        <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"> </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-slide-toggle class="mat-slide-toggle-small" formControlName="administrador" labelPosition="before">
+      Administrador: &nbsp;
+    </mat-slide-toggle>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-outline-primary" (click)="fecharModal()">
+    Sair
+  </button>
+  <button (click)="efetuarEditarUsuario()" type="submit" class="btn btn-primary">
+    Ediatar
+  </button>
+</div>

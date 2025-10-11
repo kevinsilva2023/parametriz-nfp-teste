@@ -20,6 +20,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { ListarUsuarioComponent } from './components/listar-usuario/listar-usuario.component';
 import { InativarUsuarioComponent } from './components/inativar-usuario/inativar-usuario.component';
 import { AtivarUsuarioComponent } from './components/ativar-usuario/ativar-usuario.component';
+import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuario.component';
 
 
 
@@ -32,6 +33,7 @@ import { AtivarUsuarioComponent } from './components/ativar-usuario/ativar-usuar
     ListarUsuarioComponent,
     InativarUsuarioComponent,
     AtivarUsuarioComponent,
+    EditarUsuarioComponent,
   ],
   imports: [
     CommonModule,

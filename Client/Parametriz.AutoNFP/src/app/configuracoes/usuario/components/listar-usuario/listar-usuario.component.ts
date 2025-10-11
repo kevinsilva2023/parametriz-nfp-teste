@@ -6,6 +6,7 @@ import { InativarUsuarioComponent } from '../inativar-usuario/inativar-usuario.c
 import { Usuario } from '../../models/usuario';
 import { CadastrarUsuarioComponent } from '../cadastrar-usuario/cadastrar-usuario.component';
 import { AtivarUsuarioComponent } from '../ativar-usuario/ativar-usuario.component';
+import { EditarUsuarioComponent } from '../editar-usuario/editar-usuario.component';
 
 @Component({
   selector: 'app-listar-usuario',
@@ -91,7 +92,7 @@ export class ListarUsuarioComponent implements OnInit {
   inativarUsuario(usuario: Usuario) {
     let modalRef = this.modalService.open(InativarUsuarioComponent, { size: 'lg', centered: true })
 
-    modalRef.componentInstance.usuario = usuario
+    modalRef.componentInstance.usuario = usuario;
 
     modalRef.closed
       .subscribe({
@@ -102,7 +103,18 @@ export class ListarUsuarioComponent implements OnInit {
   ativarUsuario(usuario: Usuario) {
     let modalRef = this.modalService.open(AtivarUsuarioComponent, { size: 'lg', centered: true })
 
-    modalRef.componentInstance.usuario = usuario
+    modalRef.componentInstance.usuario = usuario;
+
+    modalRef.closed
+      .subscribe({
+        next: () => this.obterPorFiltro()
+      });
+  }
+
+  editarUsuario(usuario: Usuario) {
+    let modalRef = this.modalService.open(EditarUsuarioComponent, { size: 'lg', centered: true })
+
+    modalRef.componentInstance.usuario = usuario;
 
     modalRef.closed
       .subscribe({
