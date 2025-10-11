@@ -1,16 +1,30 @@
 <!-- Botão Cadastrar -->
 
 <!-- Filtros -->
+<div class="d-flex justify-content-between gap-3 mb-4 p-0">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Nome</mat-label>
+    <input matInput placeholder="Filtrar por nome" (keyup)="debounceNomeUsuario.next(getInputValue($event))">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>E-mail</mat-label>
+    <input matInput placeholder="Filtrar por e-mail" (keyup)="debounceEmailUsuario.next(getInputValue($event))">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100" >
+    <mat-label>Acesso</mat-label>
+    <mat-select (selectionChange)="alterarFiltroAcesso($event.value)" panelClass="acesso-select-panel">
+      <mat-option [value]="2"></mat-option>
+      <mat-option [value]="1">Sim</mat-option>
+      <mat-option [value]="0">Não</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 
 <!-- Tabela -->
-
-<!-- NOME -->
-<!-- E-MAIL -->
-<!-- ACESSO -->
-<!-- STATUS -->
-<!-- AÇÕES -->
 <div>
-  <table class="table">
+  <table class="table" *ngIf="usuariosCadastrados && usuariosCadastrados.length > 0; else semUsuarios">
     <thead class="sticky-top ">
       <tr>
         <th>NOME</th>
@@ -26,7 +40,9 @@
         <td>{{ usuario.email.conta }}</td>
         <td>{{ usuario.administrador ? 'Admin' : 'Usuário'}}</td>
         <td>
-          <button class="btn btn-primary" [matMenuTriggerFor]="menu">ações</button>
+          <button class="btn btn-primary" [matMenuTriggerFor]="menu">
+            <i class="fa-solid fa-ellipsis"></i>
+          </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item>
               <i class="fa-solid fa-circle-plus"></i>
@@ -42,4 +58,10 @@
       </tr>
     </tbody>
   </table>
+
+  <ng-template #semUsuarios>
+    <div class="text-center mt-3">
+      Nenhum usuário encontrado.
+    </div>
+  </ng-template>
 </div>
