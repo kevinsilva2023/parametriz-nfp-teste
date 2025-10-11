@@ -8,7 +8,6 @@ import { ConfirmarEmail } from '../models/confirmar-email';
 import { EnviarDefinirSenha } from '../models/enviar-definir-senha';
 import { DefinirSenha } from '../models/definir-senha';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
-import moment from 'moment';
 import { Instituicao } from '../models/instituicao';
 
 @Injectable()

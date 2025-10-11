@@ -1,0 +1,56 @@
+<div class="card card-white ">
+  <div class="card-header">
+    <h1 class="fs-5 py-3 text-center fw-bolder text-primary text-uppercase">
+      <i class="fa-solid fa-address-card me-2"></i>
+        Importe seu Certificado Digital
+    </h1>
+  </div>
+  <div class="card-body py-4 w-75 m-auto">
+    <form (ngSubmit)="efetuarCadastroCertificadoVoluntario()" [formGroup]="voluntarioForm">
+      <div 
+        class="upload-area border rounded p-4 text-center bg-light cursor-pointer mb-3"
+        style="border: 2px dashed var(--royal-blue) !important;" 
+        (click)="fileInput.click()"
+        (dragover)="isArquivoArrastado = true; $event.preventDefault()" 
+        (dragleave)="isArquivoArrastado = false"
+        (drop)="upload($event)">
+        <i class="fa-solid fa-cloud-upload fs-1 text-muted d-block mb-2"></i>
+        <h1 class="fs-6">Selecionar Certificado (.pfx)</h1>
+        <small class="text-muted fs-small">Clique aqui ou arraste o arquivo</small>
+        <input #fileInput type="file" class="d-none" accept=".pfx,.p12" (change)="upload($event)">
+      </div>
+      <div class="d-flex flex-column ">
+        <mat-form-field appearance="outline" class="mb-3 cursor-pointer" (click)="fileInput.click()"
+          [ngClass]="{'has-error': displayMessage['certificadoDigital']}">
+          <mat-label>
+            <i class="fa-solid fa-address-card"></i>
+            &nbsp; Certificado
+          </mat-label>
+          <input matInput formControlName="certificadoDigital" class="overflow-hidden">
+          <mat-error *ngIf="displayMessage['certificadoDigital']" [innerHtml]="displayMessage['certificadoDigital']">
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="mb-1 cursor-pointer"
+          [ngClass]="{'has-error': displayMessage['senha']}">
+          <mat-label>
+            <i class="fa-solid fa-lock"></i>
+            &nbsp;Senha
+          </mat-label>
+          <input matInput formControlName="senhaCertificadoDigital" [type]="verSenha ? 'text' : 'password'"
+            placeholder="••••••••" class="overflow-hidden">
+          <button mat-icon-button matSuffix type="button" class="btn" (click)="verSenha = !verSenha">
+            <i class="fa-solid" [ngClass]="verSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+          <mat-error *ngIf="displayMessage['senhaCertificadoDigital']"
+            [innerHtml]="displayMessage['senhaCertificadoDigital']">
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary py-2 px-4 rounded-5">
+          Gravar Certificado
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
