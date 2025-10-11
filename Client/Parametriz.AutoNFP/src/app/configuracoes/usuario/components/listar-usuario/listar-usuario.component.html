@@ -1,0 +1,45 @@
+<!-- Botão Cadastrar -->
+
+<!-- Filtros -->
+
+<!-- Tabela -->
+
+<!-- NOME -->
+<!-- E-MAIL -->
+<!-- ACESSO -->
+<!-- STATUS -->
+<!-- AÇÕES -->
+<div>
+  <table class="table">
+    <thead class="sticky-top ">
+      <tr>
+        <th>NOME</th>
+        <th>E-MAIL</th>
+        <th>ACESSO</th>
+        <!-- <th>STATUS</th> -->
+        <th>AÇÕES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of usuariosCadastrados">
+        <td>{{ usuario.nome }}</td>
+        <td>{{ usuario.email.conta }}</td>
+        <td>{{ usuario.administrador ? 'Admin' : 'Usuário'}}</td>
+        <td>
+          <button class="btn btn-primary" [matMenuTriggerFor]="menu">ações</button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <i class="fa-solid fa-circle-plus"></i>
+            </button>
+            <button mat-menu-item>
+              <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+            <button mat-menu-item>
+              <i class="fa-solid fa-circle-plus"></i>
+            </button>
+          </mat-menu>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

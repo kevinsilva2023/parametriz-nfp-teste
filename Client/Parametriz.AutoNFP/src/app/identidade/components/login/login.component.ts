@@ -85,13 +85,12 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
 
   processarSucesso(response: any) {
     this.limparErros();
-    this.loginForm.reset();
+    // this.loginForm.reset();
     
     LocalStorageUtils.salvarDadosLocaisUsuario(response);
-    
+    this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/']);
     this.toastr.success('Login realizado com sucesso', 'Sucesso!')
     
-    this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/']);
 
   }
 

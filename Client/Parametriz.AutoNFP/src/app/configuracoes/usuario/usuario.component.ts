@@ -16,7 +16,7 @@ export class UsuarioComponent implements OnInit {
   constructor(private modalService: NgbModal) {}  
   
   ngOnInit(): void {
-    this.cadastrar();
+    // this.cadastrar();
   }
 
   cadastrar() {

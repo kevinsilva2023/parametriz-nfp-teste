@@ -12,14 +12,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { ListarUsuarioComponent } from './components/listar-usuario/listar-usuario.component';
+
+
+
 
 
 @NgModule({
   declarations: [
     UsuarioComponent,
-    CadastrarUsuarioComponent
+    CadastrarUsuarioComponent,
+    ListarUsuarioComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +36,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     MatInputModule,
     MatSlideToggleModule,
     AlertModule,
+    MatMenuModule
 ],
 
 })
