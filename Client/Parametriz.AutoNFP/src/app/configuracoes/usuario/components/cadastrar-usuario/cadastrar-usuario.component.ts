@@ -25,7 +25,6 @@ export class CadastrarUsuarioComponent extends BaseFormComponent implements OnIn
               private modalService: NgbModal,
               private usuarioService: UsuarioService,
               private toastr: ToastrService
-
   ) {
     super();
 

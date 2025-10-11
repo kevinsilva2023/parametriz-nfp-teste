@@ -20,6 +20,14 @@
       <mat-option [value]="0">Não</mat-option>
     </mat-select>
   </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100" >
+    <mat-label>Desativado</mat-label>
+    <mat-select (selectionChange)="alterarFiltroDesativado($event.value)" panelClass="acesso-select-panel">
+      <mat-option [value]="0">Não</mat-option>
+      <mat-option [value]="1">Sim</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
 <!-- Tabela -->
@@ -30,7 +38,7 @@
         <th>NOME</th>
         <th>E-MAIL</th>
         <th>ACESSO</th>
-        <!-- <th>STATUS</th> -->
+        <th>STATUS</th>
         <th>AÇÕES</th>
       </tr>
     </thead>
@@ -39,13 +47,15 @@
         <td>{{ usuario.nome }}</td>
         <td>{{ usuario.email.conta }}</td>
         <td>{{ usuario.administrador ? 'Admin' : 'Usuário'}}</td>
+        <td>{{ usuario.desativado ? 'Intivo' : 'Ativo' }}</td>
         <td>
           <button class="btn btn-primary" [matMenuTriggerFor]="menu">
             <i class="fa-solid fa-ellipsis"></i>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
-              <i class="fa-solid fa-circle-plus"></i>
+            <button mat-menu-item (click)="inativarUsuario(usuario)" *ngIf="!usuario.desativado">
+              <i class="fa-solid fa-trash"></i> &nbsp;
+              Excluir Usuário
             </button>
             <button mat-menu-item>
               <i class="fa-solid fa-circle-xmark"></i>

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioCadastrado } from '../../models/usuario-cadastrado';
 import { UsuarioService } from '../../services/usuario.service';
 import { debounceTime, Subject } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InativarUsuarioComponent } from '../../inativar-usuario/inativar-usuario.component';
+import { Usuario } from '../../models/usuario';
 
 @Component({
   selector: 'app-listar-usuario',
@@ -13,7 +15,7 @@ import { debounceTime, Subject } from 'rxjs';
 })
 export class ListarUsuarioComponent implements OnInit {
 
-  usuariosCadastrados!: UsuarioCadastrado[];
+  usuariosCadastrados!: Usuario[];
 
   filtroNomeUsuario = '';
   filtroEmailUsuairo = '';
@@ -23,7 +25,9 @@ export class ListarUsuarioComponent implements OnInit {
   debounceNomeUsuario = new Subject<string>();
   debounceEmailUsuario = new Subject<string>();
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit(): void {
     this.debounceNomeUsuario
@@ -51,19 +55,35 @@ export class ListarUsuarioComponent implements OnInit {
     this.obterPorFiltro();
   }
 
+  alterarFiltroDesativado(event: number) {
+    this.filtroDesativado = event;
+    this.obterPorFiltro();
+  }
+
   obterPorFiltro() {
     this.usuarioService.obterPorFiltro(this.filtroNomeUsuario, this.filtroEmailUsuairo,
       this.filtroAcesso, this.filtroDesativado)
       .subscribe({
-        next: (usuariosCadastrados: UsuarioCadastrado[]) => {
+        next: (usuariosCadastrados: Usuario[]) => {
           this.usuariosCadastrados = usuariosCadastrados
         }
       })
   }
 
-
   getInputValue(event: Event): string {
     return (event.target as HTMLInputElement).value;
   }
+
+  inativarUsuario(usuario: Usuario) {
+    let modalRef = this.modalService.open(InativarUsuarioComponent, { size: 'lg', centered: true })
+
+    modalRef.componentInstance.usuario = usuario
+
+    modalRef.closed
+      .subscribe({
+        next: () => this.obterPorFiltro()
+      });
+  }
+
 
 }

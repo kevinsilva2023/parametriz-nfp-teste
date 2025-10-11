@@ -1,7 +1,8 @@
 export interface Usuario {
   nome: string,
   email: Email,
-  administrador: boolean,
+  administrador: number,
+  desativado?: number;
 }
 
 export interface Email {

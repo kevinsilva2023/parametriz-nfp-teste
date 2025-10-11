@@ -13,11 +13,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ListarUsuarioComponent } from './components/listar-usuario/listar-usuario.component';
+import { InativarUsuarioComponent } from './inativar-usuario/inativar-usuario.component';
 
 
 
@@ -28,6 +29,7 @@ import { ListarUsuarioComponent } from './components/listar-usuario/listar-usuar
     UsuarioComponent,
     CadastrarUsuarioComponent,
     ListarUsuarioComponent,
+    InativarUsuarioComponent,
   ],
   imports: [
     CommonModule,
@@ -35,11 +37,12 @@ import { ListarUsuarioComponent } from './components/listar-usuario/listar-usuar
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatSlideToggleModule,
     MatSelectModule,
     MatInputModule,
     AlertModule,
     MatMenuModule
-],
+  ],
 
 })
 export class UsuarioModule { }

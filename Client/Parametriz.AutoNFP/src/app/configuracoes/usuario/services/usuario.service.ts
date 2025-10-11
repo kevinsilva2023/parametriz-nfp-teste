@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Usuario } from '../models/usuario';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { catchError, map, Observable } from 'rxjs';
-import { UsuarioCadastrado } from '../models/usuario-cadastrado';
 import { HttpParams } from '@angular/common/http';
 import { StringUtils } from 'src/app/shared/utils/string-utils';
 
@@ -19,7 +18,7 @@ export class UsuarioService extends BaseService {
       );
   }
 
-  obterPorFiltro(usuarioNome: string, usuarioEmail: string, administrador: number, desativado: number): Observable<UsuarioCadastrado[]> {
+  obterPorFiltro(usuarioNome: string, usuarioEmail: string, administrador: number, desativado: number): Observable<Usuario[]> {
 
     let params = new HttpParams;
 
@@ -36,10 +35,19 @@ export class UsuarioService extends BaseService {
       params = params.append('desativado', desativado.toString());
 
     return this.httpClient
-      .get<UsuarioCadastrado[]>(
+      .get<Usuario[]>(
         `${this.apiUrl}/usuarios/obter-por-filtros`, { headers: super.ObterAuthHeaderJson(), params })
       .pipe(
         catchError(super.serviceError)
       );
+  }
+
+  inativarUsuario(usuario: Usuario): Observable<Usuario> {
+    return this.httpClient
+      .put(`${this.apiUrl}/usuarios/desativar`, usuario, { headers: super.ObterAuthHeaderJson() })
+      .pipe(
+        map(super.extractData),
+        catchError(super.serviceError)
+      )
   }
 }
