@@ -2,6 +2,7 @@
 using Parametriz.AutoNFP.Domain.Core.Enums;
 using Parametriz.AutoNFP.Domain.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Usuarios;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
         public CnpjCpf Cnpj { get; private set; }
         public Endereco Endereco { get; private set; }
         public bool Desativada { get; private set; }
+
+        public Voluntario Voluntario { get; private set; }
 
         private readonly List<Usuario> _usuarios;
         public IReadOnlyCollection<Usuario> Usuarios => _usuarios.AsReadOnly();

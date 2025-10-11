@@ -1,4 +1,5 @@
 ﻿using Parametriz.AutoNFP.Domain.Core.DomainObjects;
+using Parametriz.AutoNFP.Domain.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +10,29 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
 {
     public class Voluntario : InstituicaoEntity
     {
-        public string Emissor { get; private set; }
+        public string Nome { get; private set; }
+        public CnpjCpf CnpjCpf { get; private set; }
+        public string Requerente { get; private set; }
         public DateTime ValidoAPartirDe { get; private set; }
         public DateTime ValidoAte { get; private set; }
-        public string Requerente { get; private set; }
+        public string Emissor { get; private set; }
         public string Upload { get; private set; }
         public string Senha { get; private set; }
 
-        public Voluntario(Guid id, Guid instituicaoId, string emissor, DateTime validoAPartirDe, DateTime validoAte,
-            string requerente, string upload, string senha)
+        public Voluntario(Guid id, Guid instituicaoId, string nome, CnpjCpf cnpjCpf, string requerente, 
+            DateTime validoAPartirDe, DateTime validoAte, string emissor, string upload, string senha)
                 : base(id, instituicaoId)
         {
-            Emissor = emissor;
+            Nome = nome;
+            CnpjCpf = cnpjCpf;
+            Requerente = requerente;
             ValidoAPartirDe = validoAPartirDe;
             ValidoAte = validoAte;
-            Requerente = requerente;
+            Emissor = emissor;
             Upload = upload;
             Senha = senha;
         }
+
+        protected Voluntario() { }
     }
 }
