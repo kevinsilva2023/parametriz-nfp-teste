@@ -170,7 +170,7 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
             //if (!await UsuarioAptoParaAtivar(usuario))
             //    return false;
 
-            usuario.Desativar();
+            usuario.Ativar();
 
             _usuarioRepository.Atualizar(usuario);
 
