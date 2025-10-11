@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UsuarioService } from '../services/usuario.service';
-import { Usuario } from '../models/usuario';
+import { UsuarioService } from '../../services/usuario.service';
+import { Usuario } from '../../models/usuario';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-inativar-usuario',
@@ -13,11 +13,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class InativarUsuarioComponent implements OnInit {
   @Input() usuario!: Usuario;
 
-  errors:[] = [];
+  errors: [] = [];
 
   constructor(private usuarioService: UsuarioService,
-              private modalService: NgbModal,
-              private toastr: ToastrService
+    private activeModal: NgbActiveModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +51,6 @@ export class InativarUsuarioComponent implements OnInit {
   }
 
   fecharModal() {
-    this.modalService.dismissAll();
+    this.activeModal.close();
   }
 }

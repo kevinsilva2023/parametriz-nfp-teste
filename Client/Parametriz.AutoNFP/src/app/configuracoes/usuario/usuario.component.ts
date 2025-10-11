@@ -11,19 +11,6 @@ import { CadastrarUsuarioComponent } from './components/cadastrar-usuario/cadast
   standalone: false,
   templateUrl: './usuario.component.html',
 })
-export class UsuarioComponent implements OnInit {
-
-  constructor(private modalService: NgbModal) {}  
-  
-  ngOnInit(): void {
-    // this.cadastrar();
-  }
-
-  cadastrar() {
-    let modalRef = this.modalService.open(CadastrarUsuarioComponent, { size: 'lg', centered: false});
-    let teste = 'kevin'
-
-    modalRef.componentInstance.instituicao = teste
-  }
+export class UsuarioComponent {
 
 }

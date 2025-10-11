@@ -1,4 +1,8 @@
 <!-- Botão Cadastrar -->
+ <button class="btn btn-primary" (click)="cadastrar()">
+  <i class="fa-solid fa-circle-plus"></i> &nbsp;
+  Incluir Usuário
+</button>
 
 <!-- Filtros -->
 <div class="d-flex justify-content-between gap-3 mb-4 p-0">
@@ -54,11 +58,12 @@
           </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="inativarUsuario(usuario)" *ngIf="!usuario.desativado">
-              <i class="fa-solid fa-trash"></i> &nbsp;
-              Excluir Usuário
+              <i class="fa-solid fa-user-slash"></i> &nbsp;
+              Inativar Usuário
             </button>
-            <button mat-menu-item>
-              <i class="fa-solid fa-circle-xmark"></i>
+            <button mat-menu-item (click)="ativarUsuario(usuario)" *ngIf="usuario.desativado">
+              <i class="fa-solid fa-user-check"></i> &nbsp;
+              Ativar Usuário
             </button>
             <button mat-menu-item>
               <i class="fa-solid fa-circle-plus"></i>

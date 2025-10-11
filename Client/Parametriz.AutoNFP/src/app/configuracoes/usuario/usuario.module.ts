@@ -18,7 +18,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ListarUsuarioComponent } from './components/listar-usuario/listar-usuario.component';
-import { InativarUsuarioComponent } from './inativar-usuario/inativar-usuario.component';
+import { InativarUsuarioComponent } from './components/inativar-usuario/inativar-usuario.component';
+import { AtivarUsuarioComponent } from './components/ativar-usuario/ativar-usuario.component';
 
 
 
@@ -30,6 +31,7 @@ import { InativarUsuarioComponent } from './inativar-usuario/inativar-usuario.co
     CadastrarUsuarioComponent,
     ListarUsuarioComponent,
     InativarUsuarioComponent,
+    AtivarUsuarioComponent,
   ],
   imports: [
     CommonModule,

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, input, OnInit, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
 import { Usuario } from '../../models/usuario';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
@@ -22,7 +22,7 @@ export class CadastrarUsuarioComponent extends BaseFormComponent implements OnIn
   errors:[] = [];
 
   constructor(private formBuilder: FormBuilder,
-              private modalService: NgbModal,
+              private activeModal: NgbActiveModal,
               private usuarioService: UsuarioService,
               private toastr: ToastrService
   ) {
@@ -87,7 +87,6 @@ export class CadastrarUsuarioComponent extends BaseFormComponent implements OnIn
     this.limparErros()
     
     this.toastr.success('Usuário cadastrado com sucesso.','Sucesso!');
-    
     this.fecharModal();
   }
 
@@ -97,7 +96,7 @@ export class CadastrarUsuarioComponent extends BaseFormComponent implements OnIn
   }
 
   fecharModal() {
-    this.modalService.dismissAll()
+    this.activeModal.close();
   }
 
   limparErros() {

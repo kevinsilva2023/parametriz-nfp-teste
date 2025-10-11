@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { debounceTime, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InativarUsuarioComponent } from '../../inativar-usuario/inativar-usuario.component';
+import { InativarUsuarioComponent } from '../inativar-usuario/inativar-usuario.component';
 import { Usuario } from '../../models/usuario';
+import { CadastrarUsuarioComponent } from '../cadastrar-usuario/cadastrar-usuario.component';
+import { AtivarUsuarioComponent } from '../ativar-usuario/ativar-usuario.component';
 
 @Component({
   selector: 'app-listar-usuario',
@@ -74,6 +76,18 @@ export class ListarUsuarioComponent implements OnInit {
     return (event.target as HTMLInputElement).value;
   }
 
+  cadastrar() {
+    let modalRef = this.modalService.open(CadastrarUsuarioComponent, { size: 'lg', centered: false });
+    let teste = 'kevin'
+
+    modalRef.componentInstance.instituicao = teste
+
+    modalRef.closed
+      .subscribe({
+        next: () => this.obterPorFiltro()
+      });
+  }
+
   inativarUsuario(usuario: Usuario) {
     let modalRef = this.modalService.open(InativarUsuarioComponent, { size: 'lg', centered: true })
 
@@ -85,5 +99,15 @@ export class ListarUsuarioComponent implements OnInit {
       });
   }
 
+  ativarUsuario(usuario: Usuario) {
+    let modalRef = this.modalService.open(AtivarUsuarioComponent, { size: 'lg', centered: true })
+
+    modalRef.componentInstance.usuario = usuario
+
+    modalRef.closed
+      .subscribe({
+        next: () => this.obterPorFiltro()
+      });
+  }
 
 }
