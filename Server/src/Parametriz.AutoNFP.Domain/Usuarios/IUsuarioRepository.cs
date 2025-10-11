@@ -1,4 +1,5 @@
-﻿using Parametriz.AutoNFP.Domain.Core.Interfaces;
+﻿using Parametriz.AutoNFP.Domain.Core.Enums;
+using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
         
         Task<bool> ExistemOutrosUsuariosNaInstituicao(Guid id, Guid instituicaoId);
         Task<bool> ExistemOutrosAdministradoresNaInstituicao(Guid id, Guid instituicaoId);
-        Task<IEnumerable<Usuario>> ObterPorFiltros(Guid instituicaoId, string nome = "");
+        Task<IEnumerable<Usuario>> ObterPorFiltros(Guid instituicaoId, string nome = "", string email = "", 
+            BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso);
     }
 }

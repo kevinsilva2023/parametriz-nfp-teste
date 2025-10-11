@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository.Core;
+using Parametriz.AutoNFP.Domain.Core.Enums;
 using Parametriz.AutoNFP.Domain.Usuarios;
 using System;
 using System.Collections.Generic;
@@ -40,12 +41,17 @@ namespace Parametriz.AutoNFP.Data.Repository
                                u.Administrador);    
         }
 
-        public async Task<IEnumerable<Usuario>> ObterPorFiltros(Guid instituicaoId, string nome = "")
+        public async Task<IEnumerable<Usuario>> ObterPorFiltros(Guid instituicaoId, string nome = "", string email = "",
+            BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso)
         {
             return await _context.Usuarios
                 .AsNoTracking()
                 .Where(u => u.InstituicaoId == instituicaoId &&
-                            u.Nome.ToUpper().Contains(nome.Trim().ToUpper()))
+                            u.Nome.ToUpper().Contains(nome.Trim().ToUpper()) &&
+                            u.Email.Conta.ToUpper().Contains(email.Trim().ToUpper()) &&
+                            (administrador == BoolTresEstados.Ambos || (u.Administrador == (administrador == BoolTresEstados.Verdadeiro))) &&
+                            (desativado == BoolTresEstados.Ambos || (u.Desativado == (desativado == BoolTresEstados.Verdadeiro))))
+                .OrderBy(u => u.Nome)
                 .ToListAsync();
         }
     }
