@@ -85,6 +85,7 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
 
   processarSucesso(response: any) {
     this.limparErros();
+    this.loginForm.reset();
     
     LocalStorageUtils.salvarDadosLocaisUsuario(response);
     
@@ -92,7 +93,6 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
     
     this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/']);
 
-    this.loginForm.reset();
   }
 
   processarFalha(fail: any) {

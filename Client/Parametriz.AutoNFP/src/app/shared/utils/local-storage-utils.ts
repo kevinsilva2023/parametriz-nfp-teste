@@ -80,6 +80,6 @@ export class LocalStorageUtils {
     public static obterInstituicaoId(): string {
         const userToken = this.obterUsuario();
 
-        return userToken?.instituicaoId ?? '';
+        return userToken?.instituicao.id ?? '';
     }
 }

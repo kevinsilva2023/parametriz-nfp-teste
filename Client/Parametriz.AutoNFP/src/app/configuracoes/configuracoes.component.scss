@@ -49,8 +49,10 @@
   .configuracoes-content {
     max-height: 100%;
     flex: 1 1 auto;
-    overflow: hidden !important;
+    overflow-x: hidden !important;
     background-color: var(--sand-light);
     border-radius: 10px;
+
+    overflow-y: auto;
   }
 }
