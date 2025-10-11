@@ -18,11 +18,33 @@ namespace Parametriz.AutoNFP.Data.Repository
         {
         }
 
+        public async Task<bool> ExisteNaInstituicao(Guid instituicaoId)
+        {
+            return await _context.Voluntarios
+                .AnyAsync(v => v.InstituicaoId == instituicaoId);
+        }
+
         public override async Task<bool> EhUnico(Voluntario voluntario)
         {
             return !await _context.Voluntarios
                 .AnyAsync(v => v.InstituicaoId == voluntario.InstituicaoId &&
                                v.Id != voluntario.Id);
+        }
+
+        public async Task<Voluntario> ObterPorInstituicaoId(Guid instituicaoId)
+        {
+            return await _context.Voluntarios
+                .AsNoTracking()
+                .SingleOrDefaultAsync(v => v.InstituicaoId == instituicaoId);
+        }
+
+        public async Task Excluir(Guid instituicaoId)
+        {
+            var voluntario = await _context.Voluntarios
+                .AsNoTracking()
+                .SingleOrDefaultAsync(v => v.InstituicaoId == instituicaoId);
+
+            _context.Voluntarios.Remove(voluntario);
         }
     }
 }

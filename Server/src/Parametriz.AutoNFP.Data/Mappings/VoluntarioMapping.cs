@@ -54,7 +54,6 @@ namespace Parametriz.AutoNFP.Data.Mappings
                 .IsRequired();
             
             builder.Property(p => p.Upload)
-                .HasColumnType("text")
                 .IsRequired();
 
             builder.Property(p => p.Senha)
