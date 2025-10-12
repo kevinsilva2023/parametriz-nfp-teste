@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NGNAV_ITEMS } from './models/ngnav-item';
 
 @Component({
   selector: 'app-configuracoes',
@@ -8,5 +7,6 @@ import { NGNAV_ITEMS } from './models/ngnav-item';
   styleUrl: './configuracoes.component.scss'
 })
 export class ConfiguracoesComponent {
-  ngNavItem = NGNAV_ITEMS
+  activeTab = 'voluntario';
+
 }

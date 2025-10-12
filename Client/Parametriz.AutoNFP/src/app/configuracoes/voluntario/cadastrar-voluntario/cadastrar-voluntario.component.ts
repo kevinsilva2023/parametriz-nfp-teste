@@ -1,10 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, viewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
-import { VoluntarioService } from '../../services/voluntario.service';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
-import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Component({
   selector: 'app-cadastrar-voluntario',

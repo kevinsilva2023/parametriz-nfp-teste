@@ -6,11 +6,11 @@ const routes: Routes = [
     {
     path: '',
     component: ConfiguracoesComponent,
-    children: [
-      { path: 'voluntario', loadChildren: () => import('./voluntario/voluntario.module').then(m => m.VoluntarioModule) },
-      { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule) },
-      { path: '', redirectTo: 'voluntario', pathMatch: 'full' },
-    ]
+    // children: [
+    //   { path: 'voluntario', loadChildren: () => import('./voluntario/voluntario.module').then(m => m.VoluntarioModule) },
+    //   { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule) },
+    //   { path: '', redirectTo: 'voluntario', pathMatch: 'full' },
+    // ]
   },
 ];
 

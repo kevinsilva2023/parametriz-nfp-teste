@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   standalone: false,
   templateUrl: './voluntario.component.html',
 })
+
 export class VoluntarioComponent {
   certificadoCadastrado = false;
 

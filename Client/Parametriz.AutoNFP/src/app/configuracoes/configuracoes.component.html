@@ -1,14 +1,17 @@
 <section class="configuracoes">
-  <ul ngbNav #nav="ngbNav" class="nav-tabs" >
-    <li *ngFor="let ngbNav of ngNavItem" [ngbNavItem]="ngbNav.item">
-      <a ngbNavLink [routerLink]="ngbNav.route">
-        {{ ngbNav.label }} &nbsp;
-        <i class="fa-solid" [ngClass]="ngbNav.icon"></i>
-      </a>
+  <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+    <li ngbNavItem="voluntario">
+      <a ngbNavLink>Voluntário &nbsp; <i class="fa-solid fa-people-group"></i></a>
+      <ng-template ngbNavContent>
+        <app-voluntario></app-voluntario>
+      </ng-template>
+    </li>
+    <li ngbNavItem="usuario">
+      <a ngbNavLink>Usuário &nbsp; <i class="fa-solid fa-user"></i></a>
+      <ng-template ngbNavContent>
+        <app-usuario></app-usuario>
+      </ng-template>
     </li>
   </ul>
-
-  <div class="configuracoes-content">
-    <router-outlet></router-outlet>
-  </div>
+  <div [ngbNavOutlet]="nav" class="configuracoes-content"></div>
 </section>
