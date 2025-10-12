@@ -30,10 +30,12 @@ import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { IdentidadeService } from './identidade/services/identidade.service';
 import { AutorizacaoService } from './shared/services/autorizacao.service';
 
-import { AlertModule } from 'ngx-bootstrap/alert';
+import { AlertConfig, AlertModule } from 'ngx-bootstrap/alert';
 import { ToastrModule } from 'ngx-toastr';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { NgbModalModule, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -66,7 +68,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       timeOut: 5000,
       progressBar: true,
       progressAnimation: 'increasing',
-    })
+    }),
+    NgbModalModule,
   ],
   providers: [
     IdentidadeService,
@@ -76,6 +79,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         errorInterceptor,
         jwtInterceptor
       ])),
+    {
+      provide: NgbModalConfig,
+      useFactory: () => {
+        const config = new NgbModalConfig();
+        config.centered = true;
+        // config.backdrop = 'static';
+        config.keyboard = false;
+        return config;
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })

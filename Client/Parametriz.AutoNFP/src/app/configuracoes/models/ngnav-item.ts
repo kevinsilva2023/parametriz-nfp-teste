@@ -12,10 +12,10 @@
       item: 'voluntario',
       route: '/configuracoes/voluntario'
     },
-    // {
-    //   label: 'Usuários',
-    //   icon: 'fa-users',
-    //   item: 'voluntario2',
-    //   route: '/configuracoes/voluntario2'
-    // }
+    {
+      label: 'Usuário',
+      icon: 'fa-users',
+      item: 'usuario',
+      route: '/configuracoes/usuario'
+    }
   ]

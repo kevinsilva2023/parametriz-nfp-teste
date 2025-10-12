@@ -1,0 +1,33 @@
+<div class="modal-header border-0">
+  <div class="bg-success text-white fs-5 fw-medium text-uppercase px-4 py-2 rounded w-100 d-flex align-items-center gap-2">
+    <i class="fa-solid fa-circle-check"></i>
+    Confirmação
+  </div>
+</div>
+
+<div class="modal-body text-center">
+
+  <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+    <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+    <ul>
+      <li class="fs-small mt-1">
+        {{ errors }}
+      </li>
+    </ul>
+  </alert>
+
+  <p class="fs-5 fw-semibold mb-4">
+    Deseja realmente ativar o usuário <span class="text-primary">"{{ usuario.nome }}"</span>?
+  </p>
+  <p class="text-muted small">O usuário voltará a ter acesso normalmente ao sistema.</p>
+</div>
+
+<div class="modal-footer border-0 d-flex justify-content-center gap-3">
+  <button type="button" class="btn btn-outline-secondary px-4" (click)="fecharModal()">
+    <i class="fa-solid fa-xmark"></i> Cancelar
+  </button>
+
+  <button type="button" class="btn btn-success px-4" (click)="confirmarAtivarUsuario()">
+    <i class="fa-solid fa-user-check"></i> Ativar
+  </button>
+</div>
