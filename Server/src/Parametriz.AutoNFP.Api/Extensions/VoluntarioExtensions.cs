@@ -8,6 +8,9 @@ namespace Parametriz.AutoNFP.Api.Extensions
     {
         public static VoluntarioViewModel ToViewModel(this Voluntario voluntario)
         {
+            if (voluntario == null)
+                return null;
+
             return new VoluntarioViewModel
             {
                 Id = voluntario.Id,

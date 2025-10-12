@@ -57,7 +57,6 @@ namespace Parametriz.AutoNFP.Data.Mappings
                 .IsRequired();
 
             builder.Property(p => p.Senha)
-                .HasColumnType("text")
                 .IsRequired();
 
             builder.HasIndex(i => i.InstituicaoId)

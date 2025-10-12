@@ -17,13 +17,18 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
 
         private string ObterStatus()
         {
-            if (ValidoAte.Date < DateTime.Now.Date)
-                return "VENCIDO";
-
             if (ValidoAPartirDe > DateTime.Now.Date)
                 return "INVÁLIDO";
 
-            return $"{DateTime.Now.Date - ValidoAte.Date} DIAS PARA VENCER.";
+            if (ValidoAte.Date < DateTime.Now.Date)
+                return "VENCIDO";
+
+            var diasParaVencer = (ValidoAte.Date - DateTime.Now.Date).Days;
+
+            if (diasParaVencer <= 30)
+                return $"{diasParaVencer} DIAS PARA VENCER.";
+
+            return "VÁLIDO";
         }
     }
 }

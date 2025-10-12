@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Parametriz.AutoNFP.Api.Configs;
+using Parametriz.AutoNFP.Api.Extensions;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 using Parametriz.AutoNFP.Domain.Core.Enums;
@@ -16,11 +17,12 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
     public class VoluntarioService : BaseService, IVoluntarioService
     {
         private readonly int _keySize = 256;
-        private readonly int _ivSize = 16; // 128 bits para o IV
+        private readonly int _ivSize = 128;
+        private readonly int _saltSize = 16;
 
         private readonly IVoluntarioRepository _voluntarioRepository;
         private readonly AppConfig _appConfig;
-        
+
         public VoluntarioService(IAspNetUser user,
                                  IUnitOfWork uow,
                                  Notificador notificador,
@@ -37,7 +39,7 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
             await ValidarEntidade(new VoluntarioValidation(), voluntario);
         }
 
-        private async Task CertificadoValido(Voluntario voluntario)
+        private void CertificadoValido(Voluntario voluntario)
         {
             if (voluntario.ValidoAte.Date < DateTime.Now.Date)
                 NotificarErro("Certificado vencido.");
@@ -52,7 +54,7 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
         private async Task<bool> VoluntarioAptoParaCadastrar(Voluntario voluntario)
         {
             await ValidarVoluntario(voluntario);
-            await CertificadoValido(voluntario);
+            CertificadoValido(voluntario);
 
             return CommandEhValido();
         }
@@ -61,12 +63,32 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
         {
             var dataByteArray = Convert.FromBase64String(cadastrarVoluntarioViewModel.Upload);
 
-            var certificado = new X509Certificate2(dataByteArray, cadastrarVoluntarioViewModel.Senha);
+            X509Certificate2 certificado;
 
-            var voluntario = new Voluntario(Guid.NewGuid(), InstituicaoId, ExtrairNomeDoCommonName(certificado.Subject), 
-                new CnpjCpf(TipoPessoa.Fisica, ExtrairCpnjCpfDoCommonName(certificado.Subject)), 
+            try
+            {
+                certificado = new X509Certificate2(dataByteArray, cadastrarVoluntarioViewModel.Senha);
+            }
+            catch (CryptographicException)
+            {
+                return NotificarErro("Senha incorreta.");
+            }
+            catch (Exception)
+            {
+                return NotificarErro("Erro desconhecido. Tente novamente");
+            }
+
+            if (!certificado.Verify())
+                return NotificarErro("Certificado inválido.");
+
+            var pepper = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
+
+            var senhaCripto = Encrypt(cadastrarVoluntarioViewModel.Senha, InstituicaoId.ToString(), pepper);
+
+            var voluntario = new Voluntario(Guid.NewGuid(), InstituicaoId, ExtrairNomeDoCommonName(certificado.Subject),
+                new CnpjCpf(TipoPessoa.Fisica, ExtrairCpnjCpfDoCommonName(certificado.Subject)),
                 ExtrairCommonName(certificado.Subject), certificado.NotBefore, certificado.NotAfter,
-                ExtrairCommonName(certificado.Issuer), dataByteArray, Encrypt(cadastrarVoluntarioViewModel.Senha));
+                ExtrairCommonName(certificado.Issuer), dataByteArray, senhaCripto);
 
             if (!await VoluntarioAptoParaCadastrar(voluntario))
                 return false;
@@ -130,77 +152,57 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
             return CommandEhValido();
         }
 
-        
-
-        //// Este método é para demonstração. Em produção, recupere a chave de uma fonte segura.
-        //private byte[] GetKey()
-        //{
-        //    // Use uma chave segura e gerenciada. Por exemplo, do Azure Key Vault.
-        //    // Nunca armazene a chave em texto plano no código ou arquivos de configuração.
-        //    return Encoding.UTF8.GetBytes(_appConfig.SecrectKey); // Exemplo
-        //}
-
-        /// <summary>
-        /// Criptografa uma string usando AES e retorna uma string em Base64.
-        /// Inclui o IV no início da string criptografada para facilitar a descriptografia.
-        /// </summary>
-        public string Encrypt(string plainText)
+        private byte[] Encrypt(string plainText, string password, byte[] pepper)
         {
-            using var aes = Aes.Create();
-            
-            aes.KeySize = _keySize;
-            aes.Mode = CipherMode.CBC; // CBC é um modo seguro.
+            byte[] salt = GenerateRandomSalt();
 
-            aes.Key = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
-            aes.GenerateIV(); // Cria um IV único para cada operação.
+            var key = DeriveKey(password, salt, pepper);
 
-            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+            using (var aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.GenerateIV();
 
-            using var memoryStream = new MemoryStream();
-            
-            // Escreve o IV na stream para recuperá-lo na descriptografia.
-            memoryStream.Write(aes.IV, 0, _ivSize);
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        using (var streamWriter = new StreamWriter(cryptoStream))
+                        {
+                            streamWriter.Write(plainText);
+                        }
 
-            using var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
+                        var encryptedBytes = memoryStream.ToArray();
 
-            using var streamWriter = new StreamWriter(cryptoStream);
-                
-            streamWriter.Write(plainText);
-            
-            return Convert.ToBase64String(memoryStream.ToArray());
+                        var result = new byte[_saltSize + aes.IV.Length + encryptedBytes.Length];
+                        Buffer.BlockCopy(salt, 0, result, 0, _saltSize);
+                        Buffer.BlockCopy(aes.IV, 0, result, _saltSize, aes.IV.Length);
+                        Buffer.BlockCopy(encryptedBytes, 0, result, _saltSize + aes.IV.Length, encryptedBytes.Length);
+
+                        return result;
+                    }
+                }
+            }
         }
 
-        /// <summary>
-        /// Descriptografa uma string em Base64 usando AES.
-        /// </summary>
-        public string Decrypt(string cipherTextBase64)
+        private byte[] DeriveKey(string password, byte[] salt, byte[] pepper)
         {
-            byte[] fullCipher = Convert.FromBase64String(cipherTextBase64);
+            var combinedPassword = Encoding.UTF8.GetBytes(password).Concat(pepper).ToArray();
 
-            using var aes = Aes.Create();
-            
-            aes.KeySize = _keySize;
-            aes.Mode = CipherMode.CBC;
+            return Rfc2898DeriveBytes.Pbkdf2(
+                combinedPassword,
+                salt,
+                iterations: 100000,
+                hashAlgorithm: HashAlgorithmName.SHA256,
+                outputLength: _keySize / 8);
+        }
 
-            aes.Key = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
-
-            byte[] iv = new byte[_ivSize];
-            Array.Copy(fullCipher, 0, iv, 0, _ivSize);
-            aes.IV = iv;
-
-            using var memoryStream = new MemoryStream();
-            
-            // Copia o texto cifrado (sem o IV) para a stream.
-            memoryStream.Write(fullCipher, _ivSize, fullCipher.Length - _ivSize);
-            memoryStream.Seek(0, SeekOrigin.Begin); // Retorna ao início da stream.
-
-            var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-
-            using var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-
-            using var streamREader = new StreamReader(cryptoStream);
-           
-            return streamREader.ReadToEnd();
+        private byte[] GenerateRandomSalt()
+        {
+            var salt = new byte[_saltSize];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(salt);
+            return salt;
         }
     }
 }

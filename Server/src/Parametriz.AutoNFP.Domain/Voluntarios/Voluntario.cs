@@ -17,10 +17,10 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
         public DateTime ValidoAte { get; private set; }
         public string Emissor { get; private set; }
         public byte[] Upload { get; private set; }
-        public string Senha { get; private set; }
+        public byte[] Senha { get; private set; }
 
         public Voluntario(Guid id, Guid instituicaoId, string nome, CnpjCpf cnpjCpf, string requerente, 
-            DateTime validoAPartirDe, DateTime validoAte, string emissor, byte[] upload, string senha)
+            DateTime validoAPartirDe, DateTime validoAte, string emissor, byte[] upload, byte[] senha)
                 : base(id, instituicaoId)
         {
             Nome = nome;

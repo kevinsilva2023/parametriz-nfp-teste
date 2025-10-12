@@ -5,6 +5,7 @@ using Parametriz.AutoNFP.Api.Extensions;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
+using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 
 namespace Parametriz.AutoNFP.Api.Controllers
@@ -29,9 +30,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
         [HttpGet]
         public async Task<VoluntarioViewModel> Get()
         {
-            return (await _voluntarioRepository
-                .ObterPorInstituicaoId(InstituicaoId))
-                .ToViewModel();
+            return (await _voluntarioRepository.ObterPorInstituicaoId(InstituicaoId)).ToViewModel();
         }
 
         [HttpPost]
