@@ -1,5 +1,6 @@
 ﻿using Parametriz.AutoNFP.Domain.Core.DomainObjects;
 using Parametriz.AutoNFP.Domain.Core.ValueObjects;
+using Parametriz.AutoNFP.Domain.CuponsFiscais;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,17 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
         public bool Administrador { get; private set; }
         public bool Desativado { get; private set; }
 
+        private readonly List<CupomFiscal> _cuponsFiscais;
+        public IReadOnlyCollection<CupomFiscal> CuponsFiscais => _cuponsFiscais.AsReadOnly();
+
         public Usuario(Guid id, Guid instituicaoId, string nome, Email email, bool administrador)
             : base(id, instituicaoId)
         {
             Email = email;
             AlterarNome(nome);
             AlterarAdministrador(administrador);
+            
+            _cuponsFiscais = [];
         }
 
         protected Usuario() { }

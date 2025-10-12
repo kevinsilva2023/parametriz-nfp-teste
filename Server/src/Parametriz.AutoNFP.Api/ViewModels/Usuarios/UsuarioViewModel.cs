@@ -9,7 +9,6 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Usuarios
         public Guid Id { get; set; }
 
         [Display(Name = "Instituição")]
-        [Required(ErrorMessage = "Favor preencher a instituição.")]
         public Guid InstituicaoId { get; set; }
 
         [Required(ErrorMessage = "Favor preencher o nome do usuário.")]

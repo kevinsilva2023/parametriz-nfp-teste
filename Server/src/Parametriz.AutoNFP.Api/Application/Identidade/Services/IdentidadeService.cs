@@ -512,7 +512,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                     return false;
             }
 
-            if (!await CadastrarClaimNoUsuario(user, "instituicaoId", usuarioViewModel.InstituicaoId.ToString()))
+            if (!await CadastrarClaimNoUsuario(user, "instituicaoId", InstituicaoId.ToString()))
             {
                 await _userManager.DeleteAsync(user);
                 return false;
