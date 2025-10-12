@@ -2,24 +2,35 @@
   <div class="card-header">
     <h1 class="fs-5 py-3 text-center fw-bolder text-primary text-uppercase">
       <i class="fa-solid fa-address-card me-2"></i>
-        Importe seu Certificado Digital
+      Importe seu Certificado Digital
     </h1>
   </div>
+
   <div class="card-body py-4 w-75 m-auto">
     <form (ngSubmit)="efetuarCadastroCertificadoVoluntario()" [formGroup]="voluntarioForm">
-      <div 
-        class="upload-area border rounded p-4 text-center bg-light cursor-pointer mb-3"
-        style="border: 2px dashed var(--royal-blue) !important;" 
-        (click)="fileInput.click()"
-        (dragover)="isArquivoArrastado = true; $event.preventDefault()" 
-        (dragleave)="isArquivoArrastado = false"
+
+      <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert"
+        *ngIf="errors.length > 0">
+        <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+        <ul>
+          <li class="fs-small mt-1">
+            {{ errors }}
+          </li>
+        </ul>
+      </alert>
+
+      <div class="upload-area border rounded p-4 text-center bg-light cursor-pointer mb-3"
+        style="border: 2px dashed var(--royal-blue) !important;" (click)="fileInput.click()"
+        (dragover)="isArquivoArrastado = true; $event.preventDefault()" (dragleave)="isArquivoArrastado = false"
         (drop)="upload($event)">
         <i class="fa-solid fa-cloud-upload fs-1 text-muted d-block mb-2"></i>
         <h1 class="fs-6">Selecionar Certificado (.pfx)</h1>
         <small class="text-muted fs-small">Clique aqui ou arraste o arquivo</small>
         <input #fileInput type="file" class="d-none" accept=".pfx,.p12" (change)="upload($event)">
       </div>
+
       <div class="d-flex flex-column ">
+
         <mat-form-field appearance="outline" class="mb-3 cursor-pointer" (click)="fileInput.click()"
           [ngClass]="{'has-error': displayMessage['certificadoDigital']}">
           <mat-label>
@@ -29,7 +40,8 @@
           <input matInput formControlName="certificadoDigital" class="overflow-hidden">
           <mat-error *ngIf="displayMessage['certificadoDigital']" [innerHtml]="displayMessage['certificadoDigital']">
           </mat-error>
-       </mat-form-field>
+        </mat-form-field>
+
         <mat-form-field appearance="outline" class="mb-1 cursor-pointer"
           [ngClass]="{'has-error': displayMessage['senha']}">
           <mat-label>
@@ -45,6 +57,7 @@
             [innerHtml]="displayMessage['senhaCertificadoDigital']">
           </mat-error>
         </mat-form-field>
+
       </div>
       <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary py-2 px-4 rounded-5">

@@ -36,6 +36,7 @@ import { DesativarUsuarioComponent } from './usuario/components/desativar-usuari
 import { AtivarUsuarioComponent } from './usuario/components/ativar-usuario/ativar-usuario.component';
 import { EditarUsuarioComponent } from './usuario/components/editar-usuario/editar-usuario.component';
 import { PefilUsuarioComponent } from './usuario/components/pefil-usuario/pefil-usuario.component';
+import { VoluntarioService } from './voluntario/services/voluntario.service';
 
 
 
@@ -69,6 +70,7 @@ import { PefilUsuarioComponent } from './usuario/components/pefil-usuario/pefil-
   ],
   providers: [
     UsuarioService,
+    VoluntarioService,
     AutorizacaoService,
     provideHttpClient(
       withInterceptors([
