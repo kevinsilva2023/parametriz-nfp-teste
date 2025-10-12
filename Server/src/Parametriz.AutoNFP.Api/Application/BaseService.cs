@@ -25,11 +25,6 @@ namespace Parametriz.AutoNFP.Api.Application
             _notificador = notificador;
         }
 
-        protected void ValidarInstituicao(Guid instituicaoId) 
-        {
-            if (instituicaoId == Guid.Empty || InstituicaoId != instituicaoId)
-                NotificarErro("Instituição inválida.");
-        }
         protected async Task ValidarEntidade<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE>
         {
             var validationResult = await validacao.ValidateAsync(entidade);

@@ -52,7 +52,6 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
 
         private async Task<bool> UsuarioAptoParaCadastrar(Usuario usuario)
         {
-            ValidarInstituicao(usuario.InstituicaoId);
             await ValidarUsuario(usuario);
             await UsuarioEhUnico(usuario);
 
@@ -61,7 +60,7 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
 
         public async Task<bool> Cadastrar(UsuarioViewModel usuarioViewModel, Guid usuarioId)
         {
-            var usuario = new Usuario(usuarioId, usuarioViewModel.InstituicaoId, usuarioViewModel.Nome, 
+            var usuario = new Usuario(usuarioId, InstituicaoId, usuarioViewModel.Nome, 
                 usuarioViewModel.Email.ToDomain(), usuarioViewModel.Administrador);
 
             if (!await UsuarioAptoParaCadastrar(usuario))
