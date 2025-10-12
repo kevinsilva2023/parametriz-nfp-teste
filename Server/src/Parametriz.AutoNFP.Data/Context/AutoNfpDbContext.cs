@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Parametriz.AutoNFP.Domain.CuponsFiscais;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
@@ -20,6 +21,7 @@ namespace Parametriz.AutoNFP.Data.Context
             ChangeTracker.LazyLoadingEnabled = false;
         }
 
+        public DbSet<CupomFiscal> CuponsFiscais { get; set; }
         public DbSet<Instituicao> Instituicoes { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Voluntario> Voluntarios { get; set; }

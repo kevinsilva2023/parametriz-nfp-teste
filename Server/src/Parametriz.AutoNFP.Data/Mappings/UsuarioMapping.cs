@@ -18,7 +18,7 @@ namespace Parametriz.AutoNFP.Data.Mappings
             builder.HasOne(p => p.Instituicao)
                 .WithMany(p => p.Usuarios)
                 .HasForeignKey(p => p.InstituicaoId)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
             builder.Property(p => p.Nome)

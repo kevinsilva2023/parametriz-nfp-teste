@@ -17,7 +17,6 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
     public class VoluntarioService : BaseService, IVoluntarioService
     {
         private readonly int _keySize = 256;
-        private readonly int _ivSize = 128;
         private readonly int _saltSize = 16;
 
         private readonly IVoluntarioRepository _voluntarioRepository;
