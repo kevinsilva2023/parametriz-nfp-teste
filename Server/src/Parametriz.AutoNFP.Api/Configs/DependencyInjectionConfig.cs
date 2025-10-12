@@ -1,4 +1,5 @@
 ﻿
+using Parametriz.AutoNFP.Api.Application.CuponsFiscais.Services;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Identidade.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
@@ -11,6 +12,7 @@ using Parametriz.AutoNFP.Data.Repository;
 using Parametriz.AutoNFP.Data.Uow;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
+using Parametriz.AutoNFP.Domain.CuponsFiscais;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
@@ -40,6 +42,9 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             builder.Services.AddScoped<IVoluntarioRepository, VoluntarioRepository>();
             builder.Services.AddScoped<IVoluntarioService, VoluntarioService>();
+
+            builder.Services.AddScoped<ICupomFiscalRepository, CupomFiscalRepository>();
+            builder.Services.AddScoped<ICupomFiscalService, CupomFiscalService>();
 
             builder.Services.AddScoped<Notificador>();
 

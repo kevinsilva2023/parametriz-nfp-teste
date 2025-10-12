@@ -1,6 +1,7 @@
 ﻿using Parametriz.AutoNFP.Domain.Core.DomainObjects;
 using Parametriz.AutoNFP.Domain.Core.Enums;
 using Parametriz.AutoNFP.Domain.Core.ValueObjects;
+using Parametriz.AutoNFP.Domain.CuponsFiscais;
 using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
@@ -23,6 +24,9 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
         private readonly List<Usuario> _usuarios;
         public IReadOnlyCollection<Usuario> Usuarios => _usuarios.AsReadOnly();
 
+        private readonly List<CupomFiscal> _cuponsFiscais;
+        public IReadOnlyCollection<CupomFiscal> CuponsFiscais => _cuponsFiscais.AsReadOnly();
+
         public Instituicao(Guid id, string razaoSocial, string cnpj)
             : base(id)
         {
@@ -30,6 +34,7 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
             Cnpj = new CnpjCpf(TipoPessoa.Juridica, cnpj);
 
             _usuarios = [];
+            _cuponsFiscais = [];
         }
 
         protected Instituicao() { }
