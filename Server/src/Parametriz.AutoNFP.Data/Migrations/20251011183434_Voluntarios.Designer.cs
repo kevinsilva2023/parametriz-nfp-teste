@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Parametriz.AutoNFP.Data.Context;
@@ -11,9 +12,11 @@ using Parametriz.AutoNFP.Data.Context;
 namespace Parametriz.AutoNFP.Data.Migrations
 {
     [DbContext(typeof(AutoNfpDbContext))]
-    partial class AutoNfpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251011183434_Voluntarios")]
+    partial class Voluntarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,9 +95,9 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<byte[]>("Senha")
+                    b.Property<string>("Senha")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("text");
 
                     b.Property<byte[]>("Upload")
                         .IsRequired()

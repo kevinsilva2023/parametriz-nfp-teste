@@ -4,6 +4,7 @@ using Parametriz.AutoNFP.Api.Application.Identidade.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
 using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
+using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository;
@@ -12,6 +13,7 @@ using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 
 namespace Parametriz.AutoNFP.Api.Configs
 {
@@ -35,6 +37,9 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+            builder.Services.AddScoped<IVoluntarioRepository, VoluntarioRepository>();
+            builder.Services.AddScoped<IVoluntarioService, VoluntarioService>();
 
             builder.Services.AddScoped<Notificador>();
 
