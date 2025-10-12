@@ -5,7 +5,6 @@ import { UsuarioRoutingModule } from './usuario-routing.module';
 import { UsuarioComponent } from './usuario.component';
 import { CadastrarUsuarioComponent } from './components/cadastrar-usuario/cadastrar-usuario.component';
 
-
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -15,15 +14,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-
 import { AlertModule } from 'ngx-bootstrap/alert';
+
 import { ListarUsuarioComponent } from './components/listar-usuario/listar-usuario.component';
-import { InativarUsuarioComponent } from './components/inativar-usuario/inativar-usuario.component';
+import { DesativarUsuarioComponent } from './components/desativar-usuario/desativar-usuario.component';
 import { AtivarUsuarioComponent } from './components/ativar-usuario/ativar-usuario.component';
 import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuario.component';
-
-
-
+import { PefilUsuarioComponent } from './components/pefil-usuario/pefil-usuario.component';
 
 
 @NgModule({
@@ -31,9 +28,10 @@ import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuar
     UsuarioComponent,
     CadastrarUsuarioComponent,
     ListarUsuarioComponent,
-    InativarUsuarioComponent,
+    DesativarUsuarioComponent,
     AtivarUsuarioComponent,
     EditarUsuarioComponent,
+    PefilUsuarioComponent,
   ],
   imports: [
     CommonModule,

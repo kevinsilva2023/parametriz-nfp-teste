@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <div class="bg-primary text-white fs-5 fw-medium text-uppercase px-4 py-2 rounded">
+  <div class="bg-primary text-white fs-5 fw-medium w-100 text-uppercase px-4 py-2 rounded">
     <i class="fa-solid fa-users"></i> &nbsp;
     Cadastrar Usuário
   </div>
@@ -45,10 +45,10 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-outline-primary" (click)="fecharModal()">
-    Sair
-  </button>
   <button (click)="efetuarCadastrarUsuario()" type="submit" class="btn btn-primary">
     Cadatrar
+  </button>
+  <button class="btn btn-outline-primary" (click)="fecharModal()">
+    Cancelar
   </button>
 </div>

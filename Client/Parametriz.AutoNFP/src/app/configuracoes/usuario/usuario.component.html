@@ -1,1 +1,8 @@
-<app-listar-usuario></app-listar-usuario>
+<div class="row justify-content-center pt-4">
+  <div class="col-10">
+    <app-listar-usuario *ngIf="isAdministrador"></app-listar-usuario>
+  </div>
+  <div class="col-10">
+    <app-pefil-usuario *ngIf="!isAdministrador"></app-pefil-usuario>
+  </div>
+</div>

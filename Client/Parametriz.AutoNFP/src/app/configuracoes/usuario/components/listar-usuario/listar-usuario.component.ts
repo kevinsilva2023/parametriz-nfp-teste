@@ -2,11 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { debounceTime, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InativarUsuarioComponent } from '../inativar-usuario/inativar-usuario.component';
+import { DesativarUsuarioComponent } from '../desativar-usuario/desativar-usuario.component';
 import { Usuario } from '../../models/usuario';
 import { CadastrarUsuarioComponent } from '../cadastrar-usuario/cadastrar-usuario.component';
 import { AtivarUsuarioComponent } from '../ativar-usuario/ativar-usuario.component';
 import { EditarUsuarioComponent } from '../editar-usuario/editar-usuario.component';
+import { ConfirmarEmail } from 'src/app/identidade/models/confirmar-email';
+import { DefinirSenha } from 'src/app/identidade/models/definir-senha';
+import { EnviarDefinirSenha } from 'src/app/identidade/models/enviar-definir-senha';
+import { IdentidadeService } from 'src/app/identidade/services/identidade.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-listar-usuario',
@@ -25,11 +30,15 @@ export class ListarUsuarioComponent implements OnInit {
   filtroAcesso = 2;
   filtroDesativado = 0;
 
+  errors: [] = [];
+
   debounceNomeUsuario = new Subject<string>();
   debounceEmailUsuario = new Subject<string>();
 
   constructor(private usuarioService: UsuarioService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private indentidadeService: IdentidadeService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -90,7 +99,7 @@ export class ListarUsuarioComponent implements OnInit {
   }
 
   inativarUsuario(usuario: Usuario) {
-    let modalRef = this.modalService.open(InativarUsuarioComponent, { size: 'lg', centered: true })
+    let modalRef = this.modalService.open(DesativarUsuarioComponent, { size: 'lg', centered: true })
 
     modalRef.componentInstance.usuario = usuario;
 
@@ -120,6 +129,39 @@ export class ListarUsuarioComponent implements OnInit {
       .subscribe({
         next: () => this.obterPorFiltro()
       });
+  }
+
+  enviarConfirmarEmail(usuario: Usuario) {
+    this.indentidadeService.enviarConfirmarEmail({
+      usuarioId: usuario.id,
+      definirSenha: false,
+    })
+      .subscribe({
+        next: (sucesso: any) => { this.processarSucesso(sucesso); },
+        error: (falha: any) => { this.processarFalha(falha); }
+      })
+  }
+
+  enviarDefinirSenha(usuario: Usuario) {
+    this.indentidadeService.enviarDefinirSenha({ email: usuario.email.conta })
+      .subscribe({
+        next: (sucesso: any) => { this.processarSucesso(sucesso); },
+        error: (falha: any) => { this.processarFalha(falha); }
+      })
+  }
+
+  processarSucesso(response: any) {
+    this.limparErros()
+    this.toastr.success('Email enviado.', 'Sucesso!');
+  }
+
+  processarFalha(fail: any) {
+    this.errors = fail?.error?.errors?.mensagens;
+    this.toastr.error('Não foi possível enviar o email.', 'Erro');
+  }
+
+  limparErros() {
+    this.errors = [];
   }
 
 }

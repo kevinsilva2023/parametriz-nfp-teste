@@ -5,12 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-inativar-usuario',
+  selector: 'app-desativar-usuario',
   standalone: false,
-  templateUrl: './inativar-usuario.component.html',
+  templateUrl: './desativar-usuario.component.html',
   styles: ``
 })
-export class InativarUsuarioComponent implements OnInit {
+export class DesativarUsuarioComponent implements OnInit {
   @Input() usuario!: Usuario;
 
   errors: [] = [];
@@ -36,14 +36,14 @@ export class InativarUsuarioComponent implements OnInit {
   processarSucesso(response: any) {
     this.limparErros()
 
-    this.toastr.success('Usuário inativado com sucesso.', 'Sucesso!');
+    this.toastr.success('Usuário desativado com sucesso.', 'Sucesso!');
 
     this.fecharModal();
   }
 
   processarFalha(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
-    this.toastr.error('Não foi possível cadastrar o usuário.', 'Erro');
+    this.toastr.error('Não foi possível desativar o usuário.', 'Erro');
   }
 
   limparErros() {

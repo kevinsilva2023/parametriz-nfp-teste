@@ -11,7 +11,7 @@ export const autorizacaoGuard: CanActivateFn = (
     let router = inject(Router);
 
     if (!autorizacaoService.usuarioEstaLogado())
-      router.navigate(['/login'], { queryParams: { returnUrl: route.url }});
+      router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
 
     let routeData = route.data[0];
 

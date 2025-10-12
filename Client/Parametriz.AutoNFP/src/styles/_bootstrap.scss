@@ -76,3 +76,13 @@
 .form-select {
   border-color: var(--royal-blue);
 }
+
+td, th {
+  border-bottom: 1PX solid var(--gray-300)  !important;
+  padding-left: 20px !important;
+}
+
+.table-primary, table {
+  background-color: none  !important;
+  background: var(--royal-blue-light) !important;
+}

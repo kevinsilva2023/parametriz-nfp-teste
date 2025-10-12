@@ -1,10 +1,11 @@
-export interface Usuario {
-  nome: string,
-  email: Email,
-  administrador: number,
-  desativado?: number;
-}
+  export interface Usuario {
+    id: string,
+    nome: string,
+    email: Email,
+    administrador: number,
+    desativado?: number;
+  }
 
-export interface Email {
-  conta: string
-}
+  export interface Email {
+    conta: string
+  }
