@@ -7,10 +7,5 @@ import { Component } from '@angular/core';
 })
 
 export class VoluntarioComponent {
-  certificadoCadastrado = false;
-
-  onCertificadoStatusChange(status: boolean) {
-    this.certificadoCadastrado = status;
-  }
 
 }

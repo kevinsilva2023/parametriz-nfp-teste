@@ -2,6 +2,8 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, vie
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
+import { VoluntarioService } from '../services/voluntario.service';
+import { CadastrarVoluntario } from '../models/cadastrar-voluntario';
 
 @Component({
   selector: 'app-cadastrar-voluntario',
@@ -22,8 +24,9 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
   errors: any[] = [];
 
   constructor(private formBuilder: FormBuilder,
-    // private voluntarioService: VoluntarioService,
-    private toastr: ToastrService) {
+              private voluntarioService: VoluntarioService,
+              private toastr: ToastrService) 
+  {
     super();
 
     this.validationMessages = {
@@ -43,7 +46,6 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
       certificadoDigital: ['', Validators.required],
       senhaCertificadoDigital: ['', Validators.required],
       upload: [''],
-      instituicaoId: []
     });
   }
 
@@ -64,17 +66,13 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
 
     let uploadBase64 = await this.converterParaBase64(arquivo);
     this.preencherForm(this.certificadoPath, uploadBase64);
-
-    console.log(uploadBase64);
   }
 
   preencherForm(certificadoName: string, uploadBase64: string) {
-    // let instituicaoId = LocalStorageUtils.obterInstituicaoId();
 
     this.voluntarioForm.patchValue({
       certificadoDigital: certificadoName,
       upload: uploadBase64,
-      // instituicaoId: instituicaoId
     });
     this.voluntarioForm.get('certificadoDigital')?.markAsTouched();
   }
@@ -102,11 +100,16 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
     if (this.voluntarioForm.dirty && this.voluntarioForm.value) {
       this.voluntario = Object.assign({}, this.voluntario, this.voluntarioForm.value);
 
-      // this.voluntarioService.enviarCerficiadoDigital(this.voluntario)
-      //   .subscribe({
-      //     next: (sucesso: any) => { this.processarSucesso(sucesso); },
-      //     error: (falha: any) => { this.processarFalha(falha); }
-      //   });
+      const voluntario: CadastrarVoluntario = {
+        upload: this.voluntarioForm.get('upload')?.value,
+        senha: this.voluntarioForm.get('senhaCertificadoDigital')?.value
+      };
+
+      this.voluntarioService.cadastrar(voluntario)
+        .subscribe({
+          next: (sucesso: any) => { this.processarSucesso(sucesso); },
+          error: (falha: any) => { this.processarFalha(falha); }
+        });
     }
   }
 
@@ -114,10 +117,10 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
     this.limparErros();
     this.toastr.success('Voluntario cadastrado com sucesso!', 'Sucesso!')
   }
-  
+
   processarFalha(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
-    this.toastr.error('Usuário ou senha incorretos.', 'Erro de Login!');
+    this.toastr.error('Erro ao cadastrar voluntario.', 'Erro!');
   }
 
 }

@@ -61,16 +61,13 @@ export class CadastrarUsuarioComponent extends BaseFormComponent implements OnIn
   efetuarCadastrarUsuario() {
     super.validarFormulario(this.cadastroUsuarioForm);
 
-    let instituicaoId = LocalStorageUtils.obterInstituicaoId();
 
     if(this.cadastroUsuarioForm.dirty && this.cadastroUsuarioForm.valid) {
 
       this.usuario = Object.assign({}, this.usuario, {
-        // Verificar outra possibilidade
         nome: this.cadastroUsuarioForm.get('nome')?.value,
         email: { conta: this.cadastroUsuarioForm.get('email')?.value},
         administrador: this.cadastroUsuarioForm.get('administrador')?.value,
-        instituicaoId: instituicaoId
       });
       
       console.log(this.usuario)
