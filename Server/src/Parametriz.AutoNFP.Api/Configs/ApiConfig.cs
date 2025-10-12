@@ -10,6 +10,7 @@ namespace Parametriz.AutoNFP.Api.Configs
         {
             if (builder == null) throw new ArgumentNullException(nameof(builder));
 
+            builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
             builder.Services.Configure<SmtpConfig>(builder.Configuration.GetSection("SmtpConfig"));
             builder.Services.Configure<UrlsConfig>(builder.Configuration.GetSection("UrlsConfig"));
 

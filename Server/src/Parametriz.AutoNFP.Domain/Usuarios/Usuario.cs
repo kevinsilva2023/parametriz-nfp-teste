@@ -16,8 +16,6 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
         public bool Administrador { get; private set; }
         public bool Desativado { get; private set; }
 
-        public Instituicao Instituicao { get; private set; }
-
         public Usuario(Guid id, Guid instituicaoId, string nome, Email email, bool administrador)
             : base(id, instituicaoId)
         {
