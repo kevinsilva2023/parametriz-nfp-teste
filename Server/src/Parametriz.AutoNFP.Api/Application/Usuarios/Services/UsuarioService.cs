@@ -85,6 +85,31 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
             return CommandEhValido();
         }
 
+        public async Task<bool> AtualizarNaoAdministrador(UsuarioViewModel usuarioViewModel)
+        {
+            if (UsuarioId != usuarioViewModel.Id)
+                return NotificarErro("Requisição inválida.");
+
+            var usuario = await _usuarioRepository.ObterPorId(usuarioViewModel.Id, InstituicaoId);
+
+            if (usuario == null)
+                return NotificarErro("Usuário não encontrado.");
+
+            if (usuario.Administrador)
+                return NotificarErro("Usuário é administrador.");
+
+            usuario.AlterarNome(usuarioViewModel.Nome);
+
+            if (!await UsuarioAptoParaAtualizar(usuario))
+                return false;
+
+            _usuarioRepository.Atualizar(usuario);
+
+            await Commit();
+
+            return CommandEhValido();
+        }
+
         public async Task<bool> Atualizar(UsuarioViewModel usuarioViewModel)
         {
             var usuario = await _usuarioRepository.ObterPorId(usuarioViewModel.Id, InstituicaoId);

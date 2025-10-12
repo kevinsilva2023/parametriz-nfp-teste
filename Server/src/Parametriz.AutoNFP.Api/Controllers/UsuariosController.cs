@@ -12,7 +12,6 @@ using Parametriz.AutoNFP.Domain.Usuarios;
 
 namespace Parametriz.AutoNFP.Api.Controllers
 {
-    [Authorize(Roles = "Administrador")]
     [Route("api/usuarios")]
     public class UsuariosController : MainController
     {
@@ -31,6 +30,14 @@ namespace Parametriz.AutoNFP.Api.Controllers
             _identidadeService = identidadeService;
         }
 
+        [HttpGet("nao-administrador")]
+        public async Task<ActionResult<UsuarioViewModel>> Get()
+        {
+            return (await _usuarioRepository.ObterPorId(UsuarioId, InstituicaoId))
+                .ToViewModel();
+        }
+
+        [Authorize(Roles = "Administrador")]
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<UsuarioViewModel>> Get(Guid id)
         {
@@ -42,6 +49,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return usuarioViewModel;
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpGet("obter-por-filtros")]
         public async Task<IEnumerable<UsuarioViewModel>> Get(string nome = "", string email = "", 
             BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso)
@@ -51,6 +59,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
                 .ToViewModel();
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UsuarioViewModel usuarioViewModel)
         {
@@ -62,6 +71,18 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return CustomResponse(usuarioViewModel);
         }
 
+        [HttpPut("nao-administrador")]
+        public async Task<IActionResult> AtualizarNaoAdministrador([FromBody] UsuarioViewModel usuarioViewModel)
+        {
+            if (!ModelStateValida())
+                return CustomResponse();
+
+            await _usuarioService.AtualizarNaoAdministrador(usuarioViewModel);
+
+            return CustomResponse(usuarioViewModel);
+        }
+
+        [Authorize(Roles = "Administrador")]
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] UsuarioViewModel usuarioViewModel)
         {
@@ -73,6 +94,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return CustomResponse(usuarioViewModel);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut("desativar")]
         public async Task<IActionResult> Desativar([FromBody] UsuarioViewModel usuarioViewModel)
         {
@@ -84,6 +106,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return CustomResponse(usuarioViewModel);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut("ativar")]
         public async Task<IActionResult> Ativar([FromBody] UsuarioViewModel usuarioViewModel)
         {

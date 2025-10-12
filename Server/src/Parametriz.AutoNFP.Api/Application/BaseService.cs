@@ -14,7 +14,7 @@ namespace Parametriz.AutoNFP.Api.Application
         protected readonly Notificador _notificador;
 
         protected Guid InstituicaoId => _user.ObterInstituicaoId();
-        protected Guid VoluntarioId => _user.ObterId();
+        protected Guid UsuarioId => _user.ObterId();
 
         public BaseService(IAspNetUser user, 
                            IUnitOfWork uow, 
