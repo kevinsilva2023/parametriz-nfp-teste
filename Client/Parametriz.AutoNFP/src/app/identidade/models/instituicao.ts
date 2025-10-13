@@ -1,7 +1,7 @@
 export interface Instituicao {
   razaoSocial: string,
   cnpj: string,
-  voluntarioNome: Voluntario,
+  usuarioNome: Voluntario,
   email: string,
   senha: string,
   senhaConfirmacao: string

@@ -115,7 +115,7 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
 
   processarSucesso(response: any) {
     this.limparErros();
-    this.toastr.success('Voluntario cadastrado com sucesso!', 'Sucesso!')
+    this.toastr.success('Voluntario cadastrado com sucesso!', 'Sucesso!');
   }
 
   processarFalha(fail: any) {

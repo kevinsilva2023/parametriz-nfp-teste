@@ -45,15 +45,16 @@
               <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"> </mat-error>
             </mat-form-field>
           </div>
+
           <div class="col-6">
             <mat-form-field appearance="outline" class="w-100 mb-2"
-              [ngClass]="{'has-error': displayMessage['usuario']}">
+              [ngClass]="{'has-error': displayMessage['usuarioNome']}">
               <mat-label>
                 <i class="fa-solid fa-user"></i>
                 &nbsp; Usuário
               </mat-label>
-              <input matInput formControlName="voluntarioNome" type="text" placeholder="Nome de Usuário">
-              <mat-error *ngIf="displayMessage['voluntarioNome']" [innerHtml]="displayMessage['voluntarioNome']">
+              <input matInput formControlName="usuarioNome" type="text" placeholder="Nome de Usuário">
+              <mat-error *ngIf="displayMessage['usuarioNome']" [innerHtml]="displayMessage['usuarioNome']">
               </mat-error>
             </mat-form-field>
           </div>
@@ -74,6 +75,7 @@
               <mat-error *ngIf="displayMessage['senha']" [innerHtml]="displayMessage['senha']"> </mat-error>
             </mat-form-field>
           </div>
+          
           <div class="col-6">
             <mat-form-field appearance="outline" class="w-100 mb-2"
               [ngClass]="{'has-error': displayMessage['senhaConfirmacao']}">

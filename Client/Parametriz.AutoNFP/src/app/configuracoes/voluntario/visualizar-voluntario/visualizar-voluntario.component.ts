@@ -39,8 +39,10 @@ export class VisualizarVoluntarioComponent implements OnInit {
   }
   
   processarSucesso(response: any) {
-    this.limparErros();
+    this. limparErros();
+
     this.voluntario = response;
+
   }
 
   limparErros() {
