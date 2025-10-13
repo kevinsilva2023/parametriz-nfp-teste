@@ -44,7 +44,7 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
         {
             RuleFor(p => p.EnviadoEm)
                 .NotNull()
-                    .When(p => p.Status == CupomFiscalStatus.ENVIADO)
+                    .When(p => p.Status == CupomFiscalStatus.SUCESSO)
                         .WithMessage("Favor preencher a data de envio.");
         }
 
