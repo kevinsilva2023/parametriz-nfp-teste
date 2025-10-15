@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository.Core;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
@@ -32,8 +33,35 @@ namespace Parametriz.AutoNFP.Data.Repository
                 .AsNoTrackingWithIdentityResolution()
                 .Where(c => c.InstituicaoId == instituicaoId &&
                             c.CadastradoPorId == usuarioId)
-                .OrderBy(c => c.ChaveDeAcesso.MesEmissao)
+                .OrderBy(c => c.ChaveDeAcesso.Competencia)
                 .ToListAsync();
+        }
+
+        public async Task<CupomFiscalPaginacao> ObterPorFiltrosPaginado(Guid instituicaoId, DateTime competencia, 
+            Guid? cadastradoPorId = null, CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50)
+        {
+            var cuponsFiscais = _context.CuponsFiscais
+                .Include(p => p.ChaveDeAcesso)
+                    .ThenInclude(p => p.Cnpj)
+                .AsNoTracking()
+                .Where(p => p.InstituicaoId == instituicaoId &&
+                            p.ChaveDeAcesso.Competencia.Value.Month == competencia.Month &&
+                            p.ChaveDeAcesso.Competencia.Value.Year == competencia.Year &&
+                            (cadastradoPorId == null || p.CadastradoPorId == cadastradoPorId) &&
+                            (status == null || p.Status == status))
+                .OrderByDescending(p => p.CadastradoEm);
+
+            return new CupomFiscalPaginacao(
+                await cuponsFiscais
+                    .Skip(registrosPorPagina * (pagina - 1))
+                    .Take(registrosPorPagina)
+                    .ToListAsync(),
+                pagina,
+                registrosPorPagina,
+                cuponsFiscais.Count(p => p.Status == CupomFiscalStatus.PROCESSANDO),
+                cuponsFiscais.Count(p => p.Status == CupomFiscalStatus.SUCESSO),
+                cuponsFiscais.Count(p => p.Status == CupomFiscalStatus.ERRO),
+                cuponsFiscais.Count());
         }
     }
 }
