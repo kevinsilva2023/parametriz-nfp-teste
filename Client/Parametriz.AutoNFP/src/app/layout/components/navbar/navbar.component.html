@@ -12,8 +12,8 @@
     <i class="fa-solid fa-circle-question cursor-pointer"></i>
     <i [matBadge]="15" class="fa-solid fa-bell me-2 cursor-pointer"></i>
 
-    <div class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
-      <div class="d-flex flex-column text-end" routerLink="/perfil">
+    <div routerLink="/perfil" class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
+      <div class="d-flex flex-column text-end">
         <span class="mb-1">{{ usuario.nome | titlecase }}</span>
         <span class="text-secondary fs-small">{{ usuario.claims[0].value }}</span>
       </div>
