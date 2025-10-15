@@ -45,14 +45,4 @@
       font-weight: 700;
     }
   }
-
-  .configuracoes-content {
-    max-height: 100%;
-    flex: 1 1 auto;
-    overflow-x: hidden !important;
-    background-color: var(--sand-light);
-    border-radius: 10px;
-
-    overflow-y: auto;
-  }
 }

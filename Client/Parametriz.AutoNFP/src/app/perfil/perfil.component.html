@@ -1,1 +1,57 @@
-<p>perfil works!</p>
+<section id="perfil" class="content w-100 h-100 d-flex justify-content-center align-itens-center p-5 " *ngIf="usuario">
+
+  <!-- Perfil Image/ Icon -->
+  <div class="card card-white h-75 p-5 d-flex flex-column justify-content-center align-items-center gap-4">
+
+    <div class="perfil-imagem position-relative rounded-circle d-flex justify-content-center align-items-center ">
+      <i class="fa-solid fa-user text-white fs-1"></i>
+      <button
+        class="editar position-absolute bg-sand text-white border-0 rounded-circle cursor-pointer d-flex justify-content-center align-items-center">
+        <i class="fa-solid fa-camera text-white fs-6"></i>
+      </button>
+    </div>
+
+    <div class="text-center">
+      <h1 *ngIf="usuario" class="fs-4 fw-medium mb-2">{{ usuario.nome | titlecase }}</h1>
+      <h1 *ngIf="usuario" class="fs-6 text-secondary">{{ usuario.email.conta }}</h1>
+    </div>
+
+    <button class="btn btn-primary rounded-5 fs-6 fw-medium py-">Plano Master</button>
+
+    <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+      <ul>
+        <li class="fs-small mt-1" *ngFor="let error of errors">
+          {{error}}
+        </li>
+      </ul>
+    </ngb-alert>
+
+    <form [formGroup]="perfilForm" *ngIf="usuario">
+      <mat-form-field class="w-100 mb-3" appearance="outline" [ngClass]="{'has-error': displayMessage['nome']}">
+        <mat-label>
+          <i class="fa-solid fa-user"></i>
+          &nbsp; Nome Usuário
+        </mat-label>
+        <input matInput formControlName="nome" type="text" placeholder="Digite o nome do Usuário">
+        <mat-error *ngIf="displayMessage['nome']" [innerHtml]="displayMessage['nome']" > </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100 mb-1">
+        <mat-label>
+          <i class="fa-solid fa-envelope"></i>
+          &nbsp; E-mail
+        </mat-label>
+        <input disabled matInput type="email" placeholder="seuemail@aqui.com.br" [value]="usuario.email.conta">
+      </mat-form-field>
+
+      <div class="d-flex justify-content-end mt-3">
+        <button (click)="efetuarEditarUsuario()" type="submit" class="btn btn-primary px-4">
+          Editar
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+</section>

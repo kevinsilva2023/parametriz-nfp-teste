@@ -28,7 +28,7 @@ input {
   overflow: hidden;
   padding: 0px 16px 26px 16px;
   z-index: 0;
-  
+
   .fundo-animado {
     position: absolute;
     inset: 0;
@@ -234,9 +234,19 @@ input[type="checkbox"]:checked+.checkmark::after {
     color: #0D2D54 !important;
     border-left: 5px solid #256FAD;
   }
-  
+
 }
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.content {
+  max-width: 100%;
+  max-height: 100% !important; 
+  flex: 1 1 auto;
+  overflow-x: hidden !important;
+  background-color: var(--sand-light);
+  border-radius: 10px;
+  overflow-y: auto;
 }

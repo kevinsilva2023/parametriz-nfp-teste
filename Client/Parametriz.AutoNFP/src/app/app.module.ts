@@ -36,6 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PerfilComponent } from './perfil/perfil.component';
+import { PerfilService } from './services/perfil.service';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { PerfilComponent } from './perfil/perfil.component';
   providers: [
     IdentidadeService,
     AutorizacaoService,
+    PerfilService,
     provideHttpClient(
       withInterceptors([
         errorInterceptor,
