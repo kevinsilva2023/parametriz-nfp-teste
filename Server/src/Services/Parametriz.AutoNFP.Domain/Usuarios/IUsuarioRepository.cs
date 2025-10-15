@@ -15,5 +15,6 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
         Task<bool> ExistemOutrosAdministradoresNaInstituicao(Guid id, Guid instituicaoId);
         Task<IEnumerable<Usuario>> ObterPorFiltros(Guid instituicaoId, string nome = "", string email = "", 
             BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso);
+        Task<IEnumerable<Usuario>> ObterAtivos(Guid instituicaoId);
     }
 }

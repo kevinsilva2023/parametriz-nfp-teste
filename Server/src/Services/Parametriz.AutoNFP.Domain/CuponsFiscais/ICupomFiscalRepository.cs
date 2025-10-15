@@ -10,9 +10,7 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
 {
     public interface ICupomFiscalRepository : IInstituicaoEntityRepository<CupomFiscal>
     {
-        Task<IEnumerable<CupomFiscal>> ObterPorUsuarioId(Guid usuarioId, Guid instituicaoId);
-
-        Task<CupomFiscalPaginacao> ObterPorFiltrosPaginado(Guid instituicaoId, DateTime competencia, Guid? cadastradoPorId = null,
-            CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50);
+        Task<CupomFiscalPaginacao> ObterPorFiltrosPaginado(Guid instituicaoId, DateTime competencia, 
+            Guid? cadastradoPorId = null, CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50);
     }
 }
