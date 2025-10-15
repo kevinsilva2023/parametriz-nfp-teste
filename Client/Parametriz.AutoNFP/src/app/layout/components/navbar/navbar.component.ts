@@ -11,8 +11,8 @@ import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
-  @Input() tituloPagina: string = 'Página';
-  usuario = '';
+  @Input() tituloPagina = 'Configurações';
+  usuario!: any;
 
   ngOnInit(): void {
     this.preencherNomeUsuarioAtivo();
@@ -20,7 +20,9 @@ export class NavbarComponent implements OnInit {
 
   preencherNomeUsuarioAtivo() {
     let usuario = LocalStorageUtils.obterUsuario();
-    this.usuario = usuario.nome;
+    this.usuario = usuario;
+    console.log(this.usuario);
+    
   }
 
 }

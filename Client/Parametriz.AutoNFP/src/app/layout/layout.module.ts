@@ -6,6 +6,9 @@ import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
+import { MatBadgeModule } from '@angular/material/badge';
+
+
 
 @NgModule({
   declarations: [
@@ -15,7 +18,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   ],
   imports: [
     CommonModule,
-    LayoutRoutingModule
+    LayoutRoutingModule,
+    MatBadgeModule
   ]
 })
 export class LayoutModule { }

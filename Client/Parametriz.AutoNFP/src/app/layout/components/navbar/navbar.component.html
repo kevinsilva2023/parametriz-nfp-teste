@@ -1,8 +1,30 @@
 <header class="header-flutuante">
-  <h2 class="page-title">{{ tituloPagina }}</h2>
-  
-  <div class="user-actions">
-    <span class="user-name">{{ usuario }}</span>
-    <button routerLink="/login" class="btn-logout">Sair</button>
+  <div class="titulo-pagina">
+    <div class="fw-medium fs-5">{{ tituloPagina }}</div>
+    <div class="d-flex gap-2 fs-small">
+      <span>Home</span>
+      >
+      <span>{{ tituloPagina }}</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-4">
+    <i class="fa-solid fa-circle-question cursor-pointer"></i>
+    <i [matBadge]="15" class="fa-solid fa-bell me-2 cursor-pointer"></i>
+
+    <div class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
+      <div class="d-flex flex-column text-end" routerLink="/perfil">
+        <span class="mb-1">{{ usuario.nome | titlecase }}</span>
+        <span class="text-secondary fs-small">{{ usuario.claims[0].value }}</span>
+      </div>
+      <div>
+        <i class="fa-solid fa-circle-user fs-3"></i>
+      </div>
+    </div>
+
+    <button routerLink="/login" class="btn btn-sm btn-danger rounded-5">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+
   </div>
 </header>
