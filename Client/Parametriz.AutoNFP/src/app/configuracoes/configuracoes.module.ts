@@ -24,8 +24,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { AlertModule } from 'ngx-bootstrap/alert';
-
 import { UsuarioComponent } from './usuarios/usuario.component';
 import { CadastrarUsuarioComponent } from './usuarios/components/cadastrar-usuario/cadastrar-usuario.component';
 import { ListarUsuarioComponent } from './usuarios/components/listar-usuario/listar-usuario.component';
@@ -59,7 +57,6 @@ import { VoluntarioService } from './voluntarios/services/voluntario.service';
     ReactiveFormsModule,
     MatSlideToggleModule,
     MatSelectModule,
-    AlertModule,
     MatInputModule,
     MatMenuModule
   ],

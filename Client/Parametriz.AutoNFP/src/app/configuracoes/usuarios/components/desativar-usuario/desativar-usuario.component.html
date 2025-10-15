@@ -8,15 +8,14 @@
 
 <div class="modal-body text-center">
 
-  <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert"
-    *ngIf="errors.length > 0">
+  <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
     <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
     <ul>
-      <li class="fs-small mt-1">
-        {{ errors }}
+      <li class="fs-small mt-1" *ngFor="let error of errors">
+        {{error}}
       </li>
     </ul>
-  </alert>
+  </ngb-alert>
 
 
   <p class="fs-5 fw-semibold mb-4">Deseja realmente desativar o usuário <span class="text-primary">"{{ usuario.nome
@@ -28,7 +27,7 @@
   <button type="button" class="btn btn-warning text-dark px-4" (click)="confirmarInativarUsuario()">
     <i class="fa-solid fa-user-slash"></i> Desativar
   </button>
-  
+
   <button type="button" class="btn btn-outline-secondary px-4" (click)="fecharModal()">
     <i class="fa-solid fa-xmark"></i> Cancelar
   </button>

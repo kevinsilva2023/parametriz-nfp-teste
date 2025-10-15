@@ -30,12 +30,11 @@ import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { IdentidadeService } from './identidade/services/identidade.service';
 import { AutorizacaoService } from './shared/services/autorizacao.service';
 
-import { AlertConfig, AlertModule } from 'ngx-bootstrap/alert';
 import { ToastrModule } from 'ngx-toastr';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgbModalModule, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -62,7 +61,6 @@ import { NgbModalModule, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
     MatCheckboxModule,
     MatCardModule,
     MatSelectModule,
-    AlertModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 5000,
@@ -70,6 +68,7 @@ import { NgbModalModule, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
       progressAnimation: 'increasing',
     }),
     NgbModalModule,
+    NgbAlertModule
   ],
   providers: [
     IdentidadeService,
@@ -88,6 +87,15 @@ import { NgbModalModule, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
         config.keyboard = false;
         return config;
       }
+    },
+    {
+      provide: NgbAlertConfig,
+      useFactory: () => {
+        const config = new NgbAlertConfig();
+        config.dismissible = true; 
+        config.animation = true;
+        return config;
+      },
     }
   ],
   bootstrap: [AppComponent]

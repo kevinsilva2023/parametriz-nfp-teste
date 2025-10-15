@@ -5,14 +5,14 @@
     <div class="d-flex flex-column justify-content-center gap-4 p-5">
       <h1 class="fs-1 text-primary fw-bolder text-center">Registrar</h1>
 
-      <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
         <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
         <ul>
           <li class="fs-small mt-1" *ngFor="let error of errors">
             {{error}}
           </li>
         </ul>
-      </alert>
+      </ngb-alert>
 
       <form class="d-flex flex-column " (ngSubmit)="efetuarRegistro()" [formGroup]="registerForm">
 

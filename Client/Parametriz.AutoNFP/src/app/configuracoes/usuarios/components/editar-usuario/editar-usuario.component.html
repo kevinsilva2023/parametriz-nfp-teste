@@ -7,14 +7,14 @@
 <div class="modal-body" tabindex="1">
   <h2 class="fs-6 mb-3">Editar usuário, alterando os dados abaixo:</h2>
 
-  <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
-    <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
-    <ul>
-      <li class="fs-small mt-1">
-        {{ errors }}
-      </li>
-    </ul>
-  </alert>
+    <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+      <ul>
+        <li class="fs-small mt-1" *ngFor="let error of errors">
+          {{error}}
+        </li>
+      </ul>
+    </ngb-alert>
 
   <form [formGroup]="editarUsuarioForm" *ngIf="usuario">
 
