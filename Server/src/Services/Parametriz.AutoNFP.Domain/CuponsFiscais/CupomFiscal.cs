@@ -14,6 +14,7 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
     {
         public ChaveDeAcesso ChaveDeAcesso { get; private set; }
         public Guid CadastradoPorId { get; private set; }
+        public DateTime CadastradoEm { get; private set; }
         public CupomFiscalStatus Status { get; private set; }
         public DateTime? EnviadoEm { get; private set; }
         public string MensagemErro { get; private set; }
@@ -25,6 +26,7 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
         {
             ChaveDeAcesso = new ChaveDeAcesso(chave);
             CadastradoPorId = cadastradoPorId;
+            CadastradoEm = DateTime.Now;
             AlterarStatus(CupomFiscalStatus.PROCESSANDO);
         }
 

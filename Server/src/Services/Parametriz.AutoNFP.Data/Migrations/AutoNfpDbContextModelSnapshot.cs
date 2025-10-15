@@ -28,6 +28,9 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CadastradoEm")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<Guid>("CadastradoPorId")
                         .HasColumnType("uuid");
 
@@ -159,7 +162,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Parametriz.AutoNFP.Domain.Core.ValueObjects.ChaveDeAcesso", "ChaveDeAcesso", b1 =>
+                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.ChaveDeAcesso", "ChaveDeAcesso", b1 =>
                         {
                             b1.Property<Guid>("CupomFiscalId")
                                 .HasColumnType("uuid");
@@ -171,10 +174,14 @@ namespace Parametriz.AutoNFP.Data.Migrations
                                 .HasColumnName("Chave")
                                 .IsFixedLength();
 
-                            b1.Property<DateTime?>("MesEmissao")
+                            b1.Property<DateTime?>("Competencia")
                                 .IsRequired()
                                 .HasColumnType("timestamp without time zone")
-                                .HasColumnName("MesEmissao");
+                                .HasColumnName("Competencia");
+
+                            b1.Property<int>("Numero")
+                                .HasColumnType("integer")
+                                .HasColumnName("Numero");
 
                             b1.HasKey("CupomFiscalId");
 
@@ -186,7 +193,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("CupomFiscalId");
 
-                            b1.OwnsOne("Parametriz.AutoNFP.Domain.Core.ValueObjects.CnpjCpf", "Cnpj", b2 =>
+                            b1.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cnpj", b2 =>
                                 {
                                     b2.Property<Guid>("ChaveDeAcessoCupomFiscalId")
                                         .HasColumnType("uuid");
@@ -218,7 +225,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
 
             modelBuilder.Entity("Parametriz.AutoNFP.Domain.Instituicoes.Instituicao", b =>
                 {
-                    b.OwnsOne("Parametriz.AutoNFP.Domain.Core.ValueObjects.Endereco", "Endereco", b1 =>
+                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.Endereco", "Endereco", b1 =>
                         {
                             b1.Property<Guid>("InstituicaoId")
                                 .HasColumnType("uuid");
@@ -274,7 +281,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
                                 .HasForeignKey("InstituicaoId");
                         });
 
-                    b.OwnsOne("Parametriz.AutoNFP.Domain.Core.ValueObjects.CnpjCpf", "Cnpj", b1 =>
+                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cnpj", b1 =>
                         {
                             b1.Property<Guid>("InstituicaoId")
                                 .HasColumnType("uuid");
@@ -315,7 +322,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Parametriz.AutoNFP.Domain.Core.ValueObjects.Email", "Email", b1 =>
+                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("UsuarioId")
                                 .HasColumnType("uuid");
@@ -350,7 +357,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Parametriz.AutoNFP.Domain.Core.ValueObjects.CnpjCpf", "CnpjCpf", b1 =>
+                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "CnpjCpf", b1 =>
                         {
                             b1.Property<Guid>("VoluntarioId")
                                 .HasColumnType("uuid");

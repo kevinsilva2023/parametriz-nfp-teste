@@ -15,13 +15,13 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
         public bool ExisteChave { get; private set; }
 
         public int UfCodigo => ExisteChave ? Convert.ToInt32(Chave.Substring(0, 2)) : 0;
-        public DateTime? MesEmissao { get; private set; }
-        public DateTime? LimiteEnvio => MesEmissao != null ?
-            new DateTime(MesEmissao.Value.AddMonths(1).Year, MesEmissao.Value.AddMonths(1).Month, 20).Date : null;
+        public DateTime? Competencia { get; private set; }
+        public DateTime? LimiteEnvio => Competencia != null ?
+            new DateTime(Competencia.Value.AddMonths(1).Year, Competencia.Value.AddMonths(1).Month, 20).Date : null;
         public CnpjCpf Cnpj { get; private set; }
         public int Modelo => ExisteChave ? Convert.ToInt32(Chave.Substring(20, 2)) : 0;
         public int Serie => ExisteChave ? Convert.ToInt32(Chave.Substring(22, 3)) : 0;
-        public int Numero => ExisteChave ? Convert.ToInt32(Chave.Substring(25, 9)) : 0;
+        public int Numero { get; private set; }
         public int FormaEmissao => ExisteChave ? Convert.ToInt32(Chave.Substring(34, 1)) : 0;
         public int CodigoNumerico => ExisteChave ? Convert.ToInt32(Chave.Substring(35, 8)) : 0;
         public int DigitoVerificador => ExisteChave ? Convert.ToInt32(Chave.Substring(43, 1)) : 0;
@@ -34,8 +34,9 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
 
             if (ExisteChave)
             {
-                MesEmissao = new DateTime(2000 + Convert.ToInt32(Chave.Substring(2, 2)), Convert.ToInt32(Chave.Substring(4, 2)), 1).Date;
+                Competencia = new DateTime(2000 + Convert.ToInt32(Chave.Substring(2, 2)), Convert.ToInt32(Chave.Substring(4, 2)), 1).Date;
                 Cnpj = new CnpjCpf(TipoPessoa.Juridica, Chave.Substring(6, 14));
+                Numero = Convert.ToInt32(Chave.Substring(25, 9));
             }
         }
 

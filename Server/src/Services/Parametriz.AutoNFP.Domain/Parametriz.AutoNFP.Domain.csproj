@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\src\Parametriz.AutoNFP.Core\Parametriz.AutoNFP.Core.csproj" />
+    <ProjectReference Include="..\..\Common\Parametriz.AutoNFP.Core\Parametriz.AutoNFP.Core.csproj" />
   </ItemGroup>
 
 </Project>

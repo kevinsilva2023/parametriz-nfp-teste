@@ -12,9 +12,11 @@ namespace Parametriz.AutoNFP.Api.Extensions
                 Id = cupomFiscal.Id,
                 InstituicaoId = cupomFiscal.InstituicaoId,
                 Chave = cupomFiscal.ChaveDeAcesso.Chave,
-                MesEmissao = cupomFiscal.ChaveDeAcesso.MesEmissao.Value,
+                Competencia = cupomFiscal.ChaveDeAcesso.Competencia.Value,
+                Numero = cupomFiscal.ChaveDeAcesso.Numero,
                 Cnpj = cupomFiscal.ChaveDeAcesso.Cnpj.NumeroInscricao,
                 CadastradoPorId = cupomFiscal.CadastradoPorId,
+                CadastradoEm = cupomFiscal.CadastradoEm,
                 Status = cupomFiscal.Status,
                 EnviadoEm = cupomFiscal.EnviadoEm,
                 MensagemErro = cupomFiscal.MensagemErro,
@@ -26,6 +28,20 @@ namespace Parametriz.AutoNFP.Api.Extensions
         public static IEnumerable<CupomFiscalViewModel> ToViewModel(this IEnumerable<CupomFiscal> cuponsFiscais)
         {
             return cuponsFiscais.Select(c => c.ToViewModel());
+        }
+
+        public static CupomFiscalPaginacaoViewModel ToViewModel(this CupomFiscalPaginacao cupomFiscalPaginacao)
+        {
+            return new CupomFiscalPaginacaoViewModel
+            {
+                CuponsFiscais = cupomFiscalPaginacao.CuponsFiscais.ToViewModel(),
+                Pagina = cupomFiscalPaginacao.Pagina,
+                RegistrosPorPagina = cupomFiscalPaginacao.RegistrosPorPagina,
+                Processando = cupomFiscalPaginacao.Processando,
+                Sucesso = cupomFiscalPaginacao.Sucesso,
+                Erro = cupomFiscalPaginacao.Erro,
+                Total = cupomFiscalPaginacao.Total
+            };
         }
     }
 }
