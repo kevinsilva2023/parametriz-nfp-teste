@@ -33,7 +33,6 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
 
   constructor(private formBuilder: FormBuilder,
               private identidadeService: IdentidadeService,
-              private activatedRoute: ActivatedRoute,
               private router: Router) 
   {
     super();
@@ -46,7 +45,7 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
         required: 'Favor preencher o e-mail.',
         email: 'O e-mail informado não é válido.'
       },
-      voluntarioNome: {
+      usuarioNome: {
         required: 'Favor preencher o nome do voluntário.'
       },
       cnpj: {
@@ -76,7 +75,7 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
         Validators.required,
         Validators.email
       ]],
-      voluntarioNome: [null, Validators.required],
+      usuarioNome: [null, Validators.required],
       cnpj: [null, [
         Validators.required,
         MyCustomValidators.cnpj
@@ -133,7 +132,7 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
     this.limparErros();
 
     let email = this.instituicao.email;
-    let usuario = this.instituicao.voluntarioNome;
+    let usuario = this.instituicao.usuarioNome;
 
     this.router.navigate(
       ['/confirmar-email-enviado'],
