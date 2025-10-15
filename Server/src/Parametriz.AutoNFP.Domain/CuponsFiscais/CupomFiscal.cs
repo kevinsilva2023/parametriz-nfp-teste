@@ -25,7 +25,7 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
         {
             ChaveDeAcesso = new ChaveDeAcesso(chave);
             CadastradoPorId = cadastradoPorId;
-            AlterarStatus(CupomFiscalStatus.NÃO_ENVIADO);
+            AlterarStatus(CupomFiscalStatus.PROCESSANDO);
         }
 
         protected CupomFiscal() { }
@@ -36,7 +36,7 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
 
             EnviadoEm = status switch
             {
-                CupomFiscalStatus.ENVIADO => DateTime.Now,
+                CupomFiscalStatus.SUCESSO => DateTime.Now,
                 _ => null
             };
 

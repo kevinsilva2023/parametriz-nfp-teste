@@ -8,8 +8,8 @@ namespace Parametriz.AutoNFP.Domain.Core.Enums
 {
     public enum CupomFiscalStatus
     {
-        NÃO_ENVIADO = 0,
-        ENVIADO = 1,
+        PROCESSANDO = 0,
+        SUCESSO = 1,
         ERRO = 2
     }
 }
