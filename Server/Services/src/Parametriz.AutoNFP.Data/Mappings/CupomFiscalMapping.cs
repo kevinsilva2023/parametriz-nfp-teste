@@ -31,8 +31,12 @@ namespace Parametriz.AutoNFP.Data.Mappings
 
                 c.Ignore(i => i.ExisteChave);
 
-                c.Property(p => p.MesEmissao)
-                    .HasColumnName("MesEmissao")
+                c.Property(p => p.Competencia)
+                    .HasColumnName("Competencia")
+                    .IsRequired();
+
+                c.Property(p => p.Numero)
+                    .HasColumnName("Numero")
                     .IsRequired();
 
                 c.OwnsOne(c => c.Cnpj, n =>
@@ -54,6 +58,9 @@ namespace Parametriz.AutoNFP.Data.Mappings
                 .WithMany(p => p.CuponsFiscais)
                 .HasForeignKey(fk => fk.CadastradoPorId)
                 .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+
+            builder.Property(p => p.CadastradoEm)
                 .IsRequired();
 
             builder.Property(p => p.Status)
