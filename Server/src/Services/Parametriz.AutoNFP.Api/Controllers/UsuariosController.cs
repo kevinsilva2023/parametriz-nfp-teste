@@ -60,6 +60,14 @@ namespace Parametriz.AutoNFP.Api.Controllers
         }
 
         [Authorize(Roles = "Administrador")]
+        [HttpGet("obter-ativos")]
+        public async Task<IEnumerable<UsuarioViewModel>> ObterAtivos()
+        {
+            return (await _usuarioRepository.ObterAtivos(InstituicaoId))
+                .ToViewModel();
+        }
+
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UsuarioViewModel usuarioViewModel)
         {

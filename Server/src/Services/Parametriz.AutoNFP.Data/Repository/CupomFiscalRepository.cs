@@ -25,24 +25,13 @@ namespace Parametriz.AutoNFP.Data.Repository
                                c.Id != cupomFiscal.Id);
         }
 
-        public async Task<IEnumerable<CupomFiscal>> ObterPorUsuarioId(Guid usuarioId, Guid instituicaoId)
-        {
-            return await _context.CuponsFiscais
-                .Include(p => p.Instituicao)
-                .Include(p => p.CadastradoPor)
-                .AsNoTrackingWithIdentityResolution()
-                .Where(c => c.InstituicaoId == instituicaoId &&
-                            c.CadastradoPorId == usuarioId)
-                .OrderBy(c => c.ChaveDeAcesso.Competencia)
-                .ToListAsync();
-        }
-
         public async Task<CupomFiscalPaginacao> ObterPorFiltrosPaginado(Guid instituicaoId, DateTime competencia, 
             Guid? cadastradoPorId = null, CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50)
         {
             var cuponsFiscais = _context.CuponsFiscais
                 .Include(p => p.ChaveDeAcesso)
                     .ThenInclude(p => p.Cnpj)
+                .Include(p => p.CadastradoPor)
                 .AsNoTracking()
                 .Where(p => p.InstituicaoId == instituicaoId &&
                             p.ChaveDeAcesso.Competencia.Value.Month == competencia.Month &&

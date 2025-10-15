@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Parametriz.AutoNFP.Api.Application.CuponsFiscais.Services;
 using Parametriz.AutoNFP.Api.Extensions;
+using Parametriz.AutoNFP.Api.Extensions.Core;
 using Parametriz.AutoNFP.Api.Models.User;
+using Parametriz.AutoNFP.Api.Utils;
+using Parametriz.AutoNFP.Api.ViewModels.Core;
 using Parametriz.AutoNFP.Api.ViewModels.CuponsFiscais;
 using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.Notificacoes;
@@ -25,13 +29,22 @@ namespace Parametriz.AutoNFP.Api.Controllers
             _cupomFiscalService = cupomFiscalService;
         }
 
-        [HttpGet("obter-por-usuario")]
-        public async Task<IEnumerable<CupomFiscalViewModel>> ObterPorUsuario()
+        [HttpGet("status")]
+        public async Task<IEnumerable<EnumViewModel>> Get()
         {
-            return (await _cupomFiscalRepository.ObterPorUsuarioId(UsuarioId, InstituicaoId))
+            return await Task.FromResult(EnumUtils.ToViewModel(typeof(CupomFiscalStatus)));
+        }
+
+        [HttpGet("obter-por-usuario")]
+        public async Task<CupomFiscalPaginacaoViewModel> ObterPorUsuario(DateTime competencia, CupomFiscalStatus? status = null,
+            int pagina = 1, int registrosPorPagina = 50)
+        {
+            return (await _cupomFiscalRepository
+                .ObterPorFiltrosPaginado(InstituicaoId, competencia, UsuarioId, status, pagina, registrosPorPagina))
                 .ToViewModel();
         }
 
+        [Authorize(Roles ="Administrador")]
         [HttpGet]
         public async Task<CupomFiscalPaginacaoViewModel> ObterPorFiltrosPaginado(DateTime competencia, Guid? cadastradoPorId = null,
             CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50)

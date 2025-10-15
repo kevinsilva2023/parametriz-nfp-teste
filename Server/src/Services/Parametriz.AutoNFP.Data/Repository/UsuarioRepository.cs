@@ -54,5 +54,15 @@ namespace Parametriz.AutoNFP.Data.Repository
                 .OrderBy(u => u.Nome)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Usuario>> ObterAtivos(Guid instituicaoId)
+        {
+            return await _context.Usuarios
+                .AsNoTracking()
+                .Where(u => u.InstituicaoId == instituicaoId &&
+                            !u.Desativado)
+                .OrderBy(p => p.Nome)
+                .ToListAsync();
+        }
     }
 }
