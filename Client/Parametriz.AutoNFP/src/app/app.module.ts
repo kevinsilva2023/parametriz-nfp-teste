@@ -35,6 +35,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
+import { PerfilComponent } from './perfil/perfil.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '
     FundoAnimadoComponent,
     NaoEncontradoComponent,
     AcessoNegadoComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,
