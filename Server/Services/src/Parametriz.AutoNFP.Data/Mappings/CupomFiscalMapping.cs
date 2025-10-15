@@ -35,6 +35,10 @@ namespace Parametriz.AutoNFP.Data.Mappings
                     .HasColumnName("Competencia")
                     .IsRequired();
 
+                c.Property(p => p.Numero)
+                    .HasColumnName("Numero")
+                    .IsRequired();
+
                 c.OwnsOne(c => c.Cnpj, n =>
                 {
                     n.Ignore(i => i.TipoPessoa);
@@ -45,9 +49,6 @@ namespace Parametriz.AutoNFP.Data.Mappings
                         .IsFixedLength()
                         .IsRequired();
                 });
-
-                c.Property(p => p.Numero)
-                    .IsRequired();
 
                 c.HasIndex(i => i.Chave)
                     .IsUnique();
