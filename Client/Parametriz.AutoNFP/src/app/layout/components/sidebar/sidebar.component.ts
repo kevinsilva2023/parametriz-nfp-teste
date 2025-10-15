@@ -1,22 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MENU_ITEMS, MenuItem } from '../../models/menu-item';
 import { filter } from 'rxjs';
+import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: false,
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss'
+  styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   isCollapsed = false;
-  menuItems: MenuItem[] = MENU_ITEMS;
- 
-  constructor(private router: Router,
-              private route: ActivatedRoute) {}
+  menuItems: MenuItem[] = [];
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private autorizacaoService: AutorizacaoService
+  ) {}
 
   ngOnInit(): void {
+    this.menuItems = this.filtrarMenuPorClaim(MENU_ITEMS);
+
     this.itemAtivo(this.router.url);
 
     this.router.events
@@ -26,16 +32,22 @@ export class SidebarComponent {
       });
   }
 
-  itemAtivo(currentUrl: string): void {
-    const urlLimpa = currentUrl.replace(/^\//, '');
-
-    this.menuItems.forEach(item => {
-      item.active = urlLimpa.includes(item.route)
+  filtrarMenuPorClaim(itens: MenuItem[]): MenuItem[] {
+    return itens.filter(item => {
+      if (!item.claims) return true;
+      return this.autorizacaoService.usuarioPossuiClaim(item.claims);
     });
   }
- 
+
+  itemAtivo(currentUrl: string): void {
+    const urlLimpa = currentUrl.replace(/^\//, '');
+    this.menuItems.forEach(item => {
+      item.active = urlLimpa.includes(item.route);
+    });
+  }
+
   onMenuItemClick(item: MenuItem): void {
-    this.menuItems.forEach(i => i.active = i.id == item.id)
+    this.menuItems.forEach(i => i.active = i.id === item.id);
     this.router.navigate([item.route], { relativeTo: this.route });
   }
 }

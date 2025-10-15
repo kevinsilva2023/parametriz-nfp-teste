@@ -10,33 +10,29 @@ import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service'
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { errorInterceptor } from 'src/app/shared/interceptors/error.interceptor';
 import { jwtInterceptor } from 'src/app/shared/interceptors/jwt.interceptor';
-import { UsuarioService } from './usuario/services/usuario.service';
+import { UsuarioService } from './usuarios/services/usuario.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { VoluntarioComponent } from './voluntario/voluntario.component';
-import { CadastrarVoluntarioComponent } from './voluntario/cadastrar-voluntario/cadastrar-voluntario.component';
-import { VisualizarVoluntarioComponent } from './voluntario/visualizar-voluntario/visualizar-voluntario.component';
+import { VoluntarioComponent } from './voluntarios/voluntario.component';
+import { CadastrarVoluntarioComponent } from './voluntarios/components/cadastrar-voluntario/cadastrar-voluntario.component';
+import { VisualizarVoluntarioComponent } from './voluntarios/components/visualizar-voluntario/visualizar-voluntario.component';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 
-
-
 import { AlertModule } from 'ngx-bootstrap/alert';
 
-
-import { UsuarioComponent } from './usuario/usuario.component';
-import { CadastrarUsuarioComponent } from './usuario/components/cadastrar-usuario/cadastrar-usuario.component';
-import { ListarUsuarioComponent } from './usuario/components/listar-usuario/listar-usuario.component';
-import { DesativarUsuarioComponent } from './usuario/components/desativar-usuario/desativar-usuario.component';
-import { AtivarUsuarioComponent } from './usuario/components/ativar-usuario/ativar-usuario.component';
-import { EditarUsuarioComponent } from './usuario/components/editar-usuario/editar-usuario.component';
-import { PefilUsuarioComponent } from './usuario/components/pefil-usuario/pefil-usuario.component';
-import { VoluntarioService } from './voluntario/services/voluntario.service';
+import { UsuarioComponent } from './usuarios/usuario.component';
+import { CadastrarUsuarioComponent } from './usuarios/components/cadastrar-usuario/cadastrar-usuario.component';
+import { ListarUsuarioComponent } from './usuarios/components/listar-usuario/listar-usuario.component';
+import { DesativarUsuarioComponent } from './usuarios/components/desativar-usuario/desativar-usuario.component';
+import { AtivarUsuarioComponent } from './usuarios/components/ativar-usuario/ativar-usuario.component';
+import { EditarUsuarioComponent } from './usuarios/components/editar-usuario/editar-usuario.component';
+import { VoluntarioService } from './voluntarios/services/voluntario.service';
 
 
 
@@ -52,7 +48,6 @@ import { VoluntarioService } from './voluntario/services/voluntario.service';
     DesativarUsuarioComponent,
     AtivarUsuarioComponent,
     EditarUsuarioComponent,
-    PefilUsuarioComponent,
   ],
   imports: [
     CommonModule,

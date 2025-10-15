@@ -68,7 +68,7 @@
                 &nbsp; Senha
               </mat-label>
               <input matInput formControlName="senha" [type]="verSenha ? 'text' : 'password'"
-                placeholder="Digite sua Senha">
+                placeholder="Digite sua Senha" autocomplete="new-password">
               <button mat-icon-button matSuffix type="button" class="btn" (click)="verSenha = !verSenha">
                 <i class="fa-solid" [ngClass]="verSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
               </button>

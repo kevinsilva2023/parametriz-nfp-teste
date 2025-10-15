@@ -5,8 +5,6 @@ import { LayoutComponent } from './layout.component';
 const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    { path: 'lanca-nfp', loadChildren: () => import('../lancar-nfp/lancar-nfp.module').then(m => m.LancarNfpModule) },
-    { path: 'dashboard', loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardModule) },
     { path: 'configuracoes', loadChildren: () => import('../configuracoes/configuracoes.module').then(m => m.ConfiguracoesModule) },
   ] }, 
 ];
