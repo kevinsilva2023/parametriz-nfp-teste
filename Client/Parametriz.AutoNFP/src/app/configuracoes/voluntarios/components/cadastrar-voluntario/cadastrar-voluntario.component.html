@@ -9,15 +9,14 @@
   <div class="card-body py-4 w-75 m-auto">
     <form (ngSubmit)="efetuarCadastroCertificadoVoluntario()" [formGroup]="voluntarioForm">
 
-      <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert"
-        *ngIf="errors.length > 0">
+      <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
         <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
         <ul>
-          <li class="fs-small mt-1">
-            {{ errors }}
+          <li class="fs-small mt-1" *ngFor="let error of errors">
+            {{error}}
           </li>
         </ul>
-      </alert>
+      </ngb-alert>
 
       <div class="upload-area border rounded p-4 text-center bg-light cursor-pointer mb-3"
         style="border: 2px dashed var(--royal-blue) !important;" (click)="fileInput.click()"
@@ -41,7 +40,8 @@
           <mat-error *ngIf="displayMessage['certificado']" [innerHtml]="displayMessage['certificado']"></mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="mb-1 cursor-pointer" [ngClass]="{'has-error': displayMessage['senha']}">
+        <mat-form-field appearance="outline" class="mb-1 cursor-pointer"
+          [ngClass]="{'has-error': displayMessage['senha']}">
           <mat-label>
             <i class="fa-solid fa-lock"></i>
             &nbsp;Senha

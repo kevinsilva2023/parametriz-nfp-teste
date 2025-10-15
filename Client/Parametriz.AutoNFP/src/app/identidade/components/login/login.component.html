@@ -8,14 +8,14 @@
     <div class="d-flex flex-column gap-4 mb-5">
       <h1 class="fs-1 text-primary fw-bolder text-center">Login</h1>
 
-      <alert type="danger" [dismissible]="true" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
         <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
         <ul>
           <li class="fs-small mt-1" *ngFor="let error of errors">
             {{error}}
           </li>
         </ul>
-      </alert>
+      </ngb-alert>
 
       <form class="d-flex flex-column" (ngSubmit)="efetuarLogin()" [formGroup]="loginForm">
         <mat-form-field class="mb-3" appearance="outline" [ngClass]="{'has-error': displayMessage['email']}">
@@ -32,16 +32,9 @@
             <i class="fa-solid fa-lock"></i>
             &nbsp;Senha
           </mat-label>
-          <input  matInput 
-                  formControlName="senha" 
-                  [type]="verSenha ? 'text' : 'password'  " 
-                  placeholder="••••••••">
-          <button mat-icon-button
-                  matSuffix
-                  type="button"
-                  class="btn"
-                  (click)="verSenha = !verSenha">
-                  <i class="fa-solid" [ngClass]="verSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
+          <input matInput formControlName="senha" [type]="verSenha ? 'text' : 'password'  " placeholder="••••••••">
+          <button mat-icon-button matSuffix type="button" class="btn" (click)="verSenha = !verSenha">
+            <i class="fa-solid" [ngClass]="verSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
           <mat-error *ngIf="displayMessage['senha']" [innerHtml]="displayMessage['senha']"> </mat-error>
         </mat-form-field>
@@ -52,10 +45,8 @@
             <span class="checkmark"></span>
             <span class="pointer">&nbsp; Lembrar de mim</span>
           </label>
-          <a  routerLink="/esqueceu-a-senha" 
-              class="esqueceu-senha fs-small"
-              [queryParams]="{ email: loginForm.get('email')?.value}"
-              >Esqueceu a senha?    
+          <a routerLink="/esqueceu-a-senha" class="esqueceu-senha fs-small"
+            [queryParams]="{ email: loginForm.get('email')?.value}">Esqueceu a senha?
           </a>
         </div>
 
