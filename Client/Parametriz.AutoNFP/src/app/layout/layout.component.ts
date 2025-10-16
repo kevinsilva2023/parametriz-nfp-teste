@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AutorizacaoService } from '../shared/services/autorizacao.service';
 import { Claim } from '../shared/models/claim';
+import { Instituicao } from '../identidade/models/instituicao';
+import { LocalStorageUtils } from '../shared/utils/local-storage-utils';
 
 @Component({
   selector: 'app-layout',
@@ -8,4 +10,14 @@ import { Claim } from '../shared/models/claim';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
-export class LayoutComponent {}
+export class LayoutComponent  implements OnInit {
+
+  ngOnInit(): void {
+    this.obterInsituicao();
+  }
+
+  obterInsituicao() {
+    var result = LocalStorageUtils.obterUsuario();
+    console.log(result);
+  }
+}
