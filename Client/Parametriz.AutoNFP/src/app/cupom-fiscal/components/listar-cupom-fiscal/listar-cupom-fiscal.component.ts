@@ -16,10 +16,10 @@ import { CupomFiscal, CupomFiscalResponse } from '../../models/cupom-fiscal';
       display: none !important;
     }
 
-  .card-equal {
-    flex: 1;       
-    min-width: 180px; 
-  }
+    .card-equal {
+      flex: 1;       
+      min-width: 180px; 
+    }
   `
 })
 
@@ -40,7 +40,7 @@ export class ListarCupomFiscalComponent implements OnInit {
 
   // paginator
   pagina = 1;
-  filtroRegistroPorPagina = 5;
+  filtroRegistroPorPagina = 1;
   totalItems = 0;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -80,6 +80,10 @@ export class ListarCupomFiscalComponent implements OnInit {
     this.totalProcessadas > 0
       ? this.percentualSucesso = Number(((this.cuponsFiscaisResponse.sucesso / this.totalProcessadas) * 100).toFixed(2))
       : 0;
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.cuponsFiscaisResponse.total / this.filtroRegistroPorPagina);
   }
 
 }

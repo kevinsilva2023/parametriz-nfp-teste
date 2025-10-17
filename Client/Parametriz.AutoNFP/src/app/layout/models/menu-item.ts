@@ -23,20 +23,20 @@ export const MENU_ITEMS: MenuItem[] = [
   //   route: `lanca-nfp`,
   // },
   {
-    id: 'configuracoes',
-    label: 'Configurações',
-    icon: 'fa-gear',
-    route: 'configuracoes',
+    id: 'cupom-fiscal',
+    label: 'Cupom Fiscal',
+    icon: 'fa-robot',
+    route: 'cupom-fiscal',
     claims: {
       type: 'role',
       value: 'Administrador'
     }
   },
   {
-    id: 'cupom-fiscal',
-    label: 'Cupom Fiscal',
-    icon: 'fa-robot',
-    route: 'cupom-fiscal',
+    id: 'configuracoes',
+    label: 'Configurações',
+    icon: 'fa-gear',
+    route: 'configuracoes',
     claims: {
       type: 'role',
       value: 'Administrador'
