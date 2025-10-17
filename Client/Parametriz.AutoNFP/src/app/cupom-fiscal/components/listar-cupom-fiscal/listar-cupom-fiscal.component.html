@@ -1,0 +1,61 @@
+<!-- Filtro -->
+<div class="d-flex gap-3 justify-content-center w-100 bg-danger">
+  <mat-form-field appearance="outline">
+    <mat-label>Competência:</mat-label>
+    <input matInput [matDatepicker]="competencia" [(ngModel)]="data">
+    <mat-datepicker-toggle matIconSuffix [for]="competencia"></mat-datepicker-toggle>
+    <mat-datepicker #competencia></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-50">
+    <mat-label>Cadastrado Por:</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let usuario of usuariosAtivos" [value]="usuario.id">
+        <!-- {{ usuario.email.conta }} {{ usuario.nome | titlecase}} - -->
+
+        <span class="bg-primary py-1 px-3 rounded-4 text-white fs-small">
+          {{ usuario.nome | titlecase }} - {{ usuario.email.conta }}
+        </span>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Status:</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let sts of status" [value]="sts.chave">
+        {{ sts.valor | titlecase}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="shadow-sm rounded p-2">
+  <table class="table table-striped table-hover rounded overflow-hidden">
+    <thead class="sticky-top table-secondary">
+      <tr class="text-center fs-5 fw-bolder">
+        <th class="text-primary">Numero</th>
+        <th class="text-primary">CNPJ</th>
+        <th class="text-primary">Competência</th>
+        <th class="text-primary">Data da Nota</th>
+        <th class="text-primary">Cadastrado Em</th>
+        <th class="text-primary">Status</th>
+        <th class="text-primary">Erro</th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      <tr *ngFor="let cupom of cuponsFiscaisCadastrados">
+        <td>{{ cupom.numero }}</td>
+        <td>{{ cupom.cnpj }}</td>
+        <td>{{ cupom.cadastradoPor.nome }}</td>
+        <td>{{ cupom.competencia | date:'MM/yyyy' }}</td>
+        <td>{{ cupom.cadastradoEm | date:'dd/MM/yyyy' }}</td>
+        <td>{{ cupom.statusNome }}</td>
+        <td><i class="fa-solid fa-search"></i></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- <p>{{ data | json }}</p>
+<p *ngIf="dataAtualFormatada">{{ dataAtualFormatada | json }}</p> -->

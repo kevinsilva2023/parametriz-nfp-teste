@@ -59,6 +59,7 @@ export class UsuarioService extends BaseService {
         catchError(super.serviceError)
       )
   }
+  
   ativar(usuario: Usuario): Observable<Usuario> {
     return this.httpClient
       .put(`${this.apiUrl}/usuarios/ativar`, usuario, { headers: super.ObterAuthHeaderJson() })

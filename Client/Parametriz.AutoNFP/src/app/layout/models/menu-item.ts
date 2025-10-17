@@ -31,5 +31,15 @@ export const MENU_ITEMS: MenuItem[] = [
       type: 'role',
       value: 'Administrador'
     }
-  }
+  },
+  {
+    id: 'cupom-fiscal',
+    label: 'Cupom Fiscal',
+    icon: 'fa-robot',
+    route: 'cupom-fiscal',
+    claims: {
+      type: 'role',
+      value: 'Administrador'
+    }
+  },
 ]
