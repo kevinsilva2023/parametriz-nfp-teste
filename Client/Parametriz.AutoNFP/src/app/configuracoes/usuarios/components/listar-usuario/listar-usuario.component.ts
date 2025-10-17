@@ -16,7 +16,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './listar-usuario.component.html',
   styles: `
     .sticky-top { z-index: 999 !important; }
-  `
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }  `
 })
 export class ListarUsuarioComponent implements OnInit {
 

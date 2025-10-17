@@ -9,7 +9,18 @@ import { CupomFiscal, CupomFiscalResponse } from '../../models/cupom-fiscal';
   selector: 'app-listar-cupom-fiscal',
   standalone: false,
   templateUrl: './listar-cupom-fiscal.component.html',
-  styles: ``
+  styles: `
+    .sticky-top { z-index: 999 !important; }
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }
+
+  .card-equal {
+    flex: 1;       
+    min-width: 180px; 
+  }
+  `
 })
 
 export class ListarCupomFiscalComponent implements OnInit {
@@ -18,6 +29,8 @@ export class ListarCupomFiscalComponent implements OnInit {
   usuariosAtivos!: ObterUsuarioAtivo[];
 
   cuponsFiscaisResponse: CupomFiscalResponse = new CupomFiscalResponse();
+  totalProcessadas!: number;
+  percentualSucesso!: number;
 
   // filtro
   data = new Date();
@@ -46,7 +59,8 @@ export class ListarCupomFiscalComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.cuponsFiscaisResponse = response;
-          console.log(this.cuponsFiscaisResponse)
+          this.obterTotalProcessadas();
+          this.obterPercentualSucesso();
         },
         error: (err) => console.log(err)
       })
@@ -55,6 +69,17 @@ export class ListarCupomFiscalComponent implements OnInit {
   onPageChange(page: number) {
     this.pagina = page;
     this.obterPorFiltro();
+  }
+
+  obterTotalProcessadas() {
+    this.totalProcessadas = this.cuponsFiscaisResponse.erro + this.cuponsFiscaisResponse.sucesso;
+    console.log(this.totalProcessadas);
+  }
+
+  obterPercentualSucesso() {
+    this.totalProcessadas > 0
+      ? this.percentualSucesso = Number(((this.cuponsFiscaisResponse.sucesso / this.totalProcessadas) * 100).toFixed(2))
+      : 0;
   }
 
 }
