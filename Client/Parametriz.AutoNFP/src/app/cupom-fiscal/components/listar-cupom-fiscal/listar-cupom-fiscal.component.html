@@ -1,4 +1,4 @@
-<section id="cupom-fiscal" class="content py-3 px-4 d-flex flex-column justify-content-between"
+<section id="cupom-fiscal" class="content h-100 py-3 px-4 d-flex flex-column"
   style="max-height: 100%;">
 
   <!-- Input -->
@@ -72,21 +72,21 @@
 
   </div>
 
-
   <div class="card rounded-4 w-100 px-4 py-3 shadow-sm">
 
     <!-- Filtro -->
     <div class="d-flex gap-3 w-100 p-3 rounded">
       <mat-form-field appearance="outline" class="w-25">
         <mat-label>Competência:</mat-label>
-        <input matInput [matDatepicker]="competencia" [(ngModel)]="data">
+        <input matInput [matDatepicker]="competencia" [(ngModel)]="data" (dateChange)="alterarFiltroCompetencia(data)">
         <mat-datepicker-toggle matIconSuffix [for]="competencia"></mat-datepicker-toggle>
         <mat-datepicker #competencia></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Cadastrado Por:</mat-label>
-        <mat-select>
+        <mat-select (selectionChange)="alterarFiltroCadastradoPor($event.value)">
+          <mat-option></mat-option>
           <mat-option *ngFor="let usuario of usuariosAtivos" [value]="usuario.id">
             <span class="bg-primary-light py-1 px-3 rounded-pill text-white fs-small">
               {{ usuario.nome | titlecase }} - {{ usuario.email.conta }}
@@ -97,7 +97,7 @@
 
       <mat-form-field appearance="outline" class="w-25">
         <mat-label>Status:</mat-label>
-        <mat-select>
+        <mat-select (selectionChange)="alterarFiltroStatus($event.value)">
           <mat-option></mat-option>
           <mat-option *ngFor="let sts of status" [value]="sts.chave">
             <span class="py-1 px-3 rounded-pill" [ngClass]="{
@@ -159,24 +159,23 @@
       </table>
     </div>
 
-
     <!-- NÃO MEXER MAIS -->
     <div class="d-flex justify-content-between align-items-center mt-2 gap-5 w-100">
 
       <div class="d-flex align-items-center gap-2">
         <span>Cupons por página:</span>
         <mat-form-field appearance="outline" class="w-25" subscriptSizing="dynamic" floatLabel="always">
-          <mat-select [(ngModel)]="filtroRegistroPorPagina" (selectionChange)="onPageChange(1)" >
-            <mat-option [value]="1">1</mat-option>
-            <mat-option [value]="3">3</mat-option>
+          <mat-select [(ngModel)]="filtroRegistroPorPagina" (selectionChange)="alterarFiltroPage(filtroRegistroPorPagina)" >
             <mat-option [value]="5">5</mat-option>
+            <mat-option [value]="10">10</mat-option>
+            <mat-option [value]="15">15</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
       <div>
         <ngb-pagination [collectionSize]="cuponsFiscaisResponse.total" [(page)]="pagina"
-          [pageSize]="filtroRegistroPorPagina" (pageChange)="onPageChange($event)" [maxSize]="5" [rotate]="true"
+          [pageSize]="filtroRegistroPorPagina" (pageChange)="alterarFiltroPage($event)" [maxSize]="5" [rotate]="true"
           [ellipses]="false" [boundaryLinks]="true">
         </ngb-pagination>
       </div>
@@ -185,8 +184,6 @@
         Página {{ cuponsFiscaisResponse.pagina }} de {{ totalPaginas }}
       </div>
     </div>
-
   </div>
-
 
 </section>

@@ -19,7 +19,7 @@
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Acesso</mat-label>
-      <mat-select (selectionChange)="alterarFiltroAcesso($event.value)" panelClass="acesso-select-panel">
+      <mat-select (selectionChange)="alterarFiltroAcesso($event.value)">
         <mat-option [value]="2"></mat-option>
         <mat-option [value]="1">Admin</mat-option>
         <mat-option [value]="0">Usuário</mat-option>
@@ -28,7 +28,7 @@
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Desativado</mat-label>
-      <mat-select (selectionChange)="alterarFiltroDesativado($event.value)" panelClass="acesso-select-panel">
+      <mat-select (selectionChange)="alterarFiltroDesativado($event.value)">
         <mat-option [value]="0">Não</mat-option>
         <mat-option [value]="1">Sim</mat-option>
       </mat-select>

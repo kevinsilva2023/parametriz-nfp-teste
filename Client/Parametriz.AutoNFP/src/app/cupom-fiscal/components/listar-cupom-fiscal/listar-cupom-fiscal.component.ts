@@ -32,15 +32,13 @@ export class ListarCupomFiscalComponent implements OnInit {
   totalProcessadas!: number;
   percentualSucesso!: number;
 
-  // filtro
   data = new Date();
   filtroCompetencia = this.data;
   filtroUsuario = '';
   filtroStatus = '';
 
-  // paginator
   pagina = 1;
-  filtroRegistroPorPagina = 1;
+  filtroRegistroPorPagina = 5;
   totalItems = 0;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -50,6 +48,26 @@ export class ListarCupomFiscalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.obterPorFiltro();
+  }
+
+  alterarFiltroCadastradoPor(event: any) {
+    this.filtroUsuario = event;
+    this.obterPorFiltro();
+  }
+
+  alterarFiltroStatus(event: any) {
+    this.filtroStatus = event;
+    this.obterPorFiltro();
+  }
+
+  alterarFiltroCompetencia(date: Date) {
+    this.filtroCompetencia = date;
+    this.obterPorFiltro();
+  }
+
+  alterarFiltroPage(page: number) {
+    this.pagina = page;
     this.obterPorFiltro();
   }
 
@@ -66,20 +84,14 @@ export class ListarCupomFiscalComponent implements OnInit {
       })
   }
 
-  onPageChange(page: number) {
-    this.pagina = page;
-    this.obterPorFiltro();
-  }
-
   obterTotalProcessadas() {
     this.totalProcessadas = this.cuponsFiscaisResponse.erro + this.cuponsFiscaisResponse.sucesso;
-    console.log(this.totalProcessadas);
   }
 
   obterPercentualSucesso() {
     this.totalProcessadas > 0
       ? this.percentualSucesso = Number(((this.cuponsFiscaisResponse.sucesso / this.totalProcessadas) * 100).toFixed(2))
-      : 0;
+      : this.percentualSucesso = 0;
   }
 
   get totalPaginas(): number {

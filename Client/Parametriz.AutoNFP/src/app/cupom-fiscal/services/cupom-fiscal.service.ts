@@ -36,10 +36,8 @@ export class CupomFiscalService extends BaseService {
 
     if (!StringUtils.isNullOrEmpty(cadastradoPorId))
       params = params.append('cadastradoPorId', cadastradoPorId);
-
-    if (!StringUtils.isNullOrEmpty(status))
-      params = params.append('status', status);
-
+    
+    params = params.append('status', status);
     params = params.append('pagina', pagina);
     params = params.append('registrosPorPagina', registroPorPagina);
 
