@@ -82,3 +82,10 @@ td, th {
   border-bottom: 1PX solid var(--gray-300)  !important;
   padding-left: 20px !important;
 }
+
+.active > .page-link,
+.page-link.active {
+  background-color: var(--royal-blue) !important;
+  color: #fff !important;            
+  border-color: var(--royal-blue) !important;
+}
