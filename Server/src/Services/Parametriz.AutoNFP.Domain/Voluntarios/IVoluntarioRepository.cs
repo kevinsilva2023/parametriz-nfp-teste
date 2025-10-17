@@ -10,7 +10,9 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
     public interface IVoluntarioRepository : IInstituicaoEntityRepository<Voluntario>
     {
         Task<bool> ExisteNaInstituicao(Guid instituicaoId);
-        Task<Voluntario> ObterPorInstituicaoId(Guid instituicaoId);
+
+        Voluntario ObterPorInstituicaoId(Guid instituicaoId);
+        Task<Voluntario> ObterPorInstituicaoIdAsync(Guid instituicaoId);
 
         Task Excluir(Guid instituicaoId);
     }

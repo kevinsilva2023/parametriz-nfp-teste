@@ -30,12 +30,12 @@ namespace Parametriz.AutoNFP.ConsoleApp.BackgroundServices
 
         public virtual async Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(DoWork, null, ObterDelay(), TimeSpan.FromHours(1));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromHours(1));
 
             await _completedTask;
         }
 
-        protected abstract void DoWork(object? state);
+        protected abstract void DoWork(object state);
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {

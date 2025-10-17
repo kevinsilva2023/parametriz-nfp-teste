@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Parametriz.AutoNFP.Core.Configs;
 using Parametriz.AutoNFP.Data.Context;
 
 namespace Parametriz.AutoNFP.Api.Configs

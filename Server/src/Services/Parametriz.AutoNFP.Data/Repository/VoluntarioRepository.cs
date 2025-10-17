@@ -31,7 +31,14 @@ namespace Parametriz.AutoNFP.Data.Repository
                                v.Id != voluntario.Id);
         }
 
-        public async Task<Voluntario> ObterPorInstituicaoId(Guid instituicaoId)
+        public Voluntario ObterPorInstituicaoId(Guid instituicaoId)
+        {
+            return _context.Voluntarios
+                .AsNoTracking()
+                .SingleOrDefault(v => v.InstituicaoId == instituicaoId);
+        }
+
+        public async Task<Voluntario> ObterPorInstituicaoIdAsync(Guid instituicaoId)
         {
             return await _context.Voluntarios
                 .AsNoTracking()

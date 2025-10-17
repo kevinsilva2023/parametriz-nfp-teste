@@ -1,4 +1,4 @@
-﻿namespace Parametriz.AutoNFP.Api.Configs
+﻿namespace Parametriz.AutoNFP.Core.Configs
 {
     public class AppConfig
     {

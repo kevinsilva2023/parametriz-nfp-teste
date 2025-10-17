@@ -1,5 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Parametriz.AutoNFP.ConsoleApp.Application.CertificadoDigital;
+using Parametriz.AutoNFP.ConsoleApp.Application.CuponsFiscais;
+using Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais;
+using Parametriz.AutoNFP.ConsoleApp.Application.FileSistem;
+using Parametriz.AutoNFP.Core.Configs;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Data.Context;
@@ -26,7 +31,12 @@ namespace Parametriz.AutoNFP.ConsoleApp.Configs
             {
                 services.AddScoped<IVoluntarioRepository, VoluntarioRepository>();
                 services.AddScoped<ICupomFiscalRepository, CupomFiscalRepository>();
+                services.AddScoped<ICupomFiscalService, CupomFiscalService>();
                 
+                services.AddScoped<ICertificadoDigitalService, CertificadoDigitalService>();
+                services.AddScoped<IFileSystemService, FileSystemService>();
+                services.AddScoped<IEnviarCuponsFiscaisService, EnviarCuponsFiscaisService>();
+
                 services.AddScoped<Notificador>();
                 
                 services.AddScoped<AutoNfpDbContext>();

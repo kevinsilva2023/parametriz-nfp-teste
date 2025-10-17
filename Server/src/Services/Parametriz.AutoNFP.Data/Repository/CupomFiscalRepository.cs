@@ -52,5 +52,24 @@ namespace Parametriz.AutoNFP.Data.Repository
                 cuponsFiscais.Count(p => p.Status == CupomFiscalStatus.ERRO),
                 cuponsFiscais.Count());
         }
+
+        public IEnumerable<Guid> ObterInstituicoesIdComCuponsFiscaisProcessando()
+        {
+            return _context.CuponsFiscais
+                .AsNoTracking()
+                .Where(c => c.Status == CupomFiscalStatus.PROCESSANDO)
+                .Select(c => c.InstituicaoId)
+                .Distinct()
+                .ToList();
+        }
+
+        public IEnumerable<CupomFiscal> ObterPorStatusProcessando(Guid instituicaoId)
+        {
+            return _context.CuponsFiscais
+                .AsNoTracking()
+                .Where(c => c.InstituicaoId == instituicaoId &&
+                            c.Status == CupomFiscalStatus.PROCESSANDO)
+                .ToList();
+        }
     }
 }
