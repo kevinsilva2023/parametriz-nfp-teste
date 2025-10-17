@@ -17,13 +17,18 @@ export class ListarCupomFiscalComponent implements OnInit {
   status!: Enumerador[];
   usuariosAtivos!: ObterUsuarioAtivo[];
 
-  cuponsFiscaisCadastrados: CupomFiscal[] = [];
+  cuponsFiscaisResponse: CupomFiscalResponse = new CupomFiscalResponse();
 
+  // filtro
   data = new Date();
-
   filtroCompetencia = this.data;
   filtroUsuario = '';
   filtroStatus = '';
+
+  // paginator
+  pagina = 1;
+  filtroRegistroPorPagina = 5;
+  totalItems = 0;
 
   constructor(private activatedRoute: ActivatedRoute,
     private cupomFiscalService: CupomFiscalService) {
@@ -36,13 +41,20 @@ export class ListarCupomFiscalComponent implements OnInit {
   }
 
   obterPorFiltro() {
-    this.cupomFiscalService.obterPorFiltro(this.filtroCompetencia, this.filtroUsuario, this.filtroStatus)
+    this.cupomFiscalService
+      .obterPorFiltro(this.filtroCompetencia, this.filtroUsuario, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
       .subscribe({
-        next: (responde: any) => {
-          this.cuponsFiscaisCadastrados = responde.cuponsFiscais;
+        next: (response: any) => {
+          this.cuponsFiscaisResponse = response;
+          console.log(this.cuponsFiscaisResponse)
         },
         error: (err) => console.log(err)
       })
+  }
+
+  onPageChange(page: number) {
+    this.pagina = page;
+    this.obterPorFiltro();
   }
 
 }

@@ -27,7 +27,7 @@ export class CupomFiscalService extends BaseService {
         catchError(this.serviceError));
   }
 
-  obterPorFiltro(competencia: Date, cadastradoPorId: string, status: string): Observable<CupomFiscalResponse[]> {
+  obterPorFiltro(competencia: Date, cadastradoPorId: string, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalResponse[]> {
     let params = new HttpParams;
     let competenciaFormatada = DataUtils.formatarParaParametro(competencia);
 
@@ -39,6 +39,9 @@ export class CupomFiscalService extends BaseService {
 
     if (!StringUtils.isNullOrEmpty(status))
       params = params.append('status', status);
+
+    params = params.append('pagina', pagina);
+    params = params.append('registrosPorPagina', registroPorPagina);
 
     return this.httpClient
       .get<CupomFiscalResponse[]>(
