@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Enumerador } from 'src/app/shared/models/enumureador';
 import { ActivatedRoute, Data } from '@angular/router';
 import { CupomFiscalService } from '../../services/cupom-fiscal.service';
 import { ObterUsuarioAtivo } from 'src/app/shared/models/obter-usuario-ativo';
-import { CupomFiscal, CupomFiscalResponse } from '../../models/cupom-fiscal';
+import { CupomFiscalResponse } from '../../models/cupom-fiscal';
+import { debounceTime, Subject } from 'rxjs';
+import { CadastrarCupomFiscal } from '../../models/cadastrar-cupom-fiscal';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-listar-cupom-fiscal',
@@ -41,14 +44,61 @@ export class ListarCupomFiscalComponent implements OnInit {
   filtroRegistroPorPagina = 5;
   totalItems = 0;
 
+  debounceQrCodeCupomFiscal = new Subject<string>();
+
+  errors: [] = [];
+
+  @ViewChild('qrInput') qrInput!: ElementRef<HTMLInputElement>;
+
+
   constructor(private activatedRoute: ActivatedRoute,
-    private cupomFiscalService: CupomFiscalService) {
+    private cupomFiscalService: CupomFiscalService,
+    private toastr: ToastrService) {
     this.status = this.activatedRoute.snapshot.data['status'];
     this.usuariosAtivos = this.activatedRoute.snapshot.data['usuariosAtivos'];
   }
 
   ngOnInit(): void {
+    this.debounceQrCodeCupomFiscal
+      .pipe(debounceTime(500))
+      .subscribe({
+        next: (qrCodeCupomFiscal: string) => {
+          this.processarQrCodeCupomFiscal(qrCodeCupomFiscal)
+        }
+      })
     this.obterPorFiltro();
+  }
+
+  processarQrCodeCupomFiscal(qrCodeCupomFiscal: string) {
+    let cadastrarCupomFiscal = new CadastrarCupomFiscal();
+    cadastrarCupomFiscal.qrCode = qrCodeCupomFiscal;
+
+    this.cupomFiscalService.processar(cadastrarCupomFiscal)
+      .subscribe({
+        next: (sucesso: any) => { this.processarSucesso(sucesso); },
+        error: (falha: any) => { this.processarFalha(falha); }
+      })
+  }
+
+  processarSucesso(response: any) {
+    this.limparErros()
+    this.toastr.info('Cupom enviado para processamento.', 'Processando!');
+    this.resetarInput();
+  }
+
+  processarFalha(fail: any) {
+    this.errors = fail?.error?.errors?.mensagens;
+    this.toastr.error('Erro ao enviar cupom para processamento.', 'Erro');
+    this.resetarInput();
+  }
+
+  resetarInput() {
+    this.qrInput.nativeElement.value = '';
+    this.qrInput.nativeElement.focus();
+  }
+
+  getInputValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
   }
 
   alterarFiltroCadastradoPor(event: any) {
@@ -98,4 +148,7 @@ export class ListarCupomFiscalComponent implements OnInit {
     return Math.ceil(this.cuponsFiscaisResponse.total / this.filtroRegistroPorPagina);
   }
 
+  limparErros() {
+    this.errors = [];
+  }
 }

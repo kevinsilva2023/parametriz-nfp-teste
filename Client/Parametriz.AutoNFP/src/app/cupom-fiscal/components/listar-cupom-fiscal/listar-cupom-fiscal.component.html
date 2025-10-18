@@ -1,5 +1,4 @@
-<section id="cupom-fiscal" class="content h-100 py-3 px-4 d-flex flex-column"
-  style="max-height: 100%;">
+<section id="cupom-fiscal" class="content h-100 py-3 px-4 d-flex flex-column" style="max-height: 100%;">
 
   <!-- Input -->
   <div class="card rounded-4 shadow-sm mb-3">
@@ -12,8 +11,10 @@
           <i class="fa-solid fa-qrcode me-2"></i>
           <span>Escaneie o QR Code</span>
         </mat-label>
-        <input matInput placeholder="Aponte o leitor para o cupom fiscal.">
+        <input #qrInput matInput placeholder="Aponte o leitor para o cupom fiscal."
+          (keyup)="debounceQrCodeCupomFiscal.next(getInputValue($event))">
       </mat-form-field>
+      <mat-error class="fs-small" *ngFor="let error of errors">{{ error }}</mat-error>
     </div>
   </div>
 
@@ -112,9 +113,9 @@
       </mat-form-field>
     </div>
 
-    <!-- Tabela -->
     <div class="table-responsive card w-100 overflow-auto">
-      <table class="table table-striped table-hover rounded" style="max-height: 100%;">
+      <table class="table table-striped table-hover rounded" style="max-height: 100%;"
+        *ngIf="cuponsFiscaisResponse.cuponsFiscais && cuponsFiscaisResponse.cuponsFiscais.length > 0; else semCuponsFiscais">
         <thead class="sticky-top table-secondary">
           <tr class="text-center fs-5 fw-bolder">
             <th class="text-primary align-middle">Número</th>
@@ -157,6 +158,11 @@
           </tr>
         </tbody>
       </table>
+      <ng-template #semCuponsFiscais>
+        <div class="text-center my-3">
+          Nenhum cupom encontrado.
+        </div>
+      </ng-template>
     </div>
 
     <!-- NÃO MEXER MAIS -->
@@ -165,7 +171,8 @@
       <div class="d-flex align-items-center gap-2">
         <span>Cupons por página:</span>
         <mat-form-field appearance="outline" class="w-25" subscriptSizing="dynamic" floatLabel="always">
-          <mat-select [(ngModel)]="filtroRegistroPorPagina" (selectionChange)="alterarFiltroPage(filtroRegistroPorPagina)" >
+          <mat-select [(ngModel)]="filtroRegistroPorPagina"
+            (selectionChange)="alterarFiltroPage(1)">
             <mat-option [value]="5">5</mat-option>
             <mat-option [value]="10">10</mat-option>
             <mat-option [value]="15">15</mat-option>

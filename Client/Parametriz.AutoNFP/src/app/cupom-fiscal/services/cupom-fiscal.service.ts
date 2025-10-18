@@ -7,13 +7,22 @@ import { DataUtils } from 'src/app/shared/utils/data-utils';
 import { CupomFiscalResponse } from '../models/cupom-fiscal';
 import { HttpParams } from '@angular/common/http';
 import { StringUtils } from 'src/app/shared/utils/string-utils';
+import { CadastrarCupomFiscal } from '../models/cadastrar-cupom-fiscal';
 
 @Injectable()
 export class CupomFiscalService extends BaseService {
 
+  processar(qrCode: CadastrarCupomFiscal): Observable<CadastrarCupomFiscal> {
+    return this.httpClient
+      .post(`${this.apiUrl}/cupons-fiscais`, qrCode, { headers: this.ObterAuthHeaderJson() })
+      .pipe(
+        map(this.extractData),
+        catchError(this.serviceError));
+  }
+
   obterStatus(): Observable<Enumerador[]> {
     return this.httpClient
-      .get(`${this.apiUrl}/cupons-fiscais/status`, { headers: this.ObterHeaderJson() })
+      .get(`${this.apiUrl}/cupons-fiscais/status`, { headers: this.ObterAuthHeaderJson() })
       .pipe(
         map(this.extractData),
         catchError(this.serviceError));
@@ -21,7 +30,7 @@ export class CupomFiscalService extends BaseService {
 
   obterUsuariosAtivos(): Observable<ObterUsuarioAtivo[]> {
     return this.httpClient
-      .get(`${this.apiUrl}/usuarios/obter-ativos`, { headers: this.ObterHeaderJson() })
+      .get(`${this.apiUrl}/usuarios/obter-ativos`, { headers: this.ObterAuthHeaderJson() })
       .pipe(
         map(this.extractData),
         catchError(this.serviceError));
@@ -36,7 +45,7 @@ export class CupomFiscalService extends BaseService {
 
     if (!StringUtils.isNullOrEmpty(cadastradoPorId))
       params = params.append('cadastradoPorId', cadastradoPorId);
-    
+
     params = params.append('status', status);
     params = params.append('pagina', pagina);
     params = params.append('registrosPorPagina', registroPorPagina);
