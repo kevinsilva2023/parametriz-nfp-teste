@@ -1,7 +1,6 @@
-<section id="perfil" class="content w-100 h-100 d-flex justify-content-center align-itens-center p-5 " *ngIf="usuario">
-
+<section id="perfil" class="content w-100 h-100 d-flex justify-content-center align-items-start p-5" *ngIf="usuario">
   <!-- Perfil Image/ Icon -->
-  <div class="card card-white h-75 p-5 d-flex flex-column justify-content-center align-items-center gap-4">
+  <div class="card card-white p-5 overflow-hidden d-flex flex-column justify-content-center align-items-center" style="height: auto !important;">
 
     <div class="perfil-imagem position-relative rounded-circle d-flex justify-content-center align-items-center ">
       <i class="fa-solid fa-user text-white fs-1"></i>
@@ -11,12 +10,12 @@
       </button>
     </div>
 
-    <div class="text-center">
+    <div class="text-center mt-2">
       <h1 *ngIf="usuario" class="fs-4 fw-medium mb-2">{{ usuario.nome | titlecase }}</h1>
       <h1 *ngIf="usuario" class="fs-6 text-secondary">{{ usuario.email.conta }}</h1>
     </div>
 
-    <button class="btn btn-primary rounded-5 fs-6 fw-medium py-">Plano Master</button>
+    <button class="btn btn-primary rounded-5 fs-6 fw-medium my-3">Plano Master</button>
 
     <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
       <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>

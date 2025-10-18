@@ -8,7 +8,8 @@ const routes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'configuracoes', loadChildren: () => import('../configuracoes/configuracoes.module').then(m => m.ConfiguracoesModule) },
     { path: 'perfil', component: PerfilComponent},
-  ] }, 
+    { path: 'cupom-fiscal', loadChildren: () => import('../cupom-fiscal/cupom-fiscal.module').then(m => m.CupomFiscalModule) }, 
+  ] },
 ];
 
 @NgModule({

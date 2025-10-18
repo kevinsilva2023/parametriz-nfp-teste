@@ -7,9 +7,6 @@ import { Usuario } from '../../models/usuario';
 import { CadastrarUsuarioComponent } from '../cadastrar-usuario/cadastrar-usuario.component';
 import { AtivarUsuarioComponent } from '../ativar-usuario/ativar-usuario.component';
 import { EditarUsuarioComponent } from '../editar-usuario/editar-usuario.component';
-import { ConfirmarEmail } from 'src/app/identidade/models/confirmar-email';
-import { DefinirSenha } from 'src/app/identidade/models/definir-senha';
-import { EnviarDefinirSenha } from 'src/app/identidade/models/enviar-definir-senha';
 import { IdentidadeService } from 'src/app/identidade/services/identidade.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -19,7 +16,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './listar-usuario.component.html',
   styles: `
     .sticky-top { z-index: 999 !important; }
-  `
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }  `
 })
 export class ListarUsuarioComponent implements OnInit {
 
