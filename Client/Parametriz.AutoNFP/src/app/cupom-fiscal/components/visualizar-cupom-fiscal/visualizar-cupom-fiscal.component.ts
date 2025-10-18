@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-visualizar-cupom-fiscal',
@@ -7,5 +8,11 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class VisualizarCupomFiscalComponent {
+  mensagemErro!: string;
 
+  constructor(private activeModal: NgbActiveModal) { }
+
+  fecharModal() {
+    this.activeModal.close();
+  }
 }
