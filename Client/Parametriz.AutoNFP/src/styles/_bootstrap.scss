@@ -41,6 +41,9 @@
 .bg-gradient-royal { background: var(--gradient-primary !important);}
 .bg-gradient-hero { background: var(--gradient-hero !important);}
 .bg-gradient-blur { background: var(--gradient-blur !important);}
+.bg-warning-pastel { background-color: #ffc10725; color: #daa300;}
+.bg-success-pastel { background-color: #28a74631; color: #20993c;}
+.bg-danger-pastel { background-color: 	#dc35463d; color: #ce1d2f;}
 
 .text-primary { color: var(--royal-blue) !important; }
 .text-light { color: var(--gray-400) !important; }
@@ -83,7 +86,19 @@ td, th {
   padding-left: 20px !important;
 }
 
-.table-primary, table {
-  background-color: none  !important;
-  background: var(--royal-blue-light) !important;
+.active > .page-link,
+.page-link.active {
+  background-color: var(--royal-blue) !important;
+  color: #fff !important;            
+  border-color: var(--royal-blue) !important;
 }
+
+.page-link {
+  color: var(--royal-blue);
+}
+
+.border-start-warning { border-left: 6px solid var(--warning) !important;}
+.border-start-success { border-left: 6px solid var(--success) !important;}
+.border-start-danger { border-left: 6px solid var(--danger) !important;}
+.border-start-info { border-left: 6px solid var(--info) !important;}
+.border-start-primary { border-left: 6px solid var(--royal-blue) !important;}

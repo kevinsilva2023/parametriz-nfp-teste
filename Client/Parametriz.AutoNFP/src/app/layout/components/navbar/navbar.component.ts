@@ -21,8 +21,6 @@ export class NavbarComponent implements OnInit {
   preencherNomeUsuarioAtivo() {
     let usuario = LocalStorageUtils.obterUsuario();
     this.usuario = usuario;
-    console.log(this.usuario);
-    
   }
 
 }

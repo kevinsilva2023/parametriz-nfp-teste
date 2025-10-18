@@ -18,6 +18,5 @@ export class LayoutComponent  implements OnInit {
 
   obterInsituicao() {
     var result = LocalStorageUtils.obterUsuario();
-    console.log(result);
   }
 }

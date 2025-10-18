@@ -31,6 +31,7 @@ import { DesativarUsuarioComponent } from './usuarios/components/desativar-usuar
 import { AtivarUsuarioComponent } from './usuarios/components/ativar-usuario/ativar-usuario.component';
 import { EditarUsuarioComponent } from './usuarios/components/editar-usuario/editar-usuario.component';
 import { VoluntarioService } from './voluntarios/services/voluntario.service';
+import { ExcluirVoluntarioComponent } from './voluntarios/components/excluir-voluntario/excluir-voluntario.component';
 
 
 
@@ -46,6 +47,7 @@ import { VoluntarioService } from './voluntarios/services/voluntario.service';
     DesativarUsuarioComponent,
     AtivarUsuarioComponent,
     EditarUsuarioComponent,
+    ExcluirVoluntarioComponent,
   ],
   imports: [
     CommonModule,

@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <ul>
+  <ul class="d-flex flex-column">
     <li *ngFor="let item of menuItems" 
         (click)="onMenuItemClick(item)" 
         [class.item-menu-ativo]="item.active"

@@ -1,7 +1,7 @@
 <div class="modal-header border-0">
   <div
-    class="bg-warning text-white fs-5 fw-medium text-uppercase px-4 py-2 rounded w-100 d-flex align-items-center gap-2">
-    <i class="fa-solid fa-triangle-exclamation"></i>
+    class="bg-danger text-white fs-5 fw-medium text-uppercase px-4 py-2 rounded w-100 d-flex align-items-center gap-2">
+    <i class="fa-solid fa-cirlce-xmark"></i>
     Confirmação
   </div>
 </div>
@@ -18,14 +18,13 @@
   </ngb-alert>
 
 
-  <p class="fs-5 fw-semibold mb-4">Deseja realmente desativar o usuário <span class="text-primary">"{{ usuario.nome
-      }}"</span>?</p>
-  <p class="text-muted small">Esta ação poderá ser revertida depois, se necessário.</p>
+  <p class="fs-5 fw-semibold mb-4">Deseja realmente excluir o voluntário?</p>
+  <p class="text-muted small">Esta ação <b>não</b> poderá ser revertida depois, se necessário.</p>
 </div>
 
 <div class="modal-footer border-0 d-flex justify-content-center gap-3">
-  <button type="button" class="btn btn-warning text-dark px-4" (click)="confirmarInativarUsuario()">
-    <i class="fa-solid fa-user-slash"></i> Desativar
+  <button type="button" class="btn btn-danger text-dark px-4" (click)="confirmarExcluirVoluntario()">
+    <i class="fa-solid fa-cloud-upload"></i> Excluir
   </button>
 
   <button type="button" class="btn btn-outline-secondary px-4" (click)="fecharModal()">
