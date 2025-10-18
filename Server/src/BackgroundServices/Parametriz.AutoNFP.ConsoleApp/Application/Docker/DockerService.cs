@@ -55,13 +55,11 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-            finally
-            {
                 ExcluirImagem(imageName).Wait();
                 ExcluirContainer(containerId).Wait();
+
+                Console.WriteLine(ex.Message);
+                return false;
             }
         }
 
@@ -87,7 +85,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
                 Filters = new Dictionary<string, IDictionary<string, bool>>
                 {
                     {
-                        "name",
+                        "reference",
                         new Dictionary<string, bool>
                         {
                             { imageName, true }
@@ -197,6 +195,9 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
 
         private async Task ExcluirContainer(string containerId)
         {
+            if (string.IsNullOrEmpty(containerId))
+                return;
+
             var parameters = new ContainerRemoveParameters
             {
                 Force = true
