@@ -10,7 +10,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.BackgroundServices
     public abstract class BaseBackgroundService : IHostedService, IDisposable
     {
         protected readonly Task _completedTask = Task.CompletedTask;
-        protected Timer? _timer;
+        protected Timer _timer;
 
         protected readonly IServiceProvider _serviceProvider;
 

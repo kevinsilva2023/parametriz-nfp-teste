@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
 using Parametriz.AutoNFP.ConsoleApp.Application.CertificadoDigital;
 using Parametriz.AutoNFP.ConsoleApp.Application.CuponsFiscais;
+using Parametriz.AutoNFP.ConsoleApp.Application.Docker;
 using Parametriz.AutoNFP.ConsoleApp.Application.FileSistem;
 using Parametriz.AutoNFP.Core.Configs;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
+using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
         private readonly IVoluntarioRepository _voluntarioRepository;
         private readonly ICertificadoDigitalService _certificadoDigitalService;
         private readonly IFileSystemService _fileSystemService;
+        private readonly IDockerService _dockerService;
 
         public EnviarCuponsFiscaisService(IUnitOfWork uow,
                                           Notificador notificador,
@@ -34,7 +37,8 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                                           ICupomFiscalRepository cupomFiscalRepository,
                                           IVoluntarioRepository voluntarioRepository,
                                           ICertificadoDigitalService certificadoDigitalService,
-                                          IFileSystemService fileSystemService)
+                                          IFileSystemService fileSystemService,
+                                          IDockerService dockerService)
             : base(uow, notificador)
         {
             _appConfig = options.Value;
@@ -42,6 +46,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
             _voluntarioRepository = voluntarioRepository;
             _certificadoDigitalService = certificadoDigitalService;
             _fileSystemService = fileSystemService;
+            _dockerService = dockerService;
         }
 
         public void ExecutarProcesso()
@@ -56,25 +61,43 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
             foreach (var instituicaoId in instituicoesId)
             {
                 port++;
-                var cuponsFiscais = _cupomFiscalRepository.ObterPorStatusProcessando(instituicaoId);
 
+                var cuponsFiscais = _cupomFiscalRepository.ObterPorStatusProcessando(instituicaoId);
                 if (cuponsFiscais.Count() <= 0)
                     continue;
 
                 var voluntario = _voluntarioRepository.ObterPorInstituicaoId(instituicaoId);
-
                 if (voluntario == null)
                     continue; // ToDo: O que fazer?
 
-                var pepper = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
-                var senha = Decrypt(voluntario.Senha, instituicaoId.ToString(), pepper);
+                var senha = ObterSenha(voluntario);
+
+                var diretorio = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.autonfp/{voluntario.InstituicaoId}";
+
+                var containerName = $"selenium-chrome-{voluntario.InstituicaoId}";
+                var imageName = $"{containerName}:latest";
 
                 if (!_certificadoDigitalService.EstaValido(voluntario, senha))
                     continue;
 
-                if (!_fileSystemService.ExecutarProcesso(voluntario, senha, port))
+                if (!_fileSystemService.ExecutarProcessoInicial(diretorio, voluntario, senha))
                     continue;
+
+                if (!_dockerService.ExecutarProcessoInicial(diretorio, imageName, containerName, port))
+                    continue;
+
+
+
+                _fileSystemService.ExecutarProcessoFinal(diretorio);
+                _dockerService.ExecutarProcessoFinal(imageName, containerName);
             }
+        }
+
+        #region Support
+        private string ObterSenha(Voluntario voluntario)
+        {
+            var pepper = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
+            return Decrypt(voluntario.Senha, voluntario.InstituicaoId.ToString(), pepper);
         }
 
         private string Decrypt(byte[] encryptedBytes, string password, byte[] pepper)
@@ -118,5 +141,6 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                 hashAlgorithm: HashAlgorithmName.SHA256,
                 outputLength: _keySize / 8);
         }
+        #endregion Support
     }
 }

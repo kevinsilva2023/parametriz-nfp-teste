@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Parametriz.AutoNFP.ConsoleApp.Application.CertificadoDigital;
 using Parametriz.AutoNFP.ConsoleApp.Application.CuponsFiscais;
+using Parametriz.AutoNFP.ConsoleApp.Application.Docker;
 using Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais;
 using Parametriz.AutoNFP.ConsoleApp.Application.FileSistem;
 using Parametriz.AutoNFP.ConsoleApp.BackgroundServices.EnviarCuponsFiscais;
@@ -37,6 +38,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Configs
                 services.AddScoped<ICertificadoDigitalService, CertificadoDigitalService>();
                 services.AddScoped<IFileSystemService, FileSystemService>();
                 services.AddScoped<IEnviarCuponsFiscaisService, EnviarCuponsFiscaisService>();
+                services.AddScoped<IDockerService, DockerService>();
 
                 services.AddHostedService<EnviarCuponsFiscaisBackgroundService>();
 

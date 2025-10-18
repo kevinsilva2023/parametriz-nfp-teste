@@ -4,6 +4,7 @@ using Parametriz.AutoNFP.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
+using System.Formats.Tar;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,40 +13,46 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
 {
     public class FileSystemService : BaseService, IFileSystemService
     {
-        private readonly string _raiz = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.autonfp";
-        
-
         public FileSystemService(IUnitOfWork uow, 
                                  Notificador notificador) 
             : base(uow, notificador)
         {
         }
 
-        public bool ExecutarProcesso(Voluntario voluntario, string senha, int port)
+        public bool ExecutarProcessoInicial(string diretorio, Voluntario voluntario, string senha)
         {
             try
             {
-                var diretorio = Path.Combine(_raiz, voluntario.InstituicaoId.ToString());
-
                 VerificarDiretorioDaInstituicao(diretorio);
                 CriarChromePolicy(diretorio, voluntario);
                 SalvarCertificado(diretorio, voluntario);
                 CriarDockerfile(diretorio, voluntario, senha);
-                CriarDockerCompose(diretorio, voluntario, port);
-
+                //CriarDockerCompose(diretorio, voluntario, port);
+                
                 return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                ExcluirDiretorioSeExistir(diretorio);
                 return false;
             }
         }
 
-        private void VerificarDiretorioDaInstituicao(string diretorio)
+        public void ExecutarProcessoFinal(string diretorio)
+        {
+            ExcluirDiretorioSeExistir(diretorio);
+        }
+
+        private void ExcluirDiretorioSeExistir(string diretorio)
         {
             if (Directory.Exists(diretorio))
                 Directory.Delete(diretorio, true);
+        }
+
+        private void VerificarDiretorioDaInstituicao(string diretorio)
+        {
+            ExcluirDiretorioSeExistir(diretorio);
 
             Directory.CreateDirectory(diretorio);
         }
@@ -65,7 +72,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
 
         private void SalvarCertificado(string diretorio, Voluntario voluntario)
         {
-            var enderecoCertificado = Path.Combine(diretorio, voluntario.Id.ToString());
+            var enderecoCertificado = Path.Combine(diretorio, "certificado.pfx");
             File.WriteAllBytes(enderecoCertificado, voluntario.Upload);
         }
 
@@ -79,32 +86,36 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
             stream.WriteLine($"RUN sudo apt-get update");
             stream.WriteLine($"RUN sudo apt-get install -y libnss3-tools openssl");
             stream.WriteLine($"RUN sudo mkdir -p /etc/opt/chrome/policies/managed");
-            stream.WriteLine($"COPY ~/.autonfp/{voluntario.InstituicaoId}/auto_select_certificate.json /etc/opt/chrome/policies/managed");
-            stream.WriteLine($"COPY ~/.autonfp/{voluntario.InstituicaoId}/{voluntario.Id} /home/seluser");
-            stream.WriteLine($"RUN pk12util -d /home/seluser/.pki/nssdb -i /home/seluser/{voluntario.Id} -W {senha}");
+            //stream.WriteLine($"COPY ~/.autonfp/{voluntario.InstituicaoId}/auto_select_certificate.json /etc/opt/chrome/policies/managed");
+            //stream.WriteLine($"COPY ~/.autonfp/{voluntario.InstituicaoId}/certificado.pfx /home/seluser");
+            stream.WriteLine($"COPY auto_select_certificate.json /etc/opt/chrome/policies/managed");
+            stream.WriteLine($"COPY certificado.pfx /home/seluser");
+            stream.WriteLine($"RUN pk12util -d /home/seluser/.pki/nssdb -i /home/seluser/certificado.pfx -W {senha}");
 
             stream.Close();
         }
 
-        private void CriarDockerCompose(string diretorio, Voluntario voluntario, int port)
-        {
-            var enderecoDockerCompose = Path.Combine(diretorio, $"{voluntario.InstituicaoId}.yaml");
+        //private void CriarDockerCompose(string diretorio, Voluntario voluntario, int port)
+        //{
+        //    var enderecoDockerCompose = Path.Combine(diretorio, $"docker-compose.yaml");
 
-            using var stream = File.CreateText(enderecoDockerCompose);
+        //    using var stream = File.CreateText(enderecoDockerCompose);
 
-            stream.WriteLine(@$"services:");
-            stream.WriteLine($@"    selenium-chrome-{voluntario.InstituicaoId}:");
-            stream.WriteLine($@"        image: selenium-chrome-{voluntario.InstituicaoId}:latest");
-            stream.WriteLine(@$"        container_name: selenium-chrome-{voluntario.InstituicaoId}");
-            stream.WriteLine(@$"        build:");
-            stream.WriteLine(@$"            context: ./");
-            stream.WriteLine(@$"            dockerfile: ./Dockerfile");
-            stream.WriteLine(@$"        shm_size: 2gb");
-            stream.WriteLine(@$"        ports:");
-            stream.WriteLine(@$"            - ""{port}:{port}""");
-            stream.WriteLine(@$"            - ""{port+3456}:{port+3456}""");
+        //    stream.WriteLine(@$"services:");
+        //    stream.WriteLine($@"    selenium-chrome-{voluntario.InstituicaoId}:");
+        //    stream.WriteLine($@"        image: selenium-chrome-{voluntario.InstituicaoId}:latest");
+        //    stream.WriteLine(@$"        container_name: selenium-chrome-{voluntario.InstituicaoId}");
+        //    stream.WriteLine(@$"        build:");
+        //    stream.WriteLine(@$"            context: ./");
+        //    stream.WriteLine(@$"            dockerfile: ./Dockerfile");
+        //    stream.WriteLine(@$"        shm_size: 2gb");
+        //    stream.WriteLine(@$"        ports:");
+        //    stream.WriteLine(@$"            - ""{port}:{port}""");
+        //    stream.WriteLine(@$"            - ""{port+3456}:{port+3456}""");
 
-            stream.Close();
-        }
+        //    stream.Close();
+        //}
+
+        
     }
 }

@@ -25,4 +25,7 @@ RUN dotnet publish "./Parametriz.AutoNFP.ConsoleApp.csproj" -c $BUILD_CONFIGURAT
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+ENV DOCKER_HOST="unix:///var/run/docker.sock"
+
 ENTRYPOINT ["dotnet", "Parametriz.AutoNFP.ConsoleApp.dll"]
