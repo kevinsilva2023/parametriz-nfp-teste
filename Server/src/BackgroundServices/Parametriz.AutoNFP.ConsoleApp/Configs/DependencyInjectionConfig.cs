@@ -4,6 +4,7 @@ using Parametriz.AutoNFP.ConsoleApp.Application.CertificadoDigital;
 using Parametriz.AutoNFP.ConsoleApp.Application.CuponsFiscais;
 using Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais;
 using Parametriz.AutoNFP.ConsoleApp.Application.FileSistem;
+using Parametriz.AutoNFP.ConsoleApp.BackgroundServices.EnviarCuponsFiscais;
 using Parametriz.AutoNFP.Core.Configs;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
@@ -36,6 +37,8 @@ namespace Parametriz.AutoNFP.ConsoleApp.Configs
                 services.AddScoped<ICertificadoDigitalService, CertificadoDigitalService>();
                 services.AddScoped<IFileSystemService, FileSystemService>();
                 services.AddScoped<IEnviarCuponsFiscaisService, EnviarCuponsFiscaisService>();
+
+                services.AddHostedService<EnviarCuponsFiscaisBackgroundService>();
 
                 services.AddScoped<Notificador>();
                 

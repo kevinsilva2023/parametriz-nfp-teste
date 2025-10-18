@@ -9,6 +9,6 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
 {
     public interface IFileSystemService
     {
-        bool ExecutarProcesso(Voluntario voluntario, string senha);
+        bool ExecutarProcesso(Voluntario voluntario, string senha, int port);
     }
 }
