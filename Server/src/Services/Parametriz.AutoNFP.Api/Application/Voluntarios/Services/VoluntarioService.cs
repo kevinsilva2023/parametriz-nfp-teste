@@ -148,6 +148,8 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
 
             await _voluntarioRepository.Excluir(instituicaoId);
 
+            await Commit();
+
             return CommandEhValido();
         }
 
