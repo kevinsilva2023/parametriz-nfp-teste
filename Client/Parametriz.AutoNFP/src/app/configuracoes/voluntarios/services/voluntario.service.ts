@@ -15,9 +15,17 @@ export class VoluntarioService extends BaseService {
         catchError(super.serviceError));
   }
 
+  excluir(): Observable<ConsultarVoluntario> {
+    return this.httpClient
+      .delete(`${this.apiUrl}/voluntarios`, { headers: super.ObterAuthHeaderJson() })
+      .pipe(
+        map(super.extractData),
+        catchError(super.serviceError));
+  }
+
   obterPorInsituicao(): Observable<ConsultarVoluntario> {
     return this.httpClient
-      .get(`${this.apiUrl}/voluntarios`,{ headers: super.ObterAuthHeaderJson() })
+      .get(`${this.apiUrl}/voluntarios`, { headers: super.ObterAuthHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(super.serviceError));
