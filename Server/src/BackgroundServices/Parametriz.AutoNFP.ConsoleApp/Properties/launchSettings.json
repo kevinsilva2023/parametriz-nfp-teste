@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Parametriz.AutoNFP.ConsoleApp": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

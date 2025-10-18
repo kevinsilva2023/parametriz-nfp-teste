@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36603.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundServices", "BackgroundServices", "{1CEDBCDE-27C2-4CCC-AE96-42F02174A2C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parametriz.AutoNFP.ConsoleApp", "src\BackgroundServices\Parametriz.AutoNFP.ConsoleApp\Parametriz.AutoNFP.ConsoleApp.csproj", "{92DB95F0-7277-4285-8DFE-17C737B27A06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parametriz.AutoNFP.Core", "src\Common\Parametriz.AutoNFP.Core\Parametriz.AutoNFP.Core.csproj", "{0CA1CBDD-3A16-BBBA-FA2C-C797EC468FB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parametriz.AutoNFP.Data", "src\Services\Parametriz.AutoNFP.Data\Parametriz.AutoNFP.Data.csproj", "{660D1694-9672-DFF7-F276-13E818682B37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parametriz.AutoNFP.Domain", "src\Services\Parametriz.AutoNFP.Domain\Parametriz.AutoNFP.Domain.csproj", "{33461A69-6A64-D4E5-58F9-264455EC9729}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92DB95F0-7277-4285-8DFE-17C737B27A06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DB95F0-7277-4285-8DFE-17C737B27A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92DB95F0-7277-4285-8DFE-17C737B27A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92DB95F0-7277-4285-8DFE-17C737B27A06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CA1CBDD-3A16-BBBA-FA2C-C797EC468FB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CA1CBDD-3A16-BBBA-FA2C-C797EC468FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CA1CBDD-3A16-BBBA-FA2C-C797EC468FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CA1CBDD-3A16-BBBA-FA2C-C797EC468FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{660D1694-9672-DFF7-F276-13E818682B37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{660D1694-9672-DFF7-F276-13E818682B37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{660D1694-9672-DFF7-F276-13E818682B37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{660D1694-9672-DFF7-F276-13E818682B37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33461A69-6A64-D4E5-58F9-264455EC9729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33461A69-6A64-D4E5-58F9-264455EC9729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33461A69-6A64-D4E5-58F9-264455EC9729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33461A69-6A64-D4E5-58F9-264455EC9729}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{92DB95F0-7277-4285-8DFE-17C737B27A06} = {1CEDBCDE-27C2-4CCC-AE96-42F02174A2C5}
+		{0CA1CBDD-3A16-BBBA-FA2C-C797EC468FB6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{660D1694-9672-DFF7-F276-13E818682B37} = {1CEDBCDE-27C2-4CCC-AE96-42F02174A2C5}
+		{33461A69-6A64-D4E5-58F9-264455EC9729} = {1CEDBCDE-27C2-4CCC-AE96-42F02174A2C5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {15ECD206-6F27-4C60-90A3-FEC612AF2AD7}
+	EndGlobalSection
+EndGlobal
