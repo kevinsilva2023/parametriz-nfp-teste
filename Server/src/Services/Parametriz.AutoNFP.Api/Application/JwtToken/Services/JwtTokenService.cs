@@ -97,7 +97,12 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
                     Id = usuario.Id,
                     Email = usuario.Email.Conta,
                     Nome = usuario.Nome, 
-                    Instituicao = new TokenInstituicaoViewModel { Id = instituicao.Id, RazaoSocial = instituicao.RazaoSocial },
+                    Instituicao = new TokenInstituicaoViewModel 
+                    { 
+                        Id = instituicao.Id, 
+                        RazaoSocial = instituicao.RazaoSocial,
+                        Cnpj = instituicao.Cnpj.NumeroInscricao
+                    },
                     Claims = _userClaims.Select(c => new TokenUsuarioClaimViewModel { Type = c.Type, Value = c.Value }).ToList()
                 },
                 RefreshToken = new RefreshTokenViewModel
