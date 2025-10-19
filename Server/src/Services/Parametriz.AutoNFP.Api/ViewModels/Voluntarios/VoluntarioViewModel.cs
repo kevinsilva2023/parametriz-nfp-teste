@@ -7,6 +7,7 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
     {
         public Guid Id { get; set; }
         public Guid InstituicaoId { get; set; }
+        public string EntidadeNomeNFP { get; set; }
         public string Nome { get; set; }
         public CnpjCpfViewModel CnpjCpf { get; set; }
         public string Requerente { get; set; }

@@ -77,6 +77,9 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                 if (voluntario == null)
                     continue; // ToDo: O que fazer?
 
+                if (string.IsNullOrWhiteSpace(voluntario.EntidadeNomeNFP))
+                    continue; // ToDo: Incluir erro sem Nome da entidade na NFP cadastrado
+
                 var senha = ObterSenha(voluntario);
 
                 var diretorio = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.autonfp/{voluntario.InstituicaoId}";
@@ -95,21 +98,21 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
 
                 
 
-                EnviarCuponsFiscais(cuponsFiscais, port, diretorio, containerName);
+                EnviarCuponsFiscais(voluntario.EntidadeNomeNFP, cuponsFiscais, port, diretorio, containerName);
             }
         }
 
-        private void EnviarCuponsFiscais(IEnumerable<CupomFiscal> cuponsFiscais, int port, string diretorio, string containerName)
+        private void EnviarCuponsFiscais(string entidadeNomeNFP, IEnumerable<CupomFiscal> cuponsFiscais, int port, string diretorio, string containerName)
         {
             try
             {
-                var instituicaoNome = "ABRIGO IRMA TEREZA PARA IDOSOS DESAMPARADOS";
                 Thread.Sleep(5000);
 
                 var seleniumHelper = new SeleniumHelper(port, headless: false);
 
                 EfetuarLogin(seleniumHelper);
-                SelecionarEntidade(seleniumHelper, instituicaoNome);
+                if (!SelecionarEntidade(seleniumHelper, entidadeNomeNFP))
+                    return; // ToDo: Incluir erro não foi possivel selecionar a entidade
 
                 CadastrarCupomFiscal(seleniumHelper, cuponsFiscais);
             }
@@ -131,14 +134,19 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
             loginPage.ClicarAcessoViaCertificadoDigital();
         }
 
-        private void SelecionarEntidade(SeleniumHelper seleniumHelper, string instituicaoNome)
+        private bool SelecionarEntidade(SeleniumHelper seleniumHelper, string entidadeNomeNFP)
         {
             var cadastroNotaEntidadeAviso = new CadastroNotaEntidadeAvisoPage(seleniumHelper);
             cadastroNotaEntidadeAviso.AcessarPagina();
             cadastroNotaEntidadeAviso.ClicarEmProsseguir();
-            cadastroNotaEntidadeAviso.SelecionarEntidade(instituicaoNome);
+            
+            if (!cadastroNotaEntidadeAviso.SelecionarEntidade(entidadeNomeNFP))
+                return false;
+
             cadastroNotaEntidadeAviso.ClicarEmNovaNota();
             cadastroNotaEntidadeAviso.FecharModal();
+
+            return true;
         }
 
         private void CadastrarCupomFiscal(SeleniumHelper seleniumHelper, IEnumerable<CupomFiscal> cuponsFiscais)

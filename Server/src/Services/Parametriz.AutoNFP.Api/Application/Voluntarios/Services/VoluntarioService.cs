@@ -84,10 +84,10 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
 
             var senhaCripto = Encrypt(cadastrarVoluntarioViewModel.Senha, InstituicaoId.ToString(), pepper);
 
-            var voluntario = new Voluntario(Guid.NewGuid(), InstituicaoId, ExtrairNomeDoCommonName(certificado.Subject),
-                new CnpjCpf(TipoPessoa.Fisica, ExtrairCpnjCpfDoCommonName(certificado.Subject)),
-                ExtrairCommonName(certificado.Subject), certificado.NotBefore, certificado.NotAfter,
-                ExtrairCommonName(certificado.Issuer), dataByteArray, senhaCripto);
+            var voluntario = new Voluntario(Guid.NewGuid(), InstituicaoId, cadastrarVoluntarioViewModel.EntidadeNomeNFP,
+                ExtrairNomeDoCommonName(certificado.Subject), new CnpjCpf(TipoPessoa.Fisica, 
+                ExtrairCpnjCpfDoCommonName(certificado.Subject)), ExtrairCommonName(certificado.Subject), certificado.NotBefore, 
+                certificado.NotAfter, ExtrairCommonName(certificado.Issuer), dataByteArray, senhaCripto);
 
             if (!await VoluntarioAptoParaCadastrar(voluntario))
                 return false;

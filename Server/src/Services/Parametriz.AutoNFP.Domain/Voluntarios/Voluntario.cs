@@ -10,6 +10,7 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
 {
     public class Voluntario : InstituicaoEntity
     {
+        public string EntidadeNomeNFP { get; private set; }
         public string Nome { get; private set; }
         public CnpjCpf CnpjCpf { get; private set; }
         public string Requerente { get; private set; }
@@ -19,10 +20,11 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
         public byte[] Upload { get; private set; }
         public byte[] Senha { get; private set; }
 
-        public Voluntario(Guid id, Guid instituicaoId, string nome, CnpjCpf cnpjCpf, string requerente, 
+        public Voluntario(Guid id, Guid instituicaoId, string entidadeNomeNFP, string nome, CnpjCpf cnpjCpf, string requerente, 
             DateTime validoAPartirDe, DateTime validoAte, string emissor, byte[] upload, byte[] senha)
                 : base(id, instituicaoId)
         {
+            EntidadeNomeNFP = entidadeNomeNFP;
             Nome = nome;
             CnpjCpf = cnpjCpf;
             Requerente = requerente;
