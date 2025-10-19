@@ -1,0 +1,14 @@
+name: parametriz-autonfp
+services:
+  autonfp-api:
+    image: maumitsuo/parametriz-autonfp-api:latest
+    container_name: parametriz-autonfp-api
+    build:
+      context: ../../Server/src
+      dockerfile: ./Services/Parametriz.AutoNFP.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5001
+    restart: always
+    ports:
+      - "5001:5001"
