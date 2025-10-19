@@ -10,6 +10,6 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
     public interface IDockerService
     {
         bool ExecutarProcessoInicial(string diretorio, string imageName, string containerName, int port);
-        void ExecutarProcessoFinal(string imageName, string containerName);
+        void ExecutarProcessoFinal(string containerName);
     }
 }

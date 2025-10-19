@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace Parametriz.AutoNFP.ConsoleApp.SeleniumConfig
 {
@@ -33,79 +32,102 @@ namespace Parametriz.AutoNFP.ConsoleApp.SeleniumConfig
 
         public bool ValidarConteudoUrl(string conteudo)
         {
-            return Wait.Until(ExpectedConditions.UrlContains(conteudo));
+            return Wait.Until(driver => driver.Url.Contains(conteudo));
         }
 
         public void ClicarLinkPorTexto(string linkText)
         {
-            var link = Wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText(linkText)));
+            var link = Wait.Until(driver => driver.FindElement(By.LinkText(linkText)));
             link.Click();
         }
 
         public void ClicarBotaoPorId(string botaoId)
         {
-            var botao = Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(botaoId)));
+            var botao = Wait.Until(driver => driver.FindElement(By.Id(botaoId)));
             botao.Click();
         }
 
         public void ClicarPorXPath(string xPath)
         {
-            var elemento = Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(xPath)));
+            var elemento = Wait.Until(driver => driver.FindElement(By.XPath(xPath)));
             elemento.Click();
         }
 
         public IWebElement ObterElementoPorClasse(string classeCss)
         {
-            return Wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName(classeCss)));
+            return Wait.Until(driver => driver.FindElement(By.ClassName(classeCss)));
         }
 
         public IWebElement ObterElementoPorXPath(string xPath)
         {
-            return Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(xPath)));
+            return Wait.Until(driver => driver.FindElement(By.XPath(xPath)));
         }
 
         public void PreencherTextBoxPorId(string idCampo, string valorCampo)
         {
-            var campo = Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(idCampo)));
+            var campo = Wait.Until(driver => driver.FindElement(By.Id(idCampo)));
             campo.SendKeys(valorCampo);
         }
 
-        public void PreencherDropDownPorId(string idCampo, string valorCampo)
+        public void PreencherTextBoxPorXPath(string xPath, string valorCampo)
         {
-            var campo = Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(idCampo)));
+            var campo = Wait.Until(driver => driver.FindElement(By.XPath(xPath)));
+            campo.SendKeys(valorCampo);
+        }
+
+        public void SelecionarValorDropDownPorId(string idCampo, string valorCampo)
+        {
+            var campo = Wait.Until(driver => driver.FindElement(By.Id(idCampo)));
             var selectElement = new SelectElement(campo);
             selectElement.SelectByValue(valorCampo);
         }
 
+        public void SelecionarTextoDropDownPorId(string idCampo, string valorCampo)
+        {
+            var campo = Wait.Until(driver => driver.FindElement(By.Id(idCampo)));
+            var selectElement = new SelectElement(campo);
+            selectElement.SelectByText(valorCampo);
+        }
+
         public string ObterTextoElementoPorClasseCss(string className)
         {
-            return Wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName(className))).Text;
+            return Wait.Until(driver => driver.FindElement(By.ClassName(className))).Text;
         }
 
         public string ObterTextoElementoPorId(string id)
         {
-            return Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id))).Text;
+            return Wait.Until(driver => driver.FindElement(By.Id(id))).Text;
         }
 
         public string ObterTextoElementoPorXPath(string xpath)
         {
-            return Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(xpath))).Text;
+            return Wait.Until(driver => driver.FindElement(By.XPath(xpath))).Text;
         }
 
         public string ObterValorTextBoxPorId(string id)
         {
-            return Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id)))
+            return Wait.Until(driver => driver.FindElement(By.Id(id)))
                 .GetAttribute("value");
         }
 
         public IEnumerable<IWebElement> ObterListaPorClasse(string className)
         {
-            return Wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.ClassName(className)));
+            return Wait.Until(driver => driver.FindElements(By.ClassName(className)));
         }
 
         public bool ValidarSeElementoExistePorId(string id)
         {
-            return ElementoExistente(By.Id(id));
+            try
+            {
+                var elemento = WebDriver.FindElement(By.Id(id));
+
+                return elemento != null;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
 
         public void VoltarNavegacao(int vezes = 1)
@@ -125,19 +147,6 @@ namespace Parametriz.AutoNFP.ConsoleApp.SeleniumConfig
         //{
         //    screenshot.SaveAsFile($"{Configuration.FolderPicture}{fileName}", ScreenshotImageFormat.Png);
         //}
-
-        private bool ElementoExistente(By by)
-        {
-            try
-            {
-                WebDriver.FindElement(by);
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
-        }
 
         public void Dispose()
         {

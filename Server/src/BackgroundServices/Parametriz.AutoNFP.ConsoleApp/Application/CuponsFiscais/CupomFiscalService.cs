@@ -20,5 +20,12 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.CuponsFiscais
         {
             _cupomFiscalRepository = cupomFiscalRepository;
         }
+
+        public void Atualizar(CupomFiscal cupomFiscal)
+        {
+            _cupomFiscalRepository.Atualizar(cupomFiscal);
+
+            Commit();
+        }
     }
 }

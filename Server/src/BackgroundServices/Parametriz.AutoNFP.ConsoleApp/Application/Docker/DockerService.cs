@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Formats.Tar;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,11 +22,13 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
                              Notificador notificador) 
             : base(uow, notificador)
         {
-            var dockerUri = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? 
-                "npipe://./pipe/docker_engine" : 
+            var dockerUri = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+                "npipe://./pipe/docker_engine" :
                 "unix:/var/run/docker.sock";
 
-            //"tcp://192.168.0.14:2375"
+
+            //-v / var / run / docker.sock:/ var / run / docker.sock
+
             var uri = new Uri(dockerUri);
 
             _dockerClient = new DockerClientConfiguration(uri)
@@ -40,8 +43,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
             try
             {
                 CriarImagem(diretorio, imageName).Wait();
-                imageId = ObterImage(imageName).Result;
-
+                
                 containerId = ObterContainer(containerName).Result;
                 
                 if (!string.IsNullOrEmpty(containerId))
@@ -53,9 +55,13 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
 
                 return true;
             }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
             catch (Exception ex)
             {
-                ExcluirImagem(imageName).Wait();
                 ExcluirContainer(containerId).Wait();
 
                 Console.WriteLine(ex.Message);
@@ -63,17 +69,12 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
             }
         }
 
-        public void ExecutarProcessoFinal(string imageName, string containerName)
+        public void ExecutarProcessoFinal(string containerName)
         {
             var containerId = ObterContainer(containerName).Result;
 
             if (!string.IsNullOrEmpty(containerId))
                 ExcluirContainer(containerId).Wait();
-
-            var imageId = ObterImage(imageName).Result;
-
-            if (!string.IsNullOrEmpty(imageId))
-                ExcluirImagem(imageName).Wait();
         }
 
         #region Images
@@ -109,7 +110,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
                 var parameters = new ImageBuildParameters
                 {
                     Dockerfile = "./Dockerfile",
-                    ShmSize = 2024,
+                    ShmSize = 2147483648,
                     Tags = new List<string> { imageName }
                 };
 
@@ -176,7 +177,8 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.Docker
                         { port.ToString(), new List<PortBinding> { new PortBinding {  HostPort = port.ToString() } } },
                         { (port + 3456).ToString(), new List<PortBinding>{ new PortBinding { HostPort = (port + 3456).ToString() } } }
                     },
-                    RestartPolicy = new RestartPolicy { Name = RestartPolicyKind.No }
+                    RestartPolicy = new RestartPolicy { Name = RestartPolicyKind.No },
+                    ShmSize = 2147483648
                 }
             };
 

@@ -69,7 +69,7 @@ namespace Parametriz.AutoNFP.Api.Application
             if (!CommandEhValido())
                 return false;
 
-            if (await _uow.Commit())
+            if (await _uow.CommitAsync())
                 return true;
 
             return NotificarErro("Ocorreu um erro ao salvar os dados no banco");
