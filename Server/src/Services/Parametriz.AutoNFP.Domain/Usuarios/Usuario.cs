@@ -14,6 +14,7 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
     {
         public string Nome { get; private set; }
         public Email Email { get; private set; }
+        public string FotoUpload { get; private set; }
         public bool Administrador { get; private set; }
         public bool Desativado { get; private set; }
 
@@ -35,6 +36,11 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
         public void AlterarNome(string nome)
         {
             Nome = nome.Trim().ToUpper();
+        }
+
+        public void AlterarFotoUpload(string fotoUpload)
+        {
+            FotoUpload = fotoUpload;
         }
 
         public void AlterarAdministrador(bool administrador)

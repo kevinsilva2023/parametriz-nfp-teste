@@ -6,6 +6,7 @@ using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
 using Parametriz.AutoNFP.Api.Extensions;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
+using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
@@ -79,11 +80,23 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return CustomResponse(usuarioViewModel);
         }
 
-        [HttpPut("nao-administrador")]
+        [HttpPut("perfil")]
         public async Task<IActionResult> AtualizarNaoAdministrador([FromBody] UsuarioViewModel usuarioViewModel)
         {
             if (!ModelStateValida())
                 return CustomResponse();
+
+            if (!string.IsNullOrWhiteSpace(usuarioViewModel.FotoUpload))
+            {
+                var limiteUpload = 240 * 1024; // 240Kb. (No domain o limite é 200Kb por que na string base64 o calculo é aproximado)
+                var tamanhoAproximadoUpload = usuarioViewModel.FotoUpload.Length * 0.75; // Convertido possui aproximadamente 1.37% 4/3
+
+                if (tamanhoAproximadoUpload > limiteUpload)
+                {
+                    NotificarErro("Foto excede o limite do tamanho permitido.");
+                    return CustomResponse(usuarioViewModel);
+                } 
+            }
 
             await _usuarioService.AtualizarNaoAdministrador(usuarioViewModel);
 

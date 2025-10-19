@@ -39,6 +39,15 @@ namespace Parametriz.AutoNFP.Api.Controllers
             if (!ModelStateValida())
                 return CustomResponse(cadastrarVoluntarioViewModel);
 
+            var limiteUpload = 30 * 1024; // 30Kb. (No domain o limite é 25Kb por que na string base64 o calculo é aproximado)
+            var tamanhoAproximadoUpload = cadastrarVoluntarioViewModel.Upload.Length * 0.75; // Convertido possui aproximadamente 1.37% 4/3
+
+            if (tamanhoAproximadoUpload > limiteUpload)
+            {
+                NotificarErro("Arquivo excede o limite do tamanho permitido.");
+                return CustomResponse(cadastrarVoluntarioViewModel);
+            }
+                
             await _voluntarioService.Cadastrar(cadastrarVoluntarioViewModel);
 
             return CustomResponse(cadastrarVoluntarioViewModel);
