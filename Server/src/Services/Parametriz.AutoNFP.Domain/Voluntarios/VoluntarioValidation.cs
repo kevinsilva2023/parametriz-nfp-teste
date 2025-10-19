@@ -11,12 +11,24 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
     {
         public VoluntarioValidation()
         {
+            ValidarEntidadeNomeNFP();
             ValidarNome();
             ValidarRequerente();
             ValidarValidade();
             ValidarEmissor();
             ValidarUpload();
             ValidarSenha();
+        }
+
+        private void ValidarEntidadeNomeNFP()
+        {
+            RuleFor(p => p.EntidadeNomeNFP)
+                .NotEmpty()
+                    .WithMessage("Favor preencher o nome da entidade na nota fiscal paulista.");
+
+            RuleFor(p => p.EntidadeNomeNFP)
+                .MaximumLength(256)
+                    .WithMessage("Nome da entidade na nota fiscal paulista deve ser preenchido com no máximo {MaxLength} caracteres.");
         }
 
         private void ValidarNome()

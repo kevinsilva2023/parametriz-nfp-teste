@@ -15,6 +15,7 @@ namespace Parametriz.AutoNFP.Api.Extensions
             {
                 Id = voluntario.Id,
                 InstituicaoId = voluntario.InstituicaoId,
+                EntidadeNomeNFP = voluntario.EntidadeNomeNFP,
                 Nome = voluntario.Nome,
                 CnpjCpf = voluntario.CnpjCpf.ToViewModel(),
                 Requerente = voluntario.Requerente,

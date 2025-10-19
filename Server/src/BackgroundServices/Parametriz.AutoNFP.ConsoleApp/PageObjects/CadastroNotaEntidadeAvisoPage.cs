@@ -24,9 +24,17 @@ namespace Parametriz.AutoNFP.ConsoleApp.PageObjects
             Helper.ClicarBotaoPorId("ctl00_ConteudoPagina_btnOk");
         }
 
-        public void SelecionarEntidade(string entidade)
+        public bool SelecionarEntidade(string entidade)
         {
-            Helper.SelecionarTextoDropDownPorId("ddlEntidadeFilantropica", entidade);
+            try
+            {
+                Helper.SelecionarTextoDropDownPorId("ddlEntidadeFilantropica", entidade);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public void ClicarEmNovaNota()

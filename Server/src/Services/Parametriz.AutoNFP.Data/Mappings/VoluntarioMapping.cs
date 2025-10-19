@@ -21,6 +21,10 @@ namespace Parametriz.AutoNFP.Data.Mappings
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
+            builder.Property(p => p.EntidadeNomeNFP)
+                .HasMaxLength(256)
+                .IsRequired();
+
             builder.Property(p => p.Nome)
                 .HasMaxLength(256)
                 .IsRequired();
