@@ -17,6 +17,8 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Usuarios
 
         public EmailViewModel Email { get; set; }
 
+        public string FotoUpload { get; set; }
+
         public bool Administrador { get; set; }
 
         public bool Desativado { get; set; }

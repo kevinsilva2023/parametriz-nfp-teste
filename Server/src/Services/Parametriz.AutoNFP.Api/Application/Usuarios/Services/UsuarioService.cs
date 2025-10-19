@@ -94,10 +94,8 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
             if (usuario == null)
                 return NotificarErro("Usuário não encontrado.");
 
-            if (usuario.Administrador)
-                return NotificarErro("Usuário é administrador.");
-
             usuario.AlterarNome(usuarioViewModel.Nome);
+            usuario.AlterarFotoUpload(usuario.FotoUpload);
 
             if (!await UsuarioAptoParaAtualizar(usuario))
                 return false;

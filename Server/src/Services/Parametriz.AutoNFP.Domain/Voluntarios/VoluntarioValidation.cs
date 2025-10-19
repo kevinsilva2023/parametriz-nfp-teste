@@ -76,6 +76,10 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
             RuleFor(p => p.Upload)
                 .NotEmpty()
                     .WithMessage("Favor preencher o upload.");
+
+            RuleFor(p => p.Upload.LongLength)
+                .LessThanOrEqualTo(25600)
+                    .WithMessage("Arquivo do certificado excede o tamanho limite de 25Kb.");
         }
 
         private void ValidarSenha()
