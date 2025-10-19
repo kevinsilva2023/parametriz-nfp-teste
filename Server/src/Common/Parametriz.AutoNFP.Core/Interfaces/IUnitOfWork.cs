@@ -8,14 +8,16 @@ namespace Parametriz.AutoNFP.Core.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        Task BeginTransaction();
+        Task BeginTransactionAsync();
 
-        Task<bool> Commit();
+        bool Commit();
+        Task<bool> CommitAsync();
 
-        Task CommitTransaction();
+        Task CommitTransactionAsync();
 
-        Task RollbackTransaction();
+        Task RollbackTransactionAsync();
 
         void ClearChangeTracker();
+        
     }
 }

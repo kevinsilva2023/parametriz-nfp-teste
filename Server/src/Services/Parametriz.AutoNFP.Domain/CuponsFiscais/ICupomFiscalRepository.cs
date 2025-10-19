@@ -12,5 +12,8 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
     {
         Task<CupomFiscalPaginacao> ObterPorFiltrosPaginado(Guid instituicaoId, DateTime competencia, 
             Guid? cadastradoPorId = null, CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50);
+
+        IEnumerable<Guid> ObterInstituicoesIdComCuponsFiscaisProcessando();
+        IEnumerable<CupomFiscal> ObterPorStatusProcessando(Guid instituicaoId);
     }
 }

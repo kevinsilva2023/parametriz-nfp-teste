@@ -30,7 +30,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
         [HttpGet]
         public async Task<VoluntarioViewModel> Get()
         {
-            return (await _voluntarioRepository.ObterPorInstituicaoId(InstituicaoId)).ToViewModel();
+            return (await _voluntarioRepository.ObterPorInstituicaoIdAsync(InstituicaoId)).ToViewModel();
         }
 
         [HttpPost]

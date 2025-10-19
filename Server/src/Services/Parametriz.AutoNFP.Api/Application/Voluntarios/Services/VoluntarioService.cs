@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Extensions;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
+using Parametriz.AutoNFP.Core.Configs;
 using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;

@@ -20,24 +20,29 @@ namespace Parametriz.AutoNFP.Data.Uow
             _transaction = null;
         }
 
-        public async Task BeginTransaction()
+        public async Task BeginTransactionAsync()
         {
             if (_transaction is null)
                 _transaction = await _context.Database.BeginTransactionAsync();
         }
 
-        public async Task<bool> Commit()
+        public bool Commit()
+        {
+            return _context.SaveChanges() > 0;
+        }
+
+        public async Task<bool> CommitAsync()
         {
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task CommitTransaction()
+        public async Task CommitTransactionAsync()
         {
             await _transaction?.CommitAsync();
             _transaction = null;
         }
 
-        public async Task RollbackTransaction()
+        public async Task RollbackTransactionAsync()
         {
             await _transaction?.RollbackAsync();
             _transaction = null;

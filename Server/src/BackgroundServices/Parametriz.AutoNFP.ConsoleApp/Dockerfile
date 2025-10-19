@@ -25,4 +25,5 @@ RUN dotnet publish "./Parametriz.AutoNFP.ConsoleApp.csproj" -c $BUILD_CONFIGURAT
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "Parametriz.AutoNFP.ConsoleApp.dll"]

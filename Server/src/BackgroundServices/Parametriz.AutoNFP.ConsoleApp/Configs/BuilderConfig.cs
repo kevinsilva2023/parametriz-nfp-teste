@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Parametriz.AutoNFP.Core.Configs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,11 @@ namespace Parametriz.AutoNFP.ConsoleApp.Configs
                     .AddJsonFile("appsettings.json", true, true)
                     .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
                     .AddEnvironmentVariables();
+            });
+
+            builder.ConfigureServices((context, services) =>
+            {
+                services.Configure<AppConfig>(context.Configuration.GetSection("AppConfig"));
             });
 
             return builder;

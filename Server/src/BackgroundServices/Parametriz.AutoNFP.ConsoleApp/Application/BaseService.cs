@@ -37,10 +37,10 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application
             if (!CommandEhValido())
                 return false;
 
-            //if (_uow.Commit())
+            if (_uow.Commit())
                 return true;
 
-            //return NotificarErro("Ocorreu um erro ao salvar os dados no banco");
+            return NotificarErro("Ocorreu um erro ao salvar os dados no banco");
         }
 
     }
