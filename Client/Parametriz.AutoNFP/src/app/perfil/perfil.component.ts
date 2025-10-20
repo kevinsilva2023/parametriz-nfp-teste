@@ -60,15 +60,6 @@ export class PerfilComponent extends BaseFormComponent implements OnInit, AfterV
     };
     reader.readAsDataURL(arquivoImagem);
   }
-  
-  // private salvarImagemUsuario() {
-  //   this.perfilService.salvarImagem(this.usuario)
-  //     .subscribe({
-  //       next: (sucesso: Usuario) => this.processarSucesso(sucesso),
-  //       error: (falha: any) => this.processarFalha(falha)
-  //     });
-  // }
-
 
   ngOnInit(): void {
     this.perfilForm = this.formBuilder.group({
@@ -100,16 +91,13 @@ export class PerfilComponent extends BaseFormComponent implements OnInit, AfterV
   efetuarEditarUsuario() {
     super.validarFormulario(this.perfilForm);
 
-    if (this.perfilForm.dirty && this.perfilForm.valid) {
+    this.usuario = Object.assign({}, this.usuario, this.perfilForm.value);
 
-      this.usuario = Object.assign({}, this.usuario, this.perfilForm.value);
-
-      this.perfilService.salvar(this.usuario)
-        .subscribe({
-          next: (sucesso: any) => { this.processarSucesso(sucesso); },
-          error: (falha: any) => { this.processarFalha(falha); }
-        })
-    }
+    this.perfilService.salvar(this.usuario)
+      .subscribe({
+        next: (sucesso: any) => { this.processarSucesso(sucesso); },
+        error: (falha: any) => { this.processarFalha(falha); }
+      })
   }
 
   processarSucesso(response: any) {

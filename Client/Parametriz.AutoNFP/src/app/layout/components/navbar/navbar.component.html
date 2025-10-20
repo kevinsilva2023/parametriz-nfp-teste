@@ -16,13 +16,12 @@
       class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
       <div class="d-flex flex-column text-end">
         <span class="mb-1">{{ usuario.nome | titlecase }}</span>
-        <!-- <span class="text-secondary fs-small">{{ usuario.claims[0].value }}</span> -->
+        <span class="text-secondary fs-small">{{ usuario.claims[0].value }}</span>
       </div>
       
       <div class="avatar-wrapper">
-        <img *ngIf="usuario.fotoUpload" [src]="usuario.fotoUpload" lt="Avatar do usuário"
-          class="rounded-circle avatar-img">
-        <i *ngIf="!usuario.fotoUpload" class="fa-solid fa-user text-white bg-primary-light p-4"></i>
+        <img *ngIf="fotoUpload" [src]="fotoUpload" lt="Avatar do usuário"class="rounded-circle avatar-img">
+        <i *ngIf="!fotoUpload" class="fa-solid fa-user text-white bg-primary-light p-4"></i>
       </div>
     </div>
 

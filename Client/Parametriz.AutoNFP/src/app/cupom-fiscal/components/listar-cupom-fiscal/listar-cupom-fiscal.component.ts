@@ -3,7 +3,7 @@ import { Enumerador } from 'src/app/shared/models/enumureador';
 import { ActivatedRoute, Data } from '@angular/router';
 import { CupomFiscalService } from '../../services/cupom-fiscal.service';
 import { ObterUsuarioAtivo } from 'src/app/shared/models/obter-usuario-ativo';
-import { CupomFiscalResponse } from '../../models/cupom-fiscal';
+import { CupomFiscalPaginacao } from '../../models/cupom-fiscal';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VisualizarCupomFiscalComponent } from '../visualizar-cupom-fiscal/visualizar-cupom-fiscal.component';
 
@@ -19,7 +19,7 @@ export class ListarCupomFiscalComponent implements OnInit {
   status!: Enumerador[];
   usuariosAtivos!: ObterUsuarioAtivo[];
 
-  cuponsFiscaisResponse: CupomFiscalResponse = new CupomFiscalResponse();
+  cuponsFiscaisResponse: CupomFiscalPaginacao = new CupomFiscalPaginacao();
   totalProcessadas!: number;
   percentualSucesso!: number;
 

@@ -5,6 +5,7 @@ import { catchError, map, Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { StringUtils } from 'src/app/shared/utils/string-utils';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
+import { ObterUsuarioAtivo } from 'src/app/shared/models/obter-usuario-ativo';
 
 @Injectable()
 export class UsuarioService extends BaseService {
@@ -51,6 +52,14 @@ export class UsuarioService extends BaseService {
       )
   }
 
+  obterUsuariosAtivos(): Observable<ObterUsuarioAtivo[]> {
+    return this.httpClient
+      .get(`${this.apiUrl}/usuarios/obter-ativos`, { headers: this.ObterAuthHeaderJson() })
+      .pipe(
+        map(this.extractData),
+        catchError(this.serviceError));
+  }
+
   desativar(usuario: Usuario): Observable<Usuario> {
     return this.httpClient
       .put(`${this.apiUrl}/usuarios/desativar`, usuario, { headers: super.ObterAuthHeaderJson() })
@@ -59,7 +68,7 @@ export class UsuarioService extends BaseService {
         catchError(super.serviceError)
       )
   }
-  
+
   ativar(usuario: Usuario): Observable<Usuario> {
     return this.httpClient
       .put(`${this.apiUrl}/usuarios/ativar`, usuario, { headers: super.ObterAuthHeaderJson() })

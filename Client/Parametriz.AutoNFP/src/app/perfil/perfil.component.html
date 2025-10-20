@@ -1,10 +1,12 @@
 <section id="perfil" class="content w-100 h-100 d-flex justify-content-center align-items-start p-5" *ngIf="usuario">
-  <!-- Perfil Image/ Icon -->
-  <div class="card card-white p-5 overflow-hidden d-flex flex-column justify-content-center align-items-center"
-    style="height: auto !important;">
+
+  <div class="card card-white p-5 overflow-hidden d-flex flex-column justify-content-center align-items-center" style="height: auto !important;">
+
     <div class="perfil-imagem cursor-pointer" (click)="inputFile.click()">
       <img *ngIf="usuario.fotoUpload" [src]="usuario.fotoUpload" alt="Foto do usuário" class="perfil-img">
-      <i *ngIf="!usuario.fotoUpload" class="fa-solid fa-user text-white fs-1"></i>
+      <i *ngIf="!usuario.fotoUpload" class="fa-solid fa-user fs-1"></i>
+
+        <i class="fa-solid fa-pencil editar-icone"></i>
     </div>
     <input type="file" #inputFile (change)="uploadImagem($event)" hidden accept="image/*">
  
