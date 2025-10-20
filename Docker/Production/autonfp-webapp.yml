@@ -1,0 +1,8 @@
+name: parametriz-autonfp
+services:
+  autonfp-webapp:
+    image: maumitsuo/parametriz-autonfp-webapp:latest
+    container_name: parametriz-autonfp-webapp
+    restart: always
+    ports:
+      - "80:80"

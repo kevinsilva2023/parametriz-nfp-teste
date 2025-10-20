@@ -1,0 +1,11 @@
+name: parametriz-autonfp
+services:
+  autonfp-background:
+    image: maumitsuo/parametriz-autonfp-background:latest
+    container_name: parametriz-autonfp-background
+    build:
+      context: ../../Server/src
+      dockerfile: ./BackgroundServices/Parametriz.AutoNFP.ConsoleApp/Dockerfile
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
