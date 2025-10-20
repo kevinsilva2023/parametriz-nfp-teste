@@ -98,7 +98,7 @@ namespace Parametriz.AutoNFP.Api.Application.CuponsFiscais.Services
             if (blocos.Count() <= 1)
                 return string.Empty;
 
-            var chave = blocos[0].ToUpper().Replace("CFE", "");
+            var chave = blocos[0]; //.ToUpper().Replace("CFE", "");
 
             if (chave.Length != 44)
                 return string.Empty;
