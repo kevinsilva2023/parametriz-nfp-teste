@@ -12,19 +12,30 @@
     <i class="fa-solid fa-circle-question cursor-pointer"></i>
     <i [matBadge]="15" class="fa-solid fa-bell me-2 cursor-pointer"></i>
 
-    <div routerLink="/perfil" class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
+    <div [matMenuTriggerFor]="menu"
+      class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
       <div class="d-flex flex-column text-end">
         <span class="mb-1">{{ usuario.nome | titlecase }}</span>
-        <span class="text-secondary fs-small">{{ usuario.claims[0].value }}</span>
+        <!-- <span class="text-secondary fs-small">{{ usuario.claims[0].value }}</span> -->
       </div>
-      <div>
-        <i class="fa-solid fa-circle-user fs-3"></i>
+      
+      <div class="avatar-wrapper">
+        <img *ngIf="usuario.fotoUpload" [src]="usuario.fotoUpload" lt="Avatar do usuário"
+          class="rounded-circle avatar-img">
+        <i *ngIf="!usuario.fotoUpload" class="fa-solid fa-user text-white bg-primary-light p-4"></i>
       </div>
     </div>
 
-    <button routerLink="/login" class="btn btn-sm btn-danger rounded-5">
-      <i class="fa-solid fa-right-from-bracket"></i>
-    </button>
+    <mat-menu #menu="matMenu" xPosition="before" class="px-4 mt-1">
+      <div routerLink="/perfil" class="bg-primary-light text-white px-4 py-1 rounded mb-2 cursor-pointer">
+        <i class="fa-solid fa-circle-user me-1"></i>
+        Perfil
+      </div>
+      <div routerLink="/login" class="bg-danger text-white px-4 py-1 rounded mb-2 cursor-pointer">
+        <i class="fa-solid fa-right-from-bracket me-2"></i>
+        Sair
+      </div>
+    </mat-menu>
 
   </div>
 </header>
