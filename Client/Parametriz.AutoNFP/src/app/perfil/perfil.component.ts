@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Usuario } from '../configuracoes/usuarios/models/usuario';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { BaseFormComponent } from '../shared/generic-form-validator/base-form.component';
 import { ToastrService } from 'ngx-toastr';
 import { PerfilService } from '../services/perfil.service';
-import { TitleCasePipe } from '@angular/common';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Component({
   selector: 'app-perfil',
@@ -12,8 +12,9 @@ import { TitleCasePipe } from '@angular/common';
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })
-export class PerfilComponent  extends BaseFormComponent implements OnInit, AfterViewInit {
+export class PerfilComponent extends BaseFormComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
+  @ViewChild('inputFile') inputFile!: ElementRef;
 
   usuario!: Usuario;
 
@@ -23,7 +24,8 @@ export class PerfilComponent  extends BaseFormComponent implements OnInit, After
 
   constructor(private formBuilder: FormBuilder,
     private perfilService: PerfilService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private imageCompresService: NgxImageCompressService
   ) {
     super();
 
@@ -39,6 +41,36 @@ export class PerfilComponent  extends BaseFormComponent implements OnInit, After
   ngAfterViewInit(): void {
     super.configurarValidacaoFormularioBase(this.formInputElements, this.perfilForm);
   }
+
+  uploadImagem(event: any) {
+    const arquivoImagem: File = event.target.files[0];
+    if (!arquivoImagem) return;
+    const tamanhoKb = arquivoImagem.size / 1024;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      let imageDataUrl = e.target.result as string;
+      if (tamanhoKb > 200) {
+        this.imageCompresService.compressFile(imageDataUrl, -1, 50, 50)
+          .then((imagemComprimida) => {
+            this.usuario.fotoUpload = imagemComprimida;
+            // this.salvarImagemUsuario();
+          });
+      } else {
+        this.usuario.fotoUpload = imageDataUrl;
+        // this.salvarImagemUsuario();
+      }
+    };
+    reader.readAsDataURL(arquivoImagem);
+  }
+  
+  // private salvarImagemUsuario() {
+  //   this.perfilService.salvarImagem(this.usuario)
+  //     .subscribe({
+  //       next: (sucesso: Usuario) => this.processarSucesso(sucesso),
+  //       error: (falha: any) => this.processarFalha(falha)
+  //     });
+  // }
+
 
   ngOnInit(): void {
     this.perfilForm = this.formBuilder.group({
