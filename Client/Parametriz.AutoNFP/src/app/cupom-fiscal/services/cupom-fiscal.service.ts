@@ -11,10 +11,6 @@ import { CadastrarCupomFiscal } from '../models/cadastrar-cupom-fiscal';
 
 @Injectable()
 export class CupomFiscalService extends BaseService {
-  obterUsuariosAtivos(): Observable<ObterUsuarioAtivo[]> {
-    throw new Error('Method not implemented.');
-  }
-
   processar(qrCode: CadastrarCupomFiscal): Observable<CadastrarCupomFiscal> {
     return this.httpClient
       .post(`${this.apiUrl}/cupons-fiscais`, qrCode, { headers: this.ObterAuthHeaderJson() })
@@ -30,7 +26,6 @@ export class CupomFiscalService extends BaseService {
         map(this.extractData),
         catchError(this.serviceError));
   }
-
 
   obterPorFiltro(competencia: Date, cadastradoPorId: string, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalPaginacao[]> {
     let params = new HttpParams;

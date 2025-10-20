@@ -66,6 +66,7 @@ import { ExcluirVoluntarioComponent } from './voluntarios/components/excluir-vol
     UsuarioService,
     VoluntarioService,
     AutorizacaoService,
+  
   ]
 })
 export class ConfiguracoesModule { }
