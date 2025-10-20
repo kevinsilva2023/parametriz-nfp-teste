@@ -4,7 +4,8 @@
   <div class="home-container d-flex flex-column">
     <app-navbar></app-navbar>
     <div class="text-center fs-5">
-      NOME DA INSITUIÇÃO FILANTROPICA - 00.000.000/00001-00
+      <span class="fw-bolder">RAZÃO SOCIAL:</span> {{ razaoSocialInstituicao }} -
+      <span class="fw-bolder"> CNPJ:</span> {{ cnpj | cnpj }}
     </div>
     <main class="router-content">
       <router-outlet></router-outlet>
