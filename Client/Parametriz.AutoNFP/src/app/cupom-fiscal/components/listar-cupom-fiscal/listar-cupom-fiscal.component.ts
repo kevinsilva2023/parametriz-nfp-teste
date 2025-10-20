@@ -11,14 +11,7 @@ import { VisualizarCupomFiscalComponent } from '../visualizar-cupom-fiscal/visua
   selector: 'app-listar-cupom-fiscal',
   standalone: false,
   templateUrl: './listar-cupom-fiscal.component.html',
-  styles: `
-    .sticky-top { z-index: 999 !important; }
-
-    .card-equal {
-      flex: 1;       
-      min-width: 180px; 
-    }
-  `
+  styleUrl: './lista-cupom-fiscal.component.scss'
 })
 
 export class ListarCupomFiscalComponent implements OnInit {
@@ -36,7 +29,7 @@ export class ListarCupomFiscalComponent implements OnInit {
   filtroStatus = '';
 
   pagina = 1;
-  filtroRegistroPorPagina = 5;
+  filtroRegistroPorPagina = 15;
   totalItems = 0;
 
   constructor(private activatedRoute: ActivatedRoute,
