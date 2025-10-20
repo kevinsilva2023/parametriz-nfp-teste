@@ -31,7 +31,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             _identidadeService = identidadeService;
         }
 
-        [HttpGet("nao-administrador")]
+        [HttpGet("perfil")]
         public async Task<ActionResult<UsuarioViewModel>> Get()
         {
             return (await _usuarioRepository.ObterPorId(UsuarioId, InstituicaoId))

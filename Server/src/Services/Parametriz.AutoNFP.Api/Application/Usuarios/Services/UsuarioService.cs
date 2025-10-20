@@ -95,7 +95,7 @@ namespace Parametriz.AutoNFP.Api.Application.Usuarios.Services
                 return NotificarErro("Usuário não encontrado.");
 
             usuario.AlterarNome(usuarioViewModel.Nome);
-            usuario.AlterarFotoUpload(usuario.FotoUpload);
+            usuario.AlterarFotoUpload(usuarioViewModel.FotoUpload);
 
             if (!await UsuarioAptoParaAtualizar(usuario))
                 return false;
