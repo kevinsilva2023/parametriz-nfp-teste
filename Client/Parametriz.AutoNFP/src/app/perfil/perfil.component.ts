@@ -53,11 +53,9 @@ export class PerfilComponent extends BaseFormComponent implements OnInit, AfterV
         this.imageCompresService.compressFile(imageDataUrl, -1, 50, 50)
           .then((imagemComprimida) => {
             this.usuario.fotoUpload = imagemComprimida;
-            // this.salvarImagemUsuario();
           });
       } else {
         this.usuario.fotoUpload = imageDataUrl;
-        // this.salvarImagemUsuario();
       }
     };
     reader.readAsDataURL(arquivoImagem);
@@ -82,7 +80,7 @@ export class PerfilComponent extends BaseFormComponent implements OnInit, AfterV
   }
 
   obterPorId() {
-    this.perfilService.obterNaoAdministrador()
+    this.perfilService.obter()
       .subscribe({
         next: (response: Usuario) => {
           this.usuario = response;
@@ -106,7 +104,7 @@ export class PerfilComponent extends BaseFormComponent implements OnInit, AfterV
 
       this.usuario = Object.assign({}, this.usuario, this.perfilForm.value);
 
-      this.perfilService.editar()
+      this.perfilService.salvar(this.usuario)
         .subscribe({
           next: (sucesso: any) => { this.processarSucesso(sucesso); },
           error: (falha: any) => { this.processarFalha(falha); }
