@@ -14,8 +14,6 @@ import { VisualizarCupomFiscalComponent } from '../visualizar-cupom-fiscal/visua
   styles: `
     .sticky-top { z-index: 999 !important; }
 
-
-
     .card-equal {
       flex: 1;       
       min-width: 180px; 

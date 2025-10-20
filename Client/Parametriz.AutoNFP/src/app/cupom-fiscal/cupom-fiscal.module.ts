@@ -18,6 +18,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { FormsModule } from '@angular/forms';
 import { CupomFiscalService } from './services/cupom-fiscal.service';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     MatSelectModule,
     NgbPaginationModule,
     NgbModule,
+    CnpjPipe
   ],
   providers: [
     CupomFiscalService,

@@ -107,7 +107,7 @@
       <tbody class="text-center">
         <tr *ngFor="let cupom of cuponsFiscaisResponse.cuponsFiscais ">
           <td>{{ cupom.numero }}</td>
-          <td>{{ cupom.cnpj }}</td>
+          <td>{{ cupom.cnpj | cnpj }}</td>
           <td>{{ cupom.competencia | date:'MM/yyyy' }}</td>
           <td>{{ cupom.cadastradoEm | date:'dd/MM/yyyy' }}</td>
           <td>
