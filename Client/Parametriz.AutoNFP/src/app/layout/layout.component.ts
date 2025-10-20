@@ -11,6 +11,8 @@ import { LocalStorageUtils } from '../shared/utils/local-storage-utils';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent  implements OnInit {
+  razaoSocialInstituicao!: string;
+  cnpj!: string;
 
   ngOnInit(): void {
     this.obterInsituicao();
@@ -18,5 +20,7 @@ export class LayoutComponent  implements OnInit {
 
   obterInsituicao() {
     var result = LocalStorageUtils.obterUsuario();
+    this.razaoSocialInstituicao = result.instituicao.razaoSocial;
+    this.cnpj = result.instituicao.cnpj;
   }
 }

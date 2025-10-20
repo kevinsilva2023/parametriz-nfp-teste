@@ -1,7 +1,6 @@
-import { useAnimation } from '@angular/animations/animation_player.d-Dv9iW4uh';
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
+import { Usuario } from 'src/app/configuracoes/usuarios/models/usuario';
+import { UsuarioService } from 'src/app/configuracoes/usuarios/services/usuario.service';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Component({
@@ -13,14 +12,26 @@ import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 export class NavbarComponent implements OnInit {
   @Input() tituloPagina = 'Configurações';
   usuario!: any;
+  fotoUpload!: any;
+
+  constructor(private usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
     this.preencherNomeUsuarioAtivo();
   }
 
   preencherNomeUsuarioAtivo() {
-    let usuario = LocalStorageUtils.obterUsuario();
-    this.usuario = usuario;
+    let usuarioLocal = LocalStorageUtils.obterUsuario();
+    this.usuario = usuarioLocal;
+
+    this.usuarioService.obterPorId(usuarioLocal.id)
+      .subscribe({
+        next: (response: Usuario) =>  {
+          this.fotoUpload = response.fotoUpload
+          console.log(response)
+        },
+        error: (err) => console.log(err)
+      })
   }
 
 }

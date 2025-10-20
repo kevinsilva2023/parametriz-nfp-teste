@@ -7,6 +7,9 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { MatBadgeModule } from '@angular/material/badge';
+import { UsuarioService } from '../configuracoes/usuarios/services/usuario.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
 
 
 
@@ -19,7 +22,12 @@ import { MatBadgeModule } from '@angular/material/badge';
   imports: [
     CommonModule,
     LayoutRoutingModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatBadgeModule,
+    MatMenuModule,
+    CnpjPipe
+  ], providers: [
+    UsuarioService
   ]
 })
 export class LayoutModule { }

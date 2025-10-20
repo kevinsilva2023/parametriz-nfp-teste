@@ -1,18 +1,40 @@
-.perfil-imagem{
+.perfil-imagem {
   width: 100px;
-  min-height: 100px !important;
-  background: var(--gradient-primary);
-  
-  .editar {
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--royal-blue);
+  color: var(--royal-blue);
+  position: relative; // necessário para posicionar o ícone
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .perfil-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+  }
+
+  // ícone de lápis oculto inicialmente
+  .editar-icone {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 36px;
-    height: 36px;
-    transition: 0.5s ease;
-  
-    &:hover {
-      transform: scale(1.05);
+    font-size: 1.5rem;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  // hover: adiciona blur e mostra o ícone
+  &:hover {
+    .perfil-img {
+      filter: blur(2px) brightness(0.7);
+    }
+
+    .editar-icone {
+      opacity: 1;
     }
   }
 }

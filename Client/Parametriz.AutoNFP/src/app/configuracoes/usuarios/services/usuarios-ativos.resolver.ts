@@ -2,14 +2,14 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ObterUsuarioAtivo } from 'src/app/shared/models/obter-usuario-ativo';
-import { CupomFiscalService } from './cupom-fiscal.service';
+import { UsuarioService } from './usuario.service';
 
 export const obterUsuariosAtivosResolver: ResolveFn<ObterUsuarioAtivo[]> = (
-  route: ActivatedRouteSnapshot, 
+  route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot): Observable<ObterUsuarioAtivo[]> => {
-  
-  let cupomFiscalService = inject(CupomFiscalService);
 
-  return cupomFiscalService.obterUsuariosAtivos();
+  let usuarioService = inject(UsuarioService);
+
+  return usuarioService.obterUsuariosAtivos();
 
 };

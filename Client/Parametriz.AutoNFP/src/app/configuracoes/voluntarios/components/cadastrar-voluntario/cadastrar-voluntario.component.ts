@@ -34,6 +34,7 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
 
     this.validationMessages = {
       certificado: { required: 'Favor selecionar o certificado.' },
+      entidadeNomeNFP: { required: 'Favor preencher no nome da entidade' },
       senha: { required: 'Favor preencher a senha.' }
     };
 
@@ -47,6 +48,7 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
   ngOnInit(): void {
     this.voluntarioForm = this.formBuilder.group({
       certificado: ['', Validators.required],
+      entidadeNomeNFP: ['', Validators.required],
       senha: ['', Validators.required],
       upload: [''],
     });

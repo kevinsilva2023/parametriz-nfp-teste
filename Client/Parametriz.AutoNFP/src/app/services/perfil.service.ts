@@ -4,11 +4,12 @@ import { Usuario } from '../configuracoes/usuarios/models/usuario';
 import { catchError, map, Observable } from 'rxjs';
 
 @Injectable()
-export class PerfilService extends BaseService{
+export class PerfilService extends BaseService {
 
-  obterNaoAdministrador(): Observable<Usuario> {
+
+  obter(): Observable<Usuario> {
     return this.httpClient
-      .get(`${this.apiUrl}/usuarios/nao-administrador`, { headers: super.ObterAuthHeaderJson() })
+      .get(`${this.apiUrl}/usuarios/perfil`, { headers: super.ObterAuthHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(super.serviceError)
@@ -17,7 +18,25 @@ export class PerfilService extends BaseService{
 
   editar(): Observable<Usuario> {
     return this.httpClient
-      .get(`${this.apiUrl}/usuarios/nao-administrador`, { headers: super.ObterAuthHeaderJson() })
+      .get(`${this.apiUrl}/usuarios/perfil`, { headers: super.ObterAuthHeaderJson() })
+      .pipe(
+        map(super.extractData),
+        catchError(super.serviceError)
+      )
+  }
+
+  salvar(usuario: Usuario): Observable<Usuario> {
+    return this.httpClient
+      .put(`${this.apiUrl}/usuarios/perfil`, usuario, { headers: super.ObterAuthHeaderJson() })
+      .pipe(
+        map(super.extractData),
+        catchError(super.serviceError)
+      )
+  }
+
+  salvarImagem(usuario: Usuario): Observable<Usuario> {
+    return this.httpClient
+      .put(`${this.apiUrl}/usuarios/perfil`, usuario, { headers: super.ObterAuthHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(super.serviceError)

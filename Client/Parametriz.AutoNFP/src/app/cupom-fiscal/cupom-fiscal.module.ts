@@ -6,7 +6,6 @@ import { CupomFiscalComponent } from './cupom-fiscal.component';
 import { CadastrarCupomFiscalComponent } from './components/cadastrar-cupom-fiscal/cadastrar-cupom-fiscal.component';
 import { VisualizarCupomFiscalComponent } from './components/visualizar-cupom-fiscal/visualizar-cupom-fiscal.component';
 
-
 import { ListarCupomFiscalComponent } from './components/listar-cupom-fiscal/listar-cupom-fiscal.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +17,8 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { FormsModule } from '@angular/forms';
 import { CupomFiscalService } from './services/cupom-fiscal.service';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
+import { UsuarioService } from '../configuracoes/usuarios/services/usuario.service';
 
 
 @NgModule({
@@ -37,9 +38,11 @@ import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     MatSelectModule,
     NgbPaginationModule,
     NgbModule,
+    CnpjPipe
   ],
   providers: [
     CupomFiscalService,
+    UsuarioService,
     provideMomentDateAdapter({
       parse: {
         dateInput: 'MM/YYYY',

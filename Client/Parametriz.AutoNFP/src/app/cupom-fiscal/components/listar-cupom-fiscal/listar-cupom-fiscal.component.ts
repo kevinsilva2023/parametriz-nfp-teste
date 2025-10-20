@@ -3,7 +3,7 @@ import { Enumerador } from 'src/app/shared/models/enumureador';
 import { ActivatedRoute, Data } from '@angular/router';
 import { CupomFiscalService } from '../../services/cupom-fiscal.service';
 import { ObterUsuarioAtivo } from 'src/app/shared/models/obter-usuario-ativo';
-import { CupomFiscalResponse } from '../../models/cupom-fiscal';
+import { CupomFiscalPaginacao } from '../../models/cupom-fiscal';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VisualizarCupomFiscalComponent } from '../visualizar-cupom-fiscal/visualizar-cupom-fiscal.component';
 
@@ -11,16 +11,7 @@ import { VisualizarCupomFiscalComponent } from '../visualizar-cupom-fiscal/visua
   selector: 'app-listar-cupom-fiscal',
   standalone: false,
   templateUrl: './listar-cupom-fiscal.component.html',
-  styles: `
-    .sticky-top { z-index: 999 !important; }
-
-
-
-    .card-equal {
-      flex: 1;       
-      min-width: 180px; 
-    }
-  `
+  styleUrl: './lista-cupom-fiscal.component.scss'
 })
 
 export class ListarCupomFiscalComponent implements OnInit {
@@ -28,17 +19,17 @@ export class ListarCupomFiscalComponent implements OnInit {
   status!: Enumerador[];
   usuariosAtivos!: ObterUsuarioAtivo[];
 
-  cuponsFiscaisResponse: CupomFiscalResponse = new CupomFiscalResponse();
+  cuponsFiscaisResponse: CupomFiscalPaginacao = new CupomFiscalPaginacao();
   totalProcessadas!: number;
   percentualSucesso!: number;
 
-  data = new Date();
+  data = new Date
   filtroCompetencia = this.data;
   filtroUsuario = '';
   filtroStatus = '';
 
   pagina = 1;
-  filtroRegistroPorPagina = 5;
+  filtroRegistroPorPagina = 15;
   totalItems = 0;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -49,8 +40,18 @@ export class ListarCupomFiscalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.definirCompetencia();
     this.obterPorFiltro();
+  }
+
+  definirCompetencia() {
+    const hoje = new Date();
+    const mes = hoje.getDate() <= 20 
+      ? hoje.getMonth() - 1 
+      : hoje.getMonth();
+
+    this.data = new Date(hoje.getFullYear(), mes, 1);
+    this.filtroCompetencia = this.data;
   }
 
   alterarFiltroCadastradoPor(event: any) {

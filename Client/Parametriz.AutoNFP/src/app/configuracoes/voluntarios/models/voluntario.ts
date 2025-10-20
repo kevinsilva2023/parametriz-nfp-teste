@@ -1,6 +1,7 @@
-export interface ConsultarVoluntario {
+export interface Voluntario {
   nome: string,
-  cnpjCpf: CpfCnpj,
+  cpf: string,
+  entidadeNomeNFP: string,
   requerente: string,
   validoAPartirDe: string,
   validoAte: string,
@@ -8,6 +9,3 @@ export interface ConsultarVoluntario {
   status: string
 }
 
-export interface CpfCnpj {
-  numeroInscricao: string
-}

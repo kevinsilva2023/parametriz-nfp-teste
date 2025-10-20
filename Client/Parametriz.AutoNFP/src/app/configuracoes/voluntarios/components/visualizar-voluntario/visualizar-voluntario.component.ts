@@ -1,5 +1,5 @@
 import { Component, Input, input, OnInit, resolveForwardRef } from '@angular/core';
-import { ConsultarVoluntario } from '../../models/consultar-voluntario';
+import { Voluntario } from '../../models/voluntario';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExcluirVoluntarioComponent } from '../excluir-voluntario/excluir-voluntario.component';
 import { subscribeOn } from 'rxjs';
@@ -11,7 +11,7 @@ import { subscribeOn } from 'rxjs';
 })
 export class VisualizarVoluntarioComponent {
   @Input() errors: [] = [];
-  @Input() voluntario!: ConsultarVoluntario;
+  @Input() voluntario!: Voluntario | null;
 
   constructor(private modalService: NgbModal) { }
 
@@ -20,6 +20,12 @@ export class VisualizarVoluntarioComponent {
   }
 
   confirmarRemoverVolunatario() {
-    this.modalService.open(ExcluirVoluntarioComponent, { size: 'md', centered: true });
+    let modalRef = this.modalService.open(ExcluirVoluntarioComponent, { size: 'md', centered: true });
+    modalRef.closed
+      .subscribe((resultado) => {
+        if (resultado) {
+          this.voluntario = null;
+        }
+      });
   }
 }

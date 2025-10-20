@@ -2,6 +2,7 @@
     id: string,
     nome: string,
     email: Email,
+    fotoUpload?: string,
     administrador: number,
     desativado?: number;
   }

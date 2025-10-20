@@ -1,6 +1,6 @@
 import { Usuario } from "src/app/configuracoes/usuarios/models/usuario";
 
-export class CupomFiscalResponse {
+export class CupomFiscalPaginacao {
   cuponsFiscais!: CupomFiscal[];
   pagina!: number;
   registrosPorPagina!: number;

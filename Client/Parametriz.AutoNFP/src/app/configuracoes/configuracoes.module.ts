@@ -66,11 +66,7 @@ import { ExcluirVoluntarioComponent } from './voluntarios/components/excluir-vol
     UsuarioService,
     VoluntarioService,
     AutorizacaoService,
-    provideHttpClient(
-      withInterceptors([
-        errorInterceptor,
-        jwtInterceptor
-      ])),
+  
   ]
 })
 export class ConfiguracoesModule { }

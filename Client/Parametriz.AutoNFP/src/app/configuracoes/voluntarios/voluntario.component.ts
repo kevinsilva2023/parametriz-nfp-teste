@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConsultarVoluntario } from './models/consultar-voluntario';
+import { Voluntario } from './models/voluntario';
 import { VoluntarioService } from './services/voluntario.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 export class VoluntarioComponent implements OnInit {
-  voluntario!: ConsultarVoluntario;
+  voluntario!: Voluntario;
   temVoluntario = false;
 
   errors: [] = [];
@@ -23,7 +23,7 @@ export class VoluntarioComponent implements OnInit {
   }
 
   atualizarVoluntario() {
-    this.obterPorInsituicao(); 
+    this.obterPorInsituicao();
   }
 
   obterPorInsituicao() {
