@@ -30,7 +30,7 @@ export class ListarCupomFiscalComponent implements OnInit {
   totalProcessadas!: number;
   percentualSucesso!: number;
 
-  data = new Date();
+  data = new Date
   filtroCompetencia = this.data;
   filtroUsuario = '';
   filtroStatus = '';
@@ -47,8 +47,18 @@ export class ListarCupomFiscalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.definirCompetencia();
     this.obterPorFiltro();
+  }
+
+  definirCompetencia() {
+    const hoje = new Date();
+    const mes = hoje.getDate() <= 20 
+      ? hoje.getMonth() - 1 
+      : hoje.getMonth();
+
+    this.data = new Date(hoje.getFullYear(), mes, 1);
+    this.filtroCompetencia = this.data;
   }
 
   alterarFiltroCadastradoPor(event: any) {

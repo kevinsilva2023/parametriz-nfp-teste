@@ -1,5 +1,5 @@
 import { Component, ViewChild, viewChild } from '@angular/core';
-import { ListarUsuarioComponent } from '../configuracoes/usuarios/components/listar-usuario/listar-usuario.component';
+import { ListarCupomFiscalComponent } from './components/listar-cupom-fiscal/listar-cupom-fiscal.component';
 
 @Component({
   selector: 'app-cupom-fiscal',
@@ -8,8 +8,8 @@ import { ListarUsuarioComponent } from '../configuracoes/usuarios/components/lis
   styles: ``
 })
 export class CupomFiscalComponent {
-  @ViewChild(ListarUsuarioComponent)
-  listarCupomFiscalComponent!: ListarUsuarioComponent;
+  @ViewChild(ListarCupomFiscalComponent)
+  listarCupomFiscalComponent!: ListarCupomFiscalComponent;
 
   onCupomCadastrado() {
     this.listarCupomFiscalComponent.obterPorFiltro();
