@@ -32,7 +32,7 @@ import { AtivarUsuarioComponent } from './usuarios/components/ativar-usuario/ati
 import { EditarUsuarioComponent } from './usuarios/components/editar-usuario/editar-usuario.component';
 import { VoluntarioService } from './voluntarios/services/voluntario.service';
 import { ExcluirVoluntarioComponent } from './voluntarios/components/excluir-voluntario/excluir-voluntario.component';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -60,7 +60,8 @@ import { ExcluirVoluntarioComponent } from './voluntarios/components/excluir-vol
     MatSlideToggleModule,
     MatSelectModule,
     MatInputModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   providers: [
     UsuarioService,

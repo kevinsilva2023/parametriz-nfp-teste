@@ -6,7 +6,7 @@ export interface MenuItem {
   icon: string;
   route: string;
   active?: boolean
-  claims: Claim
+  claims?: Claim
 }
 
 export const MENU_ITEMS: MenuItem[] = [
@@ -27,10 +27,10 @@ export const MENU_ITEMS: MenuItem[] = [
     label: 'Cupom Fiscal',
     icon: 'fa-robot',
     route: 'cupom-fiscal',
-    claims: {
-      type: 'role',
-      value: 'Administrador'
-    }
+    // claims: {
+    //   type: 'role',
+    //   value: 'Administrador'
+    // }
   },
   {
     id: 'configuracoes',

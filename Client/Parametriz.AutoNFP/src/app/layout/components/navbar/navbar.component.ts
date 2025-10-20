@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/configuracoes/usuarios/models/usuario';
 import { UsuarioService } from 'src/app/configuracoes/usuarios/services/usuario.service';
+import { PerfilService } from 'src/app/services/perfil.service';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Component({
@@ -14,7 +15,7 @@ export class NavbarComponent implements OnInit {
   usuario!: any;
   fotoUpload!: any;
 
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(private perfilService: PerfilService) {}
 
   ngOnInit(): void {
     this.preencherNomeUsuarioAtivo();
@@ -24,14 +25,11 @@ export class NavbarComponent implements OnInit {
     let usuarioLocal = LocalStorageUtils.obterUsuario();
     this.usuario = usuarioLocal;
 
-    this.usuarioService.obterPorId(usuarioLocal.id)
+
+    this.perfilService.obter()
       .subscribe({
-        next: (response: Usuario) =>  {
-          this.fotoUpload = response.fotoUpload
-          console.log(response)
-        },
+        next: (response: Usuario) => this.fotoUpload = response.fotoUpload ,
         error: (err) => console.log(err)
       })
   }
-
 }
