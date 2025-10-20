@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { CadastrarVoluntario } from '../models/cadastrar-voluntario';
-import { ConsultarVoluntario } from '../models/consultar-voluntario';
+import { Voluntario } from '../models/voluntario';
 
 @Injectable()
 export class VoluntarioService extends BaseService {
@@ -15,7 +15,7 @@ export class VoluntarioService extends BaseService {
         catchError(super.serviceError));
   }
 
-  excluir(): Observable<ConsultarVoluntario> {
+  excluir(): Observable<Voluntario> {
     return this.httpClient
       .delete(`${this.apiUrl}/voluntarios`, { headers: super.ObterAuthHeaderJson() })
       .pipe(
@@ -23,7 +23,7 @@ export class VoluntarioService extends BaseService {
         catchError(super.serviceError));
   }
 
-  obterPorInsituicao(): Observable<ConsultarVoluntario> {
+  obterPorInsituicao(): Observable<Voluntario> {
     return this.httpClient
       .get(`${this.apiUrl}/voluntarios`, { headers: super.ObterAuthHeaderJson() })
       .pipe(

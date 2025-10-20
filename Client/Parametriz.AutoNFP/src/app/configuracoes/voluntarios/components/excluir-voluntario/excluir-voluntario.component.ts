@@ -44,6 +44,6 @@ export class ExcluirVoluntarioComponent {
   }
 
   fecharModal() {
-    this.activeModal.close();
+    this.activeModal.close(true);
   }
 }

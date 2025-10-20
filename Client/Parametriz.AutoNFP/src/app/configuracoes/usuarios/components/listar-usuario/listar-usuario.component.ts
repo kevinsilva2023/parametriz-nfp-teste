@@ -14,12 +14,25 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-listar-usuario',
   standalone: false,
   templateUrl: './listar-usuario.component.html',
-  styles: `
-    .sticky-top { z-index: 999 !important; }
-
+  styles: [`
+    .sticky-top {
+      z-index: 999 !important;
+    }
     ::ng-deep .mat-mdc-form-field-subscript-wrapper {
       display: none !important;
-    }  `
+    }
+    .img-perfil {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+    td {
+      height: 48px;
+      vertical-align: middle !important;
+    }
+  `]
 })
 export class ListarUsuarioComponent implements OnInit {
 
