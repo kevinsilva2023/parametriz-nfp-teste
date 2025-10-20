@@ -1,0 +1,11 @@
+name: parametriz-autonfp
+services:
+  autonfp-webapp:
+    image: maumitsuo/parametriz-autonfp-webapp:latest
+    container_name: parametriz-autonfp-webpp
+    build:
+      context: ../../Client
+      dockerfile: ./Parametriz.AutoNFP/Dockerfile
+    restart: always
+    ports:
+      - "80:80"
