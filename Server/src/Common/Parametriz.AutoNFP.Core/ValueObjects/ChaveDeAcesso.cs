@@ -10,24 +10,28 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
 {
     public class ChaveDeAcesso
     {
+        private readonly bool _cfe;
+
         public string Chave { get; private set; }
 
         public bool ExisteChave { get; private set; }
-
+        
         public int UfCodigo => ExisteChave ? Convert.ToInt32(Chave.Substring(0, 2)) : 0;
         public DateTime? Competencia { get; private set; }
         public DateTime? LimiteEnvio => Competencia != null ?
             new DateTime(Competencia.Value.AddMonths(1).Year, Competencia.Value.AddMonths(1).Month, 20).Date : null;
         public CnpjCpf Cnpj { get; private set; }
         public int Modelo => ExisteChave ? Convert.ToInt32(Chave.Substring(20, 2)) : 0;
-        public int Serie => ExisteChave ? Convert.ToInt32(Chave.Substring(22, 3)) : 0;
+        public int Serie => ExisteChave ? Convert.ToInt32(Chave.Substring(22, _cfe ? 9 : 3)) : 0;
         public int Numero { get; private set; }
-        public int FormaEmissao => ExisteChave ? Convert.ToInt32(Chave.Substring(34, 1)) : 0;
-        public int CodigoNumerico => ExisteChave ? Convert.ToInt32(Chave.Substring(35, 8)) : 0;
+        public int FormaEmissao => ExisteChave && !_cfe ? Convert.ToInt32(Chave.Substring(34, 1)) : 0;
+        public int CodigoNumerico => ExisteChave ? Convert.ToInt32(Chave.Substring(_cfe ? 35 : 37, _cfe ? 6 : 8)) : 0;
         public int DigitoVerificador => ExisteChave ? Convert.ToInt32(Chave.Substring(43, 1)) : 0;
 
         public ChaveDeAcesso(string chave)
         {
+            _cfe = chave.ToUpper().StartsWith("CFE");
+
             Chave = new string(chave.Where(c => char.IsDigit(c)).ToArray());
 
             ExisteChave = !string.IsNullOrEmpty(Chave) && Chave.Length == 44;
@@ -36,7 +40,7 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
             {
                 Competencia = new DateTime(2000 + Convert.ToInt32(Chave.Substring(2, 2)), Convert.ToInt32(Chave.Substring(4, 2)), 1).Date;
                 Cnpj = new CnpjCpf(TipoPessoa.Juridica, Chave.Substring(6, 14));
-                Numero = Convert.ToInt32(Chave.Substring(25, 9));
+                Numero = Convert.ToInt32(Chave.Substring(_cfe ? 31 : 25, _cfe ? 6 : 9));
             }
         }
 
