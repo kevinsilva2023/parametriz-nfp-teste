@@ -106,7 +106,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
         {
             try
             {
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
 
                 var seleniumHelper = new SeleniumHelper(port, headless: false);
 
