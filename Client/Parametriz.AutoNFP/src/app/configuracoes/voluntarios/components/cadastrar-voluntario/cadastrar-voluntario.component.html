@@ -33,8 +33,8 @@
         <mat-form-field appearance="outline" class="mb-3 cursor-pointer" (click)="fileInput.click()"
           [ngClass]="{'has-error': displayMessage['certificado']}">
           <mat-label>
-            <i class="fa-solid fa-address-card"></i>
-            &nbsp; Certificado
+            <i class="fa-solid fa-address-card me-1"></i>
+            Certificado
           </mat-label>
           <input matInput formControlName="certificado" class="overflow-hidden">
           <mat-error *ngIf="displayMessage['certificado']" [innerHtml]="displayMessage['certificado']"></mat-error>
@@ -43,10 +43,18 @@
         <mat-form-field appearance="outline" class="mb-3 cursor-pointer"
           [ngClass]="{'has-error': displayMessage['entidadeNomeNFP']}">
           <mat-label>
-            <i class="fa-solid fa-landmark"></i>
-            &nbsp; Nome da Entidade
+            <i class="fa-solid fa-landmark me-1"></i>
+            Nome da Entidade
           </mat-label>
           <input matInput formControlName="entidadeNomeNFP" class="overflow-hidden">
+
+          <button 
+              mat-icon-button matSuffix matButton="elevated" 
+              matTooltipPosition="above" matTooltip="O nome da instituição deve estar exatamente igual ao portal da NFP" 
+              type="button" class="btn">
+            <i class="fa-solid fa-circle-info"></i>
+          </button>
+
           <mat-error *ngIf="displayMessage['entidadeNomeNFP']"
             [innerHtml]="displayMessage['entidadeNomeNFP']"></mat-error>
         </mat-form-field>
@@ -54,14 +62,17 @@
         <mat-form-field appearance="outline" class="mb-1 cursor-pointer"
           [ngClass]="{'has-error': displayMessage['senha']}">
           <mat-label>
-            <i class="fa-solid fa-lock"></i>
-            &nbsp;Senha
+            <i class="fa-solid fa-lock me-1"></i>
+            Senha
           </mat-label>
+
           <input matInput formControlName="senha" [type]="verSenha ? 'text' : 'password'" placeholder="••••••••"
             class="overflow-hidden" autocomplete="new-password">
+
           <button mat-icon-button matSuffix type="button" class="btn" (click)="verSenha = !verSenha">
             <i class="fa-solid" [ngClass]="verSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
+
           <mat-error *ngIf="displayMessage['senha']" [innerHtml]="displayMessage['senha']"></mat-error>
         </mat-form-field>
 
