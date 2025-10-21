@@ -48,4 +48,24 @@ export class CupomFiscalService extends BaseService {
         catchError(super.serviceError)
       );
   }
+
+  obterPorUsuario(competencia: Date, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalPaginacao[]> {
+    let params = new HttpParams;
+    let competenciaFormatada = DataUtils.formatarParaParametro(competencia);
+
+    if (!StringUtils.isNullOrEmpty(competenciaFormatada))
+      params = params.append('competencia', competenciaFormatada);
+
+    params = params.append('status', status);
+    params = params.append('pagina', pagina);
+    params = params.append('registrosPorPagina', registroPorPagina);
+
+    return this.httpClient
+      .get<CupomFiscalPaginacao[]>(
+        `${this.apiUrl}/cupons-fiscais/obter-por-usuario`, { headers: super.ObterAuthHeaderJson(), params })
+      .pipe(
+        catchError(super.serviceError)
+      );
+  }
+
 }
