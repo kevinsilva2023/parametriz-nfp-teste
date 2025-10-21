@@ -2,7 +2,7 @@
   <app-sidebar></app-sidebar>
 
   <div class="home-container d-flex flex-column">
-    <app-navbar></app-navbar>
+    <app-navbar [tituloPagina]="tituloPagina"></app-navbar>
     <div class="text-center fs-5">
       <span class="fw-bolder">RAZÃO SOCIAL:</span> {{ razaoSocialInstituicao }} -
       <span class="fw-bolder"> CNPJ:</span> {{ cnpj | cnpj }}

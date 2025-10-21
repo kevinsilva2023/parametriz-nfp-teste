@@ -13,7 +13,7 @@ import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
-  @Input() tituloPagina = 'Configurações';
+  @Input() tituloPagina!: string;
   usuario!: any;
   fotoUpload!: any;
   claimAdmin!: string;
