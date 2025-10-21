@@ -11,15 +11,6 @@ export const cupomFiscalStatusResolver: ResolveFn<Enumerador[]> = (
   state: RouterStateSnapshot): Observable<Enumerador[]> => {
 
   let cupomFiscalService = inject(CupomFiscalService);
-  let autorizacaoService = inject(AutorizacaoService);
 
-  let claimAdmin: Claim = { type: 'role', value: 'Administrador' };
-
-  let usuarioEhAdmin = autorizacaoService.usuarioPossuiClaim(claimAdmin);
-
-  if (usuarioEhAdmin) {
-    return cupomFiscalService.obterStatus();
-  } else {
-    return of([]);
-  }
+  return cupomFiscalService.obterStatus();
 };
