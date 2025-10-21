@@ -6,6 +6,8 @@ import { ObterUsuarioAtivo } from 'src/app/shared/models/obter-usuario-ativo';
 import { CupomFiscalPaginacao } from '../../models/cupom-fiscal';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VisualizarCupomFiscalComponent } from '../visualizar-cupom-fiscal/visualizar-cupom-fiscal.component';
+import { Claim } from 'src/app/shared/models/claim';
+import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
 
 @Component({
   selector: 'app-listar-cupom-fiscal',
@@ -32,22 +34,31 @@ export class ListarCupomFiscalComponent implements OnInit {
   filtroRegistroPorPagina = 15;
   totalItems = 0;
 
+  claimAdmin: Claim = { type: 'role', value: 'Administrador' };
+  usuarioEhAdmin!: boolean;
+
   constructor(private activatedRoute: ActivatedRoute,
     private cupomFiscalService: CupomFiscalService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private autorizacaoService: AutorizacaoService) {
     this.status = this.activatedRoute.snapshot.data['status'];
     this.usuariosAtivos = this.activatedRoute.snapshot.data['usuariosAtivos'];
   }
 
   ngOnInit(): void {
     this.definirCompetencia();
-    this.obterPorFiltro();
+    this.verificaClaim();
+    this.obter();
+  }
+
+  verificaClaim() {
+    this.usuarioEhAdmin = this.autorizacaoService.usuarioPossuiClaim(this.claimAdmin)
   }
 
   definirCompetencia() {
     const hoje = new Date();
-    const mes = hoje.getDate() <= 20 
-      ? hoje.getMonth() - 1 
+    const mes = hoje.getDate() <= 22 //alterar depois para dia 20
+      ? hoje.getMonth() - 1
       : hoje.getMonth();
 
     this.data = new Date(hoje.getFullYear(), mes, 1);
@@ -80,9 +91,28 @@ export class ListarCupomFiscalComponent implements OnInit {
     this.obterPorFiltro();
   }
 
+  obter() {
+    this.usuarioEhAdmin 
+      ? this.obterPorFiltro()
+      : this.obterPorUsuario()
+  }
+
   obterPorFiltro() {
     this.cupomFiscalService
       .obterPorFiltro(this.filtroCompetencia, this.filtroUsuario, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
+      .subscribe({
+        next: (response: any) => {
+          this.cuponsFiscaisResponse = response;
+          this.obterTotalProcessadas();
+          this.obterPercentualSucesso();
+        },
+        error: (err) => console.log(err)
+      })
+  }
+
+  obterPorUsuario() {
+    this.cupomFiscalService
+      .obterPorUsuario(this.filtroCompetencia, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
       .subscribe({
         next: (response: any) => {
           this.cuponsFiscaisResponse = response;
