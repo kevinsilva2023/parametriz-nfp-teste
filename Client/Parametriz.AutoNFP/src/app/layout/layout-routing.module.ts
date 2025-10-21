@@ -6,9 +6,23 @@ import { PerfilComponent } from '../perfil/perfil.component';
 const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    { path: 'configuracoes', loadChildren: () => import('../configuracoes/configuracoes.module').then(m => m.ConfiguracoesModule) },
-    { path: 'perfil', component: PerfilComponent},
-    { path: 'cupom-fiscal', loadChildren: () => import('../cupom-fiscal/cupom-fiscal.module').then(m => m.CupomFiscalModule) }, 
+    { 
+      path: 'configuracoes', 
+      loadChildren: () => import('../configuracoes/configuracoes.module')
+        .then(m => m.ConfiguracoesModule),
+      data: { titulo: 'Configurações' }
+    },
+    { 
+      path: 'perfil', 
+      component: PerfilComponent,
+      data: { titulo: 'Perfil do Usuário' }
+    },
+    { 
+      path: 'cupom-fiscal', 
+      loadChildren: () => import('../cupom-fiscal/cupom-fiscal.module')
+        .then(m => m.CupomFiscalModule),
+        data: { titulo: 'Cupom Fiscal' }
+    }
   ] },
 ];
 
