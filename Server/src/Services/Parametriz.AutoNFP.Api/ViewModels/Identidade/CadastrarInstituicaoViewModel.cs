@@ -31,6 +31,8 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
         [MaxLength(256, ErrorMessage = "Nome do voluntário deve ser preenchido com no máximo {1} caracteres.")]
         public string VoluntarioNome { get; set; }
 
+        [Required(ErrorMessage = "Favor preencher o CPF do voluntário.")]
+        [StringLength(11, ErrorMessage = "CPF inválido.", MinimumLength = 11)]
         public string Cpf { get; set; }
 
         [Display(Name = "E-mail")]
@@ -39,6 +41,8 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
         [MaxLength(256, ErrorMessage = "E-mail deve ser preenchido com no máximo {1} caracteres.")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage ="Favor preencher um número para contato do voluntário.")]
+        [StringLength(11, ErrorMessage = "Número para contato inválido.")]
         public string Contato { get; set; }
 
         public CadastrarInstituicaoViewModel()

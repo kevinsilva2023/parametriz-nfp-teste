@@ -63,11 +63,9 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             return await _userManager.FindByEmailAsync(email);
         }
 
-        private async Task<bool> CadastrarIdentityUser(IdentityUser user, string senha = "")
+        private async Task<bool> CadastrarIdentityUser(IdentityUser user)
         {
-            var result = string.IsNullOrEmpty(senha) ? 
-                await _userManager.CreateAsync(user) : 
-                await _userManager.CreateAsync(user, senha);
+            var result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)
             {

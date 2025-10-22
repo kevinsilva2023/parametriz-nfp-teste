@@ -9,7 +9,6 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
 {
     public interface IInstituicaoRepository : IRepository<Instituicao>
     {
-        Task<Guid> ObterIdPorVoluntarioId(Guid usuarioId);
         Task<Instituicao> ObterPorId(Guid id);
         Task<Instituicao> ObterPorVoluntarioId(Guid usuarioId);
     }

@@ -20,7 +20,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             _identidadeService = identidadeService;
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Parametriz")]
         [HttpPost("cadastrar-instituicao")]
         public async Task<IActionResult> Post([FromBody] CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel)
         {
