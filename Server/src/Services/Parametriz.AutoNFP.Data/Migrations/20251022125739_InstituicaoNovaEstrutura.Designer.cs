@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Parametriz.AutoNFP.Data.Context;
@@ -11,9 +12,11 @@ using Parametriz.AutoNFP.Data.Context;
 namespace Parametriz.AutoNFP.Data.Migrations
 {
     [DbContext(typeof(AutoNfpDbContext))]
-    partial class AutoNfpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251022125739_InstituicaoNovaEstrutura")]
+    partial class InstituicaoNovaEstrutura
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,11 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Emissor")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -164,6 +172,27 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cpf", b1 =>
+                        {
+                            b1.Property<Guid>("CertificadoId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("NumeroInscricao")
+                                .IsRequired()
+                                .HasMaxLength(11)
+                                .HasColumnType("character varying(11)")
+                                .HasColumnName("Cpf");
+
+                            b1.HasKey("CertificadoId");
+
+                            b1.ToTable("Certificados");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CertificadoId");
+                        });
+
+                    b.Navigation("Cpf");
+
                     b.Navigation("Voluntario");
                 });
 
@@ -266,7 +295,6 @@ namespace Parametriz.AutoNFP.Data.Migrations
                                 .HasColumnName("Complemento");
 
                             b1.Property<string>("Logradouro")
-                                .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("Logradouro");
@@ -280,6 +308,12 @@ namespace Parametriz.AutoNFP.Data.Migrations
                                 .HasMaxLength(10)
                                 .HasColumnType("character varying(10)")
                                 .HasColumnName("Numero");
+
+                            b1.Property<string>("TipoLogradouro")
+                                .IsRequired()
+                                .HasMaxLength(15)
+                                .HasColumnType("character varying(15)")
+                                .HasColumnName("TipoLogradouro");
 
                             b1.Property<string>("UF")
                                 .HasMaxLength(2)

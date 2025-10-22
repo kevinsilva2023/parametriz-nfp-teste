@@ -1,8 +1,8 @@
 ﻿using Parametriz.AutoNFP.Core.DomainObjects;
 using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.ValueObjects;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
-using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -16,24 +16,25 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
     {
         public string RazaoSocial { get; private set; }
         public CnpjCpf Cnpj { get; private set; }
+        public string EntidadeNomeNFP { get; private set; }
         public Endereco Endereco { get; private set; }
         public bool Desativada { get; private set; }
 
-        public Voluntario Voluntario { get; private set; }
-
-        private readonly List<Usuario> _usuarios;
-        public IReadOnlyCollection<Usuario> Usuarios => _usuarios.AsReadOnly();
+        private readonly List<Voluntario> _voluntarios;
+        public IReadOnlyCollection<Voluntario> Voluntarios => _voluntarios.AsReadOnly();
 
         private readonly List<CupomFiscal> _cuponsFiscais;
         public IReadOnlyCollection<CupomFiscal> CuponsFiscais => _cuponsFiscais.AsReadOnly();
 
-        public Instituicao(Guid id, string razaoSocial, string cnpj)
+        public Instituicao(Guid id, string razaoSocial, string cnpj, string entidadeNomeNFP, Endereco endereco)
             : base(id)
         {
             AlterarRazaoSocial(razaoSocial);
             Cnpj = new CnpjCpf(TipoPessoa.Juridica, cnpj);
-
-            _usuarios = [];
+            AlterarEntidadeNomeNFP(entidadeNomeNFP);
+            AlterarEndereco(endereco);
+            
+            _voluntarios = [];
             _cuponsFiscais = [];
         }
 
@@ -44,14 +45,19 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
             RazaoSocial = nome.Trim().ToUpper();
         }
 
+        public void AlterarEntidadeNomeNFP(string entidadeNomeNFP)
+        {
+            EntidadeNomeNFP = entidadeNomeNFP;
+        }
+
         public void AlterarEndereco(Endereco endereco)
         {
             Endereco = endereco;
         }
 
-        public void IncluirUsuario(Usuario usuario)
+        public void IncluirVoluntario(Voluntario voluntario)
         {
-            _usuarios.Add(usuario);
+            _voluntarios.Add(voluntario);
         }
 
         public void Desativar()

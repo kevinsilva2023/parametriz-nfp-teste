@@ -8,8 +8,9 @@ using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Data;
 using Parametriz.AutoNFP.Api.Models;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
+using Parametriz.AutoNFP.Data.Migrations;
 using Parametriz.AutoNFP.Domain.Instituicoes;
-using Parametriz.AutoNFP.Domain.Usuarios;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -46,14 +47,24 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
         private static long ToUnixEpochDate(DateTime date) => 
             (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
-        public async Task<LoginResponseViewModel> ObterLoginResponse(Instituicao instituicao, Usuario usuario, RefreshToken token = null)
+        public async Task<LoginResponseViewModel> ObterLoginResponse(Instituicao instituicao, Voluntario usuario, RefreshToken token = null)
         {
             _user = await _userManager.FindByIdAsync(usuario.Id.ToString());
             await IncluirRolesUsuario();
             await IncluirClaimsUsuario();
             IncluirJwtClaims();
             
-            return await GerarLoginResponse(instituicao, usuario);
+            return await GerarLoginResponse(instituicao, usuario, token);
+        }
+
+        public async Task<LoginResponseViewModel> ObterParametrizLoginReponse(IdentityUser user)
+        {
+            _user = user;
+            await IncluirRolesUsuario();
+            await IncluirClaimsUsuario();
+            IncluirJwtClaims();
+
+            return GerarParametrizLoginResponse();
         }
 
         private async Task IncluirRolesUsuario()
@@ -84,7 +95,8 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             _identityClaims.AddClaims(_jwtClaims);
         }
 
-        private async Task<LoginResponseViewModel> GerarLoginResponse(Instituicao instituicao, Usuario usuario, RefreshToken token = null)
+        private async Task<LoginResponseViewModel> GerarLoginResponse(Instituicao instituicao, Voluntario usuario, 
+            RefreshToken token = null)
         {
             var refreshToken = token ?? await GerarRefreshToken(instituicao.Id);
 
@@ -110,6 +122,24 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
                     Token = refreshToken.Token,
                     ExpirationDate = ToUnixEpochDate(refreshToken.ExpirationDate).ToString()
                 }
+            };
+        }
+
+        private LoginResponseViewModel GerarParametrizLoginResponse()
+        {
+            return new LoginResponseViewModel
+            {
+                AccessToken = GerarJwtToken(),
+                ExpiresIn = TimeSpan.FromHours(_appJwtConfig.Expiration).TotalSeconds,
+                UserToken = new TokenUsuarioViewModel
+                {
+                    Id = Guid.Parse(_user.Id),
+                    Email = _user.Email,
+                    Nome = _user.Email,
+                    Instituicao = null,
+                    Claims = _userClaims.Select(c => new TokenUsuarioClaimViewModel { Type = c.Type, Value = c.Value }).ToList()
+                },
+                RefreshToken = null
             };
         }
 

@@ -16,54 +16,50 @@ namespace Parametriz.AutoNFP.Data.Mappings
             builder.HasKey(pk => pk.Id);
 
             builder.HasOne(p => p.Instituicao)
-                .WithOne(p => p.Voluntario)
-                .HasForeignKey<Voluntario>(fk => fk.InstituicaoId)
+                .WithMany(p => p.Voluntarios)
+                .HasForeignKey(p => p.InstituicaoId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
-            builder.Property(p => p.EntidadeNomeNFP)
-                .HasMaxLength(256)
-                .IsRequired();
-
             builder.Property(p => p.Nome)
-                .HasMaxLength(256)
-                .IsRequired();
+                .HasMaxLength(256);
 
-            builder.OwnsOne(p => p.CnpjCpf, c =>
+            builder.OwnsOne(p => p.Cpf, c =>
             {
-                c.Property(p => p.TipoPessoa)
-                     .HasColumnName("TipoPessoa")
-                     .HasMaxLength(1)
-                     .IsFixedLength()
-                     .IsRequired();
+                c.Ignore(i => i.TipoPessoa);
 
                 c.Property(p => p.NumeroInscricao)
-                    .HasMaxLength(14)
-                    .HasColumnName("CnpjCpf")
+                    .HasMaxLength(11)
+                    .IsFixedLength()
+                    .HasColumnName("Cpf")
                     .IsRequired();
             });
 
-            builder.Property(p => p.Requerente)
-                .HasMaxLength(256)
+            builder.OwnsOne(p => p.Email, e =>
+            {
+                e.Property(p => p.Conta)
+                    .HasMaxLength(256)
+                    .IsRequired()
+                    .HasColumnName("Email");
+
+                e.HasIndex(i => i.Conta)
+                    .IsUnique();
+            });
+
+            builder.Property(p => p.Contato)
+                .HasMaxLength(11)
                 .IsRequired();
 
-            builder.Property(p => p.ValidoAPartirDe)
+            builder.Property(p => p.FotoUpload)
+                .HasColumnType("text");
+
+            builder.Property(p => p.Administrador)
                 .IsRequired();
 
-            builder.Property(p => p.ValidoAte)
+            builder.Property(p => p.Desativado)
                 .IsRequired();
 
-            builder.Property(p => p.Emissor)
-                .HasMaxLength(256)
-                .IsRequired();
-            
-            builder.Property(p => p.Upload)
-                .IsRequired();
-
-            builder.Property(p => p.Senha)
-                .IsRequired();
-
-            builder.HasIndex(i => i.InstituicaoId)
+            builder.HasIndex(i => new { i.InstituicaoId, i.Nome })
                 .IsUnique();
 
             builder.ToTable("Voluntarios");

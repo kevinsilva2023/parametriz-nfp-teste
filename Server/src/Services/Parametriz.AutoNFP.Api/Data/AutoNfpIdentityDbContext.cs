@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Security.Jwt.Core.Model;
 using NetDevPack.Security.Jwt.Store.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace Parametriz.AutoNFP.Api.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(typeof(AutoNfpIdentityDbContext).Assembly);
+
             base.OnModelCreating(builder);
         }
     }

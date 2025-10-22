@@ -12,6 +12,8 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
         public InstituicaoValidation()
         {
             ValidarRazaoSocial();
+            ValidarEntidadeNomeNFP();
+            
         }
 
         private void ValidarRazaoSocial()
@@ -23,6 +25,18 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
             RuleFor(p => p.RazaoSocial)
                 .MaximumLength(256)
                     .WithMessage("Razão social deve ser preenchida com no máximo {MaxLength} caracteres.");
+        }
+
+
+        private void ValidarEntidadeNomeNFP()
+        {
+            RuleFor(p => p.EntidadeNomeNFP)
+                .NotEmpty()
+                    .WithMessage("Favor preencher o nome da entidade na nota fiscal paulista.");
+
+            RuleFor(p => p.EntidadeNomeNFP)
+                .MaximumLength(256)
+                    .WithMessage("Nome da entidade na nota fiscal paulista deve ser preenchido com no máximo {MaxLength} caracteres.");
         }
     }
 }

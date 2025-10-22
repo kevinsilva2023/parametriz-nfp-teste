@@ -4,10 +4,6 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Core
 {
     public class EnderecoViewModel
     {
-        [Display(Name = "Tipo Logradouro")]
-        [StringLength(15, ErrorMessage = "Tipo de logradouro deve ser preenchido com no mínimo {2} e no máximo {1} caracteres.", MinimumLength = 2)]
-        public string TipoLogradouro { get; set; }
-
         [Display(Name = "Logradouro")]
         [StringLength(100, ErrorMessage = "Logradouro deve ser preenchido com no mínimo {2} e no máximo  {1} caracteres.", MinimumLength = 2)]
         public string Logradouro { get; set; }
