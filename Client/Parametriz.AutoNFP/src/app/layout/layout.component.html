@@ -3,10 +3,6 @@
 
   <div class="home-container d-flex flex-column">
     <app-navbar [tituloPagina]="tituloPagina"></app-navbar>
-    <div class="text-center fs-5">
-      <span class="fw-bolder">RAZÃO SOCIAL:</span> {{ razaoSocialInstituicao }} -
-      <span class="fw-bolder"> CNPJ:</span> {{ cnpj | cnpj }}
-    </div>
     <main class="router-content">
       <router-outlet></router-outlet>
     </main>

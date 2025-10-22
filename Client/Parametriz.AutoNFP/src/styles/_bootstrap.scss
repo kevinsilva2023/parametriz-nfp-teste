@@ -37,10 +37,11 @@
 .bg-primary-blur { opacity: 0.5;}
 .bg-primary-light { background-color: var(--royal-blue-dark-blur) !important; }
 .bg-sand { background-color: var(--sand) !important;}
+.bg-sand-light { background-color: var(--sand-light) !important;}
 .bg-gradient-sand { background: var(--gradient-secondary) !important; }
-.bg-gradient-royal { background: var(--gradient-primary !important);}
-.bg-gradient-hero { background: var(--gradient-hero !important);}
-.bg-gradient-blur { background: var(--gradient-blur !important);}
+.bg-gradient-royal { background: var(--gradient-primary) !important;}
+.bg-gradient-hero { background: var(--gradient-hero) !important;}
+.bg-gradient-blur { background: var(--gradient-blur) !important;}
 .bg-warning-pastel { background-color: #ffc10725; color: #daa300;}
 .bg-success-pastel { background-color: #28a74631; color: #20993c;}
 .bg-danger-pastel { background-color: 	#dc35463d; color: #ce1d2f;}
