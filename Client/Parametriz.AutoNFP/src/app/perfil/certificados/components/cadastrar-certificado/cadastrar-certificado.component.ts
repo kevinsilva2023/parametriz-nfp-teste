@@ -1,56 +1,52 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, input, Input, OnInit, Output, SimpleChanges, viewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChildren } from '@angular/core';
+import { FormBuilder, FormControlName, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
-import { VoluntarioService } from '../../services/voluntario.service';
-import { CadastrarVoluntario } from '../../models/cadastrar-voluntario';
 
 @Component({
-  selector: 'app-cadastrar-voluntario',
+  selector: 'app-cadastrar-certificado',
   standalone: false,
-  templateUrl: './cadastrar-voluntario.component.html',
+  templateUrl: './cadastrar-certificado.component.html',
+  styles: ``
 })
-export class CadastrarVoluntarioComponent extends BaseFormComponent implements OnInit, AfterViewInit {
+export class CadastrarCertificadoComponent extends BaseFormComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
 
-  voluntarioForm!: FormGroup;
+  cadastrarCertificadoForm!: FormGroup;
   verSenha = false;
 
   arquivoSelecionado!: File;
   certificadoPath!: string;
   isArquivoArrastado = false;
 
-  voluntario!: CadastrarVoluntario;
+  certificado!: any; //tipo certificado
   errors: any[] = [];
 
-  @Input() temVoluntario!: boolean;
+  @Input() temCertificado!: boolean;
   @Output() cadastroConcluido = new EventEmitter<void>();
 
 
-  constructor(private formBuilder: FormBuilder,
-    private voluntarioService: VoluntarioService,
-    private toastr: ToastrService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    //private voluntarioService: VoluntarioService,
+    private toastr: ToastrService
+  ) {
     super();
 
     this.validationMessages = {
-      certificado: { required: 'Favor selecionar o certificado.' },
-      entidadeNomeNFP: { required: 'Favor preencher no nome da entidade' },
-      senha: { required: 'Favor preencher a senha.' }
+      // montar validacoes
     };
 
     super.configurarMensagensValidacaoBase(this.validationMessages);
   }
 
   ngAfterViewInit(): void {
-    super.configurarValidacaoFormularioBase(this.formInputElements, this.voluntarioForm);
+    super.configurarValidacaoFormularioBase(this.formInputElements, this.cadastrarCertificadoForm);
   }
 
   ngOnInit(): void {
-    this.voluntarioForm = this.formBuilder.group({
-      certificado: ['', Validators.required],
-      entidadeNomeNFP: ['', Validators.required],
-      senha: ['', Validators.required],
-      upload: [''],
+    this.cadastrarCertificadoForm = this.formBuilder.group({
+      // montar formGroup
     });
   }
 
@@ -75,11 +71,13 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
 
   preencherForm(certificadoName: string, uploadBase64: string) {
 
-    this.voluntarioForm.patchValue({
-      certificado: certificadoName,
-      upload: uploadBase64,
-    });
-    this.voluntarioForm.get('certificado')?.markAsTouched();
+    // alterar metodo para novos atributos
+
+    // this.cadastrarCertificadoForm.patchValue({
+    //   certificado: certificadoName,
+    //   upload: uploadBase64,
+    // });
+    // this.cadastrarCertificadoForm.get('certificado')?.markAsTouched();
   }
 
   converterParaBase64(arquivo: File): Promise<string> {
@@ -102,15 +100,15 @@ export class CadastrarVoluntarioComponent extends BaseFormComponent implements O
   }
 
   efetuarCadastroCertificadoVoluntario() {
-    if (this.voluntarioForm.dirty && this.voluntarioForm.value) {
+    if (this.cadastrarCertificadoForm.dirty && this.cadastrarCertificadoForm.value) {
 
-      this.voluntario = Object.assign({}, this.voluntario, this.voluntarioForm.value);
+      this.certificado = Object.assign({}, this.certificado, this.cadastrarCertificadoForm.value);
 
-      this.voluntarioService.cadastrar(this.voluntario)
-        .subscribe({
-          next: (sucesso: any) => { this.processarSucesso(sucesso); },
-          error: (falha: any) => { this.processarFalha(falha); }
-        });
+      // this.voluntarioService.cadastrar(this.voluntario)
+      //   .subscribe({
+      //     next: (sucesso: any) => { this.processarSucesso(sucesso); },
+      //     error: (falha: any) => { this.processarFalha(falha); }
+      //   });
     }
   }
 

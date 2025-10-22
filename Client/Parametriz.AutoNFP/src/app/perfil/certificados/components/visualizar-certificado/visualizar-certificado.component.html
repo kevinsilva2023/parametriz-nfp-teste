@@ -1,4 +1,4 @@
-<div class="card card-white" *ngIf="voluntario">
+<div class="card card-white" *ngIf="certificado">
   <div class="card-header">
     <h1 class="fs-5 py-3 text-center fw-bolder text-primary text-uppercase">
       <i class="fa-solid fa-user me-2"></i>
@@ -7,7 +7,7 @@
   </div>
   <div class="card-body w-100 p-4 m-auto">
 
-    <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+    <ngb-alert type="danger" (closed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
       <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
       <ul>
         <li class="fs-small mt-1" *ngFor="let error of errors">
@@ -23,7 +23,7 @@
           <i class="fa-solid fa-landmark"></i>
           Nome Entidade:
         </span>
-        <input type="text" disabled class="form-control form-disable" [value]="voluntario.entidadeNomeNFP">
+        <input type="text" disabled class="form-control form-disable" [value]="certificado.entidadeNomeNFP">
       </div>
 
       <div class="input-group mb-3">
@@ -31,7 +31,7 @@
           <i class="fa-solid fa-user"></i>
           Nome:
         </span>
-        <input type="text" disabled class="form-control form-disable" [value]="voluntario.nome">
+        <input type="text" disabled class="form-control form-disable" [value]="certificado.nome">
       </div>
 
       <div class="input-group mb-3">
@@ -39,7 +39,7 @@
           <i class="fa-solid fa-id-card-clip"></i>
           CPF:
         </span>
-        <input type="text" disabled class="form-control form-disable" [value]="voluntario.cpf">
+        <input type="text" disabled class="form-control form-disable" [value]="certificado.cpf">
       </div>
 
       <div class="input-group mb-3">
@@ -48,7 +48,7 @@
           Emissão:
         </span>
         <input type="text" disabled class="form-control form-disable"
-          [value]="voluntario.validoAPartirDe | date:'dd/MM/yyyy'">
+          [value]="certificado.validoAPartirDe | date:'dd/MM/yyyy'">
       </div>
 
       <div class="input-group mb-3">
@@ -57,7 +57,7 @@
           Validade:
         </span>
         <input type="text" disabled class="form-control form-disable"
-          [value]="voluntario.validoAte | date:'dd/MM/yyyy'">
+          [value]="certificado.validoAte | date:'dd/MM/yyyy'">
       </div>
 
       <div class="input-group mb-3">
@@ -65,12 +65,12 @@
           <i class="fa-solid fa-building"></i>
           Emissor:
         </span>
-        <input type="text" disabled class="form-control form-disable" [value]="voluntario.emissor">
+        <input type="text" disabled class="form-control form-disable" [value]="certificado.emissor">
       </div>
 
       <div>
         <span class="bg-success py-1 px-4 rounded-5 text-white">
-          {{ voluntario.status }}
+          {{ certificado.status }}
         </span>
       </div>
     </div>

@@ -1,14 +1,16 @@
 <section class="configuracoes">
   <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
-    <li ngbNavItem="voluntario">
+
+    <li ngbNavItem="instituicao">
       <a ngbNavLink>
-        <i class="fa-solid fa-user me-2"></i>
-        Voluntário
+        <i class="fa-solid fa-building me-2"></i>
+        Instituição
       </a>
       <ng-template ngbNavContent>
-        <app-voluntario></app-voluntario>
+        <app-instituicao></app-instituicao>
       </ng-template>
     </li>
+
     <li ngbNavItem="usuario">
       <a ngbNavLink>
         <i class="fa-solid fa-people-group me-2"></i>
@@ -19,6 +21,5 @@
       </ng-template>
     </li>
   </ul>
-
   <div [ngbNavOutlet]="nav" class="content"></div>
 </section>

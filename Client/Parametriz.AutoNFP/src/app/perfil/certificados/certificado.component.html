@@ -1,0 +1,15 @@
+<div class="row justify-content-center pt-4">
+  <div class="col-5" >
+    <app-cadastrar-certificado 
+      [temCertificado]="temCertificado" 
+      (cadastroConcluido)="atualizarCertificado()">
+    </app-cadastrar-certificado>
+  </div>
+  <div class="col-5">
+    <app-visualizar-certificado 
+      [certificado]="certificado" 
+      [errors]="errors">
+    </app-visualizar-certificado>
+  </div>
+</div>
+

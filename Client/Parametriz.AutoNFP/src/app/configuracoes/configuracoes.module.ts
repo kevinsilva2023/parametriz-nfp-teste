@@ -16,10 +16,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { VoluntarioComponent } from './voluntarios/voluntario.component';
-import { CadastrarVoluntarioComponent } from './voluntarios/components/cadastrar-voluntario/cadastrar-voluntario.component';
-import { VisualizarVoluntarioComponent } from './voluntarios/components/visualizar-voluntario/visualizar-voluntario.component';
-
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
@@ -30,24 +26,20 @@ import { ListarUsuarioComponent } from './usuarios/components/listar-usuario/lis
 import { DesativarUsuarioComponent } from './usuarios/components/desativar-usuario/desativar-usuario.component';
 import { AtivarUsuarioComponent } from './usuarios/components/ativar-usuario/ativar-usuario.component';
 import { EditarUsuarioComponent } from './usuarios/components/editar-usuario/editar-usuario.component';
-import { VoluntarioService } from './voluntarios/services/voluntario.service';
-import { ExcluirVoluntarioComponent } from './voluntarios/components/excluir-voluntario/excluir-voluntario.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { InstituicaoComponent } from './instituicoes/instituicao.component';
 
 
 @NgModule({
   declarations: [
     ConfiguracoesComponent,
-    VoluntarioComponent,
-    CadastrarVoluntarioComponent,
-    VisualizarVoluntarioComponent,
     UsuarioComponent,
     CadastrarUsuarioComponent,
     ListarUsuarioComponent,
     DesativarUsuarioComponent,
     AtivarUsuarioComponent,
     EditarUsuarioComponent,
-    ExcluirVoluntarioComponent,
+    InstituicaoComponent
   ],
   imports: [
     CommonModule,
@@ -59,13 +51,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ReactiveFormsModule,
     MatSlideToggleModule,
     MatSelectModule,
-    MatInputModule,
     MatMenuModule,
     MatTooltipModule
   ],
   providers: [
     UsuarioService,
-    VoluntarioService,
     AutorizacaoService,
   
   ]

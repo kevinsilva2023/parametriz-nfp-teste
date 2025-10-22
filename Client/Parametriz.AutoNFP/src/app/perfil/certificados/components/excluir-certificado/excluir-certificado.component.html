@@ -8,7 +8,7 @@
 
 <div class="modal-body text-center">
 
-  <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+  <ngb-alert type="danger" (closed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
     <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
     <ul>
       <li class="fs-small mt-1" *ngFor="let error of errors">
@@ -23,7 +23,7 @@
 </div>
 
 <div class="modal-footer border-0 d-flex justify-content-center gap-3">
-  <button type="button" class="btn btn-danger px-4" (click)="confirmarExcluirVoluntario()">
+  <button type="button" class="btn btn-danger px-4" (click)="confirmarExcluirCertificado()">
     <i class="fa-solid fa-cloud-upload"></i> Excluir
   </button>
 

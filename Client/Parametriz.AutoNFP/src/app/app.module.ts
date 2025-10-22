@@ -35,8 +35,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
-import { PerfilComponent } from './perfil/perfil.component';
-import { PerfilService } from './services/perfil.service';
 import { CnpjPipe } from './shared/pipe/cnpj.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -54,7 +52,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FundoAnimadoComponent,
     NaoEncontradoComponent,
     AcessoNegadoComponent,
-    PerfilComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,7 +77,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   providers: [
     IdentidadeService,
     AutorizacaoService,
-    PerfilService,
     provideHttpClient(
       withInterceptors([
         errorInterceptor,
@@ -93,7 +89,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       useFactory: () => {
         const config = new NgbModalConfig();
         config.centered = true;
-        // config.backdrop = 'static';
         config.keyboard = false;
         return config;
       }
@@ -102,7 +97,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       provide: NgbAlertConfig,
       useFactory: () => {
         const config = new NgbAlertConfig();
-        config.dismissible = true; 
+        config.dismissible = true;
         config.animation = true;
         return config;
       },
