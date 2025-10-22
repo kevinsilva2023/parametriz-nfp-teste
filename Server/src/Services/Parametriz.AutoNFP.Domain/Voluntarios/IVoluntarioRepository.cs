@@ -13,6 +13,7 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
     {
         Task<bool> ExistemOutrosVoluntariosNaInstituicao(Guid id, Guid instituicaoId);
         Task<bool> ExistemOutrosAdministradoresNaInstituicao(Guid id, Guid instituicaoId);
+        Task<bool> CpfPertenceAoVoluntarioId(Guid voluntarioId, string cpf, Guid instituicaoId);
         Task<IEnumerable<Voluntario>> ObterPorFiltros(Guid instituicaoId, string nome = "", string email = "", 
             BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso);
         Task<IEnumerable<Voluntario>> ObterAtivos(Guid instituicaoId);

@@ -4,11 +4,11 @@ namespace Parametriz.AutoNFP.Domain.Certificados
 {
     public interface ICertificadoRepository : IRepository<Certificado>
     {
-        Task<bool> ExisteNoVoluntario(Guid instituicaoId);
+        Task<bool> ExisteNoVoluntario(Guid voluntarioId);
 
-        Certificado ObterPorVoluntarioId(Guid instituicaoId);
-        Task<Certificado> ObterPorVoluntarioIdAsync(Guid instituicaoId);
+        Certificado ObterPorVoluntarioId(Guid voluntarioId);
+        Task<Certificado> ObterPorVoluntarioIdAsync(Guid voluntarioId);
 
-        Task Excluir(Guid instituicaoId);
+        Task Excluir(Guid voluntarioId);
     }
 }

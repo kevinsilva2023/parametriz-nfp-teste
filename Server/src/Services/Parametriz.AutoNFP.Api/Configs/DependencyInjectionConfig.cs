@@ -5,6 +5,7 @@ using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Identidade.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
+using Parametriz.AutoNFP.Api.Application.Voluntarios.Queries;
 using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Core.Interfaces;
@@ -40,6 +41,7 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             builder.Services.AddScoped<IVoluntarioRepository, VoluntarioRepository>();
             builder.Services.AddScoped<IVoluntarioService, VoluntarioService>();
+            builder.Services.AddScoped<IVoluntarioQuery, VoluntarioQuery>();
 
             builder.Services.AddScoped<ICertificadoRepository, CertificadoRepository>();
             builder.Services.AddScoped<ICertificadoService, CertificadoService>();

@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Parametriz.AutoNFP.Api.Application.Certificados.Services;
 using Parametriz.AutoNFP.Api.Extensions;
 using Parametriz.AutoNFP.Api.Models.User;
+using Parametriz.AutoNFP.Api.Utils;
 using Parametriz.AutoNFP.Api.ViewModels.Certificados;
+using Parametriz.AutoNFP.Api.ViewModels.Core;
+using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Certificados;
 
@@ -24,6 +27,12 @@ namespace Parametriz.AutoNFP.Api.Controllers
         {
             _certificadoRepository = certificadoRepository;
             _certificadosService = certificadoService;
+        }
+
+        [HttpGet("status")]
+        public async Task<IEnumerable<EnumViewModel>> ObterStatus()
+        {
+            return await Task.FromResult(EnumUtils.ToViewModel(typeof(CertificadoStatus)));
         }
 
         [HttpGet]

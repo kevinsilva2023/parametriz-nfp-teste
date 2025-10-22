@@ -1,4 +1,5 @@
-﻿using Parametriz.AutoNFP.Api.ViewModels.Core;
+﻿using Parametriz.AutoNFP.Api.ViewModels.Certificados;
+using Parametriz.AutoNFP.Api.ViewModels.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
@@ -34,5 +35,7 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
         public bool Administrador { get; set; }
 
         public bool Desativado { get; set; }
+
+        public CertificadoViewModel Certificado { get; set; }
     }
 }

@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Parametriz.AutoNFP.Api.Application.Identidade.Services;
+using Parametriz.AutoNFP.Api.Application.Voluntarios.Queries;
 using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
 using Parametriz.AutoNFP.Api.Extensions;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.Notificacoes;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.Usuarios;
 
 namespace Parametriz.AutoNFP.Api.Controllers
@@ -18,16 +20,20 @@ namespace Parametriz.AutoNFP.Api.Controllers
         private readonly IIdentidadeService _identidadeService;
         private readonly IVoluntarioRepository _voluntarioRepository;
         private readonly IVoluntarioService _voluntarioService;
+        private readonly IVoluntarioQuery _voluntarioQuery;
+
         public VoluntariosController(Notificador notificador,
                                   IAspNetUser user,
                                   IVoluntarioRepository voluntarioRepository,
                                   IVoluntarioService voluntarioService,
-                                  IIdentidadeService identidadeService)
+                                  IIdentidadeService identidadeService,
+                                  IVoluntarioQuery voluntarioQuery)
             : base(notificador, user)
         {
             _voluntarioRepository = voluntarioRepository;
             _voluntarioService = voluntarioService;
             _identidadeService = identidadeService;
+            _voluntarioQuery = voluntarioQuery;
         }
 
         [HttpGet("perfil")]
@@ -52,11 +58,11 @@ namespace Parametriz.AutoNFP.Api.Controllers
         [Authorize(Roles = "Administrador")]
         [HttpGet("obter-por-filtros")]
         public async Task<IEnumerable<VoluntarioViewModel>> Get(string nome = "", string email = "", 
-            BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso)
+            CertificadoStatus? certificadoStatus = null, BoolTresEstados administrador = BoolTresEstados.Ambos, 
+            BoolTresEstados desativado = BoolTresEstados.Falso)
         {
-            return (await _voluntarioRepository
-                .ObterPorFiltros(InstituicaoId, nome, email, administrador, desativado))
-                .ToViewModel();
+            return await _voluntarioQuery
+                .ObterPorFiltros(InstituicaoId, nome, email, certificadoStatus, administrador, desativado);
         }
 
         [Authorize(Roles = "Administrador")]

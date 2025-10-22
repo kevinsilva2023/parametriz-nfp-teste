@@ -8,6 +8,7 @@ using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Certificados;
+using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -21,17 +22,20 @@ namespace Parametriz.AutoNFP.Api.Application.Certificados.Services
         private readonly int _saltSize = 16;
 
         private readonly ICertificadoRepository _certificadoRepository;
+        private readonly IVoluntarioRepository _voluntarioRepository;
         private readonly AppConfig _appConfig;
 
         public CertificadoService(IAspNetUser user,
                                  IUnitOfWork uow,
                                  Notificador notificador,
                                  ICertificadoRepository certificadoRepository,
-                                 IOptions<AppConfig> options)
+                                 IOptions<AppConfig> options,
+                                 IVoluntarioRepository voluntarioRepository)
             : base(user, uow, notificador)
         {
             _certificadoRepository = certificadoRepository;
             _appConfig = options.Value;
+            _voluntarioRepository = voluntarioRepository;
         }
 
         private async Task ValidarCertificado(Certificado certificado)
@@ -53,10 +57,9 @@ namespace Parametriz.AutoNFP.Api.Application.Certificados.Services
 
         private async Task VoluntarioCpfIgualAoCertificado(Certificado certificado)
         {
-            //ToDo:
-            //ExtrairCpnjCpfDoCommonName(certificado.Subject),
-
-            await Task.CompletedTask;
+            if (!await _voluntarioRepository
+                .CpfPertenceAoVoluntarioId(VoluntarioId, ExtrairCpnjCpfDoCommonName(certificado.Requerente), InstituicaoId))
+                    NotificarErro("Certificado não pertence ao vonluntário.");
         }
 
         private async Task<bool> CertificadoAptoParaCadastrar(Certificado certificado)

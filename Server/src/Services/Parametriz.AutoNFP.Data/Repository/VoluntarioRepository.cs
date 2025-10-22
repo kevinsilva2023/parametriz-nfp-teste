@@ -42,6 +42,14 @@ namespace Parametriz.AutoNFP.Data.Repository
                                u.Administrador);    
         }
 
+        public async Task<bool> CpfPertenceAoVoluntarioId(Guid id, string cpf, Guid instituicaoId)
+        {
+            return await _context.Voluntarios
+                .AnyAsync(v => v.InstituicaoId == instituicaoId &&
+                               v.Id == id &&
+                               v.Cpf.NumeroInscricao == cpf);
+        }
+
         public override async Task<Voluntario> ObterPorId(Guid id, Guid instituicaoId)
         {
             return await _context.Voluntarios
@@ -55,6 +63,7 @@ namespace Parametriz.AutoNFP.Data.Repository
             BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso)
         {
             return await _context.Voluntarios
+                .Include(p => p.Certificado)
                 .AsNoTracking()
                 .Where(u => u.InstituicaoId == instituicaoId &&
                             u.Nome.ToUpper().Contains(nome.Trim().ToUpper()) &&

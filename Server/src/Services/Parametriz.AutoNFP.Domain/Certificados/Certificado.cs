@@ -20,6 +20,8 @@ namespace Parametriz.AutoNFP.Domain.Certificados
         public byte[] Upload { get; private set; }
         public byte[] Senha { get; private set; }
 
+        public CertificadoStatus Status => ObterStatus();
+
         public Voluntario Voluntario { get; private set; }
 
         public Certificado(Guid id, Guid voluntarioId, string requerente, 
@@ -36,5 +38,18 @@ namespace Parametriz.AutoNFP.Domain.Certificados
         }
 
         protected Certificado() { }
+
+        private CertificadoStatus ObterStatus()
+        {
+            if (ValidoAte.Date < DateTime.Now.Date)
+                return CertificadoStatus.VENCIDO;
+
+            var diasParaVencer = (ValidoAte.Date - DateTime.Now.Date).Days;
+
+            if (diasParaVencer <= 30)
+                return CertificadoStatus.RENOVAR;
+
+            return CertificadoStatus.VÁLIDO;
+        }
     }
 }
