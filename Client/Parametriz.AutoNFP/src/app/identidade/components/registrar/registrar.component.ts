@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren, viewChildren } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
-import { Instituicao } from '../../models/instituicao';
+// import { Instituicao } from '../../models/cadastrar-instituicao';
 import { IdentidadeService } from '../../services/identidade.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
@@ -20,7 +20,7 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
 
   registerForm!: FormGroup;
   errors: any[] = [];
-  instituicao!: Instituicao
+  // instituicao!: Instituicao
 
   inputUtils = InputUtils;
   debounceCnpj = new Subject<string>();
@@ -73,33 +73,33 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
     super.configurarValidacaoFormularioBase(this.formInputElements, this.registerForm);
   }
 
-  efetuarRegistro() {
-    super.validarFormulario(this.registerForm)
+  // efetuarRegistro() {
+  //   super.validarFormulario(this.registerForm)
 
-    if (this.registerForm.dirty && this.registerForm.valid) {
+  //   if (this.registerForm.dirty && this.registerForm.valid) {
 
-      this.instituicao = Object.assign({}, this.instituicao, this.registerForm.value);
+  //     this.instituicao = Object.assign({}, this.instituicao, this.registerForm.value);
 
-      this.identidadeService.registrar(this.instituicao)
-        .subscribe({
-          next: () => { this.processarSucesso(); },
-          error: (falha: any) => { this.processarErro(falha); }
-        });
-    }
-  }
+  //     this.identidadeService.registrar(this.instituicao)
+  //       .subscribe({
+  //         next: () => { this.processarSucesso(); },
+  //         error: (falha: any) => { this.processarErro(falha); }
+  //       });
+  //   }
+  // }
 
-  processarSucesso() {
-    this.registerForm.reset();
-    this.limparErros();
+  // processarSucesso() {
+  //   this.registerForm.reset();
+  //   this.limparErros();
 
-    let email = this.instituicao.email;
-    let usuario = this.instituicao.usuarioNome;
+  //   let email = this.instituicao.email;
+  //   let usuario = this.instituicao.usuarioNome;
 
-    this.router.navigate(
-      ['/confirmar-email-enviado'],
-      { queryParams: { email, usuario } }
-    );
-  }
+  //   this.router.navigate(
+  //     ['/confirmar-email-enviado'],
+  //     { queryParams: { email, usuario } }
+  //   );
+  // }
 
   processarErro(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;

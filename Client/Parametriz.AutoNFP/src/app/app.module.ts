@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, HttpClientJsonpModule, provideHttpClient, withInterceptors, withJsonpSupport } from '@angular/common/http';
 
 import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
@@ -83,7 +83,9 @@ import { CnpjPipe } from './shared/pipe/cnpj.pipe';
       withInterceptors([
         errorInterceptor,
         jwtInterceptor
-      ])),
+      ]),
+      withJsonpSupport(),
+    ),
     {
       provide: NgbModalConfig,
       useFactory: () => {

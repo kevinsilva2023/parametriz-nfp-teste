@@ -8,7 +8,7 @@ import { ConfirmarEmail } from '../models/confirmar-email';
 import { EnviarDefinirSenha } from '../models/enviar-definir-senha';
 import { DefinirSenha } from '../models/definir-senha';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
-import { Instituicao } from '../models/instituicao';
+// import { Instituicao } from '../models/cadastrar-instituicao';
 
 @Injectable()
 export class IdentidadeService extends BaseService {
@@ -21,13 +21,13 @@ export class IdentidadeService extends BaseService {
         catchError(super.serviceError));
   }
 
-  registrar(instituicao: Instituicao): Observable<any> {
-    return this.httpClient
-      .post(`${this.apiUrl}/identidade/cadastrar-instituicao`, instituicao, { headers: super.ObterAuthHeaderJson() })
-      .pipe (
-        map(this.extractData),
-        catchError(this.serviceError));
-  }
+  // registrar(instituicao: Instituicao): Observable<any> {
+  //   return this.httpClient
+  //     .post(`${this.apiUrl}/identidade/cadastrar-instituicao`, instituicao, { headers: super.ObterAuthHeaderJson() })
+  //     .pipe(
+  //       map(this.extractData),
+  //       catchError(this.serviceError));
+  // }
 
   enviarConfirmarEmail(enviarConfirmarEmail: EnviarConfirmarEmail): Observable<EnviarConfirmarEmail> {
     return this.httpClient
@@ -71,12 +71,22 @@ export class IdentidadeService extends BaseService {
         catchError(super.serviceError));
   }
 
-  obterDadosCnpj(cnpj: string): Observable<Instituicao> {
-    return this.httpClient
-      .get(`https://receitaws.com.br/v1/cnpj/${cnpj}`)
+  // obterDadosCnpj(cnpj: string): Observable<Instituicao> {
+  //   return this.httpClient
+  //     .get(`https://receitaws.com.br/v1/cnpj/${cnpj}`)
+  //     .pipe(
+  //       map(super.extractData),
+  //       catchError(super.serviceError)
+  //     )
+  // }
+
+  obterDadosCnpj(cnpj: string): Observable<any> { //alterar tipo do retorno depois
+    let url = `https://receitaws.com.br/v1/cnpj/${cnpj}`;
+
+    return this.httpClient.jsonp(url, 'callback')
       .pipe(
         map(super.extractData),
         catchError(super.serviceError)
-      )
+      );
   }
 }
