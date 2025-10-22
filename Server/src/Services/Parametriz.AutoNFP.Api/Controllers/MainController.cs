@@ -14,7 +14,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
         protected readonly IAspNetUser _user;
 
         protected Guid InstituicaoId => _user.ObterInstituicaoId();
-        protected Guid UsuarioId => _user.ObterId();
+        protected Guid VoluntarioId => _user.ObterId();
 
         protected MainController(Notificador notificador, 
                                  IAspNetUser user)

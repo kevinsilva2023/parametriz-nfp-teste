@@ -4,6 +4,6 @@ namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
 {
     public interface IInstituicaoService
     {
-        Task<bool> Cadastrar(CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel, Guid usuarioId);
+        Task<bool> Cadastrar(CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel, Guid userId);
     }
 }

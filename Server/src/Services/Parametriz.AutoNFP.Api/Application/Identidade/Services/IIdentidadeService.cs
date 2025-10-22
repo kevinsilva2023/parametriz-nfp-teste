@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
-using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
+using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 
 namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
 {
@@ -14,6 +14,6 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
         Task<LoginResponseViewModel> Login(LoginViewModel loginViewModel);
         Task<LoginResponseViewModel> UtilizarRefreshToken(Guid refreshToken);
         
-        Task<bool> CadastrarUsuario(UsuarioViewModel usuarioViewModel);
+        Task<bool> CadastrarUsuario(VoluntarioViewModel usuarioViewModel);
     }
 }

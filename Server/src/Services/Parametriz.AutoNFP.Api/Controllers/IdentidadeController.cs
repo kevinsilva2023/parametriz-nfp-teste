@@ -1,23 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Options;
-using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Identidade.Services;
-using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
-using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
-using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
-using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
-using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
 using Parametriz.AutoNFP.Core.Notificacoes;
-using Parametriz.AutoNFP.Domain.Instituicoes;
-using Parametriz.AutoNFP.Domain.Usuarios;
-using System.Net.Mail;
-using System.Security.Claims;
-using System.Text;
 
 namespace Parametriz.AutoNFP.Api.Controllers
 {

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository.Core;
-using Parametriz.AutoNFP.Domain.Core.Interfaces;
+using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -18,40 +19,51 @@ namespace Parametriz.AutoNFP.Data.Repository
         {
         }
 
-        public async Task<bool> ExisteNaInstituicao(Guid instituicaoId)
+        public override async Task<bool> EhUnico(Voluntario usuario)
+        {
+            return  !await _context.Voluntarios
+                .AnyAsync(u => u.InstituicaoId == usuario.InstituicaoId &&
+                               u.Nome == usuario.Nome &&
+                               u.Id != usuario.Id);
+        }
+
+        public async Task<bool> ExistemOutrosVoluntariosNaInstituicao(Guid id, Guid instituicaoId)
         {
             return await _context.Voluntarios
-                .AnyAsync(v => v.InstituicaoId == instituicaoId);
+                .AnyAsync(u => u.InstituicaoId == instituicaoId &&
+                               u.Id != id);
         }
 
-        public override async Task<bool> EhUnico(Voluntario voluntario)
+        public async Task<bool> ExistemOutrosAdministradoresNaInstituicao(Guid id, Guid instituicaoId)
         {
-            return !await _context.Voluntarios
-                .AnyAsync(v => v.InstituicaoId == voluntario.InstituicaoId &&
-                               v.Id != voluntario.Id);
+            return await _context.Voluntarios
+                .AnyAsync(u => u.InstituicaoId == instituicaoId &&
+                               u.Id != id &&
+                               u.Administrador);    
         }
 
-        public Voluntario ObterPorInstituicaoId(Guid instituicaoId)
-        {
-            return _context.Voluntarios
-                .AsNoTracking()
-                .SingleOrDefault(v => v.InstituicaoId == instituicaoId);
-        }
-
-        public async Task<Voluntario> ObterPorInstituicaoIdAsync(Guid instituicaoId)
+        public async Task<IEnumerable<Voluntario>> ObterPorFiltros(Guid instituicaoId, string nome = "", string email = "",
+            BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso)
         {
             return await _context.Voluntarios
                 .AsNoTracking()
-                .SingleOrDefaultAsync(v => v.InstituicaoId == instituicaoId);
+                .Where(u => u.InstituicaoId == instituicaoId &&
+                            u.Nome.ToUpper().Contains(nome.Trim().ToUpper()) &&
+                            u.Email.Conta.ToUpper().Contains(email.Trim().ToUpper()) &&
+                            (administrador == BoolTresEstados.Ambos || (u.Administrador == (administrador == BoolTresEstados.Verdadeiro))) &&
+                            (desativado == BoolTresEstados.Ambos || (u.Desativado == (desativado == BoolTresEstados.Verdadeiro))))
+                .OrderBy(u => u.Nome)
+                .ToListAsync();
         }
 
-        public async Task Excluir(Guid instituicaoId)
+        public async Task<IEnumerable<Voluntario>> ObterAtivos(Guid instituicaoId)
         {
-            var voluntario = await _context.Voluntarios
+            return await _context.Voluntarios
                 .AsNoTracking()
-                .SingleOrDefaultAsync(v => v.InstituicaoId == instituicaoId);
-
-            _context.Voluntarios.Remove(voluntario);
+                .Where(u => u.InstituicaoId == instituicaoId &&
+                            !u.Desativado)
+                .OrderBy(p => p.Nome)
+                .ToListAsync();
         }
     }
 }

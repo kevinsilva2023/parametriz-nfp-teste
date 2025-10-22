@@ -5,31 +5,25 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
 {
     public class VoluntarioViewModel
     {
+        [Key]
         public Guid Id { get; set; }
+
+        [Display(Name = "Instituição")]
         public Guid InstituicaoId { get; set; }
-        public string EntidadeNomeNFP { get; set; }
+
+        [Required(ErrorMessage = "Favor preencher o nome do usuário.")]
+        [MaxLength(256, ErrorMessage = "Nome deve ser preenchido com no máximo {1} caracteres.")]
         public string Nome { get; set; }
-        public CnpjCpfViewModel CnpjCpf { get; set; }
-        public string Requerente { get; set; }
-        public DateTime ValidoAPartirDe { get; set; }
-        public DateTime ValidoAte { get; set; }
-        public string Emissor { get; set; }
-        public string Status => ObterStatus();
 
-        private string ObterStatus()
-        {
-            if (ValidoAPartirDe > DateTime.Now.Date)
-                return "INVÁLIDO";
+        public string Cpf { get; set; }
 
-            if (ValidoAte.Date < DateTime.Now.Date)
-                return "VENCIDO";
+        public string Email { get; set; }
+        public string Contato { get; set; }
 
-            var diasParaVencer = (ValidoAte.Date - DateTime.Now.Date).Days;
+        public string FotoUpload { get; set; }
 
-            if (diasParaVencer <= 30)
-                return $"{diasParaVencer} DIAS PARA VENCER.";
+        public bool Administrador { get; set; }
 
-            return "VÁLIDO";
-        }
+        public bool Desativado { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Parametriz.AutoNFP.Api.ViewModels.Core;
+using System.ComponentModel.DataAnnotations;
 
 namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
 {
@@ -17,10 +18,20 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
         [StringLength(14, ErrorMessage = "CNPJ deve ser preenchido com {1} digitos.", MinimumLength = 14)]
         public string Cnpj { get; set; }
 
-        [Display(Name = "Nome Usuário")]
-        [Required(ErrorMessage = "Favor preencher o nome do usuário.")]
-        [MaxLength(256, ErrorMessage = "Nome do usuário deve ser preenchido com no máximo {1} caracteres.")]
-        public string UsuarioNome { get; set; }
+        [Display(Name = "Nome da Entidade na NFP.")]
+        [Required(ErrorMessage = "Favor preencher o nome da entidade na nota fiscal paulista.")]
+        [MaxLength(256, ErrorMessage = "Nome da entidade na nota fiscal paulista deve ser preenchido com no máximo {1} caracteres.")]
+        public string EntidadeNomeNFP { get; set; }
+
+        public EnderecoViewModel Endereco { get; set; }
+
+
+        [Display(Name = "Nome Voluntário")]
+        [Required(ErrorMessage = "Favor preencher o nome do voluntário.")]
+        [MaxLength(256, ErrorMessage = "Nome do voluntário deve ser preenchido com no máximo {1} caracteres.")]
+        public string VoluntarioNome { get; set; }
+
+        public string Cpf { get; set; }
 
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "Favor preencher o e-mail.")]
@@ -28,15 +39,7 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Identidade
         [MaxLength(256, ErrorMessage = "E-mail deve ser preenchido com no máximo {1} caracteres.")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Favor preencher a senha.")]
-        [StringLength(50, ErrorMessage = "A senha deve ser preenchida com no mínimo {2} e no máximo {1} caracteres.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        public string Senha { get; set; }
-
-        [Display(Name = "Confirmação de Senha")]
-        [Compare("Senha", ErrorMessage = "Confirmação de senha não confere.")]
-        [DataType(DataType.Password)]
-        public string SenhaConfirmacao { get; set; }
+        public string Contato { get; set; }
 
         public CadastrarInstituicaoViewModel()
         {

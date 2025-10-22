@@ -1,10 +1,12 @@
-﻿using Parametriz.AutoNFP.Api.Models.User;
+﻿using Parametriz.AutoNFP.Api.Extensions.Core;
+using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 
 namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
 {
@@ -25,8 +27,8 @@ namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
         {
             await ValidarEntidade(new InstituicaoValidation(), instituicao);
             await ValidarEntidade(new CnpjCpfObrigatorioValidation(), instituicao.Cnpj);
-            await ValidarEntidade(new UsuarioValidation(), instituicao.Usuarios.First());
-            await ValidarEntidade(new EmailValidation(), instituicao.Usuarios.First().Email);
+            await ValidarEntidade(new VoluntarioValidation(), instituicao.Voluntarios.First());
+            await ValidarEntidade(new EmailValidation(), instituicao.Voluntarios.First().Email);
         }
 
         private async Task InstituicaoEhUnica(Instituicao instituicao)
@@ -43,15 +45,17 @@ namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
             return CommandEhValido();
         }
 
-        public async Task<bool> Cadastrar(CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel, Guid usuarioId)
+        public async Task<bool> Cadastrar(CadastrarInstituicaoViewModel cadastrarInstituicaoViewModel, Guid userId)
         {
             var instituicao = new Instituicao(cadastrarInstituicaoViewModel.Id, cadastrarInstituicaoViewModel.RazaoSocial,
-                cadastrarInstituicaoViewModel.Cnpj);
+                cadastrarInstituicaoViewModel.Cnpj, cadastrarInstituicaoViewModel.EntidadeNomeNFP, 
+                cadastrarInstituicaoViewModel.Endereco.ToDomain());
 
-            var usuario = new Usuario(usuarioId, instituicao.Id, cadastrarInstituicaoViewModel.UsuarioNome,
-                new Core.ValueObjects.Email(cadastrarInstituicaoViewModel.Email), true);
+            var voluntario = new Voluntario(userId, instituicao.Id, cadastrarInstituicaoViewModel.VoluntarioNome,
+                cadastrarInstituicaoViewModel.Cpf, cadastrarInstituicaoViewModel.Email, cadastrarInstituicaoViewModel.Contato, 
+                true);
 
-            instituicao.IncluirUsuario(usuario);
+            instituicao.IncluirVoluntario(voluntario);
 
             if (!await InstituicaoAptaParaCadastrar(instituicao))
                 return false;

@@ -24,19 +24,19 @@ namespace Parametriz.AutoNFP.Data.Repository
                                i.Id != instituicao.Id);
         }
 
-        public async Task<Guid> ObterIdPorUsuarioId(Guid usuarioId)
+        public async Task<Guid> ObterIdPorVoluntarioId(Guid voluntarioId)
         {
-            return (await _context.Usuarios
+            return (await _context.Voluntarios
                .AsNoTracking()
-               .SingleOrDefaultAsync(v => v.Id == usuarioId))?.InstituicaoId ?? Guid.Empty;
+               .SingleOrDefaultAsync(v => v.Id == voluntarioId))?.InstituicaoId ?? Guid.Empty;
         }
 
-        public async Task<Instituicao> ObterPorUsuarioId(Guid usuarioId)
+        public async Task<Instituicao> ObterPorVoluntarioId(Guid voluntarioId)
         {
-            return (await _context.Usuarios
+            return (await _context.Voluntarios
                 .Include(p => p.Instituicao)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(v => v.Id == usuarioId))?.Instituicao;
+                .SingleOrDefaultAsync(v => v.Id == voluntarioId))?.Instituicao;
         }
 
         public async Task<Instituicao> ObterPorId(Guid id)

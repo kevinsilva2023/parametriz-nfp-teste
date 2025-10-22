@@ -1,27 +1,26 @@
 ﻿using Parametriz.AutoNFP.Api.Extensions.Core;
-using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
-using Parametriz.AutoNFP.Domain.Voluntarios;
+using Parametriz.AutoNFP.Api.ViewModels.Certificados;
+using Parametriz.AutoNFP.Domain.Certificados;
 
 namespace Parametriz.AutoNFP.Api.Extensions
 {
     public static class VoluntarioExtensions
     {
-        public static VoluntarioViewModel ToViewModel(this Voluntario voluntario)
+        public static CertificadoViewModel ToViewModel(this Certificado certificado)
         {
-            if (voluntario == null)
+            if (certificado == null)
                 return null;
 
-            return new VoluntarioViewModel
+            return new CertificadoViewModel
             {
-                Id = voluntario.Id,
-                InstituicaoId = voluntario.InstituicaoId,
-                EntidadeNomeNFP = voluntario.EntidadeNomeNFP,
-                Nome = voluntario.Nome,
-                CnpjCpf = voluntario.CnpjCpf.ToViewModel(),
-                Requerente = voluntario.Requerente,
-                ValidoAPartirDe = voluntario.ValidoAPartirDe,
-                ValidoAte = voluntario.ValidoAte,
-                Emissor = voluntario.Emissor
+                Id = certificado.Id,
+                VoluntarioId = certificado.VoluntarioId,
+                Nome = certificado.Nome,
+                Cpf = certificado.Cpf.NumeroInscricao,
+                Requerente = certificado.Requerente,
+                ValidoAPartirDe = certificado.ValidoAPartirDe,
+                ValidoAte = certificado.ValidoAte,
+                Emissor = certificado.Emissor
             };
         }
     }

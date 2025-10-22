@@ -1,7 +1,7 @@
 ﻿using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Core.DomainObjects;
-using Parametriz.AutoNFP.Domain.Usuarios;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
         public DateTime? EnviadoEm { get; private set; }
         public string MensagemErro { get; private set; }
         
-        public Usuario CadastradoPor { get; private set; }
+        public Voluntario CadastradoPor { get; private set; }
 
         public CupomFiscal(Guid id, Guid instituicaoId, string chave, Guid cadastradoPorId)
             : base(id, instituicaoId)

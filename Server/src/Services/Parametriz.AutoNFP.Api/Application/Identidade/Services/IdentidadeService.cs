@@ -4,11 +4,11 @@ using Microsoft.Extensions.Options;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
-using Parametriz.AutoNFP.Api.Application.Usuarios.Services;
+using Parametriz.AutoNFP.Api.Application.Voluntarios.Services;
 using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Models.User;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
-using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
+using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Domain.Instituicoes;
@@ -23,9 +23,9 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
     public class IdentidadeService : BaseService, IIdentidadeService
     {
         private readonly IInstituicaoRepository _instituicaoRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IVoluntarioRepository _usuarioRepository;
         private readonly IInstituicaoService _instituicaoService;
-        private readonly IUsuarioService _usuarioService;
+        private readonly IVoluntarioService _usuarioService;
         private readonly IEmailService _emailService;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -36,9 +36,9 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                                  IUnitOfWork uow,
                                  Notificador notificador,
                                  IInstituicaoRepository instituicaoRepository,
-                                 IUsuarioRepository usuarioRepository,
+                                 IVoluntarioRepository usuarioRepository,
                                  IInstituicaoService instituicaoService,
-                                 IUsuarioService usuarioService,
+                                 IVoluntarioService usuarioService,
                                  IEmailService emailService,
                                  IJwtTokenService jwtTokenService,
                                  SignInManager<IdentityUser> signInManager,
@@ -287,7 +287,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
         {
             var user = new IdentityUser { UserName = cadastrarInstituicaoViewModel.Email, Email = cadastrarInstituicaoViewModel.Email };
             
-            if (!await CadastrarIdentityUser(user, cadastrarInstituicaoViewModel.Senha)) 
+            if (!await CadastrarIdentityUser(user)) 
                 return false;
 
             user = await ObterIdentityUserPorEmail(user.Email);
@@ -310,7 +310,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return false;
             }
 
-            await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.UsuarioNome);
+            await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome);
 
             return true;
         }
@@ -330,7 +330,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return;
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(enviarConfirmarEmailViewModel.UsuarioId);
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(enviarConfirmarEmailViewModel.UsuarioId);
             var usuario = await _usuarioRepository.ObterPorId(enviarConfirmarEmailViewModel.UsuarioId, instituicao.Id);
 
             if (InstituicaoId != instituicao.Id)
@@ -357,7 +357,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return;
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(Guid.Parse(user.Id));
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
             var usuario = await _usuarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || usuario.Desativado)
@@ -394,7 +394,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return;
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(Guid.Parse(user.Id));
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
             var usuario = await _usuarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || usuario.Desativado)
@@ -415,7 +415,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return null;
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(Guid.Parse(user.Id));
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
             var usuario = await _usuarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || usuario.Desativado)
@@ -461,7 +461,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return null;
             }
 
-            var instituicao = await _instituicaoRepository.ObterPorUsuarioId(Guid.Parse(user.Id));
+            var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
             var usuario = await _usuarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada)
@@ -497,9 +497,9 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
 
 
         #region Usuarios
-        public async Task<bool> CadastrarUsuario(UsuarioViewModel usuarioViewModel)
+        public async Task<bool> CadastrarUsuario(VoluntarioViewModel usuarioViewModel)
         {
-            var user = new IdentityUser { UserName = usuarioViewModel.Email.Conta, Email = usuarioViewModel.Email.Conta };
+            var user = new IdentityUser { UserName = usuarioViewModel.Email, Email = usuarioViewModel.Email };
 
             if (!await CadastrarIdentityUser(user))
                 return false;

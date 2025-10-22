@@ -1,26 +1,28 @@
 ﻿using Parametriz.AutoNFP.Api.Extensions.Core;
-using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
-using Parametriz.AutoNFP.Domain.Usuarios;
+using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 
 namespace Parametriz.AutoNFP.Api.Extensions
 {
     public static class UsuarioExtensions
     {
-        public static UsuarioViewModel ToViewModel(this Usuario usuario)
+        public static VoluntarioViewModel ToViewModel(this Voluntario voluntario)
         {
-            return new UsuarioViewModel
+            return new VoluntarioViewModel
             {
-                Id = usuario.Id,
-                InstituicaoId = usuario.InstituicaoId,
-                Nome = usuario.Nome,
-                Email = usuario.Email.ToViewModel(),
-                FotoUpload = usuario.FotoUpload,
-                Administrador = usuario.Administrador,
-                Desativado = usuario.Desativado
+                Id = voluntario.Id,
+                InstituicaoId = voluntario.InstituicaoId,
+                Nome = voluntario.Nome,
+                Cpf = voluntario.Cpf.NumeroInscricao,
+                Email = voluntario.Email.Conta,
+                Contato = voluntario.Contato,
+                FotoUpload = voluntario.FotoUpload,
+                Administrador = voluntario.Administrador,
+                Desativado = voluntario.Desativado
             };
         }
 
-        public static IEnumerable<UsuarioViewModel> ToViewModel(this IEnumerable<Usuario> usuarios)
+        public static IEnumerable<VoluntarioViewModel> ToViewModel(this IEnumerable<Voluntario> usuarios)
         {
             return usuarios.Select(u => u.ToViewModel());
         }

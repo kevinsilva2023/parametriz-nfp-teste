@@ -21,20 +21,20 @@ namespace Parametriz.AutoNFP.Data.Mappings
 
             builder.OwnsOne(p => p.Cnpj, c =>
             {
-                c.Property(p => p.TipoPessoa)
-                     .HasColumnName("TipoPessoa")
-                     .HasMaxLength(1)
-                     .IsFixedLength()
-                     .IsRequired();
+                c.Ignore(i => i.TipoPessoa);
 
                 c.Property(p => p.NumeroInscricao)
                     .HasMaxLength(14)
-                    .HasColumnName("CnpjCpf")
+                    .HasColumnName("Cnpj")
                     .IsRequired();
 
                 c.HasIndex(i => i.NumeroInscricao)
                     .IsUnique();
             });
+
+            builder.Property(p => p.EntidadeNomeNFP)
+               .HasMaxLength(256)
+               .IsRequired();
 
             builder.OwnsOne(p => p.Endereco, c =>
             {
