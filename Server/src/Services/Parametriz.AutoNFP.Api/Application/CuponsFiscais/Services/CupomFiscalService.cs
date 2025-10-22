@@ -48,7 +48,7 @@ namespace Parametriz.AutoNFP.Api.Application.CuponsFiscais.Services
             if (string.IsNullOrEmpty(chave))
                 return NotificarErro("Não foi possível verificar a chave de acesso.");
 
-            var cupomFiscal = new CupomFiscal(Guid.NewGuid(), InstituicaoId, chave, UsuarioId);
+            var cupomFiscal = new CupomFiscal(Guid.NewGuid(), InstituicaoId, chave, VoluntarioId);
 
             if (!await CupomFiscalAptoParaCadastrar(cupomFiscal))
                 return false;

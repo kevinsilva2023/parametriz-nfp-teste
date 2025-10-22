@@ -40,7 +40,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             int pagina = 1, int registrosPorPagina = 50)
         {
             return (await _cupomFiscalRepository
-                .ObterPorFiltrosPaginado(InstituicaoId, competencia, UsuarioId, status, pagina, registrosPorPagina))
+                .ObterPorFiltrosPaginado(InstituicaoId, competencia, VoluntarioId, status, pagina, registrosPorPagina))
                 .ToViewModel();
         }
 

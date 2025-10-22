@@ -1,4 +1,4 @@
-﻿using Parametriz.AutoNFP.Api.ViewModels.Usuarios;
+﻿using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 using Parametriz.AutoNFP.Core.Enums;
 
 namespace Parametriz.AutoNFP.Api.ViewModels.CuponsFiscais
@@ -18,6 +18,6 @@ namespace Parametriz.AutoNFP.Api.ViewModels.CuponsFiscais
         public DateTime? EnviadoEm { get; set; }
         public string MensagemErro { get; set; }
 
-        public UsuarioViewModel CadastradoPor { get; set; }
+        public VoluntarioViewModel CadastradoPor { get; set; }
     }
 }

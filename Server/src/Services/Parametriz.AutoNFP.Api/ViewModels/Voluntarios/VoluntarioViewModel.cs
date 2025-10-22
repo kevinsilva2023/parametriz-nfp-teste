@@ -1,35 +1,41 @@
-﻿using Parametriz.AutoNFP.Api.ViewModels.Core;
+﻿using Parametriz.AutoNFP.Api.ViewModels.Certificados;
+using Parametriz.AutoNFP.Api.ViewModels.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
 {
     public class VoluntarioViewModel
     {
+        [Key]
         public Guid Id { get; set; }
+
+        [Display(Name = "Instituição")]
+        [Required(ErrorMessage = "Favor selecionar a instituição.")]
         public Guid InstituicaoId { get; set; }
-        public string EntidadeNomeNFP { get; set; }
+
+        [Required(ErrorMessage = "Favor preencher o nome do usuário.")]
+        [MaxLength(256, ErrorMessage = "Nome deve ser preenchido com no máximo {1} caracteres.")]
         public string Nome { get; set; }
-        public CnpjCpfViewModel CnpjCpf { get; set; }
-        public string Requerente { get; set; }
-        public DateTime ValidoAPartirDe { get; set; }
-        public DateTime ValidoAte { get; set; }
-        public string Emissor { get; set; }
-        public string Status => ObterStatus();
 
-        private string ObterStatus()
-        {
-            if (ValidoAPartirDe > DateTime.Now.Date)
-                return "INVÁLIDO";
+        [Required(ErrorMessage = "Favor preencher o CPF.")]
+        [StringLength(11, ErrorMessage = "CPF deve ser preenchido com {1} digitos.", MinimumLength = 11)]
+        public string Cpf { get; set; }
 
-            if (ValidoAte.Date < DateTime.Now.Date)
-                return "VENCIDO";
+        [Required(ErrorMessage = "Favor preencher o e-mail.")]
+        [MaxLength(256, ErrorMessage = "E-mail deve ser preenchido com no máximo {1} caracteres.")]
+        public string Email { get; set; }
 
-            var diasParaVencer = (ValidoAte.Date - DateTime.Now.Date).Days;
+        [Required(ErrorMessage = "Favor preencher o número para contato.")]
+        [StringLength(11, ErrorMessage = "Número para contato deve ser preenchido com {1} digitos.")]
+        public string Contato { get; set; }
 
-            if (diasParaVencer <= 30)
-                return $"{diasParaVencer} DIAS PARA VENCER.";
+        [Display(Name = "Foto")]
+        public string FotoUpload { get; set; }
 
-            return "VÁLIDO";
-        }
+        public bool Administrador { get; set; }
+
+        public bool Desativado { get; set; }
+
+        public CertificadoViewModel Certificado { get; set; }
     }
 }

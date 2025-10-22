@@ -1,19 +1,21 @@
-﻿using Parametriz.AutoNFP.Domain.Core.Interfaces;
+﻿using Parametriz.AutoNFP.Core.Enums;
+using Parametriz.AutoNFP.Domain.Core.Interfaces;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parametriz.AutoNFP.Domain.Voluntarios
+namespace Parametriz.AutoNFP.Domain.Usuarios
 {
     public interface IVoluntarioRepository : IInstituicaoEntityRepository<Voluntario>
     {
-        Task<bool> ExisteNaInstituicao(Guid instituicaoId);
-
-        Voluntario ObterPorInstituicaoId(Guid instituicaoId);
-        Task<Voluntario> ObterPorInstituicaoIdAsync(Guid instituicaoId);
-
-        Task Excluir(Guid instituicaoId);
+        Task<bool> ExistemOutrosVoluntariosNaInstituicao(Guid id, Guid instituicaoId);
+        Task<bool> ExistemOutrosAdministradoresNaInstituicao(Guid id, Guid instituicaoId);
+        Task<bool> CpfPertenceAoVoluntarioId(Guid voluntarioId, string cpf, Guid instituicaoId);
+        Task<IEnumerable<Voluntario>> ObterPorFiltros(Guid instituicaoId, string nome = "", string email = "", 
+            BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso);
+        Task<IEnumerable<Voluntario>> ObterAtivos(Guid instituicaoId);
     }
 }

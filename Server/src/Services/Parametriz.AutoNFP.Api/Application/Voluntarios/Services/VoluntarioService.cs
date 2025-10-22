@@ -1,36 +1,36 @@
-﻿using Microsoft.Extensions.Options;
-using Parametriz.AutoNFP.Api.Extensions;
+﻿using Microsoft.AspNetCore.Identity;
+using Parametriz.AutoNFP.Api.Application.Certificados.Services;
+using Parametriz.AutoNFP.Api.Application.Identidade.Services;
+using Parametriz.AutoNFP.Api.Extensions.Core;
 using Parametriz.AutoNFP.Api.Models.User;
+using Parametriz.AutoNFP.Api.ViewModels.Identidade;
 using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
-using Parametriz.AutoNFP.Core.Configs;
-using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
-using Parametriz.AutoNFP.Core.ValueObjects;
+using Parametriz.AutoNFP.Data.Migrations;
+using Parametriz.AutoNFP.Domain.Certificados;
+using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
 {
     public class VoluntarioService : BaseService, IVoluntarioService
     {
-        private readonly int _keySize = 256;
-        private readonly int _saltSize = 16;
-
         private readonly IVoluntarioRepository _voluntarioRepository;
-        private readonly AppConfig _appConfig;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ICertificadoRepository _certificadoRepository;
 
         public VoluntarioService(IAspNetUser user,
                                  IUnitOfWork uow,
                                  Notificador notificador,
+                                 UserManager<IdentityUser> userManager,
                                  IVoluntarioRepository voluntarioRepository,
-                                 IOptions<AppConfig> options)
+                                 ICertificadoRepository certificadoRepository)
             : base(user, uow, notificador)
         {
             _voluntarioRepository = voluntarioRepository;
-            _appConfig = options.Value;
+            _userManager = userManager;
+            _certificadoRepository = certificadoRepository;
         }
 
         private async Task ValidarVoluntario(Voluntario voluntario)
@@ -38,62 +38,39 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
             await ValidarEntidade(new VoluntarioValidation(), voluntario);
         }
 
-        private void CertificadoValido(Voluntario voluntario)
+        private async Task VoluntarioEhUnico(Voluntario voluntario)
         {
-            if (voluntario.ValidoAte.Date < DateTime.Now.Date)
-                NotificarErro("Certificado vencido.");
+            if (!await _voluntarioRepository.EhUnico(voluntario))
+                _notificador.IncluirNotificacao("Voluntário já cadastrado.");
         }
 
-        private async Task VoluntarioExiste(Guid instituicaoId)
+        private async Task ExistemOutrosVoluntariosNaInstituicao(Guid voluntarioId)
         {
-            if (!await _voluntarioRepository.ExisteNaInstituicao(instituicaoId))
-                NotificarErro("Voluntário não encontrado.");
+            if (!await _voluntarioRepository.ExistemOutrosVoluntariosNaInstituicao(voluntarioId, InstituicaoId))
+                NotificarErro("Não foram encontrados outros voluntários na instituição.");
+        }
+
+        private async Task ExistemOutrosAdministradoresNaInstituicao(Guid voluntarioId)
+        {
+            if (!await _voluntarioRepository.ExistemOutrosAdministradoresNaInstituicao(voluntarioId, InstituicaoId))
+                NotificarErro("Não foram encontrados outros administradores na instituição.");
         }
 
         private async Task<bool> VoluntarioAptoParaCadastrar(Voluntario voluntario)
         {
             await ValidarVoluntario(voluntario);
-            CertificadoValido(voluntario);
+            await VoluntarioEhUnico(voluntario);
 
             return CommandEhValido();
         }
 
-        public async Task<bool> Cadastrar(CadastrarVoluntarioViewModel cadastrarVoluntarioViewModel)
+        public async Task<bool> Cadastrar(VoluntarioViewModel voluntarioViewModel, Guid id)
         {
-            var dataByteArray = Convert.FromBase64String(cadastrarVoluntarioViewModel.Upload);
-
-            X509Certificate2 certificado;
-
-            try
-            {
-                certificado = new X509Certificate2(dataByteArray, cadastrarVoluntarioViewModel.Senha);
-            }
-            catch (CryptographicException)
-            {
-                return NotificarErro("Senha incorreta.");
-            }
-            catch (Exception)
-            {
-                return NotificarErro("Erro desconhecido. Tente novamente");
-            }
-
-            if (!certificado.Verify())
-                return NotificarErro("Certificado inválido.");
-
-            var pepper = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
-
-            var senhaCripto = Encrypt(cadastrarVoluntarioViewModel.Senha, InstituicaoId.ToString(), pepper);
-
-            var voluntario = new Voluntario(Guid.NewGuid(), InstituicaoId, cadastrarVoluntarioViewModel.EntidadeNomeNFP,
-                ExtrairNomeDoCommonName(certificado.Subject), new CnpjCpf(TipoPessoa.Fisica, 
-                ExtrairCpnjCpfDoCommonName(certificado.Subject)), ExtrairCommonName(certificado.Subject), certificado.NotBefore, 
-                certificado.NotAfter, ExtrairCommonName(certificado.Issuer), dataByteArray, senhaCripto);
+            var voluntario = new Voluntario(id, InstituicaoId, voluntarioViewModel.Nome, voluntarioViewModel.Cpf,
+                voluntarioViewModel.Email, voluntarioViewModel.Contato, voluntarioViewModel.Administrador);
 
             if (!await VoluntarioAptoParaCadastrar(voluntario))
                 return false;
-
-            if (await _voluntarioRepository.ExisteNaInstituicao(InstituicaoId))
-                await _voluntarioRepository.Excluir(InstituicaoId);
 
             await _voluntarioRepository.Cadastrar(voluntario);
 
@@ -102,108 +79,167 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
             return CommandEhValido();
         }
 
-        private string ExtrairCommonName(string texto)
+        private async Task<bool> VoluntarioAptoParaAtualizar(Voluntario voluntario)
         {
-            var split = texto.Split(',');
-            var cn = split.SingleOrDefault(cn => cn.StartsWith("CN="));
+            await ValidarVoluntario(voluntario);
+            await VoluntarioEhUnico(voluntario);
 
-            return cn?.Substring(3) ?? string.Empty;
-        }
-
-        private string ExtrairNomeDoCommonName(string texto)
-        {
-            var cn = ExtrairCommonName(texto);
-
-            if (string.IsNullOrEmpty(cn))
-                return string.Empty;
-
-            var split = cn.Split(":");
-
-            return split.FirstOrDefault();
-        }
-
-        private string ExtrairCpnjCpfDoCommonName(string texto)
-        {
-            var cn = ExtrairCommonName(texto);
-
-            if (string.IsNullOrEmpty(cn))
-                return string.Empty;
-
-            var split = cn.Split(":");
-
-            return split.LastOrDefault();
-        }
-
-        private async Task<bool> VoluntarioAptoParaExcluir(Guid instituicaoId)
-        {
-            await VoluntarioExiste(instituicaoId);
+            if (!voluntario.Administrador)
+                await ExistemOutrosAdministradoresNaInstituicao(voluntario.Id);
 
             return CommandEhValido();
         }
 
-        public async Task<bool> Excluir(Guid instituicaoId)
+        public async Task<bool> AtualizarPerfil(VoluntarioViewModel voluntarioViewModel)
         {
-            if (!await VoluntarioAptoParaExcluir(instituicaoId))
+            if (VoluntarioId != voluntarioViewModel.Id)
+                return NotificarErro("Requisição inválida.");
+
+            var voluntario = await _voluntarioRepository.ObterPorId(voluntarioViewModel.Id, InstituicaoId);
+
+            if (voluntario == null)
+                return NotificarErro("Voluntário não encontrado.");
+            
+            voluntario.AlterarNome(voluntarioViewModel.Nome);
+            voluntario.AlterarContato(voluntarioViewModel.Contato);
+            voluntario.AlterarFotoUpload(voluntarioViewModel.FotoUpload);
+            
+            if (!await VoluntarioAptoParaAtualizar(voluntario))
                 return false;
 
-            await _voluntarioRepository.Excluir(instituicaoId);
+            _voluntarioRepository.Atualizar(voluntario);
 
             await Commit();
 
             return CommandEhValido();
         }
 
-        private byte[] Encrypt(string plainText, string password, byte[] pepper)
+        public async Task<bool> Atualizar(VoluntarioViewModel voluntarioViewModel)
         {
-            byte[] salt = GenerateRandomSalt();
+            var voluntario = await _voluntarioRepository.ObterPorId(voluntarioViewModel.Id, InstituicaoId);
 
-            var key = DeriveKey(password, salt, pepper);
+            if (voluntario == null)
+                return NotificarErro("Voluntário não encontrado.");
+            
+            var eraAdministrador = voluntario.Administrador;
 
-            using (var aes = Aes.Create())
-            {
-                aes.Key = key;
-                aes.GenerateIV();
+            voluntario.AlterarAdministrador(voluntarioViewModel.Administrador);
 
-                using (var memoryStream = new MemoryStream())
-                {
-                    using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        using (var streamWriter = new StreamWriter(cryptoStream))
-                        {
-                            streamWriter.Write(plainText);
-                        }
+            if (!await VoluntarioAptoParaAtualizar(voluntario))
+                return false;
 
-                        var encryptedBytes = memoryStream.ToArray();
+            _voluntarioRepository.Atualizar(voluntario);
 
-                        var result = new byte[_saltSize + aes.IV.Length + encryptedBytes.Length];
-                        Buffer.BlockCopy(salt, 0, result, 0, _saltSize);
-                        Buffer.BlockCopy(aes.IV, 0, result, _saltSize, aes.IV.Length);
-                        Buffer.BlockCopy(encryptedBytes, 0, result, _saltSize + aes.IV.Length, encryptedBytes.Length);
+            var resultRole = true;
+            if (eraAdministrador && !voluntario.Administrador)
+                resultRole = await RemoverRoleAdministradorDoVoluntario(voluntario.Id);
 
-                        return result;
-                    }
-                }
-            }
+            if (!eraAdministrador && voluntario.Administrador)
+                resultRole = await AdicionarRoleAdministradorDoVoluntario(voluntario.Id);
+
+            if (resultRole)
+                await Commit();
+
+            return CommandEhValido();
         }
 
-        private byte[] DeriveKey(string password, byte[] salt, byte[] pepper)
+        private async Task<bool> VoluntarioAptoParaDesativar(Guid voluntarioId)
         {
-            var combinedPassword = Encoding.UTF8.GetBytes(password).Concat(pepper).ToArray();
-
-            return Rfc2898DeriveBytes.Pbkdf2(
-                combinedPassword,
-                salt,
-                iterations: 100000,
-                hashAlgorithm: HashAlgorithmName.SHA256,
-                outputLength: _keySize / 8);
+            await ExistemOutrosVoluntariosNaInstituicao(voluntarioId);
+            await ExistemOutrosAdministradoresNaInstituicao(voluntarioId);
+            
+            return CommandEhValido();
         }
 
-        private byte[] GenerateRandomSalt()
+        public async Task<bool> Desativar(Guid id)
         {
-            var salt = new byte[_saltSize];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(salt);
-            return salt;
+            var voluntario = await _voluntarioRepository.ObterPorId(id, InstituicaoId);
+
+            if (voluntario == null)
+                NotificarErro("Voluntário não encontrado.");
+
+            if (voluntario.Desativado)
+                NotificarErro("Voluntário não está ativo.");
+
+            var eraAdministrador = voluntario.Administrador;
+
+            if (!await VoluntarioAptoParaDesativar(voluntario.Id))
+                return false;
+
+            voluntario.Desativar();
+
+            _voluntarioRepository.Atualizar(voluntario);
+            
+            if (voluntario.Certificado != null)
+                _certificadoRepository.Excluir(voluntario.Certificado);
+
+            var resultRole = true;
+            if (eraAdministrador)
+                resultRole = await RemoverRoleAdministradorDoVoluntario(voluntario.Id);
+
+            if (resultRole)
+                await Commit();
+
+            return CommandEhValido();
         }
+
+        //private async Task<bool> UsuarioAptoParaAtivar(Usuario usuario)
+        //{
+        //    return CommandEhValido();
+        //}
+
+        public async Task<bool> Ativar(Guid id)
+        {
+            var voluntario = await _voluntarioRepository.ObterPorId(id, InstituicaoId);
+
+            if (voluntario == null)
+                NotificarErro("Voluntário não encontrado.");
+
+            if (!voluntario.Desativado)
+                NotificarErro("Voluntário não está desativado.");
+
+            //if (!await UsuarioAptoParaAtivar(usuario))
+            //    return false;
+
+            voluntario.Ativar();
+
+            _voluntarioRepository.Atualizar(voluntario);
+
+            await Commit();
+
+            return CommandEhValido();
+        }
+
+        #region Identity
+        private async Task<bool> AdicionarRoleAdministradorDoVoluntario(Guid usuarioId)
+        {
+            var user = await _userManager.FindByIdAsync(usuarioId.ToString());
+
+            if (user == null)
+                return false;
+
+            var result = await _userManager.AddToRoleAsync(user, "Administrador");
+
+            if (!result.Succeeded)
+                return AdicionarErrosIdentity(result);
+
+            return true;
+        }
+
+        private async Task<bool> RemoverRoleAdministradorDoVoluntario(Guid usuarioId)
+        {
+            var user = await _userManager.FindByIdAsync(usuarioId.ToString());
+
+            if (user == null)
+                return false;
+
+            var result = await _userManager.RemoveFromRoleAsync(user, "Administrador");
+
+            if (!result.Succeeded)
+                return AdicionarErrosIdentity(result);
+
+            return true;
+        }
+        #endregion Identity
     }
 }

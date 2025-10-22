@@ -1,5 +1,9 @@
-﻿using Parametriz.AutoNFP.Core.ValueObjects;
+﻿using Parametriz.AutoNFP.Core.Enums;
+using Parametriz.AutoNFP.Core.ValueObjects;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.Core.DomainObjects;
+using Parametriz.AutoNFP.Domain.CuponsFiscais;
+using Parametriz.AutoNFP.Domain.Instituicoes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,31 +14,62 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
 {
     public class Voluntario : InstituicaoEntity
     {
-        public string EntidadeNomeNFP { get; private set; }
         public string Nome { get; private set; }
-        public CnpjCpf CnpjCpf { get; private set; }
-        public string Requerente { get; private set; }
-        public DateTime ValidoAPartirDe { get; private set; }
-        public DateTime ValidoAte { get; private set; }
-        public string Emissor { get; private set; }
-        public byte[] Upload { get; private set; }
-        public byte[] Senha { get; private set; }
+        public CnpjCpf Cpf { get; private set; }
+        public Email Email { get; private set; }
+        public string Contato { get; private set; }
+        public string FotoUpload { get; private set; }
+        public bool Administrador { get; private set; }
+        public bool Desativado { get; private set; }
 
-        public Voluntario(Guid id, Guid instituicaoId, string entidadeNomeNFP, string nome, CnpjCpf cnpjCpf, string requerente, 
-            DateTime validoAPartirDe, DateTime validoAte, string emissor, byte[] upload, byte[] senha)
-                : base(id, instituicaoId)
+        public Certificado Certificado { get; private set; }
+
+        private readonly List<CupomFiscal> _cuponsFiscais;
+        public IReadOnlyCollection<CupomFiscal> CuponsFiscais => _cuponsFiscais.AsReadOnly();
+
+        public Voluntario(Guid id, Guid instituicaoId, string nome, string cpf, string email, string contato, bool administrador)
+            : base(id, instituicaoId)
         {
-            EntidadeNomeNFP = entidadeNomeNFP;
-            Nome = nome;
-            CnpjCpf = cnpjCpf;
-            Requerente = requerente;
-            ValidoAPartirDe = validoAPartirDe;
-            ValidoAte = validoAte;
-            Emissor = emissor;
-            Upload = upload;
-            Senha = senha;
+            AlterarNome(nome);
+            Cpf = new CnpjCpf(TipoPessoa.Fisica, cpf);
+            Email = new Email(email);
+            AlterarContato(contato);
+            AlterarAdministrador(administrador);
+            
+            _cuponsFiscais = [];
         }
 
         protected Voluntario() { }
+
+        public void AlterarNome(string nome)
+        {
+            Nome = nome.Trim().ToUpper();
+        }
+
+        public void AlterarContato(string contato)
+        {
+            Contato = contato;
+        }
+
+        public void AlterarFotoUpload(string fotoUpload)
+        {
+            FotoUpload = fotoUpload;
+        }
+
+        public void AlterarAdministrador(bool administrador)
+        {
+            Administrador = administrador;
+        }
+
+        public void Desativar() 
+        {
+            Administrador = false;
+            Desativado = true;  
+        }
+
+        public void Ativar()
+        {
+            Desativado = false;
+        }
     }
 }

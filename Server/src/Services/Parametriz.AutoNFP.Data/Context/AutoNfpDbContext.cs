@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
 using Parametriz.AutoNFP.Domain.Instituicoes;
-using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -23,8 +23,8 @@ namespace Parametriz.AutoNFP.Data.Context
 
         public DbSet<CupomFiscal> CuponsFiscais { get; set; }
         public DbSet<Instituicao> Instituicoes { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Voluntario> Voluntarios { get; set; }
+        public DbSet<Certificado> Certificados { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

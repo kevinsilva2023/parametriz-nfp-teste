@@ -8,21 +8,23 @@ namespace Parametriz.AutoNFP.Api.Extensions
     {
         public static VoluntarioViewModel ToViewModel(this Voluntario voluntario)
         {
-            if (voluntario == null)
-                return null;
-
             return new VoluntarioViewModel
             {
                 Id = voluntario.Id,
                 InstituicaoId = voluntario.InstituicaoId,
-                EntidadeNomeNFP = voluntario.EntidadeNomeNFP,
                 Nome = voluntario.Nome,
-                CnpjCpf = voluntario.CnpjCpf.ToViewModel(),
-                Requerente = voluntario.Requerente,
-                ValidoAPartirDe = voluntario.ValidoAPartirDe,
-                ValidoAte = voluntario.ValidoAte,
-                Emissor = voluntario.Emissor
+                Cpf = voluntario.Cpf.NumeroInscricao,
+                Email = voluntario.Email.Conta,
+                Contato = voluntario.Contato,
+                FotoUpload = voluntario.FotoUpload,
+                Administrador = voluntario.Administrador,
+                Desativado = voluntario.Desativado
             };
+        }
+
+        public static IEnumerable<VoluntarioViewModel> ToViewModel(this IEnumerable<Voluntario> usuarios)
+        {
+            return usuarios.Select(u => u.ToViewModel());
         }
     }
 }
