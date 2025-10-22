@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Parametriz.AutoNFP.Api.Application.Certificados.Services;
 using Parametriz.AutoNFP.Api.Application.Identidade.Services;
 using Parametriz.AutoNFP.Api.Extensions.Core;
 using Parametriz.AutoNFP.Api.Models.User;
@@ -7,6 +8,7 @@ using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Data.Migrations;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 
@@ -16,16 +18,19 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
     {
         private readonly IVoluntarioRepository _voluntarioRepository;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ICertificadoRepository _certificadoRepository;
 
         public VoluntarioService(IAspNetUser user,
                                  IUnitOfWork uow,
                                  Notificador notificador,
                                  UserManager<IdentityUser> userManager,
-                                 IVoluntarioRepository voluntarioRepository)
+                                 IVoluntarioRepository voluntarioRepository,
+                                 ICertificadoRepository certificadoRepository)
             : base(user, uow, notificador)
         {
             _voluntarioRepository = voluntarioRepository;
             _userManager = userManager;
+            _certificadoRepository = certificadoRepository;
         }
 
         private async Task ValidarVoluntario(Voluntario voluntario)
@@ -59,9 +64,9 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
             return CommandEhValido();
         }
 
-        public async Task<bool> Cadastrar(VoluntarioViewModel voluntarioViewModel, Guid voluntarioId)
+        public async Task<bool> Cadastrar(VoluntarioViewModel voluntarioViewModel, Guid id)
         {
-            var voluntario = new Voluntario(voluntarioId, InstituicaoId, voluntarioViewModel.Nome, voluntarioViewModel.Cpf,
+            var voluntario = new Voluntario(id, InstituicaoId, voluntarioViewModel.Nome, voluntarioViewModel.Cpf,
                 voluntarioViewModel.Email, voluntarioViewModel.Contato, voluntarioViewModel.Administrador);
 
             if (!await VoluntarioAptoParaCadastrar(voluntario))
@@ -94,7 +99,7 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
 
             if (voluntario == null)
                 return NotificarErro("Voluntário não encontrado.");
-
+            
             voluntario.AlterarNome(voluntarioViewModel.Nome);
             voluntario.AlterarContato(voluntarioViewModel.Contato);
             voluntario.AlterarFotoUpload(voluntarioViewModel.FotoUpload);
@@ -164,6 +169,9 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
             voluntario.Desativar();
 
             _voluntarioRepository.Atualizar(voluntario);
+            
+            if (voluntario.Certificado != null)
+                _certificadoRepository.Excluir(voluntario.Certificado);
 
             var resultRole = true;
             if (eraAdministrador)
@@ -203,8 +211,6 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
         }
 
         #region Identity
-
-
         private async Task<bool> AdicionarRoleAdministradorDoVoluntario(Guid usuarioId)
         {
             var user = await _userManager.FindByIdAsync(usuarioId.ToString());

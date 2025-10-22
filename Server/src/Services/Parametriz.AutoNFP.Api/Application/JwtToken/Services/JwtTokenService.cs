@@ -8,6 +8,7 @@ using Parametriz.AutoNFP.Api.Configs;
 using Parametriz.AutoNFP.Api.Data;
 using Parametriz.AutoNFP.Api.Models;
 using Parametriz.AutoNFP.Api.ViewModels.Identidade;
+using Parametriz.AutoNFP.Data.Migrations;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System.IdentityModel.Tokens.Jwt;
@@ -53,7 +54,17 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             await IncluirClaimsUsuario();
             IncluirJwtClaims();
             
-            return await GerarLoginResponse(instituicao, usuario);
+            return await GerarLoginResponse(instituicao, usuario, token);
+        }
+
+        public async Task<LoginResponseViewModel> ObterParametrizLoginReponse(IdentityUser user)
+        {
+            _user = user;
+            await IncluirRolesUsuario();
+            await IncluirClaimsUsuario();
+            IncluirJwtClaims();
+
+            return GerarParametrizLoginResponse();
         }
 
         private async Task IncluirRolesUsuario()
@@ -84,7 +95,8 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
             _identityClaims.AddClaims(_jwtClaims);
         }
 
-        private async Task<LoginResponseViewModel> GerarLoginResponse(Instituicao instituicao, Voluntario usuario, RefreshToken token = null)
+        private async Task<LoginResponseViewModel> GerarLoginResponse(Instituicao instituicao, Voluntario usuario, 
+            RefreshToken token = null)
         {
             var refreshToken = token ?? await GerarRefreshToken(instituicao.Id);
 
@@ -110,6 +122,24 @@ namespace Parametriz.AutoNFP.Api.Application.JwtToken.Services
                     Token = refreshToken.Token,
                     ExpirationDate = ToUnixEpochDate(refreshToken.ExpirationDate).ToString()
                 }
+            };
+        }
+
+        private LoginResponseViewModel GerarParametrizLoginResponse()
+        {
+            return new LoginResponseViewModel
+            {
+                AccessToken = GerarJwtToken(),
+                ExpiresIn = TimeSpan.FromHours(_appJwtConfig.Expiration).TotalSeconds,
+                UserToken = new TokenUsuarioViewModel
+                {
+                    Id = Guid.Parse(_user.Id),
+                    Email = _user.Email,
+                    Nome = _user.Email,
+                    Instituicao = null,
+                    Claims = _userClaims.Select(c => new TokenUsuarioClaimViewModel { Type = c.Type, Value = c.Value }).ToList()
+                },
+                RefreshToken = null
             };
         }
 

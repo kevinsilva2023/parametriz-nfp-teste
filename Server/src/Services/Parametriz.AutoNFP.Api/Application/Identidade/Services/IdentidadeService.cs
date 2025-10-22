@@ -23,9 +23,9 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
     public class IdentidadeService : BaseService, IIdentidadeService
     {
         private readonly IInstituicaoRepository _instituicaoRepository;
-        private readonly IVoluntarioRepository _usuarioRepository;
+        private readonly IVoluntarioRepository _voluntarioRepository;
         private readonly IInstituicaoService _instituicaoService;
-        private readonly IVoluntarioService _usuarioService;
+        private readonly IVoluntarioService _voluntarioService;
         private readonly IEmailService _emailService;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -36,9 +36,9 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                                  IUnitOfWork uow,
                                  Notificador notificador,
                                  IInstituicaoRepository instituicaoRepository,
-                                 IVoluntarioRepository usuarioRepository,
+                                 IVoluntarioRepository voluntarioRepository,
                                  IInstituicaoService instituicaoService,
-                                 IVoluntarioService usuarioService,
+                                 IVoluntarioService voluntarioService,
                                  IEmailService emailService,
                                  IJwtTokenService jwtTokenService,
                                  SignInManager<IdentityUser> signInManager,
@@ -47,9 +47,9 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             : base(user, uow, notificador)
         {
             _instituicaoRepository = instituicaoRepository;
-            _usuarioRepository = usuarioRepository;
+            _voluntarioRepository = voluntarioRepository;
             _instituicaoService = instituicaoService;
-            _usuarioService = usuarioService;
+            _voluntarioService = voluntarioService;
             _emailService = emailService;
             _jwtTokenService = jwtTokenService;
             _signInManager = signInManager;
@@ -132,7 +132,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
         }
 
         #region EmailConfirmacao
-        private async Task EnviarLinkConfirmarEmail(IdentityUser user, string usuarioNome, bool definirSenha = false)
+        private async Task EnviarLinkConfirmarEmail(IdentityUser user, string usuarioNome, bool definirSenha)
         {
             var linkConfirmacao = await GerarLinkConfirmacao(user, definirSenha);
 
@@ -288,7 +288,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             if (!await CadastrarIdentityUser(user)) 
                 return false;
 
-            user = await ObterIdentityUserPorEmail(user.Email);
+            //user = await ObterIdentityUserPorEmail(user.Email);
 
             if (!await CadastrarRoleNoUsuario(user, "Administrador"))
             {
@@ -308,7 +308,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return false;
             }
 
-            await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome);
+            await EnviarLinkConfirmarEmail(user, cadastrarInstituicaoViewModel.VoluntarioNome, definirSenha: true);
 
             return true;
         }
@@ -329,7 +329,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             }
 
             var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(enviarConfirmarEmailViewModel.UsuarioId);
-            var usuario = await _usuarioRepository.ObterPorId(enviarConfirmarEmailViewModel.UsuarioId, instituicao.Id);
+            var usuario = await _voluntarioRepository.ObterPorId(enviarConfirmarEmailViewModel.UsuarioId, instituicao.Id);
 
             if (InstituicaoId != instituicao.Id)
             {
@@ -343,7 +343,8 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return;
             }
 
-            await EnviarLinkConfirmarEmail(user, usuario.Nome, enviarConfirmarEmailViewModel.DefinirSenha);
+            if (enviarConfirmarEmailViewModel.DefinirSenha)
+                await EnviarLinkConfirmarEmail(user, usuario.Nome, enviarConfirmarEmailViewModel.DefinirSenha);
         }
 
         public async Task ConfirmarEmail(ConfirmarEmailViewModel confirmarEmailViewModel)
@@ -356,7 +357,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             }
 
             var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
-            var usuario = await _usuarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
+            var usuario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || usuario.Desativado)
             {
@@ -393,7 +394,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             }
 
             var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
-            var usuario = await _usuarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
+            var usuario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || usuario.Desativado)
             {
@@ -414,7 +415,7 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             }
 
             var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
-            var usuario = await _usuarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
+            var usuario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada || usuario.Desativado)
             {
@@ -459,8 +460,13 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return null;
             }
 
+            if (await _userManager.IsInRoleAsync(user, "Parametriz"))
+            {
+                return await _jwtTokenService.ObterParametrizLoginReponse(user);
+            }
+
             var instituicao = await _instituicaoRepository.ObterPorVoluntarioId(Guid.Parse(user.Id));
-            var usuario = await _usuarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
+            var usuario = await _voluntarioRepository.ObterPorId(Guid.Parse(user.Id), instituicao.Id);
 
             if (instituicao.Desativada)
             {
@@ -488,23 +494,23 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
             }
 
             var instituicao = await _instituicaoRepository.ObterPorId(token.InstituicaoId);
-            var usuario = await _usuarioRepository.ObterPorId(token.UsuarioId, token.InstituicaoId);
+            var usuario = await _voluntarioRepository.ObterPorId(token.UsuarioId, token.InstituicaoId);
 
             return await _jwtTokenService.ObterLoginResponse(instituicao, usuario, token);
         }
 
 
         #region Usuarios
-        public async Task<bool> CadastrarUsuario(VoluntarioViewModel usuarioViewModel)
+        public async Task<bool> CadastrarVoluntario(VoluntarioViewModel voluntarioViewModel)
         {
-            var user = new IdentityUser { UserName = usuarioViewModel.Email, Email = usuarioViewModel.Email };
+            var user = new IdentityUser { UserName = voluntarioViewModel.Email, Email = voluntarioViewModel.Email };
 
             if (!await CadastrarIdentityUser(user))
                 return false;
 
-            user = await ObterIdentityUserPorEmail(user.Email);
+            //user = await ObterIdentityUserPorEmail(user.Email);
 
-            if (usuarioViewModel.Administrador)
+            if (voluntarioViewModel.Administrador)
             {
                 if (!await CadastrarRoleNoUsuario(user, "Administrador"))
                     return false;
@@ -516,13 +522,13 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return false;
             }
 
-            if (!await _usuarioService.Cadastrar(usuarioViewModel, Guid.Parse(user.Id)))
+            if (!await _voluntarioService.Cadastrar(voluntarioViewModel, Guid.Parse(user.Id)))
             {
                 await _userManager.DeleteAsync(user);
                 return false;
             }
 
-            await EnviarLinkConfirmarEmail(user, usuarioViewModel.Nome.Trim().ToUpper(), definirSenha: true);
+            await EnviarLinkConfirmarEmail(user, voluntarioViewModel.Nome.Trim().ToUpper(), definirSenha: true);
 
             return true;
         }

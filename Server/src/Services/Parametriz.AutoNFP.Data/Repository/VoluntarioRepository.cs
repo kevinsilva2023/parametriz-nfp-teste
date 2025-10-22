@@ -42,6 +42,15 @@ namespace Parametriz.AutoNFP.Data.Repository
                                u.Administrador);    
         }
 
+        public override async Task<Voluntario> ObterPorId(Guid id, Guid instituicaoId)
+        {
+            return await _context.Voluntarios
+                .Include(p => p.Certificado)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(v => v.InstituicaoId == instituicaoId &&
+                                           v.Id == id);            
+        }
+
         public async Task<IEnumerable<Voluntario>> ObterPorFiltros(Guid instituicaoId, string nome = "", string email = "",
             BoolTresEstados administrador = BoolTresEstados.Ambos, BoolTresEstados desativado = BoolTresEstados.Falso)
         {

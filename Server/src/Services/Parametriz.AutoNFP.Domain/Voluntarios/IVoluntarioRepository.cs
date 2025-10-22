@@ -11,7 +11,6 @@ namespace Parametriz.AutoNFP.Domain.Usuarios
 {
     public interface IVoluntarioRepository : IInstituicaoEntityRepository<Voluntario>
     {
-        
         Task<bool> ExistemOutrosVoluntariosNaInstituicao(Guid id, Guid instituicaoId);
         Task<bool> ExistemOutrosAdministradoresNaInstituicao(Guid id, Guid instituicaoId);
         Task<IEnumerable<Voluntario>> ObterPorFiltros(Guid instituicaoId, string nome = "", string email = "", 

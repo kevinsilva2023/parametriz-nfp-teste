@@ -74,7 +74,7 @@ namespace Parametriz.AutoNFP.Api.Controllers
             if (!ModelStateValida())
                 return CustomResponse(voluntarioViewModel);
 
-            await _identidadeService.CadastrarUsuario(voluntarioViewModel);
+            await _identidadeService.CadastrarVoluntario(voluntarioViewModel);
 
             return CustomResponse(voluntarioViewModel);
         }
