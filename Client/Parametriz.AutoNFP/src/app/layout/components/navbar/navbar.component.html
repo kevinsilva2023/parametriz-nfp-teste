@@ -1,4 +1,4 @@
-<header class="header-flutuante mb-3">
+<header class="header-flutuante">
   <div class="titulo-pagina">
     <div class="fw-medium fs-5">{{ tituloPagina }}</div>
     <div class="d-flex gap-2 fs-small">
@@ -6,6 +6,12 @@
       >
       <span>{{ tituloPagina }}</span>
     </div>
+  </div>
+
+  <div class="text-center fs-6 bg-primary-blur bg-primary border border-1 px-5 py-2 rounded-pill text-white">
+    <span class="fw-bolder">RAZÃO SOCIAL:</span> {{ razaoSocialInstituicao }} 
+    <span class="mx-2">-</span>
+    <span class="fw-bolder"> CNPJ:</span> {{ cnpj | cnpj }}
   </div>
 
   <div class="d-flex align-items-center gap-4">
@@ -18,9 +24,9 @@
         <span class="mb-1">{{ usuario.nome | titlecase }}</span>
         <span class="text-secondary fs-small">{{ claimAdmin }}</span>
       </div>
-      
+
       <div class="avatar-wrapper">
-        <img *ngIf="fotoUpload" [src]="fotoUpload" lt="Avatar do usuário"class="rounded-circle avatar-img">
+        <img *ngIf="fotoUpload" [src]="fotoUpload" lt="Avatar do usuário" class="rounded-circle avatar-img">
         <i *ngIf="!fotoUpload" class="fa-solid fa-user text-white bg-primary-light p-4"></i>
       </div>
     </div>

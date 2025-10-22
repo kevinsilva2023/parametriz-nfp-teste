@@ -13,38 +13,32 @@ import { filter } from 'rxjs';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent implements OnInit {
-  razaoSocialInstituicao!: string;
-  cnpj!: string;
-  tituloPagina = 'Dashboard';
+
+  tituloPagina!: string;
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute) { }
 
-
   ngOnInit(): void {
-    this.obterInsituicao();
-    this.ouvirMudancaDeRota();
+    this.defineRota(); 
+    this.onRotaAlterada();
   }
-
-  obterInsituicao() {
-    var result = LocalStorageUtils.obterUsuario();
-    this.razaoSocialInstituicao = result.instituicao.razaoSocial;
-    this.cnpj = result.instituicao.cnpj;
-  }
-
-  ouvirMudancaDeRota() {
+  
+  onRotaAlterada() {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        const rotaAtiva = this.obterRotaMaisProfunda(this.activatedRoute);
-        this.tituloPagina = rotaAtiva.snapshot.data['titulo'] || 'Dashboard';
+        this.defineRota();
       });
   }
 
-  private obterRotaMaisProfunda(route: ActivatedRoute): ActivatedRoute {
-    while (route.firstChild) {
-      route = route.firstChild;
+  defineRota() {
+    let rota = this.activatedRoute;
+
+    while (rota.firstChild) {
+      rota = rota.firstChild;
     }
-    return route;
+
+    this.tituloPagina = rota.snapshot.data['titulo'];
   }
 }
