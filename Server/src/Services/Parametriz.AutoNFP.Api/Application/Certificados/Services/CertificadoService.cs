@@ -37,7 +37,6 @@ namespace Parametriz.AutoNFP.Api.Application.Certificados.Services
         private async Task ValidarCertificado(Certificado certificado)
         {
             await ValidarEntidade(new CertificadoValidation(), certificado);
-            await ValidarEntidade(new CnpjCpfObrigatorioValidation(), certificado.Cpf);
         }
 
         private void CertificadoValido(Certificado certificado)
@@ -52,11 +51,20 @@ namespace Parametriz.AutoNFP.Api.Application.Certificados.Services
                 NotificarErro("Certificado não encontrado.");
         }
 
+        private async Task VoluntarioCpfIgualAoCertificado(Certificado certificado)
+        {
+            //ToDo:
+            //ExtrairCpnjCpfDoCommonName(certificado.Subject),
+
+            await Task.CompletedTask;
+        }
+
         private async Task<bool> CertificadoAptoParaCadastrar(Certificado certificado)
         {
             await ValidarCertificado(certificado);
             CertificadoValido(certificado);
-
+            await VoluntarioCpfIgualAoCertificado(certificado);
+            
             return CommandEhValido();
         }
 
@@ -86,10 +94,9 @@ namespace Parametriz.AutoNFP.Api.Application.Certificados.Services
 
             var senhaCripto = Encrypt(cadastrarCertificadoViewModel.Senha, VoluntarioId.ToString(), pepper);
 
-            var certificado = new Certificado(Guid.NewGuid(), VoluntarioId, ExtrairNomeDoCommonName(certificadoDigital.Subject), 
-                new CnpjCpf(TipoPessoa.Fisica, ExtrairCpnjCpfDoCommonName(certificadoDigital.Subject)), 
-                ExtrairCommonName(certificadoDigital.Subject),  certificadoDigital.NotBefore, certificadoDigital.NotAfter, 
-                ExtrairCommonName(certificadoDigital.Issuer), dataByteArray, senhaCripto);
+            var certificado = new Certificado(Guid.NewGuid(), VoluntarioId, ExtrairCommonName(certificadoDigital.Subject),  
+                certificadoDigital.NotBefore, certificadoDigital.NotAfter,  ExtrairCommonName(certificadoDigital.Issuer), 
+                dataByteArray, senhaCripto);
 
             if (!await CertificadoAptoParaCadastrar(certificado))
                 return false;

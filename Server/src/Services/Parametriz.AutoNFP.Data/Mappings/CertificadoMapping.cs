@@ -21,20 +21,6 @@ namespace Parametriz.AutoNFP.Data.Mappings
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
-            builder.Property(p => p.Nome)
-                .HasMaxLength(256)
-                .IsRequired();
-
-            builder.OwnsOne(p => p.Cpf, c =>
-            {
-                c.Ignore(i => i.TipoPessoa);
-
-                c.Property(p => p.NumeroInscricao)
-                    .HasMaxLength(14)
-                    .HasColumnName("Cpf")
-                    .IsRequired();
-            });
-
             builder.Property(p => p.Requerente)
                 .HasMaxLength(256)
                 .IsRequired();

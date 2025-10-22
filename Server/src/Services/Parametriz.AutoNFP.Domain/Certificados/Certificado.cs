@@ -13,8 +13,6 @@ namespace Parametriz.AutoNFP.Domain.Certificados
     public class Certificado : Entity
     {
         public Guid VoluntarioId { get; set; }
-        public string Nome { get; private set; }
-        public CnpjCpf Cpf { get; private set; }
         public string Requerente { get; private set; }
         public DateTime ValidoAPartirDe { get; private set; }
         public DateTime ValidoAte { get; private set; }
@@ -24,13 +22,11 @@ namespace Parametriz.AutoNFP.Domain.Certificados
 
         public Voluntario Voluntario { get; private set; }
 
-        public Certificado(Guid id, Guid voluntarioId, string nome, CnpjCpf cnpjCpf, string requerente, 
+        public Certificado(Guid id, Guid voluntarioId, string requerente, 
             DateTime validoAPartirDe, DateTime validoAte, string emissor, byte[] upload, byte[] senha)
                 : base(id)
         {
             VoluntarioId = voluntarioId;
-            Nome = nome;
-            Cpf = cnpjCpf;
             Requerente = requerente;
             ValidoAPartirDe = validoAPartirDe;
             ValidoAte = validoAte;

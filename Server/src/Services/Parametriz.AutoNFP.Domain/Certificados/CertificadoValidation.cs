@@ -11,23 +11,11 @@ namespace Parametriz.AutoNFP.Domain.Certificados
     {
         public CertificadoValidation()
         {
-            ValidarNome();
             ValidarRequerente();
             ValidarValidade();
             ValidarEmissor();
             ValidarUpload();
             ValidarSenha();
-        }
-
-        private void ValidarNome()
-        {
-            RuleFor(p => p.Nome)
-                .NotEmpty()
-                    .WithMessage("Favor preencher o nome.");
-
-            RuleFor(p => p.Nome)
-                .MaximumLength(256)
-                    .WithMessage("Nome deve ser preenchido com no máximo {MaxLength} caracteres.");
         }
 
         private void ValidarRequerente()
@@ -36,7 +24,7 @@ namespace Parametriz.AutoNFP.Domain.Certificados
                .NotEmpty()
                    .WithMessage("Favor preencher o requerente.");
 
-            RuleFor(p => p.Nome)
+            RuleFor(p => p.Requerente)
                 .MaximumLength(256)
                     .WithMessage("Requerente deve ser preenchido com no máximo {MaxLength} caracteres.");
         }

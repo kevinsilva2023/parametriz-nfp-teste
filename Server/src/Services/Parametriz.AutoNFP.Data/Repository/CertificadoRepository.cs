@@ -24,7 +24,7 @@ namespace Parametriz.AutoNFP.Data.Repository
                 .Include(p => p.Voluntario)
                 .AnyAsync(c => c.Voluntario.InstituicaoId == certificado.Voluntario.InstituicaoId &&
                                c.Id != certificado.Id &&
-                               c.Cpf.NumeroInscricao == certificado.Cpf.NumeroInscricao);
+                               c.Requerente == certificado.Requerente);
         }
 
         public Certificado ObterPorVoluntarioId(Guid voluntarioId)

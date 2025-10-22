@@ -7,9 +7,6 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Certificados
     {
         public Guid Id { get; set; }
         public Guid VoluntarioId { get; set; }
-        
-        public string Nome { get; set; }
-        public string Cpf { get; set; }
         public string Requerente { get; set; }
         public DateTime ValidoAPartirDe { get; set; }
         public DateTime ValidoAte { get; set; }
