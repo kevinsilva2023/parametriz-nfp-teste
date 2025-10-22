@@ -18,13 +18,17 @@ export class NavbarComponent implements OnInit {
   fotoUpload!: any;
   claimAdmin!: string;
 
+  razaoSocialInstituicao!: string;
+  cnpj!: string;
+
   constructor(
     private perfilService: PerfilService,
-    private autorizacaoService: AutorizacaoService    
+    private autorizacaoService: AutorizacaoService
   ) { }
 
   ngOnInit(): void {
     this.preencherUsuarioAtivo();
+    this.obterInsituicao();
   }
 
   preencherUsuarioAtivo() {
@@ -41,4 +45,13 @@ export class NavbarComponent implements OnInit {
       error: (err) => console.log(err)
     });
   }
+
+  
+  obterInsituicao() {
+    var result = LocalStorageUtils.obterUsuario();
+    this.razaoSocialInstituicao = result.instituicao.razaoSocial;
+    this.cnpj = result.instituicao.cnpj;
+  }
+  
+
 }

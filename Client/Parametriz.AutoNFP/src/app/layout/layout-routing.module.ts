@@ -5,7 +5,7 @@ import { PerfilComponent } from '../perfil/perfil.component';
 
 const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: 'cupom-fiscal', pathMatch: 'full' },
     { 
       path: 'configuracoes', 
       loadChildren: () => import('../configuracoes/configuracoes.module')
