@@ -23,6 +23,7 @@ namespace Parametriz.AutoNFP.Api.Configs
             var autoNfpIdentityDbContext = scope.ServiceProvider.GetRequiredService<AutoNfpIdentityDbContext>();
 
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
             await DbHealthChecker.TestConnection(autoNfpIdentityDbContext);
 
@@ -31,6 +32,16 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             await roleManager.CreateAsync(new IdentityRole("Administrador"));
             await roleManager.CreateAsync(new IdentityRole("Parametriz"));
+
+            var parametrizUser = new IdentityUser()
+            {
+                UserName = "suporte@parametriz.com.br",
+                Email = "suporte@parametriz.com.br",
+                EmailConfirmed = true
+            };
+
+            await userManager.CreateAsync(parametrizUser, "Parametriz@1314");
+            await userManager.AddToRoleAsync(parametrizUser, "Parametriz");
         }
 
         private static async Task EnsureSeedDataAutoNfpDbContext(IServiceScope scope, IWebHostEnvironment env)
