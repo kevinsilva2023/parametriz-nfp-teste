@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 import { MyCustomValidators } from 'src/app/shared/validators/my-custom-validators';
-import { debounceTime, Subject } from 'rxjs';
 import { InputUtils } from 'src/app/shared/utils/input-utils';
+import { CadastrarInstituicao } from '../../models/cadastrar-instituicao';
 
 @Component({
   selector: 'app-registrar',
@@ -18,12 +18,11 @@ import { InputUtils } from 'src/app/shared/utils/input-utils';
 export class RegistrarComponent extends BaseFormComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
 
-  registerForm!: FormGroup;
+  registrarForm!: FormGroup;
   errors: any[] = [];
-  // instituicao!: Instituicao
+  instituicao!: CadastrarInstituicao;
 
   inputUtils = InputUtils;
-  debounceCnpj = new Subject<string>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,8 +33,43 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
 
     this.validationMessages = {
       cnpj: {
-        required: 'Favor preencher o CNPJ.',
         cnpj: 'O CNPJ informado é inválido.'
+      },
+      razaoSocial: {
+        required: 'Razão Social é obrigatório.'
+      },
+      entidadeNomeNFP: {
+        required: 'Nome da Entidade é obrigatório.'
+      },
+      logradouro: {
+        required: 'Logradouro é obrigatório.'
+      },
+      numero: {
+        required: 'Número é obrigatório.'
+      },
+      bairro: {
+        required: 'Bairro é obrigatório.'
+      },
+      cep: {
+        required: 'CEP é obrigatório.'
+      },
+      municipio: {
+        required: 'Município é obrigatório.'
+      },
+      uf: {
+        required: 'UF é obrigatório.'
+      },
+      voluntarioNome: {
+        required: 'Nome do Voluntário é obrigatório.'
+      },
+      cpf: {
+        required: 'CPF é obrigatório.'
+      },
+      email: {
+        required: 'E-mail é obrigatório.'
+      },
+      contato: {
+        required: 'Contato é obrigatório.'
       }
     };
 
@@ -45,7 +79,7 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
   }
 
   ngOnInit(): void {
-    this.registerForm = this.formBuilder.group({
+    this.registrarForm = this.formBuilder.group({
       cnpj: [null, [Validators.required, MyCustomValidators.cnpj]],
       razaoSocial: [null, Validators.required],
       entidadeNomeNFP: [null, Validators.required],
@@ -63,55 +97,63 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
       email: [null, Validators.required],
       contato: [null, Validators.required],
     });
-
-    this.debounceCnpj
-      .pipe(debounceTime(2000))
-      .subscribe({
-        next: (cnpj: string) => {
-          this.obterCnpj(cnpj)
-        }
-      });
   }
 
   obterCnpj(cnpj: string) {
     this.identidadeService.obterDadosCnpj(cnpj)
       .subscribe({
-        next: (response) => console.log(response),
-        error: (err) => console.log(err)
+        next: (response) => this.preencherForm(response),
       })
   }
 
   ngAfterViewInit(): void {
-    super.configurarValidacaoFormularioBase(this.formInputElements, this.registerForm);
+    super.configurarValidacaoFormularioBase(this.formInputElements, this.registrarForm);
   }
 
-  // efetuarRegistro() {
-  //   super.validarFormulario(this.registerForm)
+  preencherForm(dados: any) {
+    if (!dados) return;
 
-  //   if (this.registerForm.dirty && this.registerForm.valid) {
+    this.registrarForm.patchValue({
+      razaoSocial: dados.nome,
+      endereco: {
+        logradouro: dados.logradouro,
+        numero: dados.numero,
+        complemento: dados.complemento,
+        bairro: dados.bairro,
+        cep: dados.cep,
+        municipio: dados.municipio,
+        uf: dados.uf
+      },
+    });
+  }
 
-  //     this.instituicao = Object.assign({}, this.instituicao, this.registerForm.value);
+  efetuarRegistro() {
+    super.validarFormulario(this.registrarForm)
 
-  //     this.identidadeService.registrar(this.instituicao)
-  //       .subscribe({
-  //         next: () => { this.processarSucesso(); },
-  //         error: (falha: any) => { this.processarErro(falha); }
-  //       });
-  //   }
-  // }
+    if (this.registrarForm.dirty && this.registrarForm.valid) {
 
-  // processarSucesso() {
-  //   this.registerForm.reset();
-  //   this.limparErros();
+      this.instituicao = Object.assign({}, this.instituicao, this.registrarForm.value);
 
-  //   let email = this.instituicao.email;
-  //   let usuario = this.instituicao.usuarioNome;
+      this.identidadeService.registrar(this.instituicao)
+        .subscribe({
+          next: () => { this.processarSucesso(); },
+          error: (falha: any) => { this.processarErro(falha); }
+        });
+    }
+  }
 
-  //   this.router.navigate(
-  //     ['/confirmar-email-enviado'],
-  //     { queryParams: { email, usuario } }
-  //   );
-  // }
+  processarSucesso() {
+    this.registrarForm.reset();
+    this.limparErros();
+
+    let email = this.instituicao.email;
+    let usuario = this.instituicao.voluntarioNome;
+
+    this.router.navigate(
+      ['/confirmar-email-enviado'],
+      { queryParams: { email, usuario } }
+    );
+  }
 
   processarErro(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;

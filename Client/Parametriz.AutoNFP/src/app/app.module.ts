@@ -38,6 +38,7 @@ import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '
 import { PerfilComponent } from './perfil/perfil.component';
 import { PerfilService } from './services/perfil.service';
 import { CnpjPipe } from './shared/pipe/cnpj.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import { CnpjPipe } from './shared/pipe/cnpj.pipe';
     NgbModalModule,
     NgbAlertModule,
     CnpjPipe,
+    MatTooltipModule
   ],
   providers: [
     IdentidadeService,

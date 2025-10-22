@@ -109,23 +109,23 @@ input {
   width: 20%;
 }
 
-.card-form {
-  opacity: 0;
-  transform: translateX(50px);
-  animation: slideInRight 0.8s ease-out forwards;
-}
+// .card-form {
+//   opacity: 0;
+//   transform: translateX(50px);
+//   animation: slideInRight 0.8s ease-out forwards;
+// }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
+// @keyframes slideInRight {
+//   from {
+//     opacity: 0;
+//     transform: translateX(50px);
+//   }
 
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+//   to {
+//     opacity: 1;
+//     transform: translateX(0);
+//   }
+// }
 
 .lista-requisitos {
   list-style: none;

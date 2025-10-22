@@ -8,6 +8,7 @@ import { ConfirmarEmail } from '../models/confirmar-email';
 import { EnviarDefinirSenha } from '../models/enviar-definir-senha';
 import { DefinirSenha } from '../models/definir-senha';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
+import { CadastrarInstituicao } from '../models/cadastrar-instituicao';
 // import { Instituicao } from '../models/cadastrar-instituicao';
 
 @Injectable()
@@ -21,13 +22,13 @@ export class IdentidadeService extends BaseService {
         catchError(super.serviceError));
   }
 
-  // registrar(instituicao: Instituicao): Observable<any> {
-  //   return this.httpClient
-  //     .post(`${this.apiUrl}/identidade/cadastrar-instituicao`, instituicao, { headers: super.ObterAuthHeaderJson() })
-  //     .pipe(
-  //       map(this.extractData),
-  //       catchError(this.serviceError));
-  // }
+  registrar(instituicao: CadastrarInstituicao): Observable<any> {
+    return this.httpClient
+      .post(`${this.apiUrl}/identidade/cadastrar-instituicao`, instituicao, { headers: super.ObterAuthHeaderJson() })
+      .pipe(
+        map(this.extractData),
+        catchError(this.serviceError));
+  }
 
   enviarConfirmarEmail(enviarConfirmarEmail: EnviarConfirmarEmail): Observable<EnviarConfirmarEmail> {
     return this.httpClient
