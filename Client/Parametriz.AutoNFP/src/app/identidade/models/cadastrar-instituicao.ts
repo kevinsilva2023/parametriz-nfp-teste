@@ -1,13 +1,12 @@
-export interface CadastrarInstituicao {
-  razaoSocial: string,
-  cnpj: string,
-  entidadeNomeNFP: string,
-  endereco: Endereco,
-  cpf: string,
-  email: string,
-  contato: string,
-}
+import { Endereco } from "src/app/shared/models/endereco";
 
-interface Endereco {
-
+export class CadastrarInstituicao {
+  cnpj!: string;
+  razaoSocial!: string;
+  entidadeNomeNFP!: string;
+  endereco!: Endereco;
+  voluntarioNome!: string;
+  cpf!: string;
+  email!: string;
+  contato!: string;
 }

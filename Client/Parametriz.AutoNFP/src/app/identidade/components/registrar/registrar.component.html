@@ -1,7 +1,7 @@
 <section class="identidade">
   <app-fundo-animado></app-fundo-animado>
 
-  <div class="card-form animation-right overflow-hidden">
+  <div class="card-form animation-right overflow-hidden" style="max-width: 1080px !important; overflow: auto !important;">
     <div class="d-flex flex-column justify-content-center gap-4 p-5">
       <h1 class="fs-1 text-primary fw-bolder text-center">Registrar</h1>
 
@@ -21,9 +21,112 @@
           <mat-label>
             <i class="fa-solid fa-id-card me-2"></i>CNPJ
           </mat-label>
-          <input matInput formControlName="cnpj" type="text" placeholder="00.000.000/0000-00" maxlength="17" 
-                (keyup)="debounceCnpj.next(inputUtils.getInputValue($event))">
+          <input matInput formControlName="cnpj" type="text" placeholder="00.000.000/0000-00" maxlength="17"
+            (keyup)="debounceCnpj.next(inputUtils.getInputValue($event))">
           <mat-error *ngIf="displayMessage['cnpj']" [innerHtml]="displayMessage['cnpj']"> </mat-error>
+        </mat-form-field>
+
+        <hr>
+
+        <!-- Instituicao -->
+
+        <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['razaoSocial']}">
+          <mat-label>
+            <i class="fa-solid fa-id-card me-2"></i>razaoSocial
+          </mat-label>
+          <input matInput formControlName="razaoSocial" type="text">
+          <mat-error *ngIf="displayMessage['razaoSocial']" [innerHtml]="displayMessage['razaoSocial']"> </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['nomeEntidadeNFP']}">
+          <mat-label>
+            <i class="fa-solid fa-id-card me-2"></i>nomeEntidadeNFP
+          </mat-label>
+          <input matInput formControlName="nomeEntidadeNFP" type="text">
+          <mat-error *ngIf="displayMessage['nomeEntidadeNFP']" [innerHtml]="displayMessage['nomeEntidadeNFP']"> </mat-error>
+        </mat-form-field>
+
+        <hr>
+        <!-- Endereço -->
+
+        <div formGroupName="endereco">
+          <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['logradouro']}">
+            <mat-label>
+              <i class="fa-solid fa-id-card me-2"></i>logradouro
+            </mat-label>
+            <input matInput formControlName="logradouro" type="text">
+            <mat-error *ngIf="displayMessage['logradouro']" [innerHtml]="displayMessage['logradouro']"> </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['numero']}">
+            <mat-label>
+              <i class="fa-solid fa-id-card me-2"></i>numero
+            </mat-label>
+            <input matInput formControlName="numero" type="text">
+            <mat-error *ngIf="displayMessage['numero']" [innerHtml]="displayMessage['numero']"> </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['complemento']}">
+            <mat-label>
+              <i class="fa-solid fa-id-card me-2"></i>complemento
+            </mat-label>
+            <input matInput formControlName="complemento" type="text">
+            <mat-error *ngIf="displayMessage['complemento']" [innerHtml]="displayMessage['complemento']"> </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['bairro']}">
+            <mat-label>
+              <i class="fa-solid fa-id-card me-2"></i>bairro
+            </mat-label>
+            <input matInput formControlName="bairro" type="text">
+            <mat-error *ngIf="displayMessage['bairro']" [innerHtml]="displayMessage['bairro']"> </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['cep']}">
+            <mat-label>
+              <i class="fa-solid fa-id-card me-2"></i>cep
+            </mat-label>
+            <input matInput formControlName="cep" type="text">
+            <mat-error *ngIf="displayMessage['cep']" [innerHtml]="displayMessage['cep']"> </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['municipio']}">
+            <mat-label>
+              <i class="fa-solid fa-id-card me-2"></i>municipio
+            </mat-label>
+            <input matInput formControlName="municipio" type="text">
+            <mat-error *ngIf="displayMessage['municipio']" [innerHtml]="displayMessage['municipio']"> </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['uf']}">
+            <mat-label>
+              <i class="fa-solid fa-id-card me-2"></i>uf
+            </mat-label>
+            <input matInput formControlName="uf" type="text">
+            <mat-error *ngIf="displayMessage['uf']" [innerHtml]="displayMessage['uf']"> </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Voluntario -->
+
+        <hr>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['cpf']}">
+          <mat-label>
+            <i class="fa-solid fa-id-card me-2"></i>cpf
+          </mat-label>
+          <input matInput formControlName="cpf" type="text">
+          <mat-error *ngIf="displayMessage['cpf']" [innerHtml]="displayMessage['cpf']"> </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['email']}">
+          <mat-label>
+            <i class="fa-solid fa-id-card me-2"></i>email
+          </mat-label>
+          <input matInput formControlName="email" type="text">
+          <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"> </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2" [ngClass]="{'has-error': displayMessage['contato']}">
+          <mat-label>
+            <i class="fa-solid fa-id-card me-2"></i>contato
+          </mat-label>
+          <input matInput formControlName="contato" type="text">
+          <mat-error *ngIf="displayMessage['contato']" [innerHtml]="displayMessage['contato']"> </mat-error>
         </mat-form-field>
 
         <button type="submit" class="btn btn-primary rounded-5 p-3 mb-2 mt-4">

@@ -46,10 +46,22 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      cnpj: [null, [
-        Validators.required,
-        MyCustomValidators.cnpj
-      ]]
+      cnpj: [null, [Validators.required, MyCustomValidators.cnpj]],
+      razaoSocial: [null, Validators.required],
+      entidadeNomeNFP: [null, Validators.required],
+      endereco: this.formBuilder.group({
+        logradouro: [null, Validators.required],
+        numero: [null, Validators.required],
+        complemento: [null],
+        bairro: [null, Validators.required],
+        cep: [null, Validators.required],
+        municipio: [null, Validators.required],
+        uf: [null, Validators.required],
+      }),
+      voluntarioNome: [null, Validators.required],
+      cpf: [null, Validators.required],
+      email: [null, Validators.required],
+      contato: [null, Validators.required],
     });
 
     this.debounceCnpj
