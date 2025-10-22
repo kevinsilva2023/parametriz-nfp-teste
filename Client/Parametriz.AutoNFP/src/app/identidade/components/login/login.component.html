@@ -8,7 +8,7 @@
     <div class="d-flex flex-column gap-4 mb-5">
       <h1 class="fs-1 text-primary fw-bolder text-center">Login</h1>
 
-      <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <ngb-alert type="danger" (closed)="limparErros()" class="text-center " *ngIf="errors.length > 0">
         <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
         <ul>
           <li class="fs-small mt-1" *ngFor="let error of errors">
@@ -27,7 +27,7 @@
           <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"> </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="mb-3" appearance="outline" [ngClass]="{'has-error': displayMessage['senha']}">
+        <mat-form-field class="mb-1" appearance="outline" [ngClass]="{'has-error': displayMessage['senha']}">
           <mat-label>
             <i class="fa-solid fa-lock"></i>
             &nbsp;Senha
@@ -39,24 +39,19 @@
           <mat-error *ngIf="displayMessage['senha']" [innerHtml]="displayMessage['senha']"> </mat-error>
         </mat-form-field>
 
-        <div class="d-flex justify-content-between">
-          <label class="d-flex align-items-center text-primary fs-small">
-            <input type="checkbox">
-            <span class="checkmark"></span>
-            <span class="pointer">&nbsp; Lembrar de mim</span>
-          </label>
+        <div class="d-flex justify-content-between mb-3">
           <a routerLink="/esqueceu-a-senha" class="esqueceu-senha fs-small"
             [queryParams]="{ email: loginForm.get('email')?.value}">Esqueceu a senha?
           </a>
         </div>
 
-        <button type="submit" class="btn btn-primary rounded-5 p-3 mt-4 mb-2">
+        <button type="submit" class="btn btn-primary rounded-5 p-3">
           Entrar
         </button>
 
-        <p class="text-primary text-center fs-small">Não tem um conta?
-          <span routerLink="/registrar" class="fw-bolder pointer">Cadastre-se agora</span>
-        </p>
+        <!-- <p class="text-primary text-center fs-small">Não tem um conta?
+          <span routerLink="/registrar" class="fw-bolder crus">Cadastre-se agora</span>
+        </p> -->
       </form>
     </div>
   </div>

@@ -23,12 +23,13 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
 
   returnUrl: string;
 
-  constructor(private formBuilder: FormBuilder,
-              private identidadeService: IdentidadeService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private toastr: ToastrService) 
-  {
+  constructor(
+    private formBuilder: FormBuilder,
+    private identidadeService: IdentidadeService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
     super();
     
     this.validationMessages = {
@@ -89,8 +90,6 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
     
     LocalStorageUtils.salvarDadosLocaisUsuario(response);
 
-    console.log(this.returnUrl);
-
     this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/']);
 
     this.toastr.success('Login realizado com sucesso', 'Sucesso!')
@@ -100,9 +99,5 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
   processarFalha(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
     this.toastr.error('Usuário ou senha incorretos.', 'Erro de Login!');
-  }
-
-  closeAlert() {
-    this.limparErros();
   }
 }

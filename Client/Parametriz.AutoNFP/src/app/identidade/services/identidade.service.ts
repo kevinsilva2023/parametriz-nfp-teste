@@ -23,7 +23,7 @@ export class IdentidadeService extends BaseService {
 
   registrar(instituicao: Instituicao): Observable<any> {
     return this.httpClient
-      .post(`${this.apiUrl}/identidade/cadastrar-instituicao`, instituicao, { headers: this.ObterAuthHeaderJson() })
+      .post(`${this.apiUrl}/identidade/cadastrar-instituicao`, instituicao, { headers: super.ObterAuthHeaderJson() })
       .pipe (
         map(this.extractData),
         catchError(this.serviceError));
@@ -31,7 +31,7 @@ export class IdentidadeService extends BaseService {
 
   enviarConfirmarEmail(enviarConfirmarEmail: EnviarConfirmarEmail): Observable<EnviarConfirmarEmail> {
     return this.httpClient
-      .post(`${this.apiUrl}/identidade/enviar-confirmar-email`, enviarConfirmarEmail, { headers: this.ObterAuthHeaderJson() })
+      .post(`${this.apiUrl}/identidade/enviar-confirmar-email`, enviarConfirmarEmail, { headers: super.ObterAuthHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(super.serviceError));
@@ -39,7 +39,7 @@ export class IdentidadeService extends BaseService {
 
   confirmarEmail(confirmarEmail: ConfirmarEmail): Observable<ConfirmarEmail> {
     return this.httpClient
-      .post(`${this.apiUrl}/identidade/confirmar-email`, confirmarEmail, { headers: this.ObterHeaderJson() })
+      .post(`${this.apiUrl}/identidade/confirmar-email`, confirmarEmail, { headers: super.ObterHeaderJson() })
       .pipe(
         map(this.extractData),
         catchError(this.serviceError));
@@ -47,7 +47,7 @@ export class IdentidadeService extends BaseService {
 
   enviarDefinirSenha(enviarDefinirSenha: EnviarDefinirSenha): Observable<EnviarDefinirSenha> {
     return this.httpClient
-      .post(`${this.apiUrl}/identidade/enviar-definir-senha`, enviarDefinirSenha, { headers: this.ObterAuthHeaderJson() })
+      .post(`${this.apiUrl}/identidade/enviar-definir-senha`, enviarDefinirSenha, { headers: super.ObterAuthHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(this.serviceError));
@@ -55,7 +55,7 @@ export class IdentidadeService extends BaseService {
 
   definirSenha(definirSenha: DefinirSenha): Observable<DefinirSenha> {
     return this.httpClient
-      .post(`${this.apiUrl}/identidade/definir-senha`, definirSenha, { headers: this.ObterHeaderJson() })
+      .post(`${this.apiUrl}/identidade/definir-senha`, definirSenha, { headers: super.ObterHeaderJson() })
       .pipe(
         map(this.extractData),
         catchError(this.serviceError));
@@ -65,9 +65,18 @@ export class IdentidadeService extends BaseService {
     let refreshToken = `\"${LocalStorageUtils.obterRefreshToken()?.token}\"`;
 
     return this.httpClient
-      .post(`${this.apiUrl}/identidade/refresh-token`, refreshToken, { headers: this.ObterHeaderJson() })
+      .post(`${this.apiUrl}/identidade/refresh-token`, refreshToken, { headers: super.ObterHeaderJson() })
       .pipe(
         map(super.extractData),
         catchError(super.serviceError));
+  }
+
+  obterDadosCnpj(cnpj: string): Observable<Instituicao> {
+    return this.httpClient
+      .get(`https://receitaws.com.br/v1/cnpj/${cnpj}`)
+      .pipe(
+        map(super.extractData),
+        catchError(super.serviceError)
+      )
   }
 }

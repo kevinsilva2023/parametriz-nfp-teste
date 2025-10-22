@@ -20,11 +20,12 @@ export class EsqueceuASenhaComponent extends BaseFormComponent implements OnInit
   enviarDefinirSenha!: EnviarDefinirSenha;
   errors: any[] = [];
 
-  constructor(private formBuilder: FormBuilder,
-              private identidadeService: IdentidadeService,
-              private activateRoute: ActivatedRoute,
-              private router: Router,
-              private toastr: ToastrService
+  constructor(
+    private formBuilder: FormBuilder,
+    private identidadeService: IdentidadeService,
+    private activateRoute: ActivatedRoute,
+    private router: Router,
+    private toastr: ToastrService
   ) {
     super();
 
@@ -43,23 +44,21 @@ export class EsqueceuASenhaComponent extends BaseFormComponent implements OnInit
   }
 
   preencherForm() {
-    const email = this.activateRoute.snapshot.queryParamMap.get('email');
+    let email = this.activateRoute.snapshot.queryParamMap.get('email');
     if (email) {
       this.esqueceuASenhaForm.patchValue({ email });
-      this.esqueceuASenhaForm.markAsDirty(); // 
+      this.esqueceuASenhaForm.get('email')?.markAsDirty();
     }
   }
 
   enviarEmailRecuperacaoDeSenha() {
-    this.esqueceuASenhaForm.markAllAsTouched();
-
     if (this.esqueceuASenhaForm.dirty && this.esqueceuASenhaForm.valid) {
 
       this.enviarDefinirSenha = Object.assign({}, this.enviarDefinirSenha, this.esqueceuASenhaForm.value);
 
       this.identidadeService.enviarDefinirSenha(this.enviarDefinirSenha)
         .subscribe({
-          next: (sucesso: any) => { this.processarSucesso(sucesso); },
+          next: () => { this.processarSucesso(); },
           error: (falha: any) => { this.processarFalha(falha); }
         })
     }
@@ -69,19 +68,19 @@ export class EsqueceuASenhaComponent extends BaseFormComponent implements OnInit
     this.errors = [];
   }
 
-  processarSucesso(response: any) {
+  processarSucesso() {
     this.esqueceuASenhaForm.reset();
     this.limparErros();
 
     LocalStorageUtils.limparDadosLocaisUsuario();
 
-    let toast = this.toastr.success('Verifique sua caixa de entrada e siga as instruções.', 'Email enviado!');
+    this.toastr.success('Verifique sua caixa de entrada e siga as instruções.', 'Email enviado!');
     let email = this.enviarDefinirSenha.email;
 
-   this.router.navigate(
-          ['/definir-senha-enviado'],
-          { queryParams: { email }}
-        )
+   this.router
+    .navigate(['/definir-senha-enviado'], { 
+      queryParams: { email }
+    })
   }
 
   processarFalha(fail: any){

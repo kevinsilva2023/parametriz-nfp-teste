@@ -109,39 +109,6 @@ input {
   width: 20%;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
-.checkmark {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--gray-300);
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.15s ease-in-out;
-  position: relative;
-  cursor: pointer;
-}
-
-input[type="checkbox"] {
-  display: none;
-}
-
-input[type="checkbox"]:checked+.checkmark {
-  background: var(--royal-blue);
-  border-color: var(--royal-blue);
-}
-
-input[type="checkbox"]:checked+.checkmark::after {
-  content: '✓';
-  color: var(--white);
-  font-size: 12px;
-  font-weight: bold;
-}
-
 .card-form {
   opacity: 0;
   transform: translateX(50px);

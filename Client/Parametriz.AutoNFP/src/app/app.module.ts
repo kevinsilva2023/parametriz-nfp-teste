@@ -37,6 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PerfilComponent } from './perfil/perfil.component';
 import { PerfilService } from './services/perfil.service';
+import { CnpjPipe } from './shared/pipe/cnpj.pipe';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { PerfilService } from './services/perfil.service';
       progressAnimation: 'increasing',
     }),
     NgbModalModule,
-    NgbAlertModule
+    NgbAlertModule,
+    CnpjPipe,
   ],
   providers: [
     IdentidadeService,
