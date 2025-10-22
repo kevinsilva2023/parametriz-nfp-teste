@@ -9,7 +9,6 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
 {
     public class Endereco
     {
-        public string TipoLogradouro { get; private set; }
         public string Logradouro { get; private set; }
         public string Numero { get; private set; }
         public string Complemento { get; private set; }
@@ -20,10 +19,9 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
 
         protected Endereco() { }
 
-        public Endereco(string tipoLogradouro, string logradouro, string numero, string complemento,
+        public Endereco(string logradouro, string numero, string complemento,
             string bairro, string cep, string municipio, string uf)
         {
-            TipoLogradouro = tipoLogradouro;
             Logradouro = logradouro;
             Numero = numero;
             Complemento = complemento;
@@ -38,7 +36,6 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
     {
         public EnderecoValidation()
         {
-            ValidarTipoLogradouro();
             ValidarLogradouro();
             ValidarNumero();
             ValidarComplemento();
@@ -46,13 +43,6 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
             ValidarCEP();
             ValidarMunicipio();
             ValidarUF();
-        }
-
-        private void ValidarTipoLogradouro()
-        {
-            RuleFor(p => p.TipoLogradouro)
-                .NotEmpty().WithMessage("Favor preencher o tipo de logradouro.")
-                .Length(2, 15).WithMessage("O tipo de logradouro deve ser preenchido com no mínimo 2 e no máximo 15 caracteres.");
         }
 
         private void ValidarLogradouro()

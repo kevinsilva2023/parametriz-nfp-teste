@@ -38,13 +38,9 @@ namespace Parametriz.AutoNFP.Data.Mappings
 
             builder.OwnsOne(p => p.Endereco, c =>
             {
-                c.Property(p => p.TipoLogradouro)
-                    .IsRequired()
-                    .HasMaxLength(15)
-                    .HasColumnName("TipoLogradouro");
-
                 c.Property(p => p.Logradouro)
                     .HasMaxLength(100)
+                    .IsRequired()
                     .HasColumnName("Logradouro");
 
                 c.Property(p => p.Numero)
