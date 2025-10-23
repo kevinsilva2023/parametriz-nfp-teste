@@ -1,4 +1,6 @@
-﻿using Parametriz.AutoNFP.ConsoleApp.SeleniumConfig;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using Parametriz.AutoNFP.ConsoleApp.SeleniumConfig;
 using Parametriz.AutoNFP.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,19 @@ namespace Parametriz.AutoNFP.ConsoleApp.PageObjects
 
         public void PreencherChaveDeAcesso(string chave)
         {
-            Helper.PreencherTextBoxPorXPath("/html/body/form/div[4]/div[6]/div[2]/div[2]/fieldset/div[4]/fieldset/input", chave);
+            var xPath = "/html/body/form/div[4]/div[6]/div[2]/div[2]/fieldset/div[4]/fieldset/input";
+
+            Helper.ClickElementoPorXPath(xPath);
+           
+            var actions = new Actions(Helper.WebDriver);
+
+            actions
+                .KeyDown(Keys.Control)
+                .SendKeys("a")
+                .KeyUp(Keys.Control)
+                .SendKeys(Keys.Delete);
+
+            Helper.PreencherTextBoxPorXPath(xPath, chave);
         }
 
         public void ClicarEmSalvarNota()

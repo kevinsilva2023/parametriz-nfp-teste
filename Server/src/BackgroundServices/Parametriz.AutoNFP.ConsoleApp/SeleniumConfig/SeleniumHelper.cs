@@ -63,6 +63,11 @@ namespace Parametriz.AutoNFP.ConsoleApp.SeleniumConfig
             return Wait.Until(driver => driver.FindElement(By.XPath(xPath)));
         }
 
+        public void ClickElementoPorXPath(string xPath)
+        {
+            Wait.Until(driver => driver.FindElement(By.XPath(xPath))).Click();
+        }
+
         public void PreencherTextBoxPorId(string idCampo, string valorCampo)
         {
             var campo = Wait.Until(driver => driver.FindElement(By.Id(idCampo)));
