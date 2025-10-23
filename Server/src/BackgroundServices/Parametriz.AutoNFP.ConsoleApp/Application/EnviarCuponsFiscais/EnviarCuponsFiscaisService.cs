@@ -10,8 +10,11 @@ using Parametriz.AutoNFP.Core.Configs;
 using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
+using Parametriz.AutoNFP.Data.Migrations;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
 using Parametriz.AutoNFP.Domain.Instituicoes;
+using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -30,7 +33,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
 
         private readonly AppConfig _appConfig;
         private readonly ICupomFiscalRepository _cupomFiscalRepository;
-        private readonly IVoluntarioRepository _voluntarioRepository;
+        private readonly ICertificadoRepository _certificadoRepository;
         private readonly ICertificadoDigitalService _certificadoDigitalService;
         private readonly IFileSystemService _fileSystemService;
         private readonly IDockerService _dockerService;
@@ -40,69 +43,73 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                                           Notificador notificador,
                                           IOptions<AppConfig> options,
                                           ICupomFiscalRepository cupomFiscalRepository,
-                                          IVoluntarioRepository voluntarioRepository,
                                           ICertificadoDigitalService certificadoDigitalService,
                                           IFileSystemService fileSystemService,
                                           IDockerService dockerService,
-                                          ICupomFiscalService cupomFiscalService)
+                                          ICupomFiscalService cupomFiscalService,
+                                          ICertificadoRepository certificadoRepository)
             : base(uow, notificador)
         {
             _appConfig = options.Value;
             _cupomFiscalRepository = cupomFiscalRepository;
-            _voluntarioRepository = voluntarioRepository;
             _certificadoDigitalService = certificadoDigitalService;
             _fileSystemService = fileSystemService;
             _dockerService = dockerService;
             _cupomFiscalService = cupomFiscalService;
+            _certificadoRepository = certificadoRepository;
         }
 
         public void ExecutarProcesso()
         {
-            var instituicoesId = _cupomFiscalRepository.ObterInstituicoesIdComCuponsFiscaisProcessando();
+            var instituicoes = _cupomFiscalRepository.ObterInstituicoesComCuponsFiscaisProcessando();
 
             if (!int.TryParse(Environment.GetEnvironmentVariable("PORTA_INICIAL_SELENIUM"), out int port))
                port = 4444;
 
             port--;
 
-            foreach (var instituicaoId in instituicoesId)
+            foreach (var instituicao in instituicoes)
             {
                 port++;
 
-                var cuponsFiscais = _cupomFiscalRepository.ObterPorStatusProcessando(instituicaoId);
+                if (string.IsNullOrWhiteSpace(instituicao.EntidadeNomeNFP))
+                    continue; // ToDo: Incluir erro sem Nome da entidade na NFP cadastrado
+
+                var cuponsFiscais = _cupomFiscalRepository.ObterPorStatusProcessando(instituicao.Id);
                 if (cuponsFiscais.Count() <= 0)
                     continue;
 
-                var voluntario = _voluntarioRepository.ObterPorInstituicaoId(instituicaoId);
-                if (voluntario == null)
-                    continue; // ToDo: O que fazer?
+                var voluntariosId = cuponsFiscais.Select(p => p.CadastradoPorId).Distinct().ToList();
 
-                if (string.IsNullOrWhiteSpace(voluntario.EntidadeNomeNFP))
-                    continue; // ToDo: Incluir erro sem Nome da entidade na NFP cadastrado
+                foreach (var voluntarioId in voluntariosId)
+                {
+                    var certificado = _certificadoRepository.ObterPorVoluntarioId(voluntarioId);
+                    if (certificado == null)
+                        continue; // ToDo: O que fazer?
 
-                var senha = ObterSenha(voluntario);
+                    var senha = ObterSenha(instituicao.Id, certificado);
 
-                var diretorio = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.autonfp/{voluntario.InstituicaoId}";
+                    var diretorio = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.autonfp/{instituicao.Id}";
 
-                var containerName = $"selenium-chrome-{voluntario.InstituicaoId}";
-                var imageName = $"{containerName}:latest";
+                    var containerName = $"selenium-chrome-{instituicao.Id}";
+                    var imageName = $"{containerName}:latest";
 
-                if (!_certificadoDigitalService.EstaValido(voluntario, senha))
-                    continue;
+                    if (!_certificadoDigitalService.EstaValido(certificado, senha))
+                        continue;
 
-                if (!_fileSystemService.ExecutarProcessoInicial(diretorio, voluntario, senha))
-                    continue;
+                    if (!_fileSystemService.ExecutarProcessoInicial(diretorio, certificado, senha))
+                        continue;
 
-                if (!_dockerService.ExecutarProcessoInicial(diretorio, imageName, containerName, port))
-                    continue;
+                    if (!_dockerService.ExecutarProcessoInicial(diretorio, imageName, containerName, port))
+                        continue;
 
-                
-
-                EnviarCuponsFiscais(voluntario.EntidadeNomeNFP, cuponsFiscais, port, diretorio, containerName);
+                    EnviarCuponsFiscais(instituicao.EntidadeNomeNFP, cuponsFiscais, port, diretorio, containerName); 
+                }
             }
         }
 
-        private void EnviarCuponsFiscais(string entidadeNomeNFP, IEnumerable<CupomFiscal> cuponsFiscais, int port, string diretorio, string containerName)
+        private void EnviarCuponsFiscais(string entidadeNomeNFP, IEnumerable<CupomFiscal> cuponsFiscais, int port, string diretorio,
+            string containerName)
         {
             try
             {
@@ -167,10 +174,10 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
         }
 
         #region Support
-        private string ObterSenha(Voluntario voluntario)
+        private string ObterSenha(Guid instituicaoId, Certificado certificado)
         {
             var pepper = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
-            return Decrypt(voluntario.Senha, voluntario.InstituicaoId.ToString(), pepper);
+            return Decrypt(certificado.Senha, instituicaoId.ToString(), pepper);
         }
 
         private string Decrypt(byte[] encryptedBytes, string password, byte[] pepper)

@@ -1,4 +1,5 @@
-﻿using Parametriz.AutoNFP.Domain.Voluntarios;
+﻿using Parametriz.AutoNFP.Domain.Certificados;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.CertificadoDigital
 {
     public interface ICertificadoDigitalService
     {
-        bool EstaValido(Voluntario voluntario, string senha);
+        bool EstaValido(Certificado certificado, string senha);
     }
 }
