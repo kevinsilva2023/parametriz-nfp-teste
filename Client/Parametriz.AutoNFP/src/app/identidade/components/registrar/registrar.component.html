@@ -15,7 +15,7 @@
         </ul>
       </ngb-alert>
 
-      <form class="row" [formGroup]="registrarForm">
+      <form class="row" [formGroup]="registrarForm" (ngSubmit)="efetuarRegistro()">
 
         <div class="d-flex align-items-center mb-3">
           <h5 class="text-primary text-uppercase fw-bolder me-2">Instituição</h5>
@@ -110,13 +110,22 @@
           <div class="flex-grow-1 border-top"></div>
         </div>
 
-        <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['email']}">
-          <mat-label><i class="fa-solid fa-envelope me-2"></i>Email</mat-label>
-          <input matInput formControlName="email" type="text">
-          <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"></mat-error>
-        </mat-form-field>
+        <div class="d-flex gap-2">
+          <mat-form-field appearance="outline" class="w-50" [ngClass]="{'has-error': displayMessage['voluntarioNome']}">
+            <mat-label><i class="fa-solid fa-user me-2"></i>Nome Voluntário</mat-label>
+            <input matInput formControlName="voluntarioNome" type="text">
+            <mat-error *ngIf="displayMessage['voluntarioNome']" [innerHtml]="displayMessage['voluntarioNome']"></mat-error>
+          </mat-form-field>
 
-        <div class="col-12 d-flex gap-2">
+          <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['email']}">
+            <mat-label><i class="fa-solid fa-envelope me-2"></i>Email</mat-label>
+            <input matInput formControlName="email" type="text">
+            <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"></mat-error>
+          </mat-form-field>
+        </div>
+
+
+        <div class="d-flex gap-2">
           <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['cpf']}">
             <mat-label><i class="fa-solid fa-id-card me-2"></i>CPF</mat-label>
             <input matInput formControlName="cpf" type="text">

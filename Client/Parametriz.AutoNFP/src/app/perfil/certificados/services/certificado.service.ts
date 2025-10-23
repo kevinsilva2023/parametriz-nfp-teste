@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
-import { CadastrarVoluntario } from 'src/app/perfil/certificados/models/cadastrar-voluntario';
-import { Voluntario } from 'src/app/perfil/certificados/models/voluntario';
+import { CadastrarVoluntario } from 'src/app/perfil/certificados/models/cadastrar-certificado';
+import { Voluntario } from 'src/app/perfil/certificados/models/certificado';
 import { BaseService } from 'src/app/shared/services/base.service';
 
 @Injectable()

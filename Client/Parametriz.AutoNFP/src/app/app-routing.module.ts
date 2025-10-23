@@ -18,7 +18,7 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./layout/layout.module')
       .then(m => m.LayoutModule),
-    // canActivate: [autorizacaoGuard],
+    canActivate: [autorizacaoGuard],
   },
   { path: 'confirmar-email', component: ConfirmarEmailComponent},
   // { path: 'confirmar-email-enviado', component: ConfirmarEmailEnviadoComponent }, ativar futuramente

@@ -73,7 +73,7 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
       }
     };
 
-    LocalStorageUtils.limparDadosLocaisUsuario();
+    // LocalStorageUtils.limparDadosLocaisUsuario();
 
     super.configurarMensagensValidacaoBase(this.validationMessages);
   }
@@ -134,6 +134,8 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
 
       this.instituicao = Object.assign({}, this.instituicao, this.registrarForm.value);
 
+      console.log(this.instituicao)
+
       this.identidadeService.registrar(this.instituicao)
         .subscribe({
           next: () => { this.processarSucesso(); },
@@ -146,13 +148,13 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
     this.registrarForm.reset();
     this.limparErros();
 
-    let email = this.instituicao.email;
-    let usuario = this.instituicao.voluntarioNome;
+    // let email = this.instituicao.email;
+    // let usuario = this.instituicao.voluntarioNome;
 
-    this.router.navigate(
-      ['/confirmar-email-enviado'],
-      { queryParams: { email, usuario } }
-    );
+    // this.router.navigate(
+    //   ['/confirmar-email-enviado'],
+    //   { queryParams: { email, usuario } }
+    // );
   }
 
   processarErro(fail: any) {

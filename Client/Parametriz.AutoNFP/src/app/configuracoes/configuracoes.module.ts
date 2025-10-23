@@ -28,6 +28,11 @@ import { AtivarUsuarioComponent } from './usuarios/components/ativar-usuario/ati
 import { EditarUsuarioComponent } from './usuarios/components/editar-usuario/editar-usuario.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InstituicaoComponent } from './instituicoes/instituicao.component';
+import { CadastrarVoluntarioComponent } from './voluntario/components/cadastrar-voluntario/cadastrar-voluntario.component';
+import { EditarVoluntarioComponent } from './voluntario/components/editar-voluntario/editar-voluntario.component';
+import { AtivarVoluntarioComponent } from './voluntario/components/ativar-voluntario/ativar-voluntario.component';
+import { DesativarVoluntarioComponent } from './voluntario/components/desativar-voluntario/desativar-voluntario.component';
+import { ListarVoluntarioComponent } from './voluntario/components/listar-voluntario/listar-voluntario.component';
 
 
 @NgModule({
@@ -39,7 +44,12 @@ import { InstituicaoComponent } from './instituicoes/instituicao.component';
     DesativarUsuarioComponent,
     AtivarUsuarioComponent,
     EditarUsuarioComponent,
-    InstituicaoComponent
+    InstituicaoComponent,
+    CadastrarVoluntarioComponent,
+    EditarVoluntarioComponent,
+    AtivarVoluntarioComponent,
+    DesativarVoluntarioComponent,
+    ListarVoluntarioComponent
   ],
   imports: [
     CommonModule,
