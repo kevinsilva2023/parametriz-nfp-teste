@@ -67,7 +67,7 @@
         <mat-option></mat-option>
         <mat-option *ngFor="let usuario of usuariosAtivos" [value]="usuario.id">
           <span class="bg-primary-light py-1 px-3 rounded-pill text-white fs-small">
-            {{ usuario.nome | titlecase }} - {{ usuario.email.conta }}
+            {{ usuario.nome | titlecase }} - {{ usuario.email }}
           </span>
         </mat-option>
       </mat-select>

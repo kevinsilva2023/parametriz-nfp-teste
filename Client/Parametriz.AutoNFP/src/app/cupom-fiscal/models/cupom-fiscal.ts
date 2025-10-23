@@ -1,4 +1,4 @@
-import { Usuario } from "src/app/configuracoes/usuarios/models/usuario";
+import { Voluntario } from "src/app/configuracoes/voluntario/models/voluntario";
 
 export class CupomFiscalPaginacao {
   cuponsFiscais!: CupomFiscal[];
@@ -23,6 +23,6 @@ export class CupomFiscal {
   statusNome!: string;
   enviadoEm!: string;
   mensagemErro!: string;
-  cadastradoPor!: Usuario;
+  cadastradoPor!: Voluntario;
 }
 

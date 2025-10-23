@@ -1,1 +1,86 @@
-<p>cadastrar-voluntario works!</p>
+<div class="modal-header">
+  <div class="bg-primary text-white fs-5 fw-medium w-100 text-uppercase px-4 py-2 rounded">
+    <i class="fa-solid fa-users"></i> &nbsp;
+    Cadastrar Voluntário
+  </div>
+</div>
+<div class="modal-body" tabindex="1">
+  <h2 class="fs-6 mb-3">Cadastre novos voluntários, inserindo os dados abaixo:</h2>
+
+  <ngb-alert type="danger" (closed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+    <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+    <ul>
+      <li class="fs-small mt-1" *ngFor="let error of errors">
+        {{error}}
+      </li>
+    </ul>
+  </ngb-alert>
+
+  <form [formGroup]="cadastrarVoluntarioForm">
+
+    <div class="d-flex flex-column ">
+      <mat-form-field class="w-100" appearance="outline" [ngClass]="{'has-error': displayMessage['nome']}">
+        <mat-label>
+          <i class="fa-solid fa-user me-2"></i>
+          Nome Voluntário
+        </mat-label>
+        <input matInput formControlName="nome" type="text" placeholder="Digite o nome do voluntário">
+        <mat-error *ngIf="displayMessage['nome']" [innerHtml]="displayMessage['nome']"> </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100"
+        [ngClass]="{'has-error': displayMessage['email']}">
+        <mat-label>
+          <i class="fa-solid fa-envelope me-2"></i>
+          E-mail
+        </mat-label>
+        <input matInput formControlName="email" type="email" placeholder="seuemail@aqui.com.br">
+        <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"> </mat-error>
+      </mat-form-field>
+
+      <div class="d-flex gap-3">
+        <mat-form-field appearance="outline" class="w-100"
+          [ngClass]="{'has-error': displayMessage['cpf']}">
+          <mat-label>
+            <i class="fa-solid fa-id-card me-2"></i>
+            CPF
+          </mat-label>
+          <input matInput formControlName="cpf" type="text" placeholder="000.000.000-00">
+          <mat-error *ngIf="displayMessage['cpf']" [innerHtml]="displayMessage['cpf']"> </mat-error>
+        </mat-form-field>
+
+        <mat-form-field  appearance="outline" class="w-100"
+          [ngClass]="{'has-error': displayMessage['contato']}">
+          <mat-label>
+            <i class="fa-solid fa-phone me-2"></i>
+            Contato
+          </mat-label>
+          <input matInput formControlName="contato" type="string" placeholder="(99) 99999-9999">
+          <mat-error *ngIf="displayMessage['contato']" [innerHtml]="displayMessage['contato']"> </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-slide-toggle class="mat-slide-toggle-small" formControlName="administrador" labelPosition="before">
+      Administrador: &nbsp;
+    </mat-slide-toggle>
+
+  </form>
+
+  <ngb-alert type="info" [dismissible]="false" class="mt-3 d-flex align-items-center">
+    <i class="fa-solid fa-circle-info me-2 fs-5 text-primary"></i>
+    <span>
+      Este cadastro de usuário é <strong>exclusivo da nossa plataforma</strong>. <br>
+      Ainda é necessário realizar o <strong>vínculo do voluntário à entidade</strong> no <strong>portal da NFP</strong>.
+    </span>
+  </ngb-alert>
+
+</div>
+<div class="modal-footer">
+  <button (click)="efetuarCadastrarVoluntario()" type="submit" class="btn btn-primary">
+    Cadatrar
+  </button>
+  <button class="btn btn-outline-primary" (click)="fecharModal()">
+    Cancelar
+  </button>
+</div>

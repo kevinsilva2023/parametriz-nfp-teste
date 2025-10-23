@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
 import { Enumerador } from 'src/app/shared/models/enumureador';
-import { ObterUsuarioAtivo } from 'src/app/shared/models/obter-usuario-ativo';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { DataUtils } from 'src/app/shared/utils/data-utils';
 import { CupomFiscalPaginacao } from '../models/cupom-fiscal';
@@ -49,7 +48,7 @@ export class CupomFiscalService extends BaseService {
       );
   }
 
-  obterPorUsuario(competencia: Date, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalPaginacao[]> {
+  obterPorVoluntario(competencia: Date, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalPaginacao[]> {
     let params = new HttpParams;
     let competenciaFormatada = DataUtils.formatarParaParametro(competencia);
 

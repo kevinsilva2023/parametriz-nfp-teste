@@ -1,18 +1,18 @@
-<section id="perfil" class="content w-100 h-100 d-flex justify-content-center align-items-start p-5" *ngIf="usuario">
+<section id="perfil" class="content w-100 h-100 d-flex justify-content-center align-items-start p-5" *ngIf="voluntario">
 
   <div class="card card-white p-5 overflow-hidden d-flex flex-column justify-content-center align-items-center" style="height: auto !important;">
 
     <div class="perfil-imagem cursor-pointer" (click)="inputFile.click()">
-      <img *ngIf="usuario.fotoUpload" [src]="usuario.fotoUpload" alt="Foto do usuário" class="perfil-img">
-      <i *ngIf="!usuario.fotoUpload" class="fa-solid fa-user fs-1"></i>
+      <img *ngIf="voluntario.fotoUpload" [src]="voluntario.fotoUpload" alt="Foto do usuário" class="perfil-img">
+      <i *ngIf="!voluntario.fotoUpload" class="fa-solid fa-user fs-1"></i>
 
         <i class="fa-solid fa-pencil editar-icone"></i>
     </div>
     <input type="file" #inputFile (change)="uploadImagem($event)" hidden accept="image/*">
  
     <div class="text-center mt-2">
-      <h1 *ngIf="usuario" class="fs-4 fw-medium mb-2">{{ usuario.nome | titlecase }}</h1>
-      <h1 *ngIf="usuario" class="fs-6 text-secondary">{{ usuario.email.conta }}</h1>
+      <h1 *ngIf="voluntario" class="fs-4 fw-medium mb-2">{{ voluntario.nome | titlecase }}</h1>
+      <h1 *ngIf="voluntario" class="fs-6 text-secondary">{{ voluntario.email }}</h1>
     </div>
 
     <button class="btn btn-primary rounded-5 fs-6 fw-medium my-3">Plano Master</button>
@@ -26,7 +26,7 @@
       </ul>
     </ngb-alert>
 
-    <form [formGroup]="perfilForm" *ngIf="usuario">
+    <form [formGroup]="perfilForm" *ngIf="voluntario">
       <mat-form-field class="w-100 mb-3" appearance="outline" [ngClass]="{'has-error': displayMessage['nome']}">
         <mat-label>
           <i class="fa-solid fa-user"></i>
@@ -41,11 +41,11 @@
           <i class="fa-solid fa-envelope"></i>
           &nbsp; E-mail
         </mat-label>
-        <input disabled matInput type="email" placeholder="seuemail@aqui.com.br" [value]="usuario.email.conta">
+        <input disabled matInput type="email" placeholder="seuemail@aqui.com.br" [value]="voluntario.email">
       </mat-form-field>
 
       <div class="d-flex justify-content-end mt-3">
-        <button (click)="efetuarEditarUsuario()" type="submit" class="btn btn-primary px-4">
+        <button (click)="efetuarEditarVoluntario()" type="submit" class="btn btn-primary px-4">
           Salvar
         </button>
       </div>

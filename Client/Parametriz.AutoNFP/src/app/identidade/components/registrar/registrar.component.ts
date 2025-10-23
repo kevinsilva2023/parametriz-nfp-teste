@@ -73,7 +73,7 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
       }
     };
 
-    // LocalStorageUtils.limparDadosLocaisUsuario();
+    LocalStorageUtils.limparDadosLocaisUsuario();
 
     super.configurarMensagensValidacaoBase(this.validationMessages);
   }

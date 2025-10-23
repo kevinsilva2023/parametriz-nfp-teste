@@ -1,4 +1,4 @@
 export interface EnviarConfirmarEmail {
-    usuarioId: string;
+    voluntarioId: string;
     definirSenha: boolean;
 }

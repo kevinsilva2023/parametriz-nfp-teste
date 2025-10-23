@@ -9,6 +9,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
 import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
+import { PerfilService } from '../perfil/services/perfil.service';
 
 
 
@@ -26,6 +27,7 @@ import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
     MatMenuModule,
     CnpjPipe
   ], providers: [
+    PerfilService
   ]
 })
 export class LayoutModule { }

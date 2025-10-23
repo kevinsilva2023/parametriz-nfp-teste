@@ -35,7 +35,7 @@ export class SidebarComponent implements OnInit {
   filtrarMenuPorClaim(itens: MenuItem[]): MenuItem[] {
     return itens.filter(item => {
       if (!item.claims) return true;
-      return this.autorizacaoService.usuarioPossuiClaim(item.claims);
+      return this.autorizacaoService.voluntarioPossuiClaim(item.claims);
     });
   }
 

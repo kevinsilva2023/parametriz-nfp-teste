@@ -20,19 +20,15 @@ export class AtivarVoluntarioComponent {
     private toastr: ToastrService
   ) { }
 
-  ngOnInit(): void {
-    console.log(this.voluntario);
-  }
-
   confirmarAtivarVoluntario() {
     this.voluntarioService.ativar(this.voluntario)
       .subscribe({
-        next: (sucesso: any) => { this.processarSucesso(sucesso); },
+        next: () => { this.processarSucesso(); },
         error: (falha: any) => { this.processarFalha(falha); }
       })
   }
 
-  processarSucesso(response: any) {
+  processarSucesso() {
     this.limparErros()
 
     this.toastr.success('Voluntário ativado com sucesso.', 'Sucesso!');

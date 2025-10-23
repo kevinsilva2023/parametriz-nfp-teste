@@ -10,7 +10,7 @@ export const autorizacaoGuard: CanActivateFn = (
     let autorizacaoService = inject(AutorizacaoService);
     let router = inject(Router);
 
-    if (!autorizacaoService.usuarioEstaLogado())
+    if (!autorizacaoService.voluntarioEstaLogado())
       router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
 
     let routeData = route.data[0];
@@ -19,7 +19,7 @@ export const autorizacaoGuard: CanActivateFn = (
       let claims: Claim[] = routeData['claims'];
 
       if (claims) {
-        if (!autorizacaoService.usuarioPossuiClaims(claims))
+        if (!autorizacaoService.voluntarioPossuiClaims(claims))
             router.navigate(['/acesso-negado']);
       }
     }

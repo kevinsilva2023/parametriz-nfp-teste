@@ -3,6 +3,8 @@ import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/fo
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { ToastrService } from 'ngx-toastr';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
+import { PerfilService } from '../../services/perfil.service';
+import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
 
 @Component({
   selector: 'app-editar-perfil',
@@ -14,14 +16,14 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
   @ViewChild('inputFile') inputFile!: ElementRef;
 
-  usuario!: any; // verificar tipo usuario
+  voluntario!: Voluntario;
 
   perfilForm!: FormGroup;
 
   errors: [] = [];
 
   constructor(private formBuilder: FormBuilder,
-    // private perfilService: PerfilService,
+    private perfilService: PerfilService,
     private toastr: ToastrService,
     private imageCompresService: NgxImageCompressService
   ) {
@@ -50,10 +52,10 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
       if (tamanhoKb > 200) {
         this.imageCompresService.compressFile(imageDataUrl, -1, 50, 50)
           .then((imagemComprimida) => {
-            this.usuario.fotoUpload = imagemComprimida;
+            this.voluntario.fotoUpload = imagemComprimida;
           });
       } else {
-        this.usuario.fotoUpload = imageDataUrl;
+        this.voluntario.fotoUpload = imageDataUrl;
       }
     };
     reader.readAsDataURL(arquivoImagem);
@@ -69,43 +71,43 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
   }
 
   obterPorId() {
-    // this.perfilService.obter()
-    //   .subscribe({
-    //     next: (response: Usuario) => {
-    //       this.usuario = response;
-    //       this.preencherForm();
-    //     },
-    //     error: (erro: any) => this.toastr.error('Erro ao obter usuário.', 'Erro')
-    //   });
+    this.perfilService.obter()
+      .subscribe({
+        next: (response: Voluntario) => {
+          this.voluntario = response;
+          this.preencherForm();
+        },
+        error: (erro: any) => this.toastr.error('Erro ao obter voluntário.', 'Erro')
+      });
   }
 
   preencherForm() {
     this.perfilForm.patchValue({
-      nome: this.usuario.nome,
-      administrador: this.usuario.administrador
+      nome: this.voluntario.nome,
+      administrador: this.voluntario.administrador
     });
   }
 
-  efetuarEditarUsuario() {
+  efetuarEditarVoluntario() {
     super.validarFormulario(this.perfilForm);
 
-    this.usuario = Object.assign({}, this.usuario, this.perfilForm.value);
+    this.voluntario = Object.assign({}, this.voluntario, this.perfilForm.value);
 
-    // this.perfilService.salvar(this.usuario)
-    //   .subscribe({
-    //     next: (sucesso: any) => { this.processarSucesso(sucesso); },
-    //     error: (falha: any) => { this.processarFalha(falha); }
-    //   })
+    this.perfilService.salvar(this.voluntario)
+      .subscribe({
+        next: () => { this.processarSucesso(); },
+        error: (falha: any) => { this.processarFalha(falha); }
+      })
   }
 
-  processarSucesso(response: any) {
+  processarSucesso() {
     this.limparErros()
-    this.toastr.success('Usuário editado com sucesso.', 'Sucesso!');
+    this.toastr.success('Voluntário editado com sucesso.', 'Sucesso!');
   }
 
   processarFalha(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
-    this.toastr.error('Não foi possível editar o usuário.', 'Erro');
+    this.toastr.error('Não foi possível editar o voluntário.', 'Erro');
   }
 
   limparErros() {

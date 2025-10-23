@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Usuario } from 'src/app/configuracoes/usuarios/models/usuario';
+import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { PerfilService } from 'src/app/perfil/services/perfil.service';
 import { Claim } from 'src/app/shared/models/claim';
 import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
@@ -12,7 +13,7 @@ import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 })
 export class NavbarComponent implements OnInit {
   @Input() tituloPagina!: string;
-  usuario!: any;
+  voluntario!: Voluntario;
   fotoUpload!: any;
   claimAdmin!: string;
 
@@ -20,27 +21,27 @@ export class NavbarComponent implements OnInit {
   cnpj!: string;
 
   constructor(
-    // private perfilService: PerfilService,
+    private perfilService: PerfilService,
     private autorizacaoService: AutorizacaoService
   ) { }
 
   ngOnInit(): void {
-    this.preencherUsuarioAtivo();
+    this.preencherVoluntarioAtivo();
     this.obterInsituicao();
   }
 
-  preencherUsuarioAtivo() {
-    let usuarioLocal = LocalStorageUtils.obterUsuario();
-    this.usuario = usuarioLocal;
+  preencherVoluntarioAtivo() {
+    let voluntarioLocal = LocalStorageUtils.obterUsuario();
+    this.voluntario = voluntarioLocal;
 
     let claimAdmin: Claim = { type: 'role', value: 'Administrador' };
-    let usuarioEhAdmin = this.autorizacaoService.usuarioPossuiClaim(claimAdmin);
+    let voluntarioEhAdmin = this.autorizacaoService.voluntarioPossuiClaim(claimAdmin);
 
-    this.claimAdmin = usuarioEhAdmin ? 'Administrador' : 'Usuário';
+    this.claimAdmin = voluntarioEhAdmin ? 'Administrador' : 'Usuário';
 
-    // this.perfilService.obter().subscribe({
-    //   next: (response: Usuario) => (this.fotoUpload = response.fotoUpload),
-    // });
+    this.perfilService.obter().subscribe({
+      next: (response: Voluntario) => (this.fotoUpload = response.fotoUpload),
+    });
   }
 
   
