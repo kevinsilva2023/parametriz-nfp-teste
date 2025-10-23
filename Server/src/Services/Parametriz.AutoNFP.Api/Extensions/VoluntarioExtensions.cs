@@ -1,4 +1,5 @@
-﻿using Parametriz.AutoNFP.Api.Extensions.Core;
+﻿using Microsoft.AspNetCore.Identity;
+using Parametriz.AutoNFP.Api.Extensions.Core;
 using Parametriz.AutoNFP.Api.ViewModels.Voluntarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 
@@ -24,7 +25,7 @@ namespace Parametriz.AutoNFP.Api.Extensions
 
         public static IEnumerable<VoluntarioViewModel> ToViewModel(this IEnumerable<Voluntario> usuarios)
         {
-            return usuarios.Select(u => u.ToViewModel());
+            return usuarios.Select(u => u.ToViewModel()).ToList();
         }
     }
 }

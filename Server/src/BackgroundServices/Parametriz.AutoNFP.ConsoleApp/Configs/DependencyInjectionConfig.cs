@@ -12,6 +12,7 @@ using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository;
 using Parametriz.AutoNFP.Data.Uow;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
@@ -31,7 +32,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Configs
 
             builder.ConfigureServices(services =>
             {
-                services.AddScoped<IVoluntarioRepository, VoluntarioRepository>();
+                services.AddScoped<ICertificadoRepository, CertificadoRepository>();
                 services.AddScoped<ICupomFiscalRepository, CupomFiscalRepository>();
                 services.AddScoped<ICupomFiscalService, CupomFiscalService>();
                 

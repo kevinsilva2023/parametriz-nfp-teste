@@ -31,6 +31,7 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
 
         [Display(Name = "Foto")]
         public string FotoUpload { get; set; }
+        public bool EmailConfirmado { get; set; }
 
         public bool Administrador { get; set; }
 
