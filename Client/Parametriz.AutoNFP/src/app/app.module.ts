@@ -38,6 +38,8 @@ import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '
 import { CnpjPipe } from './shared/pipe/cnpj.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     NgbModalModule,
     NgbAlertModule,
     CnpjPipe,
-    MatTooltipModule
+    MatTooltipModule,
+    NgxMaskDirective
   ],
   providers: [
     IdentidadeService,
@@ -101,7 +104,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         config.animation = true;
         return config;
       },
-    }
+    },
+    provideNgxMask()
+
   ],
   bootstrap: [AppComponent]
 })

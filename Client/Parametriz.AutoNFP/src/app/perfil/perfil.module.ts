@@ -20,6 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CertificadoService } from './certificados/services/certificado.service';
 import { PerfilService } from './services/perfil.service';
 
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { CpfPipe } from '../shared/pipe/cpf.pipe';
 
 @NgModule({
   declarations: [
@@ -41,11 +43,14 @@ import { PerfilService } from './services/perfil.service';
     MatSlideToggleModule,
     MatSelectModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
+    NgxMaskDirective,
+    CpfPipe
   ], 
   providers: [
     PerfilService,
-    CertificadoService
+    CertificadoService,
+    provideNgxMask()
   ]
 })
 export class PerfilModule { }

@@ -27,6 +27,8 @@ import { ListarVoluntarioComponent } from './voluntario/components/listar-volunt
 import { VoluntarioService } from './voluntario/services/voluntario.service';
 import { CpfPipe } from '../shared/pipe/cpf.pipe';
 
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
 @NgModule({
   declarations: [
     ConfiguracoesComponent,
@@ -49,12 +51,14 @@ import { CpfPipe } from '../shared/pipe/cpf.pipe';
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    CpfPipe
+    CpfPipe,
+    NgxMaskDirective
+    
   ],
   providers: [
     VoluntarioService,
-    AutorizacaoService,
-  
+    AutorizacaoService,  
+    provideNgxMask()
   ]
 })
 export class ConfiguracoesModule { }

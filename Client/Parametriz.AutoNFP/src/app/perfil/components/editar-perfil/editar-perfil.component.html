@@ -62,7 +62,7 @@
                 <i class="fa-solid fa-id-card me-2"></i>
                 CPF
               </mat-label>
-              <input disabled matInput [value]="voluntario.cpf" >
+              <input disabled matInput [value]="voluntario.cpf | cpf">
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['contato']}">
@@ -70,7 +70,7 @@
                 <i class="fa-solid fa-phone me-2"></i>
                 Contato
               </mat-label>
-              <input matInput formControlName="contato" type="string" placeholder="(99) 99999-9999">
+              <input matInput formControlName="contato" type="string" placeholder="(99) 99999-9999" mask="(00) 00000-0000">
               <mat-error *ngIf="displayMessage['contato']" [innerHtml]="displayMessage['contato']"> </mat-error>
             </mat-form-field>
           </div>
