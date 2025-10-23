@@ -30,6 +30,14 @@
           <div class="flex-grow-1 border-top"></div>
         </div>
 
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>
+            <i class="fa-solid fa-building me-2"></i>
+            Instituição
+          </mat-label>
+          <input disabled matInput [value]="instituicao">
+        </mat-form-field>
+
         <div class="d-flex flex-column gap-3">
           <mat-form-field class="w-100" appearance="outline" [ngClass]="{'has-error': displayMessage['nome']}">
             <mat-label>
@@ -40,23 +48,21 @@
             <mat-error *ngIf="displayMessage['nome']" [innerHtml]="displayMessage['nome']"> </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['email']}">
+          <mat-form-field appearance="outline" class="w-100" >
             <mat-label>
               <i class="fa-solid fa-envelope me-2"></i>
               E-mail
             </mat-label>
-            <input disabled="" matInput [value]="voluntario.email" type="email" placeholder="seuemail@aqui.com.br">
-            <mat-error *ngIf="displayMessage['email']" [innerHtml]="displayMessage['email']"></mat-error>
+            <input disabled="" matInput [value]="voluntario.email" >
           </mat-form-field>
 
           <div class="d-flex gap-3">
-            <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['cpf']}">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>
                 <i class="fa-solid fa-id-card me-2"></i>
                 CPF
               </mat-label>
-              <input disabled matInput [value]="voluntario.cpf" type="text" placeholder="000.000.000-00">
-              <mat-error *ngIf="displayMessage['cpf']" [innerHtml]="displayMessage['cpf']"> </mat-error>
+              <input disabled matInput [value]="voluntario.cpf" >
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['contato']}">

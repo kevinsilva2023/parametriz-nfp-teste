@@ -1,7 +1,10 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChildren } from '@angular/core';
-import { FormBuilder, FormControlName, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
+import { Certificado } from '../../models/certificado';
+import { CertificadoService } from '../../services/certificado.service';
+import { CadastrarCertificado } from '../../models/cadastrar-certificado';
 
 @Component({
   selector: 'app-cadastrar-certificado',
@@ -16,25 +19,25 @@ export class CadastrarCertificadoComponent extends BaseFormComponent implements 
   verSenha = false;
 
   arquivoSelecionado!: File;
-  certificadoPath!: string;
+  certificadoPath = '';
   isArquivoArrastado = false;
 
-  certificado!: any; //tipo certificado
+  certificado!: CadastrarCertificado;
   errors: any[] = [];
 
   @Input() temCertificado!: boolean;
   @Output() cadastroConcluido = new EventEmitter<void>();
 
-
   constructor(
     private formBuilder: FormBuilder,
-    //private voluntarioService: VoluntarioService,
+    private certificadoService: CertificadoService,
     private toastr: ToastrService
   ) {
     super();
 
     this.validationMessages = {
-      // montar validacoes
+      certificado: { required: 'Favor selecionar o certificado.' },
+      senha: { required: 'Favor preencher a senha.' }
     };
 
     super.configurarMensagensValidacaoBase(this.validationMessages);
@@ -46,7 +49,8 @@ export class CadastrarCertificadoComponent extends BaseFormComponent implements 
 
   ngOnInit(): void {
     this.cadastrarCertificadoForm = this.formBuilder.group({
-      // montar formGroup
+      upload: [''],
+      senha: ['', Validators.required],
     });
   }
 
@@ -66,21 +70,20 @@ export class CadastrarCertificadoComponent extends BaseFormComponent implements 
     this.certificadoPath = arquivo.name;
 
     let uploadBase64 = await this.converterParaBase64(arquivo);
-    this.preencherForm(this.certificadoPath, uploadBase64);
+
+    this.preencherForm(uploadBase64);
   }
 
-  preencherForm(certificadoName: string, uploadBase64: string) {
-
-    // alterar metodo para novos atributos
-
-    // this.cadastrarCertificadoForm.patchValue({
-    //   certificado: certificadoName,
-    //   upload: uploadBase64,
-    // });
-    // this.cadastrarCertificadoForm.get('certificado')?.markAsTouched();
+  preencherForm(uploadBase64: string) {
+    this.cadastrarCertificadoForm.patchValue({
+      upload: uploadBase64,
+    });
   }
 
   converterParaBase64(arquivo: File): Promise<string> {
+
+    // adicionar verificacao de tamanho de arquivo
+    
     return new Promise((resolve, reject) => {
       const leitor = new FileReader();
 
@@ -104,15 +107,15 @@ export class CadastrarCertificadoComponent extends BaseFormComponent implements 
 
       this.certificado = Object.assign({}, this.certificado, this.cadastrarCertificadoForm.value);
 
-      // this.voluntarioService.cadastrar(this.voluntario)
-      //   .subscribe({
-      //     next: (sucesso: any) => { this.processarSucesso(sucesso); },
-      //     error: (falha: any) => { this.processarFalha(falha); }
-      //   });
+      this.certificadoService.cadastrar(this.certificado)
+        .subscribe({
+          next: () => { this.processarSucesso(); },
+          error: (falha: any) => { this.processarFalha(falha); }
+        });
     }
   }
 
-  processarSucesso(response: any) {
+  processarSucesso() {
     this.limparErros();
     this.cadastroConcluido.emit();
     this.toastr.success('Voluntario cadastrado com sucesso!', 'Sucesso!');

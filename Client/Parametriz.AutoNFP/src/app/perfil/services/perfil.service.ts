@@ -5,17 +5,7 @@ import { BaseService } from 'src/app/shared/services/base.service';
 
 @Injectable()
 export class PerfilService extends BaseService {
-
   obter(): Observable<Voluntario> {
-    return this.httpClient
-      .get(`${this.apiUrl}/voluntarios/perfil`, { headers: super.ObterAuthHeaderJson() })
-      .pipe(
-        map(super.extractData),
-        catchError(super.serviceError)
-      )
-  }
-
-  editar(): Observable<Voluntario> {
     return this.httpClient
       .get(`${this.apiUrl}/voluntarios/perfil`, { headers: super.ObterAuthHeaderJson() })
       .pipe(
@@ -33,12 +23,4 @@ export class PerfilService extends BaseService {
       )
   }
 
-  salvarImagem(voluntario: Voluntario): Observable<Voluntario> {
-    return this.httpClient
-      .put(`${this.apiUrl}/voluntarios/perfil`, voluntario, { headers: super.ObterAuthHeaderJson() })
-      .pipe(
-        map(super.extractData),
-        catchError(super.serviceError)
-      )
-  }
 }

@@ -2,10 +2,10 @@
   <div class="card-header">
     <h1 class="fs-5 py-3 text-center fw-bolder text-primary text-uppercase">
       <i class="fa-solid fa-user me-2"></i>
-      Dados do Certificado Digital
+      Dados do Certificado 
     </h1>
   </div>
-  <div class="card-body w-100 p-4 m-auto">
+  <div class="card-body w-100 p-5 m-auto">
 
     <ngb-alert type="danger" (closed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
       <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
@@ -20,26 +20,18 @@
 
       <div class="input-group mb-3">
         <span class="input-group-text fs-6 gap-2 fs-6 gap-2">
-          <i class="fa-solid fa-landmark"></i>
-          Nome Entidade:
+          <i class="fa-solid fa-user"></i>
+          Instituição:
         </span>
-        <input type="text" disabled class="form-control form-disable" [value]="certificado.entidadeNomeNFP">
+        <input type="text" disabled class="form-control form-disable" [value]="instituicao">
       </div>
 
       <div class="input-group mb-3">
         <span class="input-group-text fs-6 gap-2 fs-6 gap-2">
           <i class="fa-solid fa-user"></i>
-          Nome:
+          Requerente:
         </span>
-        <input type="text" disabled class="form-control form-disable" [value]="certificado.nome">
-      </div>
-
-      <div class="input-group mb-3">
-        <span class="input-group-text fs-6 gap-2">
-          <i class="fa-solid fa-id-card-clip"></i>
-          CPF:
-        </span>
-        <input type="text" disabled class="form-control form-disable" [value]="certificado.cpf">
+        <input type="text" disabled class="form-control form-disable" [value]="certificado.requerente">
       </div>
 
       <div class="input-group mb-3">
@@ -70,7 +62,7 @@
 
       <div>
         <span class="bg-success py-1 px-4 rounded-5 text-white">
-          {{ certificado.status }}
+          {{ certificado.statusNome }}
         </span>
       </div>
     </div>

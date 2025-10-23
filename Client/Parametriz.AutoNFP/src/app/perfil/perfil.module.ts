@@ -17,6 +17,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CertificadoService } from './certificados/services/certificado.service';
+import { PerfilService } from './services/perfil.service';
 
 
 @NgModule({
@@ -40,6 +42,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule
+  ], 
+  providers: [
+    PerfilService,
+    CertificadoService
   ]
 })
 export class PerfilModule { }

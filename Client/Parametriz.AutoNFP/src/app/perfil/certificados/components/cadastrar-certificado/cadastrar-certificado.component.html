@@ -1,16 +1,16 @@
 <div class="card card-white ">
-  <div class="card-header">
-    <h1 class="fs-5 py-3 text-center fw-bolder text-primary text-uppercase">
+  <div class="card-header px-5 py-3">
+    <h1 class="fs-5 text-center fw-bolder text-primary text-uppercase">
       <i class="fa-solid fa-address-card me-2"></i>
-      Importe seu Certificado Digital
+      Importe seu Certificado
     </h1>
   </div>
 
-  <div class="card-body py-4 w-75 m-auto">
+  <div class="card-body p-5 w-100 m-auto">
     <form [formGroup]="cadastrarCertificadoForm">
 
       <ngb-alert type="danger" (closed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
-        <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+        <span class="fw-bolder fs-6">Oops...não deu certo:</span> <br>
         <ul>
           <li class="fs-small mt-1" *ngFor="let error of errors">
             {{error}}
@@ -18,7 +18,7 @@
         </ul>
       </ngb-alert>
 
-      <div class="upload-area border rounded p-4 text-center bg-light cursor-pointer mb-3"
+      <div class="upload-area border rounded p-4 text-center bg-light cursor-pointer mb-5"
         style="border: 2px dashed var(--royal-blue) !important;" (click)="fileInput.click()"
         (dragover)="isArquivoArrastado = true; $event.preventDefault()" (dragleave)="isArquivoArrastado = false"
         (drop)="upload($event)">
@@ -36,26 +36,8 @@
             <i class="fa-solid fa-address-card me-1"></i>
             Certificado
           </mat-label>
-          <input matInput formControlName="certificado" class="overflow-hidden">
-          <!-- <mat-error *ngIf="displayMessage['certificado']" [innerHtml]="displayMessage['certificado']"></mat-error> -->
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="mb-3 cursor-pointer"
-          [ngClass]="{'has-error': displayMessage['entidadeNomeNFP']}">
-          <mat-label>
-            <i class="fa-solid fa-landmark me-1"></i>
-            Nome da Entidade
-          </mat-label>
-          <input matInput formControlName="entidadeNomeNFP" class="overflow-hidden">
-
-          <button 
-              mat-icon-button matSuffix matButton="elevated" 
-              matTooltipPosition="above" matTooltip="O nome da instituição deve estar exatamente igual ao portal da NFP" 
-              type="button" class="btn">
-            <i class="fa-solid fa-circle-info"></i>
-          </button>
-
-          <!-- <mat-error *ngIf="displayMessage['entidadeNomeNFP']"[innerHtml]="displayMessage['entidadeNomeNFP']"></mat-error> -->
+          <input matInput [value]="certificadoPath" class="overflow-hidden">
+          <mat-error *ngIf="displayMessage['certificado']" [innerHtml]="displayMessage['certificado']"></mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="mb-1 cursor-pointer"
@@ -72,7 +54,7 @@
             <i class="fa-solid" [ngClass]="verSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
 
-          <!-- <mat-error *ngIf="displayMessage['senha']" [innerHtml]="displayMessage['senha']"></mat-error> -->
+          <mat-error *ngIf="displayMessage['senha']" [innerHtml]="displayMessage['senha']"></mat-error>
         </mat-form-field>
 
       </div>

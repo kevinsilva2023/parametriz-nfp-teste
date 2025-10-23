@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CertificadoService } from './services/certificado.service';
 
 @Component({
   selector: 'app-certificado',
@@ -13,24 +14,25 @@ export class CertificadoComponent {
 
   errors: [] = [];
 
-  constructor(//private voluntarioService: VoluntarioService,
+  constructor(
+    private certificadoService: CertificadoService,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    // this.obterPorInsituicao();
+    this.obterPorVoluntario();
   }
 
   atualizarCertificado() {
-    // this.obterPorInsituicao();
+    this.obterPorVoluntario();
   }
 
-  // obterPorInsituicao() {
-  //   this.voluntarioService.obterPorInsituicao()
-  //     .subscribe({
-  //       next: (sucesso: any) => { this.processarSucesso(sucesso); },
-  //       error: (falha: any) => { this.processarFalha(falha); }
-  //     });
-  // }
+  obterPorVoluntario() {
+    this.certificadoService.obterPorVoluntario()
+      .subscribe({
+        next: (sucesso: any) => { this.processarSucesso(sucesso); },
+        error: (falha: any) => { this.processarFalha(falha); }
+      });
+  }
 
   processarSucesso(response: any) {
     const temDados = response && Object.keys(response).length > 0;

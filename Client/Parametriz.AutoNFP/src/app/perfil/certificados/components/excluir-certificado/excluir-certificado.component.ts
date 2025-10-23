@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { CertificadoService } from '../../services/certificado.service';
 
 @Component({
   selector: 'app-excluir-certificado',
@@ -12,30 +13,30 @@ export class ExcluirCertificadoComponent {
   errors: [] = [];
 
   constructor(
-    //private voluntarioService: VoluntarioService,
+    private certifcadoService: CertificadoService,
     private activeModal: NgbActiveModal,
     private toastr: ToastrService
   ) { }
 
   confirmarExcluirCertificado() {
-    // this.voluntarioService.excluir()
-    //   .subscribe({
-    //     next: (sucesso: any) => { this.processarSucesso(sucesso); },
-    //     error: (falha: any) => { this.processarFalha(falha); }
-    //   })
+    this.certifcadoService.excluir()
+      .subscribe({
+        next: (sucesso: any) => { this.processarSucesso(sucesso); },
+        error: (falha: any) => { this.processarFalha(falha); }
+      })
   }
 
   processarSucesso(response: any) {
     this.limparErros()
 
-    this.toastr.success('Voluntario excluído com sucesso.', 'Sucesso!');
+    this.toastr.success('Certificado excluído com sucesso.', 'Sucesso!');
 
-    this.fecharModal();
+    this.activeModal.close(true);
   }
 
   processarFalha(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
-    this.toastr.error('Não foi possível excluir o voluntario.', 'Erro');
+    this.toastr.error('Não foi possível excluir o certificado.', 'Erro');
   }
 
   limparErros() {
@@ -43,6 +44,6 @@ export class ExcluirCertificadoComponent {
   }
 
   fecharModal() {
-    this.activeModal.close(true);
+    this.activeModal.close();
   }
 }

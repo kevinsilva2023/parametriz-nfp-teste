@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
 import { PerfilService } from 'src/app/perfil/services/perfil.service';
 import { Claim } from 'src/app/shared/models/claim';
@@ -13,7 +14,8 @@ import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 })
 export class NavbarComponent implements OnInit {
   @Input() tituloPagina!: string;
-  voluntario!: Voluntario;
+
+  voluntarioNome!: string;
   fotoUpload!: any;
   claimAdmin!: string;
 
@@ -31,25 +33,25 @@ export class NavbarComponent implements OnInit {
   }
 
   preencherVoluntarioAtivo() {
-    let voluntarioLocal = LocalStorageUtils.obterUsuario();
-    this.voluntario = voluntarioLocal;
-
     let claimAdmin: Claim = { type: 'role', value: 'Administrador' };
     let voluntarioEhAdmin = this.autorizacaoService.voluntarioPossuiClaim(claimAdmin);
 
     this.claimAdmin = voluntarioEhAdmin ? 'Administrador' : 'Usuário';
 
-    this.perfilService.obter().subscribe({
-      next: (response: Voluntario) => (this.fotoUpload = response.fotoUpload),
+    this.perfilService.obter()
+    .subscribe({
+      next: (response: Voluntario) => (
+        this.fotoUpload = response.fotoUpload,
+        this.voluntarioNome = response.nome
+      ),
     });
   }
 
-  
   obterInsituicao() {
     var result = LocalStorageUtils.obterUsuario();
+
     this.razaoSocialInstituicao = result.instituicao.razaoSocial;
     this.cnpj = result.instituicao.cnpj;
   }
-  
 
 }

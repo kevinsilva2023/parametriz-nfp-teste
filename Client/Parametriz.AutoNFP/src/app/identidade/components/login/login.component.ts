@@ -86,7 +86,6 @@ export class LoginComponent extends BaseFormComponent implements OnInit, AfterVi
 
   processarSucesso(response: any) {
     this.limparErros();
-    this.loginForm.reset();
     
     LocalStorageUtils.salvarDadosLocaisUsuario(response);
 

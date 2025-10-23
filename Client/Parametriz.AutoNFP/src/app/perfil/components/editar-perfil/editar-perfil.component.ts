@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
 import { PerfilService } from '../../services/perfil.service';
 import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Component({
   selector: 'app-editar-perfil',
@@ -17,6 +18,7 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
   @ViewChild('inputFile') inputFile!: ElementRef;
 
   voluntario!: Voluntario;
+  instituicao!: string;
 
   perfilForm!: FormGroup;
 
@@ -67,6 +69,7 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
       contato: ['', Validators.required]
     });
     this.obterPorId();
+    this.obterInsituicao();
   }
 
   obterPorId() {
@@ -76,8 +79,13 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
           this.voluntario = response;
           this.preencherForm();
         },
-        error: (erro: any) => this.toastr.error('Erro ao obter voluntário.', 'Erro')
+        error: () => this.toastr.error('Erro ao obter voluntário.', 'Erro')
       });
+  }
+
+  obterInsituicao() {
+    var result = LocalStorageUtils.obterUsuario();
+    this.instituicao = result.instituicao.razaoSocial;
   }
 
   preencherForm() {
@@ -115,5 +123,3 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
     this.errors = [];
   }
 }
-
-// confirmar nome dos campos do form
