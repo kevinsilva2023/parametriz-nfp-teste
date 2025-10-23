@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
 
   razaoSocialInstituicao!: string;
   cnpj!: string;
+  statusCertificado!: any;
 
   constructor(
     private perfilService: PerfilService,
@@ -30,6 +31,8 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.preencherVoluntarioAtivo();
     this.obterInsituicao();
+
+
   }
 
   preencherVoluntarioAtivo() {
@@ -40,11 +43,13 @@ export class NavbarComponent implements OnInit {
 
     this.perfilService.obter()
     .subscribe({
-      next: (response: Voluntario) => (
-        this.fotoUpload = response.fotoUpload,
-        this.voluntarioNome = response.nome
+      next: (voluntario: Voluntario) => (
+        this.fotoUpload = voluntario.fotoUpload,
+        this.voluntarioNome = voluntario.nome,
+        this.statusCertificado = voluntario.certificado.statusNome
       ),
     });
+
   }
 
   obterInsituicao() {
