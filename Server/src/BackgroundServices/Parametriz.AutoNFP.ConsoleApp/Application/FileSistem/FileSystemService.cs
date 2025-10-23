@@ -1,6 +1,7 @@
 ﻿using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
 using Parametriz.AutoNFP.Core.ValueObjects;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,14 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
         {
         }
 
-        public bool ExecutarProcessoInicial(string diretorio, Voluntario voluntario, string senha)
+        public bool ExecutarProcessoInicial(string diretorio, Certificado certificado, string senha)
         {
             try
             {
                 VerificarDiretorioDaInstituicao(diretorio);
-                CriarChromePolicy(diretorio, voluntario);
-                SalvarCertificado(diretorio, voluntario);
-                CriarDockerfile(diretorio, voluntario, senha);
+                CriarChromePolicy(diretorio, certificado);
+                SalvarCertificado(diretorio, certificado);
+                CriarDockerfile(diretorio, certificado, senha);
                 //CriarDockerCompose(diretorio, voluntario, port);
                 
                 return true;
@@ -57,26 +58,26 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
             Directory.CreateDirectory(diretorio);
         }
 
-        private void CriarChromePolicy(string diretorio, Voluntario voluntario)
+        private void CriarChromePolicy(string diretorio, Certificado certificado)
         {
             var enderecoChromePolicy = Path.Combine(diretorio, "auto_select_certificate.json");
 
             using var stream = File.CreateText(enderecoChromePolicy);
 
             stream.Write($@"{{ ""AutoSelectCertificateForUrls"": [ ""{{ \""pattern\"": \""https://[*.]fazenda.sp.gov.br\"", " +
-                $@"\""filter\"": {{ \""ISSUER\"": {{ \""CN\"": \""{voluntario.Emissor}\"" }}, \""SUBJECT\"": {{ " +
-                $@"\""CN\"": \""{voluntario.Requerente}\"" }} }} }}"" ] }}");
+                $@"\""filter\"": {{ \""ISSUER\"": {{ \""CN\"": \""{certificado.Emissor}\"" }}, \""SUBJECT\"": {{ " +
+                $@"\""CN\"": \""{certificado.Requerente}\"" }} }} }}"" ] }}");
 
             stream.Close();
         }
 
-        private void SalvarCertificado(string diretorio, Voluntario voluntario)
+        private void SalvarCertificado(string diretorio, Certificado certificado)
         {
             var enderecoCertificado = Path.Combine(diretorio, "certificado.pfx");
-            File.WriteAllBytes(enderecoCertificado, voluntario.Upload);
+            File.WriteAllBytes(enderecoCertificado, certificado.Upload);
         }
 
-        private void CriarDockerfile(string diretorio, Voluntario voluntario, string senha)
+        private void CriarDockerfile(string diretorio, Certificado certificado, string senha)
         {
             var enderecoDockerfile = Path.Combine(diretorio, "Dockerfile");
 
@@ -86,8 +87,6 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
             stream.WriteLine($"RUN sudo apt-get update");
             stream.WriteLine($"RUN sudo apt-get install -y libnss3-tools openssl");
             stream.WriteLine($"RUN sudo mkdir -p /etc/opt/chrome/policies/managed");
-            //stream.WriteLine($"COPY ~/.autonfp/{voluntario.InstituicaoId}/auto_select_certificate.json /etc/opt/chrome/policies/managed");
-            //stream.WriteLine($"COPY ~/.autonfp/{voluntario.InstituicaoId}/certificado.pfx /home/seluser");
             stream.WriteLine($"COPY auto_select_certificate.json /etc/opt/chrome/policies/managed");
             stream.WriteLine($"COPY certificado.pfx /home/seluser");
             stream.WriteLine($"RUN pk12util -d /home/seluser/.pki/nssdb -i /home/seluser/certificado.pfx -W {senha}");

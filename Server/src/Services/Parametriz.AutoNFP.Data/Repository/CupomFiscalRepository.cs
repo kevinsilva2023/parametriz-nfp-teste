@@ -3,6 +3,7 @@ using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository.Core;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
+using Parametriz.AutoNFP.Domain.Instituicoes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,12 +54,13 @@ namespace Parametriz.AutoNFP.Data.Repository
                 cuponsFiscais.Count());
         }
 
-        public IEnumerable<Guid> ObterInstituicoesIdComCuponsFiscaisProcessando()
+        public IEnumerable<Instituicao> ObterInstituicoesComCuponsFiscaisProcessando()
         {
             return _context.CuponsFiscais
-                .AsNoTracking()
+                .Include(p => p.Instituicao)
+                .AsNoTrackingWithIdentityResolution()
                 .Where(c => c.Status == CupomFiscalStatus.PROCESSANDO)
-                .Select(c => c.InstituicaoId)
+                .Select(c => c.Instituicao)
                 .Distinct()
                 .ToList();
         }

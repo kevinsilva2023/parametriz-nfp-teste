@@ -3,6 +3,7 @@ using Parametriz.AutoNFP.ConsoleApp.Application.FileSistem;
 using Parametriz.AutoNFP.Core.Configs;
 using Parametriz.AutoNFP.Core.Interfaces;
 using Parametriz.AutoNFP.Core.Notificacoes;
+using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -21,14 +22,13 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.CertificadoDigital
             : base(uow, notificador)
         {
 
-            
         }
 
-        public bool EstaValido(Voluntario voluntario, string senha)
+        public bool EstaValido(Certificado certificado, string senha)
         {
             try
             {
-                var certificado = new X509Certificate2(voluntario.Upload, senha);
+                var certificadoDigital = new X509Certificate2(certificado.Upload, senha);
 
                 return true;
             }
