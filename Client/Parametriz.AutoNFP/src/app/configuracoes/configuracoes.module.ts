@@ -21,11 +21,11 @@ import { InstituicaoComponent } from './instituicoes/instituicao.component';
 
 import { VoluntarioComponent } from './voluntario/voluntario.component';
 import { CadastrarVoluntarioComponent } from './voluntario/components/cadastrar-voluntario/cadastrar-voluntario.component';
-import { EditarVoluntarioComponent } from './voluntario/components/editar-voluntario/editar-voluntario.component';
 import { AtivarVoluntarioComponent } from './voluntario/components/ativar-voluntario/ativar-voluntario.component';
 import { DesativarVoluntarioComponent } from './voluntario/components/desativar-voluntario/desativar-voluntario.component';
 import { ListarVoluntarioComponent } from './voluntario/components/listar-voluntario/listar-voluntario.component';
 import { VoluntarioService } from './voluntario/services/voluntario.service';
+import { CpfPipe } from '../shared/pipe/cpf.pipe';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,6 @@ import { VoluntarioService } from './voluntario/services/voluntario.service';
     VoluntarioComponent,
     InstituicaoComponent,
     CadastrarVoluntarioComponent,
-    EditarVoluntarioComponent,
     AtivarVoluntarioComponent,
     DesativarVoluntarioComponent,
     ListarVoluntarioComponent
@@ -49,7 +48,8 @@ import { VoluntarioService } from './voluntario/services/voluntario.service';
     MatSlideToggleModule,
     MatSelectModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CpfPipe
   ],
   providers: [
     VoluntarioService,

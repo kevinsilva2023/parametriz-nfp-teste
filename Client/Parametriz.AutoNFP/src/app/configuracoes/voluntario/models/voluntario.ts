@@ -7,6 +7,7 @@ export interface Voluntario {
   email: string,
   contato: string,
   fotoUpload: string,
+  emailConfirmado: boolean,
   administrador: boolean,
   desativado: boolean
   certificado: Certificado

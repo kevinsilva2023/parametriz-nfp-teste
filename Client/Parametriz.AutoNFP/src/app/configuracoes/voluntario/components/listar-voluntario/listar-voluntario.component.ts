@@ -8,7 +8,6 @@ import { ToastrService } from 'ngx-toastr';
 import { CadastrarVoluntarioComponent } from '../cadastrar-voluntario/cadastrar-voluntario.component';
 import { DesativarVoluntarioComponent } from '../desativar-voluntario/desativar-voluntario.component';
 import { AtivarVoluntarioComponent } from '../ativar-voluntario/ativar-voluntario.component';
-import { EditarVoluntarioComponent } from '../editar-voluntario/editar-voluntario.component';
 import { InputUtils } from 'src/app/shared/utils/input-utils';
 
 @Component({
@@ -132,15 +131,10 @@ export class ListarVoluntarioComponent implements OnInit {
       });
   }
 
-  editar(voluntarioId: string) {
-    let modalRef = this.modalService.open(EditarVoluntarioComponent, { size: 'lg', centered: true })
+  habilitarVoluntarioAdm(voluntario: Voluntario, event: any) {
+    voluntario.administrador = event.checked;
 
-    modalRef.componentInstance.voluntarioId = voluntarioId;
-
-    modalRef.closed
-      .subscribe({
-        next: () => this.obterPorFiltro()
-      });
+    this.voluntarioService.editar(voluntario)
   }
 
   enviarConfirmarEmail(voluntario: Voluntario) {
@@ -149,7 +143,7 @@ export class ListarVoluntarioComponent implements OnInit {
       definirSenha: false,
     })
       .subscribe({
-        next: (sucesso: any) => { this.processarSucesso(); },
+        next: () => { this.processarSucesso(); },
         error: (falha: any) => { this.processarFalha(falha); }
       })
   }
@@ -157,7 +151,7 @@ export class ListarVoluntarioComponent implements OnInit {
   enviarDefinirSenha(voluntario: Voluntario) {
     this.indentidadeService.enviarDefinirSenha({ email: voluntario.email })
       .subscribe({
-        next: (sucesso: any) => { this.processarSucesso(); },
+        next: () => { this.processarSucesso(); },
         error: (falha: any) => { this.processarFalha(falha); }
       })
   }
@@ -175,5 +169,5 @@ export class ListarVoluntarioComponent implements OnInit {
   limparErros() {
     this.errors = [];
   }
-
 }
+

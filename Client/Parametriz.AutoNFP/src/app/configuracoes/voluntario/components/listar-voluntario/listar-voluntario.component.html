@@ -1,4 +1,4 @@
-<div class="card-white p-4">
+<div class="card-white p-4" style="max-width: 100%;">
   <button class="btn btn-primary mb-4" (click)="cadastrar()">
     <i class="fa-solid fa-circle-plus"></i> &nbsp;
     Incluir Voluntário
@@ -7,12 +7,14 @@
   <div class="d-flex justify-content-between gap-3 mb-4 p-0">
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Nome</mat-label>
-      <input matInput placeholder="Filtrar por nome" (keyup)="debounceNomeVoluntario.next(inputUtils.getInputValue($event))">
+      <input matInput placeholder="Filtrar por nome"
+        (keyup)="debounceNomeVoluntario.next(inputUtils.getInputValue($event))">
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>E-mail</mat-label>
-      <input matInput placeholder="Filtrar por e-mail" (keyup)="debounceEmailVoluntario.next(inputUtils.getInputValue($event))">
+      <input matInput placeholder="Filtrar por e-mail"
+        (keyup)="debounceEmailVoluntario.next(inputUtils.getInputValue($event))">
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
@@ -47,29 +49,67 @@
       *ngIf="(voluntariosCadastrados?.length ?? 0) > 0; else semVoluntarios">
       <thead class="sticky-top table-secondary">
         <tr>
-          <th class="fw-bolder text-primary fs-5 text-center">#</th>
-          <th class="fw-bolder text-primary fs-5">Nome</th>
-          <th class="fw-bolder text-primary fs-5">E-mail</th>
-          <th class="fw-bolder text-primary fs-5 text-center">Acesso</th>
-          <th class="fw-bolder text-primary fs-5 text-center">Status</th>
-          <th class="fw-bolder text-primary fs-5 text-center">Ações</th>
+          <th class="fw-bolder text-primary fs-6 text-center">#</th>
+          <th class="fw-bolder text-primary fs-6 text-center">Nome</th>
+          <th class="fw-bolder text-primary fs-6 text-center">CPF</th>
+          <th class="fw-bolder text-primary fs-6 text-center">E-mail</th>
+          <th class="fw-bolder text-primary fs-6 text-center">Status E-mail</th>
+          <th class="fw-bolder text-primary fs-6 text-center">Certificado</th>
+          <th class="fw-bolder text-primary fs-6 text-center">Acesso</th>
+          <th class="fw-bolder text-primary fs-6 text-center">Admin ?</th>
+          <th class="fw-bolder text-primary fs-6 text-center">Status</th>
+          <th class="fw-bolder text-primary fs-6 text-center">Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let voluntario of voluntariosCadastrados">
           <td class="text-center">
-            <img *ngIf="voluntario.fotoUpload" [src]="voluntario.fotoUpload" alt="Foto" class="img-perfil rounded-circle">
-            <i *ngIf="!voluntario.fotoUpload" class="fa-solid fa-user p-3 rounded-circle text-white bg-secondary"></i>
+            <img *ngIf="voluntario.fotoUpload" [src]="voluntario.fotoUpload" alt="Foto"
+              class="img-perfil rounded-circle">
+            <button *ngIf="!voluntario.fotoUpload" class="btn btn-primary rounded-5" disabled [matMenuTriggerFor]="menu">
+              <i class="fa-solid fa-user"></i>
+            </button>
           </td>
 
-          <td> {{ voluntario.nome }}</td>
-          <td>{{ voluntario.email }}</td>
+          <td class="text-center"> {{ voluntario.nome | titlecase}}</td>
+          <td class="text-center">{{ voluntario.cpf | cpf }}</td>
+          <td class="text-center">{{ voluntario.email }}</td>
+
+          <td class="text-center">
+            <span class="badge rounded-pill px-3 py-2"
+              [ngClass]="voluntario.emailConfirmado ? 'bg-primary' : 'bg-warning'">
+              {{ voluntario.emailConfirmado ? 'Confirmado' : 'Não Confirmado'}}
+            </span>
+          </td>
+
+          <td class="text-center" *ngIf="(voluntario.certificado?.status ?? null)">
+            <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+                'bg-success': voluntario.certificado.status === 1,
+                'bg-danger': voluntario.certificado.status === 0,
+                'bg-warning': voluntario.certificado.status === 3
+              }">
+              {{ voluntario.certificado.statusNome }}
+            </span>
+          </td>
+
+          <td class="text-center" *ngIf="!voluntario.certificado">
+            <span class="badge rounded-pill px-3 py-2 bg-danger">
+              Não Cadastrado
+            </span>
+          </td>
 
           <td class="text-center">
             <span class="badge rounded-pill px-3 py-2"
               [ngClass]="voluntario.administrador ? 'bg-primary' : 'bg-secondary'">
               {{ voluntario.administrador ? 'Admin' : 'Voluntário' }}
             </span>
+          </td>
+
+          <td class="text-center">
+            <mat-slide-toggle class="mat-slide-toggle-small" [checked]="voluntario.administrador"
+              (change)="habilitarVoluntarioAdm(voluntario, $event)">
+
+            </mat-slide-toggle>
           </td>
 
           <td class="text-center">
@@ -94,12 +134,8 @@
                 Ativar Voluntário
               </button>
 
-              <button mat-menu-item (click)="editar(voluntario.id)" *ngIf="!voluntario.desativado">
-                <i class="fa-solid fa-pen text-primary"></i> &nbsp;
-                Editar Voluntário
-              </button>
-
-              <button mat-menu-item (click)="enviarConfirmarEmail(voluntario)" *ngIf="!voluntario.desativado">
+              <button mat-menu-item (click)="enviarConfirmarEmail(voluntario)"
+                *ngIf="!voluntario.desativado && !voluntario.emailConfirmado">
                 <i class="fa-solid fa-envelope text-warning"></i> &nbsp;
                 Enviar Confirmar E-mail
               </button>

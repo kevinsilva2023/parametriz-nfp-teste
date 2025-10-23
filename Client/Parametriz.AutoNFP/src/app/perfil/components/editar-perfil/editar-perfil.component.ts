@@ -10,7 +10,7 @@ import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
   selector: 'app-editar-perfil',
   standalone: false,
   templateUrl: './editar-perfil.component.html',
-  styles: ``
+  styleUrl: './editar-perfil.component.scss'
 })
 export class EditarPerfilComponent extends BaseFormComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
@@ -63,9 +63,8 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
 
   ngOnInit(): void {
     this.perfilForm = this.formBuilder.group({
-      nome: ['', [
-        Validators.required
-      ]],
+      nome: ['', Validators.required],
+      contato: ['', Validators.required]
     });
     this.obterPorId();
   }
@@ -84,7 +83,9 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
   preencherForm() {
     this.perfilForm.patchValue({
       nome: this.voluntario.nome,
-      administrador: this.voluntario.administrador
+      email: this.voluntario.email,
+      cpf: this.voluntario.cpf,
+      contato: this.voluntario.contato
     });
   }
 

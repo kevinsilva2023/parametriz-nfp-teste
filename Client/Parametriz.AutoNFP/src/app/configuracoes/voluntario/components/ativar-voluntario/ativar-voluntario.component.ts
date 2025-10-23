@@ -48,4 +48,5 @@ export class AtivarVoluntarioComponent {
   fecharModal() {
     this.activeModal.close();
   }
+  
 }

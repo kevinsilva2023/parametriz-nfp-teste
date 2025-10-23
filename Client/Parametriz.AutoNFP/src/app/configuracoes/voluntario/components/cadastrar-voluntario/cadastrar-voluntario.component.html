@@ -18,7 +18,7 @@
 
   <form [formGroup]="cadastrarVoluntarioForm">
 
-    <div class="d-flex flex-column ">
+    <div class="d-flex flex-column gap-3">
       <mat-form-field class="w-100" appearance="outline" [ngClass]="{'has-error': displayMessage['nome']}">
         <mat-label>
           <i class="fa-solid fa-user me-2"></i>
@@ -61,8 +61,8 @@
       </div>
     </div>
 
-    <mat-slide-toggle class="mat-slide-toggle-small" formControlName="administrador" labelPosition="before">
-      Administrador: &nbsp;
+    <mat-slide-toggle class="mat-slide-toggle-small mt-2" formControlName="administrador" labelPosition="before">
+      <span class="me-2">Administrador:</span>
     </mat-slide-toggle>
 
   </form>
