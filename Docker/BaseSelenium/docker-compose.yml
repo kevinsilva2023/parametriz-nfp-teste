@@ -1,0 +1,8 @@
+name: parametriz-autonfp
+services:
+  autonfp-base-selenium:
+    image: maumitsuo/parametriz-autonfp-base-selenium:latest
+    container_name: parametriz-autonfp-base-selenium
+    build:
+      context: .
+      dockerfile: ./Dockerfile
