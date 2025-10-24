@@ -20,7 +20,7 @@
     <div class="d-flex gap-2">
       <mat-form-field appearance="outline" class="col-4">
         <mat-label><i class="fa-solid fa-id-card me-2"></i>CNPJ</mat-label>
-        <input matInput formControlName="cnpj" mask="00.000.000/0000-00" type="text">
+        <input disabled matInput [value]="instituicao.cnpj | cnpj" type="text">
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['razaoSocial']}">
