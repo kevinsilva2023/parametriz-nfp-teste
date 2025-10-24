@@ -4,7 +4,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { ToastrService } from 'ngx-toastr';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
 import { PerfilService } from '../../services/perfil.service';
-import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { Voluntario } from 'src/app/configuracoes/voluntarios/models/voluntario';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Component({

@@ -7,7 +7,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VisualizarCupomFiscalComponent } from '../visualizar-cupom-fiscal/visualizar-cupom-fiscal.component';
 import { Claim } from 'src/app/shared/models/claim';
 import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
-import { ObeterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-ativo';
+import { ObterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-ativo';
+import { ErroTransmissaoLote } from 'src/app/erros-transmissao-lote/models/erro-transmissao-lote';
+import { ListarErroModalComponent } from 'src/app/erros-transmissao-lote/listar-erro-modal/listar-erro-modal.component';
 
 @Component({
   selector: 'app-listar-cupom-fiscal',
@@ -19,7 +21,8 @@ import { ObeterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-at
 export class ListarCupomFiscalComponent implements OnInit {
 
   status!: Enumerador[];
-  usuariosAtivos!: ObeterVoluntarioAtivo[];
+  usuariosAtivos!: ObterVoluntarioAtivo[];
+  erroTransmissaoLote!: ErroTransmissaoLote[];
 
   cuponsFiscaisResponse: CupomFiscalPaginacao = new CupomFiscalPaginacao();
   totalProcessadas!: number;
@@ -43,21 +46,32 @@ export class ListarCupomFiscalComponent implements OnInit {
     private autorizacaoService: AutorizacaoService) {
     this.status = this.activatedRoute.snapshot.data['status'];
     this.usuariosAtivos = this.activatedRoute.snapshot.data['usuariosAtivos'];
+    this.erroTransmissaoLote = this.activatedRoute.snapshot.data['erroTransmissaoLote']
   }
 
   ngOnInit(): void {
     this.definirCompetencia();
     this.verificaClaim();
     this.obter();
+    this.verificaPossuiErroTransmissaoLote();
   }
 
   verificaClaim() {
     this.usuarioEhAdmin = this.autorizacaoService.voluntarioPossuiClaim(this.claimAdmin)
   }
 
+  verificaPossuiErroTransmissaoLote() {
+
+    if(this.erroTransmissaoLote.length === 0) {
+      let modalRef = this.modalService.open(ListarErroModalComponent, { size: 'lg'})
+      
+      modalRef.componentInstance.erroTransmissaoLote = this.erroTransmissaoLote;
+    }
+  }
+
   definirCompetencia() {
     const hoje = new Date();
-    const mes = hoje.getDate() <= 22 //alterar depois para dia 20
+    const mes = hoje.getDate() <= 30 //alterar depois para dia 20
       ? hoje.getMonth() - 1
       : hoje.getMonth();
 

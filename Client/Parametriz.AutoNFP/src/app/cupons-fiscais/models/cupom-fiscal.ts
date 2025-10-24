@@ -1,4 +1,4 @@
-import { Voluntario } from "src/app/configuracoes/voluntario/models/voluntario";
+import { Voluntario } from "src/app/configuracoes/voluntarios/models/voluntario";
 
 export class CupomFiscalPaginacao {
   cuponsFiscais!: CupomFiscal[];

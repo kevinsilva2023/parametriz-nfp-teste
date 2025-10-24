@@ -20,6 +20,8 @@ import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
 import { AutorizacaoService } from '../shared/services/autorizacao.service';
 import { VoluntarioService } from '../configuracoes/voluntarios/services/voluntario.service';
+import { ErroTransmissaoLoteModule } from '../erros-transmissao-lote/erro-transmissao-lote.module';
+import { ErroTransmissaoLoteService } from '../erros-transmissao-lote/services/erro-transmissao-lote.service';
 
 
 @NgModule({
@@ -39,12 +41,14 @@ import { VoluntarioService } from '../configuracoes/voluntarios/services/volunta
     MatSelectModule,
     NgbPaginationModule,
     NgbModule,
-    CnpjPipe
+    CnpjPipe,
+    ErroTransmissaoLoteModule
   ],
   providers: [
     CupomFiscalService,
     VoluntarioService,
     AutorizacaoService,
+    ErroTransmissaoLoteService,
     provideMomentDateAdapter({
       parse: {
         dateInput: 'MM/YYYY',

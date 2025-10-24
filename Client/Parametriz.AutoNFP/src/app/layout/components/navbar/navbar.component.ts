@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { Voluntario } from 'src/app/configuracoes/voluntarios/models/voluntario';
 import { PerfilService } from 'src/app/perfil/services/perfil.service';
 import { Claim } from 'src/app/shared/models/claim';
 import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';

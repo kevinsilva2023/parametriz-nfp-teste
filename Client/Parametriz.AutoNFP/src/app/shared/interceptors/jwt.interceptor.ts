@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { LocalStorageUtils } from '../utils/local-storage-utils';
 import { JwtSupport } from './jwt-support';
 import { inject } from '@angular/core';
-import { IdentidadeService } from 'src/app/identidade/services/identidade.service';
+import { IdentidadeService } from 'src/app/identidades/services/identidade.service';
 import { filter, switchMap, take } from 'rxjs';
 import { AutorizacaoService } from '../services/autorizacao.service';
 
