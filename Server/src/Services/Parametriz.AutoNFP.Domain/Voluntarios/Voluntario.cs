@@ -3,6 +3,7 @@ using Parametriz.AutoNFP.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.Core.DomainObjects;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
+using Parametriz.AutoNFP.Domain.ErrosTransmissaoLote;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,9 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
         private readonly List<CupomFiscal> _cuponsFiscais;
         public IReadOnlyCollection<CupomFiscal> CuponsFiscais => _cuponsFiscais.AsReadOnly();
 
+        public readonly List<ErroTransmissaoLote> _errosTransmissaoLote;
+        public IReadOnlyCollection<ErroTransmissaoLote> ErrosTransmissaoLote => _errosTransmissaoLote.AsReadOnly();
+
         public Voluntario(Guid id, Guid instituicaoId, string nome, string cpf, string email, string contato, bool administrador)
             : base(id, instituicaoId)
         {
@@ -39,6 +43,7 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
             AlterarAdministrador(administrador);
             
             _cuponsFiscais = [];
+            _errosTransmissaoLote = [];
         }
 
         protected Voluntario() { }

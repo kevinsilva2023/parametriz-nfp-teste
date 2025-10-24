@@ -35,12 +35,6 @@ namespace Parametriz.AutoNFP.Api.Controllers
             return await Task.FromResult(EnumUtils.ToViewModel(typeof(CertificadoStatus)));
         }
 
-        [HttpGet]
-        public async Task<CertificadoViewModel> Get()
-        {
-            return (await _certificadoRepository.ObterPorVoluntarioIdAsync(VoluntarioId)).ToViewModel();
-        }
-
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CadastrarCertificadoViewModel cadastrarCertificadoViewModel)
         {
