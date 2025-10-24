@@ -19,7 +19,7 @@ namespace Parametriz.AutoNFP.Core.ValueObjects
         public int UfCodigo => ExisteChave ? Convert.ToInt32(Chave.Substring(0, 2)) : 0;
         public DateTime? Competencia { get; private set; }
         public DateTime? LimiteEnvio => Competencia != null ?
-            new DateTime(Competencia.Value.AddMonths(1).Year, Competencia.Value.AddMonths(1).Month, 20).Date : null;
+            new DateTime(Competencia.Value.AddMonths(2).Year, Competencia.Value.AddMonths(2).Month, 20).Date : null;
         public CnpjCpf Cnpj { get; private set; }
         public int Modelo => ExisteChave ? Convert.ToInt32(Chave.Substring(20, 2)) : 0;
         public int Serie => ExisteChave ? Convert.ToInt32(Chave.Substring(22, _cfe ? 9 : 3)) : 0;

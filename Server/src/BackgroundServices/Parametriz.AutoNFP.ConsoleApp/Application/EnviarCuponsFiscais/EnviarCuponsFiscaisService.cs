@@ -87,7 +87,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                     if (certificado == null)
                         continue; // ToDo: O que fazer?
 
-                    var senha = ObterSenha(instituicao.Id, certificado);
+                    var senha = ObterSenha(voluntarioId, certificado);
 
                     var diretorio = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.autonfp/{instituicao.Id}";
 
@@ -174,10 +174,10 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
         }
 
         #region Support
-        private string ObterSenha(Guid instituicaoId, Certificado certificado)
+        private string ObterSenha(Guid voluntarioId, Certificado certificado)
         {
             var pepper = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
-            return Decrypt(certificado.Senha, instituicaoId.ToString(), pepper);
+            return Decrypt(certificado.Senha, voluntarioId.ToString(), pepper);
         }
 
         private string Decrypt(byte[] encryptedBytes, string password, byte[] pepper)
