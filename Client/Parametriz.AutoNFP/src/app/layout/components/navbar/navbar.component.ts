@@ -50,8 +50,8 @@ export class NavbarComponent implements OnInit {
     .subscribe({
       next: (voluntario: Voluntario) => (
         this.fotoUpload = voluntario.fotoUpload,
-        this.voluntarioNome = voluntario.nome,
-        this.statusCertificado = voluntario.certificado.statusNome
+        this.voluntarioNome = voluntario.nome
+        // this.statusCertificado = voluntario.certificado.statusNome
       ),
     });
 

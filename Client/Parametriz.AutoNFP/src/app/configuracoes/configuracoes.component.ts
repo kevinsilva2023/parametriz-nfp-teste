@@ -7,5 +7,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './configuracoes.component.scss'
 })
 export class ConfiguracoesComponent  {
-  activeTab = 'voluntario';
+  activeTab = 'instituicao';
 }

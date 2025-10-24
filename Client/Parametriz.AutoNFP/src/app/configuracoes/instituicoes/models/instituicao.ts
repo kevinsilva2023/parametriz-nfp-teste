@@ -5,5 +5,4 @@ export class Instituicao {
   entidadeNomeNFP!: string;
   cnpj!: string;
   endereco!: Endereco;
-  
 }

@@ -29,6 +29,8 @@ import { CpfPipe } from '../shared/pipe/cpf.pipe';
 
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { EditarInstituicaoComponent } from './instituicoes/components/editar-instituicao/editar-instituicao.component';
+import { InstituicaoService } from './instituicoes/services/instituicao.service';
+import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
 
 @NgModule({
   declarations: [
@@ -54,12 +56,13 @@ import { EditarInstituicaoComponent } from './instituicoes/components/editar-ins
     MatMenuModule,
     MatTooltipModule,
     CpfPipe,
+    CnpjPipe,
     NgxMaskDirective
-    
   ],
   providers: [
     VoluntarioService,
     AutorizacaoService,  
+    InstituicaoService,
     provideNgxMask()
   ]
 })

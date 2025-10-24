@@ -1,5 +1,5 @@
-<!-- <div class="card-white p-4" style="max-width: 100%;">
-  
+<div class="card-white p-4 mx-auto" style="max-width: 90%;">
+
   <ngb-alert *ngIf="errors.length > 0" type="danger" [dismissible]="true" (closed)="limparErros()"
     class="text-center anima-alert">
     <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
@@ -10,7 +10,7 @@
     </ul>
   </ngb-alert>
 
-  <form class="row" [formGroup]="registrarForm">
+  <form class="row" [formGroup]="editarInstituicaoForm" (ngSubmit)="efetuarEditarInstituicao()">
 
     <div class="d-flex align-items-center mb-3">
       <h5 class="text-primary text-uppercase fw-bolder me-2">Instituição</h5>
@@ -18,11 +18,10 @@
     </div>
 
     <div class="d-flex gap-2">
-      <mat-form-field appearance="outline" class="col-4" [ngClass]="{'has-error': displayMessage['cnpj']}">
+      <!-- <mat-form-field appearance="outline" class="col-4">
         <mat-label><i class="fa-solid fa-id-card me-2"></i>CNPJ</mat-label>
-        <input matInput type="text"JJ>
-        <mat-error *ngIf="displayMessage['cnpj']" [innerHtml]="displayMessage['cnpj']"></mat-error>
-      </mat-form-field>
+        <input matInput disabled [value]="instituicao.cnpj | cnpj" type="text">
+      </mat-form-field> -->
 
       <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['razaoSocial']}">
         <mat-label><i class="fa-solid fa-building me-2"></i>Razão Social</mat-label>
@@ -40,8 +39,7 @@
         <i class="fa-solid fa-circle-info"></i>
       </button>
 
-      <mat-error *ngIf="displayMessage['entidadeNomeNFP']" [innerHtml]="displayMessage['entidadeNomeNFP']">
-      </mat-error>
+      <mat-error *ngIf="displayMessage['entidadeNomeNFP']" [innerHtml]="displayMessage['entidadeNomeNFP']"></mat-error>
     </mat-form-field>
 
     <div class="d-flex align-items-center mb-3">
@@ -59,7 +57,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-25" [ngClass]="{'has-error': displayMessage['numero']}">
-          <mat-label>N°</mat-label>
+          <mat-label>Número</mat-label>
           <input matInput formControlName="numero" type="text">
           <mat-error *ngIf="displayMessage['numero']" [innerHtml]="displayMessage['numero']"></mat-error>
         </mat-form-field>
@@ -81,7 +79,7 @@
       <div class="d-flex gap-2">
         <mat-form-field appearance="outline" class="w-50" [ngClass]="{'has-error': displayMessage['cep']}">
           <mat-label><i class="fa-solid fa-envelope me-2"></i>CEP</mat-label>
-          <input matInput formControlName="cep" type="text" max="000.00-000">
+          <input matInput formControlName="cep" type="text" mask="000.00-000">
           <mat-error *ngIf="displayMessage['cep']" [innerHtml]="displayMessage['cep']"></mat-error>
         </mat-form-field>
 
@@ -99,8 +97,12 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary rounded-5 p-3 mb-2 w-100">
-      Salvar
-    </button>
+    <div class="d-flex justify-content-center my-4">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa-solid fa-pencil"></i> &nbsp;
+        Editar Instituição
+      </button>
+    </div>
+
   </form>
-</div> -->
+</div>
