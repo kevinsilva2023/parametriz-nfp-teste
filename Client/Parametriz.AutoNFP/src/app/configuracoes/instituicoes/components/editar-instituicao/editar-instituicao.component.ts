@@ -67,7 +67,7 @@ export class EditarInstituicaoComponent extends BaseFormComponent implements OnI
     this.obterInstituicao();
 
     this.editarInstituicaoForm = this.formBuilder.group({
-      cnpj: ['', Validators.required],
+      // cnpj: ['', Validators.required],
       razaoSocial: ['', Validators.required],
       entidadeNomeNFP: ['', Validators.required],
       endereco: this.formBuilder.group({
@@ -102,9 +102,9 @@ export class EditarInstituicaoComponent extends BaseFormComponent implements OnI
 
     if (this.editarInstituicaoForm.dirty && this.editarInstituicaoForm.value) {
 
-      this.editarInstituicao = Object.assign({}, this.editarInstituicao, this.editarInstituicaoForm.value);
+      this.instituicao = Object.assign({}, this.instituicao, this.editarInstituicaoForm.value);
 
-      this.instituicaoService.editar(this.editarInstituicao)
+      this.instituicaoService.editar(this.instituicao)
         .subscribe({
           next: () => { this.processarSucesso(); },
           error: (falha: any) => { this.processarFalha(falha); }
