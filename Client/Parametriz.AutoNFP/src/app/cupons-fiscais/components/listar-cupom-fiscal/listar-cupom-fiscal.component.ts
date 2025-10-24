@@ -22,7 +22,7 @@ export class ListarCupomFiscalComponent implements OnInit {
 
   status!: Enumerador[];
   usuariosAtivos!: ObterVoluntarioAtivo[];
-  erroTransmissaoLote!: ErroTransmissaoLote[];
+  errosTransmissaoLote!: ErroTransmissaoLote[];
 
   cuponsFiscaisResponse: CupomFiscalPaginacao = new CupomFiscalPaginacao();
   totalProcessadas!: number;
@@ -46,7 +46,7 @@ export class ListarCupomFiscalComponent implements OnInit {
     private autorizacaoService: AutorizacaoService) {
     this.status = this.activatedRoute.snapshot.data['status'];
     this.usuariosAtivos = this.activatedRoute.snapshot.data['usuariosAtivos'];
-    this.erroTransmissaoLote = this.activatedRoute.snapshot.data['erroTransmissaoLote']
+    this.errosTransmissaoLote = this.activatedRoute.snapshot.data['errosTransmissaoLote']
   }
 
   ngOnInit(): void {
@@ -62,10 +62,10 @@ export class ListarCupomFiscalComponent implements OnInit {
 
   verificaPossuiErroTransmissaoLote() {
 
-    if(this.erroTransmissaoLote.length === 0) {
+    if(this.errosTransmissaoLote.length > 0) {
       let modalRef = this.modalService.open(ListarErroModalComponent, { size: 'lg'})
       
-      modalRef.componentInstance.erroTransmissaoLote = this.erroTransmissaoLote;
+      modalRef.componentInstance.errosTransmissaoLote = this.errosTransmissaoLote;
     }
   }
 

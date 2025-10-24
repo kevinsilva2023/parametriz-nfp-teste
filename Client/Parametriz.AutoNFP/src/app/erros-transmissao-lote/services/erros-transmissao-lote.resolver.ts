@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { inject } from '@angular/core';
 import { ErroTransmissaoLoteService } from './erro-transmissao-lote.service';
 
-export const erroTransmissaoLoteResolver: ResolveFn<ErroTransmissaoLote[]> = (
+export const errosTransmissaoLoteResolver: ResolveFn<ErroTransmissaoLote[]> = (
   route: ActivatedRouteSnapshot, 
   state: RouterStateSnapshot): Observable<ErroTransmissaoLote[]> => {
 

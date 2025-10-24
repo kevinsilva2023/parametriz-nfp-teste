@@ -135,6 +135,10 @@ export class ListarVoluntarioComponent implements OnInit {
     voluntario.administrador = event.checked;
 
     this.voluntarioService.editar(voluntario)
+      .subscribe({
+        next: () => this.toastr.success('Voluntario alterado com sucesso'),
+        error: () => this.toastr.error('Erro ao Editar')
+      })
   }
 
   enviarConfirmarEmail(voluntario: Voluntario) {

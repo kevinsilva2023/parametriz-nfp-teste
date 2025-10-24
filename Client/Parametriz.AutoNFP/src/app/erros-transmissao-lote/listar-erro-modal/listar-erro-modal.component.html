@@ -16,25 +16,25 @@
     </p>
   </ngb-alert>
 
-  <div class="card border-0 shadow-sm mt-3">
+  <div class="card border-0 shadow-sm mt-3" *ngFor="let erroTransmissao of errosTransmissaoLote">
     <div class="card-body">
       <div class="mb-3">
         <span class="text-uppercase fw-semibold small text-secondary">Mensagem de erro</span>
         <div class="alert alert-warning mt-2 mb-0 py-2 px-3 d-flex align-items-center gap-2">
           <i class="fa-solid fa-circle-exclamation text-warning"></i>
-          <!-- <span class="fw-medium">{{ erroTransmissaoLote.mensagem }}</span> -->
+          <span class="fw-medium">{{ erroTransmissao.mensagem }}</span>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-6">
           <span class="text-uppercase fw-semibold small text-secondary">Data</span>
-          <!-- <p class="mb-2 fw-medium">{{ erroTransmissaoLote.data | date: 'dd/MM/yyyy HH:mm' }}</p> -->
+          <p class="mb-2 fw-medium">{{ erroTransmissao.data | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
         </div>
         <div class="col-md-6">
           <span class="text-uppercase fw-semibold small text-secondary">Voluntário</span>
           <p class="mb-2 fw-medium text-primary">
-            <!-- <i class="fa-solid fa-user me-1"></i> {{ erroTransmissaoLote.voluntario.nome }} -->
+            <i class="fa-solid fa-user me-1"></i> {{ erroTransmissao.voluntario?.nome }}
           </p>
         </div>
       </div>

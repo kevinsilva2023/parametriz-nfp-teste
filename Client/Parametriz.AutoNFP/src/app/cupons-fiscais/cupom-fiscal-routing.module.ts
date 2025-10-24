@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CupomFiscalComponent } from './cupom-fiscal.component';
 import { cupomFiscalStatusResolver } from './services/cupom-fiscal-status.resolver';
 import { voluntariosAtivosResolver } from '../configuracoes/voluntarios/services/voluntarios-ativos.resolver';
-import { erroTransmissaoLoteResolver } from '../erros-transmissao-lote/services/erro-transmissao-lote.resolver';
+import { errosTransmissaoLoteResolver } from '../erros-transmissao-lote/services/erros-transmissao-lote.resolver';
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
     resolve: {
       status: cupomFiscalStatusResolver,
       usuariosAtivos: voluntariosAtivosResolver,
-      erroTransmissaoLote: erroTransmissaoLoteResolver
+      errosTransmissaoLote: errosTransmissaoLoteResolver
     }
   }
 ];

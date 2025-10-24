@@ -14,7 +14,7 @@ namespace Parametriz.AutoNFP.Api.Extensions
                 VoluntarioId = erroTransmissaoLote.VoluntarioId,
                 Data = erroTransmissaoLote.Data,
                 Mensagem = erroTransmissaoLote.Mensagem,
-                Voluntario = erroTransmissaoLote.Voluntario.ToViewModel()
+                Voluntario = erroTransmissaoLote.Voluntario?.ToViewModel()
             };
         }
 
