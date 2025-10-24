@@ -1,0 +1,59 @@
+.perfil-imagem {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--royal-blue);
+  color: var(--royal-blue);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+
+  i {
+    font-size: 80px;
+  }
+
+  .perfil-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+    z-index: 0; 
+  }
+
+  .editar-icone {
+    position: absolute;
+    font-size: 1.5rem;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3; 
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(37, 111, 173, 0);
+    border-radius: inherit;
+    transition: 0.3s ease;
+    z-index: 2;
+  }
+
+  &:hover {
+    .perfil-img {
+      filter: blur(2px) brightness(0.7);
+    }
+
+    &::after {
+      background: rgba(37, 111, 173, 0.4);
+    }
+
+    .editar-icone {
+      opacity: 1;
+    }
+  }
+}

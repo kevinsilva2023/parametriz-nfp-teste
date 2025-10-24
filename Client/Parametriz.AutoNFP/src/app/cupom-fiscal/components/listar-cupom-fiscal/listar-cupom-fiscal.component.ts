@@ -2,12 +2,12 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Enumerador } from 'src/app/shared/models/enumureador';
 import { ActivatedRoute, Data } from '@angular/router';
 import { CupomFiscalService } from '../../services/cupom-fiscal.service';
-import { ObterUsuarioAtivo } from 'src/app/shared/models/obter-usuario-ativo';
 import { CupomFiscalPaginacao } from '../../models/cupom-fiscal';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VisualizarCupomFiscalComponent } from '../visualizar-cupom-fiscal/visualizar-cupom-fiscal.component';
 import { Claim } from 'src/app/shared/models/claim';
 import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
+import { ObeterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-ativo';
 
 @Component({
   selector: 'app-listar-cupom-fiscal',
@@ -19,7 +19,7 @@ import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service'
 export class ListarCupomFiscalComponent implements OnInit {
 
   status!: Enumerador[];
-  usuariosAtivos!: ObterUsuarioAtivo[];
+  usuariosAtivos!: ObeterVoluntarioAtivo[];
 
   cuponsFiscaisResponse: CupomFiscalPaginacao = new CupomFiscalPaginacao();
   totalProcessadas!: number;
@@ -52,7 +52,7 @@ export class ListarCupomFiscalComponent implements OnInit {
   }
 
   verificaClaim() {
-    this.usuarioEhAdmin = this.autorizacaoService.usuarioPossuiClaim(this.claimAdmin)
+    this.usuarioEhAdmin = this.autorizacaoService.voluntarioPossuiClaim(this.claimAdmin)
   }
 
   definirCompetencia() {
@@ -92,7 +92,7 @@ export class ListarCupomFiscalComponent implements OnInit {
   }
 
   obter() {
-    this.usuarioEhAdmin 
+    this.usuarioEhAdmin
       ? this.obterPorFiltro()
       : this.obterPorUsuario()
   }
@@ -112,14 +112,13 @@ export class ListarCupomFiscalComponent implements OnInit {
 
   obterPorUsuario() {
     this.cupomFiscalService
-      .obterPorUsuario(this.filtroCompetencia, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
+      .obterPorVoluntario(this.filtroCompetencia, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
       .subscribe({
         next: (response: any) => {
           this.cuponsFiscaisResponse = response;
           this.obterTotalProcessadas();
           this.obterPercentualSucesso();
-        },
-        error: (err) => console.log(err)
+        }
       })
   }
 

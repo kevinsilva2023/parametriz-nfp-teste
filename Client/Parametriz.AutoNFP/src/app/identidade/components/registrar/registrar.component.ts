@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren, viewChildren } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
-import { Instituicao } from '../../models/instituicao';
+// import { Instituicao } from '../../models/cadastrar-instituicao';
 import { IdentidadeService } from '../../services/identidade.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
-import { supportsPassiveEventListeners } from '@angular/cdk/platform';
 import { MyCustomValidators } from 'src/app/shared/validators/my-custom-validators';
+import { InputUtils } from 'src/app/shared/utils/input-utils';
+import { CadastrarInstituicao } from '../../models/cadastrar-instituicao';
 
 @Component({
   selector: 'app-registrar',
@@ -17,49 +18,58 @@ import { MyCustomValidators } from 'src/app/shared/validators/my-custom-validato
 export class RegistrarComponent extends BaseFormComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
 
-  registerForm!: FormGroup;
+  registrarForm!: FormGroup;
   errors: any[] = [];
-  instituicao!: Instituicao
-  verSenha = false;
-  verSenhaConfirmacao = false;
+  instituicao!: CadastrarInstituicao;
 
-  requisitosSenha = {
-    minuscula: false,
-    maiuscula: false,
-    numero: false,
-    caracterEspecial: false,
-    minimo: false
-  }
+  inputUtils = InputUtils;
 
-  constructor(private formBuilder: FormBuilder,
-              private identidadeService: IdentidadeService,
-              private router: Router) 
-  {
+  constructor(
+    private formBuilder: FormBuilder,
+    private identidadeService: IdentidadeService,
+    private router: Router
+  ) {
     super();
 
     this.validationMessages = {
-      razaoSocial: {
-        required: 'Favor preencher a razão social.'
-      },
-      email: {
-        required: 'Favor preencher o e-mail.',
-        email: 'O e-mail informado não é válido.'
-      },
-      usuarioNome: {
-        required: 'Favor preencher o nome do voluntário.'
-      },
       cnpj: {
-        required: 'Favor preencher o CNPJ.',
         cnpj: 'O CNPJ informado é inválido.'
       },
-      senha: {
-        required: 'Favor preencher a senha.',
-        minlength: 'A senha deve conter no mínimo 6 caracteres.',
-        maxlength: 'A senha deve conter no máximo 50 caracteres.'
+      razaoSocial: {
+        required: 'Razão Social é obrigatório.'
       },
-      senhaConfirmacao: {
-        required: 'Favor preencher a confirmação da senha.',
-        equalTo: 'As senhas não coincidem.'
+      entidadeNomeNFP: {
+        required: 'Nome da Entidade é obrigatório.'
+      },
+      logradouro: {
+        required: 'Logradouro é obrigatório.'
+      },
+      numero: {
+        required: 'Número é obrigatório.'
+      },
+      bairro: {
+        required: 'Bairro é obrigatório.'
+      },
+      cep: {
+        required: 'CEP é obrigatório.'
+      },
+      municipio: {
+        required: 'Município é obrigatório.'
+      },
+      uf: {
+        required: 'UF é obrigatório.'
+      },
+      voluntarioNome: {
+        required: 'Nome do Voluntário é obrigatório.'
+      },
+      cpf: {
+        required: 'CPF é obrigatório.'
+      },
+      email: {
+        required: 'E-mail é obrigatório.'
+      },
+      contato: {
+        required: 'Contato é obrigatório.'
       }
     };
 
@@ -69,82 +79,90 @@ export class RegistrarComponent extends BaseFormComponent implements OnInit, Aft
   }
 
   ngOnInit(): void {
-    this.registerForm = this.formBuilder.group({
+    this.registrarForm = this.formBuilder.group({
+      cnpj: [null, [Validators.required, MyCustomValidators.cnpj]],
       razaoSocial: [null, Validators.required],
-      email: [null, [
-        Validators.required,
-        Validators.email
-      ]],
-      usuarioNome: [null, Validators.required],
-      cnpj: [null, [
-        Validators.required,
-        MyCustomValidators.cnpj
-      ]],
-      senha: [null, [
-        Validators.required,
-        Validators.maxLength(50),
-        Validators.minLength(6)
-      ]],
-      senhaConfirmacao: [null, [
-        Validators.required,
-        MyCustomValidators.equalTo('senha')
-      ]],
-    });
-
-    this.registerForm.get('senha')?.valueChanges.subscribe((valor: string) => {
-      this.validarRequisitos(valor);
+      entidadeNomeNFP: [null, Validators.required],
+      endereco: this.formBuilder.group({
+        logradouro: [null, Validators.required],
+        numero: [null, Validators.required],
+        complemento: [null],
+        bairro: [null, Validators.required],
+        cep: [null, Validators.required],
+        municipio: [null, Validators.required],
+        uf: [null, Validators.required],
+      }),
+      voluntarioNome: [null, Validators.required],
+      cpf: [null, Validators.required],
+      email: [null, Validators.required],
+      contato: [null, Validators.required],
     });
   }
 
-  validarRequisitos(valor: string) {
-    this.requisitosSenha.minuscula = /[a-z]/.test(valor);
-    this.requisitosSenha.maiuscula = /[A-Z]/.test(valor);
-    this.requisitosSenha.numero = /\d/.test(valor);
-    this.requisitosSenha.caracterEspecial = /[!@#$%^&*(),.?":{}|<>]/.test(valor);
-    this.requisitosSenha.minimo = valor?.length >= 6;
+  obterCnpj(cnpj: string) {
+    this.identidadeService.obterDadosCnpj(cnpj)
+      .subscribe({
+        next: (response) => this.preencherForm(response),
+      })
   }
 
   ngAfterViewInit(): void {
-    super.configurarValidacaoFormularioBase(this.formInputElements, this.registerForm);
+    super.configurarValidacaoFormularioBase(this.formInputElements, this.registrarForm);
   }
 
-  limparErros() {
-    this.errors = [];
+  preencherForm(dados: any) {
+    if (!dados) return;
+
+    this.registrarForm.patchValue({
+      razaoSocial: dados.nome,
+      endereco: {
+        logradouro: dados.logradouro,
+        numero: dados.numero,
+        complemento: dados.complemento,
+        bairro: dados.bairro,
+        cep: dados.cep,
+        municipio: dados.municipio,
+        uf: dados.uf
+      },
+    });
   }
 
   efetuarRegistro() {
-    super.validarFormulario(this.registerForm)
+    super.validarFormulario(this.registrarForm)
 
-    if (this.registerForm.dirty && this.registerForm.valid) {
+    if (this.registrarForm.dirty && this.registrarForm.valid) {
 
-      this.instituicao = Object.assign({}, this.instituicao, this.registerForm.value);
+      this.instituicao = Object.assign({}, this.instituicao, this.registrarForm.value);
+
+      console.log(this.instituicao)
 
       this.identidadeService.registrar(this.instituicao)
         .subscribe({
-          next: (sucesso: any) => { this.processarSucesso(sucesso); },
+          next: () => { this.processarSucesso(); },
           error: (falha: any) => { this.processarErro(falha); }
         });
     }
   }
 
-  processarSucesso(response: any) {
-    this.registerForm.reset();
+  processarSucesso() {
+    this.registrarForm.reset();
     this.limparErros();
 
-    let email = this.instituicao.email;
-    let usuario = this.instituicao.usuarioNome;
+    // let email = this.instituicao.email;
+    // let usuario = this.instituicao.voluntarioNome;
 
-    this.router.navigate(
-      ['/confirmar-email-enviado'],
-      { queryParams: { email, usuario }}
-    );
+    // this.router.navigate(
+    //   ['/confirmar-email-enviado'],
+    //   { queryParams: { email, usuario } }
+    // );
   }
 
   processarErro(fail: any) {
     this.errors = fail?.error?.errors?.mensagens;
   }
 
-  closeAlert() {
-    this.limparErros();
+  limparErros() {
+    this.errors = [];
   }
+
 }

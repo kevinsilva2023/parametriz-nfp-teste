@@ -7,47 +7,41 @@ import { ConfiguracoesComponent } from './configuracoes.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { errorInterceptor } from 'src/app/shared/interceptors/error.interceptor';
-import { jwtInterceptor } from 'src/app/shared/interceptors/jwt.interceptor';
-import { UsuarioService } from './usuarios/services/usuario.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { VoluntarioComponent } from './voluntarios/voluntario.component';
-import { CadastrarVoluntarioComponent } from './voluntarios/components/cadastrar-voluntario/cadastrar-voluntario.component';
-import { VisualizarVoluntarioComponent } from './voluntarios/components/visualizar-voluntario/visualizar-voluntario.component';
-
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { UsuarioComponent } from './usuarios/usuario.component';
-import { CadastrarUsuarioComponent } from './usuarios/components/cadastrar-usuario/cadastrar-usuario.component';
-import { ListarUsuarioComponent } from './usuarios/components/listar-usuario/listar-usuario.component';
-import { DesativarUsuarioComponent } from './usuarios/components/desativar-usuario/desativar-usuario.component';
-import { AtivarUsuarioComponent } from './usuarios/components/ativar-usuario/ativar-usuario.component';
-import { EditarUsuarioComponent } from './usuarios/components/editar-usuario/editar-usuario.component';
-import { VoluntarioService } from './voluntarios/services/voluntario.service';
-import { ExcluirVoluntarioComponent } from './voluntarios/components/excluir-voluntario/excluir-voluntario.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { InstituicaoComponent } from './instituicoes/instituicao.component';
 
+import { VoluntarioComponent } from './voluntario/voluntario.component';
+import { CadastrarVoluntarioComponent } from './voluntario/components/cadastrar-voluntario/cadastrar-voluntario.component';
+import { AtivarVoluntarioComponent } from './voluntario/components/ativar-voluntario/ativar-voluntario.component';
+import { DesativarVoluntarioComponent } from './voluntario/components/desativar-voluntario/desativar-voluntario.component';
+import { ListarVoluntarioComponent } from './voluntario/components/listar-voluntario/listar-voluntario.component';
+import { VoluntarioService } from './voluntario/services/voluntario.service';
+import { CpfPipe } from '../shared/pipe/cpf.pipe';
+
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { EditarInstituicaoComponent } from './instituicoes/components/editar-instituicao/editar-instituicao.component';
+import { InstituicaoService } from './instituicoes/services/instituicao.service';
+import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
 
 @NgModule({
   declarations: [
     ConfiguracoesComponent,
     VoluntarioComponent,
+    InstituicaoComponent,
     CadastrarVoluntarioComponent,
-    VisualizarVoluntarioComponent,
-    UsuarioComponent,
-    CadastrarUsuarioComponent,
-    ListarUsuarioComponent,
-    DesativarUsuarioComponent,
-    AtivarUsuarioComponent,
-    EditarUsuarioComponent,
-    ExcluirVoluntarioComponent,
+    AtivarVoluntarioComponent,
+    DesativarVoluntarioComponent,
+    ListarVoluntarioComponent,
+    EditarInstituicaoComponent
   ],
   imports: [
     CommonModule,
@@ -59,15 +53,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ReactiveFormsModule,
     MatSlideToggleModule,
     MatSelectModule,
-    MatInputModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CpfPipe,
+    CnpjPipe,
+    NgxMaskDirective
   ],
   providers: [
-    UsuarioService,
     VoluntarioService,
-    AutorizacaoService,
-  
+    AutorizacaoService,  
+    InstituicaoService,
+    provideNgxMask()
   ]
 })
 export class ConfiguracoesModule { }

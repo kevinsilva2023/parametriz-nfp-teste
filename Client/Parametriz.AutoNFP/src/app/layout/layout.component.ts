@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AutorizacaoService } from '../shared/services/autorizacao.service';
 import { Claim } from '../shared/models/claim';
-import { Instituicao } from '../identidade/models/instituicao';
+// import { Instituicao } from '../identidade/models/cadastrar-instituicao';
 import { LocalStorageUtils } from '../shared/utils/local-storage-utils';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
@@ -20,10 +20,10 @@ export class LayoutComponent implements OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.defineRota(); 
+    this.defineRota();
     this.onRotaAlterada();
   }
-  
+
   onRotaAlterada() {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))

@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, HttpClientJsonpModule, provideHttpClient, withInterceptors, withJsonpSupport } from '@angular/common/http';
 
 import { LoginComponent } from "./identidade/components/login/login.component";
 import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
@@ -35,8 +35,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModalModule, NgbModalConfig, NgbAlertModule, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
-import { PerfilComponent } from './perfil/perfil.component';
-import { PerfilService } from './services/perfil.service';
+import { CnpjPipe } from './shared/pipe/cnpj.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 
 @NgModule({
@@ -52,7 +54,6 @@ import { PerfilService } from './services/perfil.service';
     FundoAnimadoComponent,
     NaoEncontradoComponent,
     AcessoNegadoComponent,
-    PerfilComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,23 +72,26 @@ import { PerfilService } from './services/perfil.service';
       progressAnimation: 'increasing',
     }),
     NgbModalModule,
-    NgbAlertModule
+    NgbAlertModule,
+    CnpjPipe,
+    MatTooltipModule,
+    NgxMaskDirective
   ],
   providers: [
     IdentidadeService,
     AutorizacaoService,
-    PerfilService,
     provideHttpClient(
       withInterceptors([
         errorInterceptor,
         jwtInterceptor
-      ])),
+      ]),
+      withJsonpSupport(),
+    ),
     {
       provide: NgbModalConfig,
       useFactory: () => {
         const config = new NgbModalConfig();
         config.centered = true;
-        // config.backdrop = 'static';
         config.keyboard = false;
         return config;
       }
@@ -96,11 +100,13 @@ import { PerfilService } from './services/perfil.service';
       provide: NgbAlertConfig,
       useFactory: () => {
         const config = new NgbAlertConfig();
-        config.dismissible = true; 
+        config.dismissible = true;
         config.animation = true;
         return config;
       },
-    }
+    },
+    provideNgxMask()
+
   ],
   bootstrap: [AppComponent]
 })

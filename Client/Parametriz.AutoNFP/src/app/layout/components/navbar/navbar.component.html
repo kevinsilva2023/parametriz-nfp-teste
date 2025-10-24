@@ -8,22 +8,38 @@
     </div>
   </div>
 
-  <div class="text-center fs-6 bg-primary-blur bg-primary border border-1 px-5 py-2 rounded-pill text-white">
-    <span class="fw-bolder">RAZÃO SOCIAL:</span> {{ razaoSocialInstituicao }} 
-    <span class="mx-2">-</span>
-    <span class="fw-bolder"> CNPJ:</span> {{ cnpj | cnpj }}
+  <div
+    class="d-flex gap-3 align-items-center text-center fs-6 bg-primary-blur bg-primary border border-1 px-5 py-2 rounded-pill text-white">
+    <div>
+      <span class="fw-bolder">RAZÃO SOCIAL:</span> {{ razaoSocialInstituicao }}
+      <span class="mx-2">-</span>
+      <span class="fw-bolder"> CNPJ:</span> {{ cnpj | cnpj }}
+    </div>
   </div>
 
+
   <div class="d-flex align-items-center gap-4">
+    <div 
+      class="fs-small text-center d-flex align-items-center border border-1 px-3 py-1 rounded-pill mb-1 mt-1" 
+      *ngIf="certificadoStatus"
+      [ngClass]="{
+            'bg-danger': certificadoStatus === 0 || certificadoStatus === 1,
+            'bg-warning': certificadoStatus === 2,
+            'bg-success': certificadoStatus === 3
+            }"
+      >
+        Certificado:  {{ certificadoStatusNome | titlecase }}
+    </div>
     <i class="fa-solid fa-circle-question cursor-pointer"></i>
     <i [matBadge]="15" class="fa-solid fa-bell me-2 cursor-pointer"></i>
 
     <div [matMenuTriggerFor]="menu"
       class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
-      <div class="d-flex flex-column text-end">
-        <span class="mb-1">{{ usuario.nome | titlecase }}</span>
-        <span class="text-secondary fs-small">{{ claimAdmin }}</span>
+      <div class="d-flex flex-column text-end align-items-end">
+        <span>{{ voluntarioNome | titlecase }}</span>
+        <span class="text-secondary fs-small text-center mb-1">{{ claimAdmin }}</span>
       </div>
+
 
       <div class="avatar-wrapper">
         <img *ngIf="fotoUpload" [src]="fotoUpload" lt="Avatar do usuário" class="rounded-circle avatar-img">

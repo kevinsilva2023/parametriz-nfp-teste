@@ -7,10 +7,9 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { MatBadgeModule } from '@angular/material/badge';
-import { UsuarioService } from '../configuracoes/usuarios/services/usuario.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
-import { PerfilService } from '../services/perfil.service';
+import { PerfilService } from '../perfil/services/perfil.service';
 
 
 

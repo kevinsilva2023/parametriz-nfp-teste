@@ -14,7 +14,7 @@ export const jwtInterceptor: HttpInterceptorFn = (
     let identidadeService = inject(IdentidadeService);
     let autorizacaoService = inject(AutorizacaoService);
 
-    if (!autorizacaoService.usuarioEstaLogado())
+    if (!autorizacaoService.voluntarioEstaLogado())
       return next(req);
 
     // if (req.url.startsWith(`${environment.apiUrl}/refresh-token`))
