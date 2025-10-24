@@ -42,6 +42,14 @@ namespace Parametriz.AutoNFP.Data.Repository
                                u.Administrador);    
         }
 
+        public async Task<bool> EhAdministrador(Guid id, Guid instituicaoId)
+        {
+            return (await _context.Voluntarios
+                .AsNoTracking()
+                .SingleOrDefaultAsync(v => v.InstituicaoId == instituicaoId &&
+                                           v.Id == id))?.Administrador ?? false;      
+        }
+
         public async Task<bool> CpfPertenceAoVoluntarioId(Guid id, string cpf, Guid instituicaoId)
         {
             return await _context.Voluntarios
