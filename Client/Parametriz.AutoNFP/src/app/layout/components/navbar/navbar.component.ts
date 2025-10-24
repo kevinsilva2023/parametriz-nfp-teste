@@ -21,7 +21,8 @@ export class NavbarComponent implements OnInit {
 
   razaoSocialInstituicao!: string;
   cnpj!: string;
-  statusCertificado!: any;
+  certificadoStatusNome!: any;
+  certificadoStatus!: any;
 
   constructor(
     private perfilService: PerfilService,
@@ -50,8 +51,9 @@ export class NavbarComponent implements OnInit {
     .subscribe({
       next: (voluntario: Voluntario) => (
         this.fotoUpload = voluntario.fotoUpload,
-        this.voluntarioNome = voluntario.nome
-        // this.statusCertificado = voluntario.certificado.statusNome
+        this.voluntarioNome = voluntario.nome,
+        this.certificadoStatusNome = voluntario.certificadoStatusNome,
+        this.certificadoStatus = voluntario.certificadoStatus
       ),
     });
 

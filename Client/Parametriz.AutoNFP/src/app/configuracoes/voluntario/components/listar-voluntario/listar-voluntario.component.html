@@ -82,15 +82,15 @@
             </span>
           </td>
 
-          <!-- <td class="text-center" *ngIf="voluntario.certificado.status">
+          <td class="text-center" *ngIf="voluntario.certificadoStatus">
             <span class="badge rounded-pill px-3 py-2" [ngClass]="{
-                'bg-success': voluntario.certificado.status === 1,
-                'bg-danger': voluntario.certificado.status === 0,
-                'bg-warning': voluntario.certificado.status === 3
+              'bg-danger': voluntario.certificadoStatus === 0 || voluntario.certificadoStatus === 1,
+              'bg-warning': voluntario.certificadoStatus === 2,
+              'bg-success': voluntario.certificadoStatus === 3
               }">
-              {{ voluntario.certificado.status }}
+              {{ voluntario.certificadoStatusNome | titlecase }}
             </span>
-          </td> -->
+          </td>
 
           <td class="text-center" *ngIf="!voluntario.certificado">
             <span class="badge rounded-pill px-3 py-2 bg-danger">

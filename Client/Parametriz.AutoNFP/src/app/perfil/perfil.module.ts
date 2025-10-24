@@ -22,6 +22,7 @@ import { PerfilService } from './services/perfil.service';
 
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CpfPipe } from '../shared/pipe/cpf.pipe';
+import { VoluntarioService } from '../configuracoes/voluntario/services/voluntario.service';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { CpfPipe } from '../shared/pipe/cpf.pipe';
   providers: [
     PerfilService,
     CertificadoService,
+    VoluntarioService,
     provideNgxMask()
   ]
 })

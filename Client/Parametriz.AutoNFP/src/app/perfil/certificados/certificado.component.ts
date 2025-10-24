@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CertificadoService } from './services/certificado.service';
+import { VoluntarioService } from 'src/app/configuracoes/voluntario/services/voluntario.service';
+import { PerfilService } from '../services/perfil.service';
+import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
 
 @Component({
   selector: 'app-certificado',
@@ -9,13 +12,13 @@ import { CertificadoService } from './services/certificado.service';
   styles: ``
 })
 export class CertificadoComponent {
-  certificado!: any;
+  voluntario!: Voluntario;
   temCertificado = false;
 
   errors: [] = [];
 
   constructor(
-    private certificadoService: CertificadoService,
+    private perfilService: PerfilService,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -27,17 +30,17 @@ export class CertificadoComponent {
   }
 
   obterPorVoluntario() {
-    this.certificadoService.obterPorVoluntario()
+    this.perfilService.obter()
       .subscribe({
         next: (sucesso: any) => { this.processarSucesso(sucesso); },
         error: (falha: any) => { this.processarFalha(falha); }
       });
   }
 
-  processarSucesso(response: any) {
-    const temDados = response && Object.keys(response).length > 0;
+  processarSucesso(voluntario: Voluntario) {
+    const temDados = voluntario && Object.keys(voluntario).length > 0;
     if (temDados) {
-      this.certificado = response;
+      this.voluntario = voluntario;
     }
     this.temCertificado = temDados;
   }

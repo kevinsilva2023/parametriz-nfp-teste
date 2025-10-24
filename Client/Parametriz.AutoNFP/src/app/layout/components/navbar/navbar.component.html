@@ -19,10 +19,16 @@
 
 
   <div class="d-flex align-items-center gap-4">
-    <div
-      class="fs-small bg-success text-center d-flex align-items-center border border-1 px-3 py-1 rounded-pill mb-1 mt-1">
-      <!-- trocar o bg com base no status -->
-      Certificado: Válido
+    <div 
+      class="fs-small text-center d-flex align-items-center border border-1 px-3 py-1 rounded-pill mb-1 mt-1" 
+      *ngIf="certificadoStatus"
+      [ngClass]="{
+            'bg-danger': certificadoStatus === 0 || certificadoStatus === 1,
+            'bg-warning': certificadoStatus === 2,
+            'bg-success': certificadoStatus === 3
+            }"
+      >
+        Certificado:  {{ certificadoStatusNome | titlecase }}
     </div>
     <i class="fa-solid fa-circle-question cursor-pointer"></i>
     <i [matBadge]="15" class="fa-solid fa-bell me-2 cursor-pointer"></i>

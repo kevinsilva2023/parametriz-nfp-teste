@@ -1,8 +1,8 @@
-<div class="card card-white" *ngIf="certificado">
+<div class="card card-white" *ngIf="voluntario">
   <div class="card-header">
     <h1 class="fs-5 py-3 text-center fw-bolder text-primary text-uppercase">
       <i class="fa-solid fa-user me-2"></i>
-      Dados do Certificado 
+      Dados do Certificado
     </h1>
   </div>
   <div class="card-body w-100 p-5 m-auto">
@@ -31,7 +31,7 @@
           <i class="fa-solid fa-user"></i>
           Requerente:
         </span>
-        <input type="text" disabled class="form-control form-disable" [value]="certificado.requerente">
+        <input type="text" disabled class="form-control form-disable" [value]="voluntario.certificado.requerente">
       </div>
 
       <div class="input-group mb-3">
@@ -40,7 +40,7 @@
           Emissão:
         </span>
         <input type="text" disabled class="form-control form-disable"
-          [value]="certificado.validoAPartirDe | date:'dd/MM/yyyy'">
+          [value]="voluntario.certificado.validoAPartirDe| date:'dd/MM/yyyy'">
       </div>
 
       <div class="input-group mb-3">
@@ -49,7 +49,7 @@
           Validade:
         </span>
         <input type="text" disabled class="form-control form-disable"
-          [value]="certificado.validoAte | date:'dd/MM/yyyy'">
+          [value]="voluntario.certificado.validoAte | date:'dd/MM/yyyy'">
       </div>
 
       <div class="input-group mb-3">
@@ -57,12 +57,16 @@
           <i class="fa-solid fa-building"></i>
           Emissor:
         </span>
-        <input type="text" disabled class="form-control form-disable" [value]="certificado.emissor">
+        <input type="text" disabled class="form-control form-disable" [value]="voluntario.certificado.emissor">
       </div>
 
       <div>
-        <span class="bg-success py-1 px-4 rounded-5 text-white">
-          {{ certificado.statusNome }}
+        <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+              'bg-danger': voluntario.certificadoStatus === 0 || voluntario.certificadoStatus === 1,
+              'bg-warning': voluntario.certificadoStatus === 2,
+              'bg-success': voluntario.certificadoStatus === 3
+              }">
+          {{ voluntario.certificadoStatusNome | uppercase }}
         </span>
       </div>
     </div>

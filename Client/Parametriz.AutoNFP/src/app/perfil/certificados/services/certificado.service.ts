@@ -22,12 +22,4 @@ export class CertificadoService extends BaseService {
         map(super.extractData),
         catchError(super.serviceError));
   }
-
-  obterPorVoluntario(): Observable<Certificado> {
-    return this.httpClient
-      .get(`${this.apiUrl}/certificados`, { headers: super.ObterAuthHeaderJson() })
-      .pipe(
-        map(super.extractData),
-        catchError(super.serviceError));
-  }
 }

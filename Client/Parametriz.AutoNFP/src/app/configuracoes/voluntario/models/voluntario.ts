@@ -8,6 +8,8 @@ export interface Voluntario {
   contato: string,
   fotoUpload: string,
   emailConfirmado: boolean,
+  certificadoStatus: number,
+  certificadoStatusNome: string,
   administrador: boolean,
   desativado: boolean
   certificado: Certificado
