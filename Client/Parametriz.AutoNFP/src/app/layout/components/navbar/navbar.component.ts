@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Usuario } from 'src/app/configuracoes/usuarios/models/usuario';
-import { UsuarioService } from 'src/app/configuracoes/usuarios/services/usuario.service';
-import { PerfilService } from 'src/app/services/perfil.service';
+import { Subject, Subscription } from 'rxjs';
+import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { PerfilService } from 'src/app/perfil/services/perfil.service';
 import { Claim } from 'src/app/shared/models/claim';
 import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
@@ -14,12 +14,15 @@ import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 })
 export class NavbarComponent implements OnInit {
   @Input() tituloPagina!: string;
-  usuario!: any;
+
+  voluntarioNome!: string;
   fotoUpload!: any;
   claimAdmin!: string;
 
   razaoSocialInstituicao!: string;
   cnpj!: string;
+  certificadoStatusNome!: any;
+  certificadoStatus!: any;
 
   constructor(
     private perfilService: PerfilService,
@@ -27,31 +30,40 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.preencherUsuarioAtivo();
+    this.preencherVoluntarioAtivo();
     this.obterInsituicao();
+
+    PerfilService.atualizarNavSubject
+      .subscribe({
+        next: () => {
+          this.preencherVoluntarioAtivo();
+        }
+      });
   }
 
-  preencherUsuarioAtivo() {
-    let usuarioLocal = LocalStorageUtils.obterUsuario();
-    this.usuario = usuarioLocal;
-
+  preencherVoluntarioAtivo() {
     let claimAdmin: Claim = { type: 'role', value: 'Administrador' };
-    let usuarioEhAdmin = this.autorizacaoService.usuarioPossuiClaim(claimAdmin);
+    let voluntarioEhAdmin = this.autorizacaoService.voluntarioPossuiClaim(claimAdmin);
 
-    this.claimAdmin = usuarioEhAdmin ? 'Administrador' : 'Usuário';
+    this.claimAdmin = voluntarioEhAdmin ? 'Administrador' : 'Usuário';
 
-    this.perfilService.obter().subscribe({
-      next: (response: Usuario) => (this.fotoUpload = response.fotoUpload),
-      error: (err) => console.log(err)
+    this.perfilService.obter()
+    .subscribe({
+      next: (voluntario: Voluntario) => (
+        this.fotoUpload = voluntario.fotoUpload,
+        this.voluntarioNome = voluntario.nome,
+        this.certificadoStatusNome = voluntario.certificadoStatusNome,
+        this.certificadoStatus = voluntario.certificadoStatus
+      ),
     });
+
   }
 
-  
   obterInsituicao() {
     var result = LocalStorageUtils.obterUsuario();
+
     this.razaoSocialInstituicao = result.instituicao.razaoSocial;
     this.cnpj = result.instituicao.cnpj;
   }
-  
 
 }

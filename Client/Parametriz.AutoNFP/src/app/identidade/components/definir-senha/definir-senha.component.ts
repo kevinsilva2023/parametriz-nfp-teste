@@ -18,11 +18,11 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
 
   definirSenhaForm!: FormGroup;
   definirSenha!: DefinirSenha;
+
   errors: any[] = [];
+
   verSenha = false;
   verSenhaConfirmacao = false;
-  emailDefinirSenha?: string;
-  codeDefinirSenha?: string;
 
   requisitosSenha = {
     minuscula: false,
@@ -32,13 +32,15 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
     minimo: false
   }
 
-  constructor(private formBuilder: FormBuilder,
-              private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private identidadeService: IdentidadeService,
-              private toastr: ToastrService) 
-  {
+  constructor(
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private identidadeService: IdentidadeService,
+    private toastr: ToastrService
+  ) {
     super();
+
     this.validationMessages = {
       senha: {
         required: 'Favor preencher a senha.',
@@ -62,6 +64,7 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
 
   ngOnInit(): void {
     this.definirSenhaForm = this.formBuilder.group({
+      email: [''],
       senha: ['', [
         Validators.required,
         Validators.maxLength(50),
@@ -70,15 +73,64 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
       senhaConfirmacao: ['', [
         Validators.required,
         MyCustomValidators.equalTo('senha')
-      ]]
+      ]],
+      code: ['']
     });
 
-    this.senhaForm().valueChanges
+    this.senhaForm()
+      .valueChanges
       .subscribe({
         next: (valor: string) => this.validarRequisitos(valor)
       });
 
-    this.caputurarDadosParaDefinirSenha();
+    this.preencherForm();
+  }
+
+  preencherForm() {
+    let email = this.activatedRoute.snapshot.queryParamMap.get('email')
+    let code = this.activatedRoute.snapshot.queryParamMap.get('code')
+
+    if(email && code != null) {
+      this.definirSenhaForm.patchValue({
+        email: email,
+        code: code,
+      })
+    }
+  }
+
+  efetuarDefinirSenha() {
+    super.validarFormulario(this.definirSenhaForm)
+
+    if (this.definirSenhaForm.dirty && this.definirSenhaForm.valid) {
+
+      this.definirSenha = Object.assign({}, this.definirSenha, this.definirSenhaForm.value)
+
+      this.identidadeService.definirSenha(this.definirSenha)
+        .subscribe({
+          next: (sucesso: any) => { this.processarSucesso(sucesso); },
+          error: (falha: any) => { this.processarFalha(falha); }
+        });
+    }
+  }
+
+  limparErros() {
+    this.errors = [];
+  }
+
+  processarSucesso(response: any) {
+    this.definirSenhaForm.reset();
+    this.limparErros();
+
+    LocalStorageUtils.salvarDadosLocaisUsuario(response);
+
+    this.toastr.success('Aguarde, você será redirecionado para o AutoNFP.', 'Senha definida com sucesso!');
+
+    this.router.navigate(['/'])
+  }
+
+  processarFalha(fail: any) {
+    this.errors = fail?.error?.errors?.mensagens;
+    this.toastr.error('Não foi possível definir a senha.', 'Erro');
   }
 
   senhaForm(): AbstractControl {
@@ -91,53 +143,5 @@ export class DefinirSenhaComponent extends BaseFormComponent implements OnInit, 
     this.requisitosSenha.numero = /\d/.test(valor);
     this.requisitosSenha.caracterEspecial = /[!@#$%^&*(),.?":{}|<>]/.test(valor);
     this.requisitosSenha.minimo = valor?.length >= 6;
-  }
-
-  limparErros() {
-    this.errors = [];
-  }
-
-  caputurarDadosParaDefinirSenha() {
-    const email = this.activatedRoute.snapshot.queryParamMap.get('email')
-    const code = this.activatedRoute.snapshot.queryParamMap.get('code')
-
-    if (email && code !== null) {
-      this.emailDefinirSenha = email;
-      this.codeDefinirSenha = code;
-    }
-  }
-
-  efetuarDefinirSenha() {
-    super.validarFormulario(this.definirSenhaForm)
-
-    if (this.definirSenhaForm.dirty && this.definirSenhaForm.valid) {
-
-      this.definirSenha = Object.assign({}, this.definirSenha, this.definirSenhaForm.value, {
-        email: this.emailDefinirSenha,
-        code: this.codeDefinirSenha
-      })
-
-      this.identidadeService.definirSenha(this.definirSenha)
-        .subscribe({
-          next: (sucesso: any) => { this.processarSucesso(sucesso); },
-          error: (falha: any) => { this.processarFalha(falha); }
-        });
-    }
-  }
-
-  processarSucesso(response: any) {
-    this.definirSenhaForm.reset();
-    this.limparErros();
-
-    LocalStorageUtils.salvarDadosLocaisUsuario(response);
-
-    this.toastr.success('Aguarde, você será redirecionado para o AutoNFP.','Senha definida com sucesso!');
-
-    this.router.navigate(['/'])
-  }
-
-  processarFalha(fail: any) {
-    this.errors = fail?.error?.errors?.mensagens;
-    this.toastr.error('Não foi possível definir a senha.', 'Erro');
   }
 }

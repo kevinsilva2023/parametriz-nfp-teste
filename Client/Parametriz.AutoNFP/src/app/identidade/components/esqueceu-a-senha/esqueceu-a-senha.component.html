@@ -8,7 +8,7 @@
 
     <h1 class="text-primary fw-bolder fs-3">Esqueceu sua Senha?</h1>
 
-    <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+    <ngb-alert type="danger" (closed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
       <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
       <ul>
         <li class="fs-small mt-1" *ngFor="let error of errors">

@@ -21,12 +21,12 @@ const routes: Routes = [
     canActivate: [autorizacaoGuard],
   },
   { path: 'confirmar-email', component: ConfirmarEmailComponent},
-  { path: 'confirmar-email-enviado', component: ConfirmarEmailEnviadoComponent },
+  // { path: 'confirmar-email-enviado', component: ConfirmarEmailEnviadoComponent }, ativar futuramente
   { path: 'definir-senha', component: DefinirSenhaComponent },
   { path: 'definir-senha-enviado', component: DefinirSenhaEnviadoComponent },
   { path: 'esqueceu-a-senha', component: EsqueceuASenhaComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'registrar', component: RegistrarComponent },
+  { path: 'registrar', component: RegistrarComponent }, //ativar futuramente
   { path: 'acesso-negado', component: AcessoNegadoComponent },
   { path: 'nao-encontrado', component: NaoEncontradoComponent },
   { path: '**', component: NaoEncontradoComponent }

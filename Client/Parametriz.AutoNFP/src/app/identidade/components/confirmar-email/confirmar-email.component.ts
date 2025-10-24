@@ -17,30 +17,29 @@ export class ConfirmarEmailComponent implements OnInit {
   nomeUsuario?: string;
   emailUsuario?: string;
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private identidadeService: IdentidadeService,
-              private router: Router,
-              private toastr: ToastrService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private identidadeService: IdentidadeService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.verificaConfirmacaoDeEmail();
   }
 
   verificaConfirmacaoDeEmail() {
-    const email = this.activatedRoute.snapshot.queryParamMap.get('email');
-    const code = this.activatedRoute.snapshot.queryParamMap.get('code');
-    const definirSenha = this.activatedRoute.snapshot.queryParamMap.get('definirSenha');
+    let email = this.activatedRoute.snapshot.queryParamMap.get('email');
+    let code = this.activatedRoute.snapshot.queryParamMap.get('code');
 
-    if (email && code && definirSenha !== null) {
-      const confirmarEmail: ConfirmarEmail = {
-        email: email,
-        code: code,
-        definirSenha: definirSenha === 'True'
-      }
+    if (email && code !== null) {
+      let confirmarEmail = new ConfirmarEmail();
+      confirmarEmail.email = email;
+      confirmarEmail.code = code;
 
       this.identidadeService.confirmarEmail(confirmarEmail)
         .subscribe({
-          next: (sucesso: any) => { this.processarSucesso(sucesso, confirmarEmail); },
+          next: () => { this.processarSucesso(); },
           error: (falha: any) => { this.processarFalha(falha); }
         });
 
@@ -53,26 +52,13 @@ export class ConfirmarEmailComponent implements OnInit {
     this.errors = [];
   }
 
-  processarSucesso(response: any, confirmarEmail: ConfirmarEmail) {
-    if (confirmarEmail.definirSenha) {
-      let toast = this.toastr.success('Email confirmado! Você será redirecionado.', 'Confirmação');
+  processarSucesso() {
+    let toast = this.toastr.success('Email confirmado! Você será redirecionado.', 'Confirmação');
 
-      toast.onHidden
-        .subscribe({
-          next: () => this.router.navigate(['/definir-senha-enviado'])
-        });
-    } else {
-      this.emailConfirmado = true;
-      this.nomeUsuario = response?.nome;
-      this.emailUsuario = confirmarEmail.email;
-
-      let toast = this.toastr.success('Aguarde, clique no botao para acessar o AutoNFP', 'Email confirmado!');
-      
-      toast.onHidden
-        .subscribe({
-          next: () => this.router.navigate(['/'])
-        });
-    }
+    toast.onHidden
+      .subscribe({
+        next: () => this.router.navigate(['/definir-senha-enviado'])
+      });
   }
 
   processarFalha(fail: any) {

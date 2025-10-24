@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { debounceTime, Subject } from 'rxjs';
 import { CupomFiscalService } from '../../services/cupom-fiscal.service';
 import { CadastrarCupomFiscal } from '../../models/cadastrar-cupom-fiscal';
+import { InputUtils } from 'src/app/shared/utils/input-utils';
 
 @Component({
   selector: 'app-cadastrar-cupom-fiscal',
@@ -21,6 +22,8 @@ export class CadastrarCupomFiscalComponent implements OnInit {
   @ViewChild('qrCodeInput') qrInput!: ElementRef<HTMLInputElement>;
   debounceQrCodeCupomFiscal = new Subject<string>();
   errors: [] = [];
+
+  inputUtils = InputUtils;
 
   constructor(private cupomFiscalService: CupomFiscalService,
     private toastr: ToastrService) { }
@@ -63,10 +66,6 @@ export class CadastrarCupomFiscalComponent implements OnInit {
   resetarInput() {
     this.qrInput.nativeElement.value = '';
     this.qrInput.nativeElement.focus();
-  }
-
-  getInputValue(event: Event): string {
-    return (event.target as HTMLInputElement).value;
   }
 
   limparErros() {

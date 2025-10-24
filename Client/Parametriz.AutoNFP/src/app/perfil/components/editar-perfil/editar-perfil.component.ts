@@ -1,0 +1,126 @@
+import { AfterViewInit, Component, ElementRef, OnInit,  ViewChild, ViewChildren } from '@angular/core';
+import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { NgxImageCompressService } from 'ngx-image-compress';
+import { ToastrService } from 'ngx-toastr';
+import { BaseFormComponent } from 'src/app/shared/generic-form-validator/base-form.component';
+import { PerfilService } from '../../services/perfil.service';
+import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
+
+@Component({
+  selector: 'app-editar-perfil',
+  standalone: false,
+  templateUrl: './editar-perfil.component.html',
+  styleUrl: './editar-perfil.component.scss'
+})
+export class EditarPerfilComponent extends BaseFormComponent implements OnInit, AfterViewInit {
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
+  @ViewChild('inputFile') inputFile!: ElementRef;
+
+  voluntario!: Voluntario;
+  instituicao!: string;
+
+  perfilForm!: FormGroup;
+
+  errors: [] = [];
+
+  constructor(private formBuilder: FormBuilder,
+    private perfilService: PerfilService,
+    private toastr: ToastrService,
+    private imageCompresService: NgxImageCompressService
+  ) {
+    super();
+
+    this.validationMessages = {
+      nome: {
+        required: 'Favor preencher o nome.'
+      }
+    }
+
+    super.configurarMensagensValidacaoBase(this.validationMessages);
+  }
+
+  ngAfterViewInit(): void {
+    super.configurarValidacaoFormularioBase(this.formInputElements, this.perfilForm);
+  }
+
+  uploadImagem(event: any) {
+    const arquivoImagem: File = event.target.files[0];
+    if (!arquivoImagem) return;
+    const tamanhoKb = arquivoImagem.size / 1024;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      let imageDataUrl = e.target.result as string;
+      if (tamanhoKb > 200) {
+        this.imageCompresService.compressFile(imageDataUrl, -1, 50, 50)
+          .then((imagemComprimida) => {
+            this.voluntario.fotoUpload = imagemComprimida;
+          });
+      } else {
+        this.voluntario.fotoUpload = imageDataUrl;
+      }
+    };
+    reader.readAsDataURL(arquivoImagem);
+  }
+
+  ngOnInit(): void {
+    this.perfilForm = this.formBuilder.group({
+      nome: ['', Validators.required],
+      contato: ['', Validators.required]
+    });
+    this.obterPorId();
+    this.obterInsituicao();
+  }
+
+  obterPorId() {
+    this.perfilService.obter()
+      .subscribe({
+        next: (response: Voluntario) => {
+          this.voluntario = response;
+          this.preencherForm();
+        },
+        error: () => this.toastr.error('Erro ao obter voluntário.', 'Erro')
+      });
+  }
+
+  obterInsituicao() {
+    var result = LocalStorageUtils.obterUsuario();
+    this.instituicao = result.instituicao.razaoSocial;
+  }
+
+  preencherForm() {
+    this.perfilForm.patchValue({
+      nome: this.voluntario.nome,
+      email: this.voluntario.email,
+      cpf: this.voluntario.cpf,
+      contato: this.voluntario.contato
+    });
+  }
+
+  efetuarEditarVoluntario() {
+    super.validarFormulario(this.perfilForm);
+
+    this.voluntario = Object.assign({}, this.voluntario, this.perfilForm.value);
+
+    this.perfilService.salvar(this.voluntario)
+      .subscribe({
+        next: () => { this.processarSucesso(); },
+        error: (falha: any) => { this.processarFalha(falha); }
+      })
+  }
+
+  processarSucesso() {
+    this.limparErros()
+    PerfilService.atualizarNavSubject.next(true);
+    this.toastr.success('Voluntário editado com sucesso.', 'Sucesso!');
+  }
+
+  processarFalha(fail: any) {
+    this.errors = fail?.error?.errors?.mensagens;
+    this.toastr.error('Não foi possível editar o voluntário.', 'Erro');
+  }
+
+  limparErros() {
+    this.errors = [];
+  }
+}

@@ -9,7 +9,7 @@
         <span>Escaneie o QR Code</span>
       </mat-label>
       <input #qrCodeInput matInput placeholder="Aponte o leitor para o cupom fiscal."
-        (keyup)="debounceQrCodeCupomFiscal.next(getInputValue($event))">
+        (keyup)="debounceQrCodeCupomFiscal.next(inputUtils.getInputValue($event))">
     </mat-form-field>
     <mat-error class="fs-small" *ngFor="let error of errors">{{ error }}</mat-error>
   </div>

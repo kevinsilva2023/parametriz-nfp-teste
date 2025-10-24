@@ -1,0 +1,18 @@
+<div class="row justify-content-center pt-4">
+  <div class="col-10 d-flex gap-5">
+    <div class="col-4" >
+      <app-cadastrar-certificado
+        [temCertificado]="temCertificado"
+        (cadastroConcluido)="atualizarCertificado()">
+      </app-cadastrar-certificado>
+    </div>
+    
+    <div class="col">
+      <app-visualizar-certificado
+        [voluntario]="voluntario"
+        [errors]="errors">
+      </app-visualizar-certificado>
+    </div>
+  </div>
+</div>
+

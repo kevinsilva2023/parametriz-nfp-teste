@@ -1,0 +1,86 @@
+<section id="perfil" class="content w-100 h-100 d-flex justify-content-center align-items-start p-5" *ngIf="voluntario">
+
+  <div class="card-white p-5 overflow-hidden d-flex flex-column" style="height: auto !important;">
+
+    <ngb-alert type="danger" (closed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+      <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+      <ul>
+        <li class="fs-small mt-1" *ngFor="let error of errors">
+          {{error}}
+        </li>
+      </ul>
+    </ngb-alert>
+
+    <div class="d-flex gap-3">
+      <div class="d-flex flex-column align-items-center  card-white p-5">
+        <div class="perfil-imagem cursor-pointer" (click)="inputFile.click()">
+          <img *ngIf="voluntario.fotoUpload" [src]="voluntario.fotoUpload" alt="Foto do usuário" class="perfil-img">
+          <i *ngIf="!voluntario.fotoUpload" class="fa-solid fa-user"></i>
+          <i class="fa-solid fa-pencil editar-icone"></i>
+        </div>
+
+        <input type="file" #inputFile (change)="uploadImagem($event)" hidden accept="image/*">
+
+        <button disabled class="btn btn-primary rounded-5 fs-6 fw-medium my-3">Plano Master</button>
+      </div>
+
+      <form [formGroup]="perfilForm" *ngIf="voluntario" class="px-5">
+        <div class="d-flex align-items-center mb-4">
+          <h5 class="text-primary text-uppercase fw-bolder me-2">Voluntário</h5>
+          <div class="flex-grow-1 border-top"></div>
+        </div>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>
+            <i class="fa-solid fa-building me-2"></i>
+            Instituição
+          </mat-label>
+          <input disabled matInput [value]="instituicao">
+        </mat-form-field>
+
+        <div class="d-flex flex-column gap-3">
+          <mat-form-field class="w-100" appearance="outline" [ngClass]="{'has-error': displayMessage['nome']}">
+            <mat-label>
+              <i class="fa-solid fa-user me-2"></i>
+              Nome Voluntário
+            </mat-label>
+            <input matInput formControlName="nome" type="text" placeholder="Digite o nome do voluntário">
+            <mat-error *ngIf="displayMessage['nome']" [innerHtml]="displayMessage['nome']"> </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100" >
+            <mat-label>
+              <i class="fa-solid fa-envelope me-2"></i>
+              E-mail
+            </mat-label>
+            <input disabled="" matInput [value]="voluntario.email" >
+          </mat-form-field>
+
+          <div class="d-flex gap-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>
+                <i class="fa-solid fa-id-card me-2"></i>
+                CPF
+              </mat-label>
+              <input disabled matInput [value]="voluntario.cpf | cpf">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['contato']}">
+              <mat-label>
+                <i class="fa-solid fa-phone me-2"></i>
+                Contato
+              </mat-label>
+              <input matInput formControlName="contato" type="string" placeholder="(99) 99999-9999" mask="(00) 00000-0000">
+              <mat-error *ngIf="displayMessage['contato']" [innerHtml]="displayMessage['contato']"> </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end mt-2">
+          <button (click)="efetuarEditarVoluntario()" type="submit" class="btn btn-primary px-4">
+            Salvar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

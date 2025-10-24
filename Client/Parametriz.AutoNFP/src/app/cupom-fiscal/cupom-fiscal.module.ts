@@ -18,8 +18,8 @@ import { FormsModule } from '@angular/forms';
 import { CupomFiscalService } from './services/cupom-fiscal.service';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
-import { UsuarioService } from '../configuracoes/usuarios/services/usuario.service';
 import { AutorizacaoService } from '../shared/services/autorizacao.service';
+import { VoluntarioService } from '../configuracoes/voluntario/services/voluntario.service';
 
 
 @NgModule({
@@ -43,7 +43,7 @@ import { AutorizacaoService } from '../shared/services/autorizacao.service';
   ],
   providers: [
     CupomFiscalService,
-    UsuarioService,
+    VoluntarioService,
     AutorizacaoService,
     provideMomentDateAdapter({
       parse: {

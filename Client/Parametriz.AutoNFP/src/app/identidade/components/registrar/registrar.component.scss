@@ -6,19 +6,34 @@
   align-items: center;
 }
 
-.card-form {
-  opacity: 0;
-  transform: translateX(50px); // começa fora da tela à esquerda
-  animation: slideInRight 0.8s ease-out forwards;
+// .card-form {
+//   opacity: 0;
+//   transform: translateX(50px); // começa fora da tela à esquerda
+//   animation: slideInRight 0.8s ease-out forwards;
+// }
+
+// @keyframes slideInRight {
+//   from {
+//     opacity: 0;
+//     transform: translateX(50px);
+//   }
+
+//   to {
+//     opacity: 1;
+//     transform: translateX(0);
+//   }
+// }
+
+
+.register-form {
+  .form-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .full-width {
+    grid-column: 1 / -1; // ocupa toda a linha
+  }
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
