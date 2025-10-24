@@ -27,7 +27,8 @@ namespace Parametriz.AutoNFP.Domain.ErrosTransmissaoLote
         {
             RuleFor(p => p.VoluntarioId)
                 .NotEqual(Guid.Empty)
-                    .WithMessage("Favor preencher o voluntário.");
+                    .When(p => p.VoluntarioId != null)
+                        .WithMessage("Favor preencher o voluntário.");
         }
         
         private void ValidarMensagem()
