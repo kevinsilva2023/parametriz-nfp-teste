@@ -5,7 +5,17 @@
   </div>
 </div>
 <div class="modal-body" tabindex="1">
+
+  
   <h2 class="fs-6 mb-3">Cadastre novos voluntários, inserindo os dados abaixo:</h2>
+  
+  <ngb-alert type="info" [dismissible]="false" class="mt-3 d-flex align-items-center">
+    <i class="fa-solid fa-circle-info me-2 fs-5 text-primary"></i>
+    <span>
+      Este cadastro de usuário é <strong>exclusivo da nossa plataforma</strong>. <br>
+      Ainda é necessário realizar o <strong>vínculo do voluntário à entidade</strong> no <strong>portal da NFP</strong>.
+    </span>
+  </ngb-alert>
 
   <ngb-alert type="danger" (closed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
     <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
@@ -28,8 +38,7 @@
         <mat-error *ngIf="displayMessage['nome']" [innerHtml]="displayMessage['nome']"> </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-100"
-        [ngClass]="{'has-error': displayMessage['email']}">
+      <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['email']}">
         <mat-label>
           <i class="fa-solid fa-envelope me-2"></i>
           E-mail
@@ -39,8 +48,7 @@
       </mat-form-field>
 
       <div class="d-flex gap-3">
-        <mat-form-field appearance="outline" class="w-100"
-          [ngClass]="{'has-error': displayMessage['cpf']}">
+        <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['cpf']}">
           <mat-label>
             <i class="fa-solid fa-id-card me-2"></i>
             CPF
@@ -49,8 +57,7 @@
           <mat-error *ngIf="displayMessage['cpf']" [innerHtml]="displayMessage['cpf']"> </mat-error>
         </mat-form-field>
 
-        <mat-form-field  appearance="outline" class="w-100"
-          [ngClass]="{'has-error': displayMessage['contato']}">
+        <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['contato']}">
           <mat-label>
             <i class="fa-solid fa-phone me-2"></i>
             Contato
@@ -67,13 +74,7 @@
 
   </form>
 
-  <ngb-alert type="info" [dismissible]="false" class="mt-3 d-flex align-items-center">
-    <i class="fa-solid fa-circle-info me-2 fs-5 text-primary"></i>
-    <span>
-      Este cadastro de usuário é <strong>exclusivo da nossa plataforma</strong>. <br>
-      Ainda é necessário realizar o <strong>vínculo do voluntário à entidade</strong> no <strong>portal da NFP</strong>.
-    </span>
-  </ngb-alert>
+
 
 </div>
 <div class="modal-footer">

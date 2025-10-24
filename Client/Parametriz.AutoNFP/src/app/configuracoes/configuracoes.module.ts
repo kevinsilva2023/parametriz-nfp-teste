@@ -28,6 +28,7 @@ import { VoluntarioService } from './voluntario/services/voluntario.service';
 import { CpfPipe } from '../shared/pipe/cpf.pipe';
 
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { EditarInstituicaoComponent } from './instituicoes/components/editar-instituicao/editar-instituicao.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     CadastrarVoluntarioComponent,
     AtivarVoluntarioComponent,
     DesativarVoluntarioComponent,
-    ListarVoluntarioComponent
+    ListarVoluntarioComponent,
+    EditarInstituicaoComponent
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit,  ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { ToastrService } from 'ngx-toastr';
@@ -111,6 +111,7 @@ export class EditarPerfilComponent extends BaseFormComponent implements OnInit, 
 
   processarSucesso() {
     this.limparErros()
+    PerfilService.atualizarNavSubject.next(true);
     this.toastr.success('Voluntário editado com sucesso.', 'Sucesso!');
   }
 

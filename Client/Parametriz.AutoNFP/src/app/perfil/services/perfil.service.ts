@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable } from 'rxjs';
+import { catchError, map, Observable, Subject } from 'rxjs';
 import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
 import { BaseService } from 'src/app/shared/services/base.service';
 
 @Injectable()
 export class PerfilService extends BaseService {
+
+  public static atualizarNavSubject = new Subject<boolean>();
+
   obter(): Observable<Voluntario> {
     return this.httpClient
       .get(`${this.apiUrl}/voluntarios/perfil`, { headers: super.ObterAuthHeaderJson() })

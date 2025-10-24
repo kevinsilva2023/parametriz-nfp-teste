@@ -1,0 +1,106 @@
+<!-- <div class="card-white p-4" style="max-width: 100%;">
+  
+  <ngb-alert *ngIf="errors.length > 0" type="danger" [dismissible]="true" (closed)="limparErros()"
+    class="text-center anima-alert">
+    <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
+    <ul>
+      <li class="fs-small mt-1" *ngFor="let error of errors">
+        {{error}}
+      </li>
+    </ul>
+  </ngb-alert>
+
+  <form class="row" [formGroup]="registrarForm">
+
+    <div class="d-flex align-items-center mb-3">
+      <h5 class="text-primary text-uppercase fw-bolder me-2">Instituição</h5>
+      <div class="flex-grow-1 border-top"></div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <mat-form-field appearance="outline" class="col-4" [ngClass]="{'has-error': displayMessage['cnpj']}">
+        <mat-label><i class="fa-solid fa-id-card me-2"></i>CNPJ</mat-label>
+        <input matInput type="text"JJ>
+        <mat-error *ngIf="displayMessage['cnpj']" [innerHtml]="displayMessage['cnpj']"></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['razaoSocial']}">
+        <mat-label><i class="fa-solid fa-building me-2"></i>Razão Social</mat-label>
+        <input matInput formControlName="razaoSocial" type="text">
+        <mat-error *ngIf="displayMessage['razaoSocial']" [innerHtml]="displayMessage['razaoSocial']"></mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['entidadeNomeNFP']}">
+      <mat-label><i class="fa-solid fa-user-tie me-2"></i>Nome Entidade NFP</mat-label>
+      <input matInput formControlName="entidadeNomeNFP" type="text">
+
+      <button mat-icon-button matSuffix matButton="elevated" matTooltipPosition="above"
+        matTooltip="O nome da instituição deve estar exatamente igual ao portal da NFP" type="button" class="btn">
+        <i class="fa-solid fa-circle-info"></i>
+      </button>
+
+      <mat-error *ngIf="displayMessage['entidadeNomeNFP']" [innerHtml]="displayMessage['entidadeNomeNFP']">
+      </mat-error>
+    </mat-form-field>
+
+    <div class="d-flex align-items-center mb-3">
+      <h5 class="text-primary text-uppercase fw-bolder me-2">Endereço</h5>
+      <div class="flex-grow-1 border-top"></div>
+    </div>
+
+    <div formGroupName="endereco" class="col-12">
+
+      <div class="d-flex gap-2">
+        <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['logradouro']}">
+          <mat-label><i class="fa-solid fa-location-dot me-2"></i>Logradouro</mat-label>
+          <input matInput formControlName="logradouro" type="text">
+          <mat-error *ngIf="displayMessage['logradouro']" [innerHtml]="displayMessage['logradouro']"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-25" [ngClass]="{'has-error': displayMessage['numero']}">
+          <mat-label>N°</mat-label>
+          <input matInput formControlName="numero" type="text">
+          <mat-error *ngIf="displayMessage['numero']" [innerHtml]="displayMessage['numero']"></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex gap-2">
+        <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['complemento']}">
+          <mat-label><i class="fa-solid fa-house me-2"></i>Complemento</mat-label>
+          <input matInput formControlName="complemento" type="text">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['bairro']}">
+          <mat-label><i class="fa-solid fa-city me-2"></i>Bairro</mat-label>
+          <input matInput formControlName="bairro" type="text">
+          <mat-error *ngIf="displayMessage['bairro']" [innerHtml]="displayMessage['bairro']"></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex gap-2">
+        <mat-form-field appearance="outline" class="w-50" [ngClass]="{'has-error': displayMessage['cep']}">
+          <mat-label><i class="fa-solid fa-envelope me-2"></i>CEP</mat-label>
+          <input matInput formControlName="cep" type="text" max="000.00-000">
+          <mat-error *ngIf="displayMessage['cep']" [innerHtml]="displayMessage['cep']"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100" [ngClass]="{'has-error': displayMessage['municipio']}">
+          <mat-label><i class="fa-solid fa-map-location-dot me-2"></i>Município</mat-label>
+          <input matInput formControlName="municipio" type="text">
+          <mat-error *ngIf="displayMessage['municipio']" [innerHtml]="displayMessage['municipio']"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-25" [ngClass]="{'has-error': displayMessage['uf']}">
+          <mat-label><i class="fa-solid fa-flag me-2"></i>UF</mat-label>
+          <input matInput formControlName="uf" type="text">
+          <mat-error *ngIf="displayMessage['uf']" [innerHtml]="displayMessage['uf']"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary rounded-5 p-3 mb-2 w-100">
+      Salvar
+    </button>
+  </form>
+</div> -->
