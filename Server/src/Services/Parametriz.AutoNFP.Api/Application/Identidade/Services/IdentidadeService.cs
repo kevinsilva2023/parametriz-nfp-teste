@@ -452,13 +452,15 @@ namespace Parametriz.AutoNFP.Api.Application.Identidade.Services
                 return null;
             }
 
-            var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Senha, false, lockoutOnFailure: true);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginViewModel.Senha, lockoutOnFailure: true);
 
             if (!result.Succeeded)
             {
                 NotificarErro("Falha ao realizar o login");
                 return null;
             }
+
+            await _userManager.UpdateSecurityStampAsync(user);
 
             if (await _userManager.IsInRoleAsync(user, "Parametriz"))
             {
