@@ -1,5 +1,6 @@
 ﻿using Parametriz.AutoNFP.Api.ViewModels.Certificados;
 using Parametriz.AutoNFP.Api.ViewModels.Core;
+using Parametriz.AutoNFP.Domain.Certificados;
 using System.ComponentModel.DataAnnotations;
 
 namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
@@ -32,6 +33,9 @@ namespace Parametriz.AutoNFP.Api.ViewModels.Voluntarios
         [Display(Name = "Foto")]
         public string FotoUpload { get; set; }
         public bool EmailConfirmado { get; set; }
+
+        public CertificadoStatus CertificadoStatus { get; set; }
+        public string CertificadoStatusNome => Enum.GetName(CertificadoStatus).Replace("_", " ");
 
         public bool Administrador { get; set; }
 

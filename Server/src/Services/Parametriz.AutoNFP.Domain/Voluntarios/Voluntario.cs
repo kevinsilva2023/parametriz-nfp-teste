@@ -22,6 +22,8 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
         public bool Administrador { get; private set; }
         public bool Desativado { get; private set; }
 
+        public CertificadoStatus CertificadoStatus => ObterStatus();
+
         public Certificado Certificado { get; private set; }
 
         private readonly List<CupomFiscal> _cuponsFiscais;
@@ -70,6 +72,22 @@ namespace Parametriz.AutoNFP.Domain.Voluntarios
         public void Ativar()
         {
             Desativado = false;
+        }
+
+        private CertificadoStatus ObterStatus()
+        {
+            if (Certificado == null)
+                return CertificadoStatus.NÃO_CADASTRADO;
+
+            if (Certificado.ValidoAte.Date < DateTime.Now.Date)
+                return CertificadoStatus.VENCIDO;
+
+            var diasParaVencer = (Certificado.ValidoAte.Date - DateTime.Now.Date).Days;
+
+            if (diasParaVencer <= 30)
+                return CertificadoStatus.RENOVAR;
+
+            return CertificadoStatus.VÁLIDO;
         }
     }
 }
