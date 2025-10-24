@@ -18,8 +18,7 @@ namespace Parametriz.AutoNFP.Api.Extensions
                 Requerente = certificado.Requerente,
                 ValidoAPartirDe = certificado.ValidoAPartirDe,
                 ValidoAte = certificado.ValidoAte,
-                Emissor = certificado.Emissor,
-                Status = certificado.Status
+                Emissor = certificado.Emissor
             };
         }
     }

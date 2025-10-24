@@ -18,8 +18,10 @@ namespace Parametriz.AutoNFP.Api.Extensions
                 Email = voluntario.Email.Conta,
                 Contato = voluntario.Contato,
                 FotoUpload = voluntario.FotoUpload,
+                CertificadoStatus = voluntario.CertificadoStatus,
                 Administrador = voluntario.Administrador,
-                Desativado = voluntario.Desativado
+                Desativado = voluntario.Desativado,
+                Certificado = voluntario.Certificado.ToViewModel()
             };
         }
 

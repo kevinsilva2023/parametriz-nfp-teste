@@ -1,4 +1,5 @@
-﻿using Parametriz.AutoNFP.Api.ViewModels.Instituicoes;
+﻿using Parametriz.AutoNFP.Api.Extensions.Core;
+using Parametriz.AutoNFP.Api.ViewModels.Instituicoes;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 
 namespace Parametriz.AutoNFP.Api.Extensions
@@ -10,7 +11,11 @@ namespace Parametriz.AutoNFP.Api.Extensions
             return new InstituicaoViewModel
             {
                 Id = instituicao.Id,
-                RazaoSocial = instituicao.RazaoSocial
+                RazaoSocial = instituicao.RazaoSocial,
+                Cnpj = instituicao.Cnpj.NumeroInscricao,
+                EntidadeNomeNFP = instituicao.EntidadeNomeNFP,
+                Endereco = instituicao.Endereco.ToViewModel(),
+                Desativada = instituicao.Desativada
             };
         }
     }

@@ -136,12 +136,10 @@ namespace Parametriz.AutoNFP.Api.Application.Certificados.Services
 
         private string ExtrairCpnjCpfDoCommonName(string texto)
         {
-            var cn = ExtrairCommonName(texto);
-
-            if (string.IsNullOrEmpty(cn))
+            if (string.IsNullOrEmpty(texto))
                 return string.Empty;
 
-            var split = cn.Split(":");
+            var split = texto.Split(":");
 
             return split.LastOrDefault();
         }

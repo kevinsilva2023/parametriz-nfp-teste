@@ -11,5 +11,19 @@ namespace Parametriz.AutoNFP.Api.Extensions.Core
                 enderecoViewModel.Complemento, enderecoViewModel.Bairro, enderecoViewModel.CEP, enderecoViewModel.Municipio,
                 enderecoViewModel.UF);
         }
+
+        public static EnderecoViewModel ToViewModel(this Endereco endereco)
+        {
+            return new EnderecoViewModel
+            {
+                Logradouro = endereco.Logradouro,
+                Numero = endereco.Numero,
+                Complemento = endereco.Complemento,
+                Bairro = endereco.Bairro,
+                CEP = endereco.CEP,
+                Municipio = endereco.Municipio,
+                UF = endereco.UF
+            };
+        }
     }
 }
