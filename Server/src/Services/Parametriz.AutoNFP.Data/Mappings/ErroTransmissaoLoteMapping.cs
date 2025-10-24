@@ -23,7 +23,7 @@ namespace Parametriz.AutoNFP.Data.Mappings
 
             builder.HasOne(p => p.Voluntario)
                 .WithMany(p => p.ErrosTransmissaoLote)
-                .HasForeignKey(fk => fk.InstituicaoId)
+                .HasForeignKey(fk => fk.VoluntarioId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(p => p.Data)
