@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
+using Parametriz.AutoNFP.Domain.ErrosTransmissaoLote;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
@@ -25,6 +26,7 @@ namespace Parametriz.AutoNFP.Data.Context
         public DbSet<Instituicao> Instituicoes { get; set; }
         public DbSet<Voluntario> Voluntarios { get; set; }
         public DbSet<Certificado> Certificados { get; set; }
+        public DbSet<ErroTransmissaoLote> ErrosTransmissaoLote { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

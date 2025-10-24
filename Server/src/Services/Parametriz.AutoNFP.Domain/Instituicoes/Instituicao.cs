@@ -3,6 +3,7 @@ using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Core.ValueObjects;
 using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
+using Parametriz.AutoNFP.Domain.ErrosTransmissaoLote;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,9 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
         private readonly List<CupomFiscal> _cuponsFiscais;
         public IReadOnlyCollection<CupomFiscal> CuponsFiscais => _cuponsFiscais.AsReadOnly();
 
+        public readonly List<ErroTransmissaoLote> _errosTransmissaoLote;
+        public IReadOnlyCollection<ErroTransmissaoLote> ErrosTransmissaoLote => _errosTransmissaoLote.AsReadOnly();
+
         public Instituicao(Guid id, string razaoSocial, string cnpj, string entidadeNomeNFP, Endereco endereco)
             : base(id)
         {
@@ -36,6 +40,7 @@ namespace Parametriz.AutoNFP.Domain.Instituicoes
             
             _voluntarios = [];
             _cuponsFiscais = [];
+            _errosTransmissaoLote = [];
         }
 
         protected Instituicao() { }

@@ -2,6 +2,7 @@
 using Parametriz.AutoNFP.Api.Application.Certificados.Services;
 using Parametriz.AutoNFP.Api.Application.CuponsFiscais.Services;
 using Parametriz.AutoNFP.Api.Application.Email.Services;
+using Parametriz.AutoNFP.Api.Application.ErrosTransmissaoLote.Queries;
 using Parametriz.AutoNFP.Api.Application.Identidade.Services;
 using Parametriz.AutoNFP.Api.Application.Instituicoes.Services;
 using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
@@ -15,6 +16,7 @@ using Parametriz.AutoNFP.Data.Repository;
 using Parametriz.AutoNFP.Data.Uow;
 using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
+using Parametriz.AutoNFP.Domain.ErrosTransmissaoLote;
 using Parametriz.AutoNFP.Domain.Instituicoes;
 using Parametriz.AutoNFP.Domain.Usuarios;
 using Parametriz.AutoNFP.Domain.Voluntarios;
@@ -48,6 +50,9 @@ namespace Parametriz.AutoNFP.Api.Configs
 
             builder.Services.AddScoped<ICupomFiscalRepository, CupomFiscalRepository>();
             builder.Services.AddScoped<ICupomFiscalService, CupomFiscalService>();
+
+            builder.Services.AddScoped<IErroTransmissaoLoteRepository, ErroTransmissaoLoteRepository>();
+            builder.Services.AddScoped<IErroTransmissaoLoteQuery, ErroTransmissaoLoteQuery>();
 
             builder.Services.AddScoped<Notificador>();
 
