@@ -84,14 +84,14 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
             using var stream = File.CreateText(enderecoDockerfile);
 
             #region SemContaNoDocker
-            //stream.WriteLine($"FROM selenium/standalone-chrome:latest");
-            //stream.WriteLine($"RUN sudo apt-get update");
-            //stream.WriteLine($"RUN sudo apt-get install -y libnss3-tools openssl");
-            //stream.WriteLine($"RUN sudo mkdir -p /etc/opt/chrome/policies/managed");
+            stream.WriteLine($"FROM selenium/standalone-chrome:latest");
+            stream.WriteLine($"RUN sudo apt-get update");
+            stream.WriteLine($"RUN sudo apt-get install -y libnss3-tools openssl");
+            stream.WriteLine($"RUN sudo mkdir -p /etc/opt/chrome/policies/managed");
             #endregion
 
             #region ComContaNoDockerCompartilhada
-            stream.WriteLine($"maumitsuo/parametriz-autonfp-base-selenium:latest");
+            //stream.WriteLine($"maumitsuo/parametriz-autonfp-base-selenium:latest");
             #endregion ComContaNoDockerCompartilhada
 
             stream.WriteLine($"COPY auto_select_certificate.json /etc/opt/chrome/policies/managed");

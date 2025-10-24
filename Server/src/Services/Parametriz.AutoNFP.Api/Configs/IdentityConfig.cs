@@ -10,6 +10,7 @@ using Parametriz.AutoNFP.Api.Application.JwtToken.Services;
 using Parametriz.AutoNFP.Api.Data;
 using Parametriz.AutoNFP.Api.Extensions.Identity;
 using Parametriz.AutoNFP.Api.Models.User;
+using System.Security.Claims;
 using System.Text;
 
 namespace Parametriz.AutoNFP.Api.Configs
@@ -97,8 +98,30 @@ namespace Parametriz.AutoNFP.Api.Configs
                         ValidAudience = appJwtConfig.Audience,
                         ValidIssuer = appJwtConfig.Issuer
                     };
+
                     // Caso seja necessário implementar JWKS
                     //options.SetJwksOptions(new JwkOptions(appConfig.AutenticacaoJwksUrl));
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = async context =>
+                        {
+                            var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+                            var securityStampClaim = context.Principal?.FindFirstValue("ais");
+
+                            if (string.IsNullOrEmpty(securityStampClaim))
+                            {
+                                context.Fail("Security stamp claim not found in token.");
+                                return;
+                            }
+
+                            var user = await userManager.GetUserAsync(context.Principal);
+                            if (user == null || user.SecurityStamp != securityStampClaim)
+                            {
+                                context.Fail("Security stamp validation failed.");
+                            }
+                        }
+                    };
                 });
 
             return builder;
