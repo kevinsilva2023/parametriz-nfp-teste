@@ -1,4 +1,4 @@
-export class ObeterVoluntarioAtivo {
+export class ObterVoluntarioAtivo {
   id!: string;
   instituicaoId!: string;
   nome!: string;

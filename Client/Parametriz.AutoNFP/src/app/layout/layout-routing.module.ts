@@ -20,7 +20,7 @@ const routes: Routes = [
       },
       {
         path: 'cupom-fiscal',
-        loadChildren: () => import('../cupom-fiscal/cupom-fiscal.module')
+        loadChildren: () => import('../cupons-fiscais/cupom-fiscal.module')
           .then(m => m.CupomFiscalModule),
         data: { titulo: 'Cupom Fiscal' }
       }

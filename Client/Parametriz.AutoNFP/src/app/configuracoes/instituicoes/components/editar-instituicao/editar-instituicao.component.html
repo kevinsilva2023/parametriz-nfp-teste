@@ -17,7 +17,7 @@
       <div class="flex-grow-1 border-top"></div>
     </div>
 
-    <div class="d-flex gap-2">
+    <div class="d-flex gap-2" *ngIf="instituicao">
       <mat-form-field appearance="outline" class="col-4">
         <mat-label><i class="fa-solid fa-id-card me-2"></i>CNPJ</mat-label>
         <input disabled matInput [value]="instituicao.cnpj | cnpj" type="text">

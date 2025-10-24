@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { CertificadoService } from './services/certificado.service';
-import { VoluntarioService } from 'src/app/configuracoes/voluntario/services/voluntario.service';
 import { PerfilService } from '../services/perfil.service';
-import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { Voluntario } from 'src/app/configuracoes/voluntarios/models/voluntario';
 
 @Component({
   selector: 'app-certificado',

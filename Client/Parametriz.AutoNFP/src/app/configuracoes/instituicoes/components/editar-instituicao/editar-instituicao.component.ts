@@ -16,7 +16,6 @@ export class EditarInstituicaoComponent extends BaseFormComponent implements OnI
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
 
   editarInstituicaoForm!: FormGroup;
-  editarInstituicao!: Instituicao;
   errors: any[] = [];
   instituicao!: Instituicao;
 
@@ -67,7 +66,6 @@ export class EditarInstituicaoComponent extends BaseFormComponent implements OnI
     this.obterInstituicao();
 
     this.editarInstituicaoForm = this.formBuilder.group({
-      // cnpj: ['', Validators.required],
       razaoSocial: ['', Validators.required],
       entidadeNomeNFP: ['', Validators.required],
       endereco: this.formBuilder.group({

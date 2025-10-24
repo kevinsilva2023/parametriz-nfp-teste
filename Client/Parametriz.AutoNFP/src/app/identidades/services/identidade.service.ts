@@ -71,16 +71,7 @@ export class IdentidadeService extends BaseService {
         map(super.extractData),
         catchError(super.serviceError));
   }
-
-  // obterDadosCnpj(cnpj: string): Observable<Instituicao> {
-  //   return this.httpClient
-  //     .get(`https://receitaws.com.br/v1/cnpj/${cnpj}`)
-  //     .pipe(
-  //       map(super.extractData),
-  //       catchError(super.serviceError)
-  //     )
-  // }
-
+  
   obterDadosCnpj(cnpj: string): Observable<any> { //alterar tipo do retorno depois
     let url = `https://receitaws.com.br/v1/cnpj/${cnpj}`;
 

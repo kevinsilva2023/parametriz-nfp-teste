@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, Subject } from 'rxjs';
-import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { Voluntario } from 'src/app/configuracoes/voluntarios/models/voluntario';
 import { BaseService } from 'src/app/shared/services/base.service';
 
 @Injectable()

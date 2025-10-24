@@ -3,7 +3,7 @@ import { Voluntario } from '../../models/voluntario';
 import { debounceTime, Subject } from 'rxjs';
 import { VoluntarioService } from '../../services/voluntario.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IdentidadeService } from 'src/app/identidade/services/identidade.service';
+import { IdentidadeService } from 'src/app/identidades/services/identidade.service';
 import { ToastrService } from 'ngx-toastr';
 import { CadastrarVoluntarioComponent } from '../cadastrar-voluntario/cadastrar-voluntario.component';
 import { DesativarVoluntarioComponent } from '../desativar-voluntario/desativar-voluntario.component';
@@ -32,6 +32,8 @@ import { InputUtils } from 'src/app/shared/utils/input-utils';
       height: 48px;
       vertical-align: middle !important;
     }
+
+    
   `]
 })
 export class ListarVoluntarioComponent implements OnInit {
@@ -135,6 +137,10 @@ export class ListarVoluntarioComponent implements OnInit {
     voluntario.administrador = event.checked;
 
     this.voluntarioService.editar(voluntario)
+      .subscribe({
+        next: () => this.toastr.success('Voluntario alterado com sucesso'),
+        error: () => this.toastr.error('Erro ao Editar')
+      })
   }
 
   enviarConfirmarEmail(voluntario: Voluntario) {

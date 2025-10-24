@@ -4,11 +4,11 @@ import { Observable, of } from 'rxjs';
 import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
 import { Claim } from 'src/app/shared/models/claim';
 import { VoluntarioService } from './voluntario.service';
-import { ObeterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-ativo';
+import { ObterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-ativo';
 
-export const obterVoluntariosAtivosResolver: ResolveFn<ObeterVoluntarioAtivo[]> = (
+export const voluntariosAtivosResolver: ResolveFn<ObterVoluntarioAtivo[]> = (
   route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot): Observable<ObeterVoluntarioAtivo[]> => {
+  state: RouterStateSnapshot): Observable<ObterVoluntarioAtivo[]> => {
 
   let voluntarioService = inject(VoluntarioService);
   let autorizacaoService = inject(AutorizacaoService);

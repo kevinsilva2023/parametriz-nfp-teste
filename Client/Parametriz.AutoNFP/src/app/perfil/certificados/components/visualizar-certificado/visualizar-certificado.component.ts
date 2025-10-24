@@ -3,7 +3,7 @@ import { ExcluirCertificadoComponent } from '../excluir-certificado/excluir-cert
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Certificado } from '../../models/certificado';
 import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
-import { Voluntario } from 'src/app/configuracoes/voluntario/models/voluntario';
+import { Voluntario } from 'src/app/configuracoes/voluntarios/models/voluntario';
 
 @Component({
   selector: 'app-visualizar-certificado',

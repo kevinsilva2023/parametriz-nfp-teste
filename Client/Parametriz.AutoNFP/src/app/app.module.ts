@@ -7,13 +7,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClient, HttpClientJsonpModule, provideHttpClient, withInterceptors, withJsonpSupport } from '@angular/common/http';
 
-import { LoginComponent } from "./identidade/components/login/login.component";
-import { RegistrarComponent } from './identidade/components/registrar/registrar.component';
-import { ConfirmarEmailComponent } from './identidade/components/confirmar-email/confirmar-email.component';
-import { ConfirmarEmailEnviadoComponent } from './identidade/components/confirmar-email-enviado/confirmar-email-enviado.component';
-import { DefinirSenhaComponent } from './identidade/components/definir-senha/definir-senha.component';
-import { DefinirSenhaEnviadoComponent } from './identidade/components/definir-senha-enviado/definir-senha-enviado.component';
-import { EsqueceuASenhaComponent } from './identidade/components/esqueceu-a-senha/esqueceu-a-senha.component';
+import { LoginComponent } from "./identidades/components/login/login.component";
+import { RegistrarComponent } from './identidades/components/registrar/registrar.component';
+import { ConfirmarEmailComponent } from './identidades/components/confirmar-email/confirmar-email.component';
+import { ConfirmarEmailEnviadoComponent } from './identidades/components/confirmar-email-enviado/confirmar-email-enviado.component';
+import { DefinirSenhaComponent } from './identidades/components/definir-senha/definir-senha.component';
+import { DefinirSenhaEnviadoComponent } from './identidades/components/definir-senha-enviado/definir-senha-enviado.component';
+import { EsqueceuASenhaComponent } from './identidades/components/esqueceu-a-senha/esqueceu-a-senha.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -27,7 +27,7 @@ import { AcessoNegadoComponent } from './components/acesso-negado/acesso-negado.
 
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
-import { IdentidadeService } from './identidade/services/identidade.service';
+import { IdentidadeService } from './identidades/services/identidade.service';
 import { AutorizacaoService } from './shared/services/autorizacao.service';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -75,7 +75,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     NgbAlertModule,
     CnpjPipe,
     MatTooltipModule,
-    NgxMaskDirective
+    NgxMaskDirective,
   ],
   providers: [
     IdentidadeService,

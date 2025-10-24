@@ -3,7 +3,7 @@ import { BaseService } from 'src/app/shared/services/base.service';
 import { Voluntario } from '../models/voluntario';
 import { catchError, map, Observable } from 'rxjs';
 import { StringUtils } from 'src/app/shared/utils/string-utils';
-import { ObeterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-ativo';
+import { ObterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-ativo';
 import { HttpParams } from '@angular/common/http';
 
 @Injectable()
@@ -78,7 +78,7 @@ export class VoluntarioService extends BaseService {
       );
   }
 
-  obterVoluntariosAtivos(): Observable<ObeterVoluntarioAtivo[]> {
+  obterVoluntariosAtivos(): Observable<ObterVoluntarioAtivo[]> {
     return this.httpClient
       .get(`${this.apiUrl}/voluntarios/obter-ativos`, { headers: this.ObterAuthHeaderJson() })
       .pipe(
