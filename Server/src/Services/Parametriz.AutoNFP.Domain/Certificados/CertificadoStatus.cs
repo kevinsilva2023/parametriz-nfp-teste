@@ -2,8 +2,9 @@
 {
     public enum CertificadoStatus
     {
-        VENCIDO = 0,
-        RENOVAR = 1,
-        VÁLIDO = 2
+        NÃO_CADASTRADO = 0,
+        VENCIDO = 1,
+        RENOVAR = 2,
+        VÁLIDO = 3
     }
 }

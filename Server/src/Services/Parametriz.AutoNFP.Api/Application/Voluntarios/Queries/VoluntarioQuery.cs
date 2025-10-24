@@ -26,7 +26,7 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Queries
             var voluntarios = await _voluntarioRepository.ObterPorFiltros(instituicaoId, nome, email, administrador, desativado);
 
             var voluntariosViewModel = voluntarios
-                .Where(v => certificadoStatus == null || v.Certificado?.Status == certificadoStatus)
+                .Where(v => certificadoStatus == null || v.CertificadoStatus == certificadoStatus)
                 .ToList()
                 .ToViewModel();
 
