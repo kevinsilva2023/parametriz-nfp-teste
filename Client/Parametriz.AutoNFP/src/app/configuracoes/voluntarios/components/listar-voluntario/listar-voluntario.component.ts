@@ -3,7 +3,7 @@ import { Voluntario } from '../../models/voluntario';
 import { debounceTime, Subject } from 'rxjs';
 import { VoluntarioService } from '../../services/voluntario.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IdentidadeService } from 'src/app/identidade/services/identidade.service';
+import { IdentidadeService } from 'src/app/identidades/services/identidade.service';
 import { ToastrService } from 'ngx-toastr';
 import { CadastrarVoluntarioComponent } from '../cadastrar-voluntario/cadastrar-voluntario.component';
 import { DesativarVoluntarioComponent } from '../desativar-voluntario/desativar-voluntario.component';

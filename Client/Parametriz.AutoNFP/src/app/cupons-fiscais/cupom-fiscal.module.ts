@@ -19,7 +19,7 @@ import { CupomFiscalService } from './services/cupom-fiscal.service';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
 import { AutorizacaoService } from '../shared/services/autorizacao.service';
-import { VoluntarioService } from '../configuracoes/voluntario/services/voluntario.service';
+import { VoluntarioService } from '../configuracoes/voluntarios/services/voluntario.service';
 
 
 @NgModule({

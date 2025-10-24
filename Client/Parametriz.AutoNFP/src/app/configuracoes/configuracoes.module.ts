@@ -19,12 +19,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InstituicaoComponent } from './instituicoes/instituicao.component';
 
-import { VoluntarioComponent } from './voluntario/voluntario.component';
-import { CadastrarVoluntarioComponent } from './voluntario/components/cadastrar-voluntario/cadastrar-voluntario.component';
-import { AtivarVoluntarioComponent } from './voluntario/components/ativar-voluntario/ativar-voluntario.component';
-import { DesativarVoluntarioComponent } from './voluntario/components/desativar-voluntario/desativar-voluntario.component';
-import { ListarVoluntarioComponent } from './voluntario/components/listar-voluntario/listar-voluntario.component';
-import { VoluntarioService } from './voluntario/services/voluntario.service';
+import { VoluntarioComponent } from './voluntarios/voluntario.component';
+import { CadastrarVoluntarioComponent } from './voluntarios/components/cadastrar-voluntario/cadastrar-voluntario.component';
+import { AtivarVoluntarioComponent } from './voluntarios/components/ativar-voluntario/ativar-voluntario.component';
+import { DesativarVoluntarioComponent } from './voluntarios/components/desativar-voluntario/desativar-voluntario.component';
+import { ListarVoluntarioComponent } from './voluntarios/components/listar-voluntario/listar-voluntario.component';
+import { VoluntarioService } from './voluntarios/services/voluntario.service';
 import { CpfPipe } from '../shared/pipe/cpf.pipe';
 
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
