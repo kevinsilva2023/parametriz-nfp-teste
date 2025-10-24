@@ -67,6 +67,7 @@ export class EditarInstituicaoComponent extends BaseFormComponent implements OnI
     this.obterInstituicao();
 
     this.editarInstituicaoForm = this.formBuilder.group({
+      cnpj: ['', Validators.required],
       razaoSocial: ['', Validators.required],
       entidadeNomeNFP: ['', Validators.required],
       endereco: this.formBuilder.group({
@@ -120,7 +121,6 @@ export class EditarInstituicaoComponent extends BaseFormComponent implements OnI
     this.errors = fail?.error?.errors?.mensagens;
     this.toastr.error('Erro ao editar instituição.', 'Erro!');
   }
-
 
   limparErros() {
     this.errors = [];

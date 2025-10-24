@@ -19,20 +19,22 @@
 
 
   <div class="d-flex align-items-center gap-4">
+    <div
+      class="fs-small bg-success text-center d-flex align-items-center border border-1 px-3 py-1 rounded-pill mb-1 mt-1">
+      <!-- trocar o bg com base no status -->
+      Certificado: Válido
+    </div>
     <i class="fa-solid fa-circle-question cursor-pointer"></i>
     <i [matBadge]="15" class="fa-solid fa-bell me-2 cursor-pointer"></i>
 
-    <div [matMenuTriggerFor]="menu" class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
-      <div class="d-flex flex-column text-end align-items-center">
-        <div class="fs-small bg-success border border-1 px-2 rounded-pill">
-          <!-- trocar o bg com base no status -->
-          Certificado: Válido
-        </div>
-        <span class="text-secondary fs-small text-center">{{ claimAdmin }}</span>
+    <div [matMenuTriggerFor]="menu"
+      class="d-flex align-items-center bg-primary-light rounded-3 py-1 px-3 gap-3 cursor-pointer">
+      <div class="d-flex flex-column text-end align-items-end">
+        <span>{{ voluntarioNome | titlecase }}</span>
+        <span class="text-secondary fs-small text-center mb-1">{{ claimAdmin }}</span>
       </div>
-      
-      <span>{{ voluntarioNome | titlecase }}</span>
-      
+
+
       <div class="avatar-wrapper">
         <img *ngIf="fotoUpload" [src]="fotoUpload" lt="Avatar do usuário" class="rounded-circle avatar-img">
         <i *ngIf="!fotoUpload" class="fa-solid fa-user text-white bg-primary-light p-4"></i>
