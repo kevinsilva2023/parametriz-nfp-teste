@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { ErroTransmissaoLote } from '../models/erro-transmissao-lote';
 
 @Component({
-  selector: 'app-listar-erro-modal',
+  selector: 'app-listar-erro-transmissao-lote-modal',
   standalone: false,
-  templateUrl: './listar-erro-modal.component.html',
+  templateUrl: './listar-erro-transmissao-lote-modal.component.html',
   styles: ``
 })
-export class ListarErroModalComponent {
+export class ListarErroTransmissaoLoteModalComponent {
   errosTransmissaoLote!: ErroTransmissaoLote[];
 }

@@ -4,7 +4,7 @@
     Incluir Voluntário
   </button>
 
-  <div class="d-flex justify-content-between gap-3 mb-4 p-0">
+  <div class="d-flex w-100 justify-content-between gap-3 mb-4 p-0">
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Nome</mat-label>
       <input matInput placeholder="Filtrar por nome"
@@ -44,7 +44,7 @@
     </ul>
   </ngb-alert>
 
-  <div class="shadow-sm rounded p-2">
+  <div class="card w-100">
     <table class="table table-striped table-hover rounded"
       *ngIf="(voluntariosCadastrados?.length ?? 0) > 0; else semVoluntarios">
       <thead class="sticky-top table-secondary">
@@ -73,7 +73,7 @@
 
           <td class="text-center"> {{ voluntario.nome | titlecase}}</td>
           <td class="text-center">{{ voluntario.cpf | cpf }}</td>
-          <td class="text-center">{{ voluntario.email }}</td>
+          <td class="text-center text-break">{{ voluntario.email }}</td>
 
           <td class="text-center">
             <span class="badge rounded-pill px-3 py-2"

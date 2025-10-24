@@ -9,7 +9,7 @@ import { Claim } from 'src/app/shared/models/claim';
 import { AutorizacaoService } from 'src/app/shared/services/autorizacao.service';
 import { ObterVoluntarioAtivo } from 'src/app/shared/models/obter-voluntario-ativo';
 import { ErroTransmissaoLote } from 'src/app/erros-transmissao-lote/models/erro-transmissao-lote';
-import { ListarErroModalComponent } from 'src/app/erros-transmissao-lote/listar-erro-modal/listar-erro-modal.component';
+import { ListarErroTransmissaoLoteModalComponent } from 'src/app/erros-transmissao-lote/listar-erro-transmissao-lote-modal/listar-erro-transmissao-lote-modal.component';
 
 @Component({
   selector: 'app-listar-cupom-fiscal',
@@ -62,9 +62,9 @@ export class ListarCupomFiscalComponent implements OnInit {
 
   verificaPossuiErroTransmissaoLote() {
 
-    if(this.errosTransmissaoLote.length > 0) {
-      let modalRef = this.modalService.open(ListarErroModalComponent, { size: 'lg'})
-      
+    if (this.errosTransmissaoLote.length > 0) {
+      let modalRef = this.modalService.open(ListarErroTransmissaoLoteModalComponent, { size: 'lg' })
+
       modalRef.componentInstance.errosTransmissaoLote = this.errosTransmissaoLote;
     }
   }

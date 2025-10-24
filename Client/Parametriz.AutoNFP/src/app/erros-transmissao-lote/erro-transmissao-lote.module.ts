@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListarErroModalComponent } from './listar-erro-modal/listar-erro-modal.component';
-import {  NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ListarErroTransmissaoLoteModalComponent } from './listar-erro-transmissao-lote-modal/listar-erro-transmissao-lote-modal.component';
 
 @NgModule({
   declarations: [
-    ListarErroModalComponent
+    ListarErroTransmissaoLoteModalComponent
   ],
   imports: [
     CommonModule,

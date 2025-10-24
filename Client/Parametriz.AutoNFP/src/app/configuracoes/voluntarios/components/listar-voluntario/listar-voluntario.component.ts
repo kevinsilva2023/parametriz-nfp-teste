@@ -32,6 +32,8 @@ import { InputUtils } from 'src/app/shared/utils/input-utils';
       height: 48px;
       vertical-align: middle !important;
     }
+
+    
   `]
 })
 export class ListarVoluntarioComponent implements OnInit {
