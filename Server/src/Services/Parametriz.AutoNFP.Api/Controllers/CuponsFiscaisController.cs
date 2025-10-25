@@ -36,21 +36,21 @@ namespace Parametriz.AutoNFP.Api.Controllers
         }
 
         [HttpGet("obter-por-usuario")]
-        public async Task<CupomFiscalPaginacaoViewModel> ObterPorUsuario(DateTime competencia, CupomFiscalStatus? status = null,
-            int pagina = 1, int registrosPorPagina = 50)
+        public async Task<CupomFiscalPaginacaoViewModel> ObterPorUsuario(DateTime cadastradoEm, DateTime? emitidoEm = null, 
+            CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50)
         {
             return (await _cupomFiscalRepository
-                .ObterPorFiltrosPaginado(InstituicaoId, competencia, VoluntarioId, status, pagina, registrosPorPagina))
+                .ObterPorFiltrosPaginado(InstituicaoId, cadastradoEm, emitidoEm, VoluntarioId, status, pagina, registrosPorPagina))
                 .ToViewModel();
         }
 
         [Authorize(Roles ="Administrador")]
         [HttpGet]
-        public async Task<CupomFiscalPaginacaoViewModel> ObterPorFiltrosPaginado(DateTime competencia, Guid? cadastradoPorId = null,
-            CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50)
+        public async Task<CupomFiscalPaginacaoViewModel> ObterPorFiltrosPaginado(DateTime cadastradoEm, DateTime? emitidoEm = null, 
+            Guid? cadastradoPorId = null, CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50)
         {
             return (await _cupomFiscalRepository
-                .ObterPorFiltrosPaginado(InstituicaoId, competencia, cadastradoPorId, status, pagina, registrosPorPagina))
+                .ObterPorFiltrosPaginado(InstituicaoId, cadastradoEm, emitidoEm, cadastradoPorId, status, pagina, registrosPorPagina))
                 .ToViewModel();
         }
 

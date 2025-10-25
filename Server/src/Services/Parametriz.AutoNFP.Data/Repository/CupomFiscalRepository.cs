@@ -26,8 +26,9 @@ namespace Parametriz.AutoNFP.Data.Repository
                                c.Id != cupomFiscal.Id);
         }
 
-        public async Task<CupomFiscalPaginacao> ObterPorFiltrosPaginado(Guid instituicaoId, DateTime competencia, 
-            Guid? cadastradoPorId = null, CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50)
+        public async Task<CupomFiscalPaginacao> ObterPorFiltrosPaginado(Guid instituicaoId, DateTime cadastradoEm, 
+            DateTime? emitidoEm = null, Guid? cadastradoPorId = null, CupomFiscalStatus? status = null, int pagina = 1, 
+            int registrosPorPagina = 15)
         {
             var cuponsFiscais = _context.CuponsFiscais
                 .Include(p => p.ChaveDeAcesso)
@@ -35,8 +36,11 @@ namespace Parametriz.AutoNFP.Data.Repository
                 .Include(p => p.CadastradoPor)
                 .AsNoTracking()
                 .Where(p => p.InstituicaoId == instituicaoId &&
-                            p.ChaveDeAcesso.Competencia.Value.Month == competencia.Month &&
-                            p.ChaveDeAcesso.Competencia.Value.Year == competencia.Year &&
+                            p.CadastradoEm.Year == cadastradoEm.Year &&
+                            p.CadastradoEm.Month == cadastradoEm.Month &&
+                            (emitidoEm == null || 
+                             (p.ChaveDeAcesso.EmitidoEm.Value.Month == emitidoEm.Value.Month &&
+                              p.ChaveDeAcesso.EmitidoEm.Value.Year == emitidoEm.Value.Year)) &&
                             (cadastradoPorId == null || p.CadastradoPorId == cadastradoPorId) &&
                             (status == null || p.Status == status))
                 .OrderByDescending(p => p.CadastradoEm);

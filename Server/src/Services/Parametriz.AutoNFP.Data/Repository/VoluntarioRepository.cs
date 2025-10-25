@@ -21,10 +21,15 @@ namespace Parametriz.AutoNFP.Data.Repository
 
         public override async Task<bool> EhUnico(Voluntario usuario)
         {
-            return  !await _context.Voluntarios
-                .AnyAsync(u => u.InstituicaoId == usuario.InstituicaoId &&
-                               u.Nome == usuario.Nome &&
-                               u.Id != usuario.Id);
+            return
+                !(await _context.Voluntarios
+                    .AnyAsync(u => u.InstituicaoId == usuario.InstituicaoId &&
+                                   u.Nome == usuario.Nome &&
+                                   u.Id != usuario.Id) ||
+                await _context.Voluntarios
+                    .AnyAsync(u => u.InstituicaoId == usuario.InstituicaoId &&
+                                   u.Cpf.NumeroInscricao == usuario.Cpf.NumeroInscricao &&
+                                   u.Id != usuario.Id));
         }
 
         public async Task<bool> ExistemOutrosVoluntariosNaInstituicao(Guid id, Guid instituicaoId)

@@ -31,8 +31,8 @@ namespace Parametriz.AutoNFP.Data.Mappings
 
                 c.Ignore(i => i.ExisteChave);
 
-                c.Property(p => p.Competencia)
-                    .HasColumnName("Competencia")
+                c.Property(p => p.EmitidoEm)
+                    .HasColumnName("EmitidoEm")
                     .IsRequired();
 
                 c.Property(p => p.Numero)
