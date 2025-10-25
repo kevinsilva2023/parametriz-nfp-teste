@@ -19,6 +19,11 @@ namespace Parametriz.AutoNFP.ConsoleApp.PageObjects
             Helper.IrParaUrl("https://www.nfp.fazenda.sp.gov.br/EntidadesFilantropicas/CadastroNotaEntidadeAviso.aspx");
         }
 
+        public bool EstaNaPagina()
+        {
+            return Helper.ValidarConteudoUrl("EntidadesFilantropicas/CadastroNotaEntidadeAviso.aspx");
+        }
+
         public void ClicarEmProsseguir()
         {
             Helper.ClicarBotaoPorId("ctl00_ConteudoPagina_btnOk");

@@ -31,11 +31,13 @@ export class ConfirmarEmailComponent implements OnInit {
   verificaConfirmacaoDeEmail() {
     let email = this.activatedRoute.snapshot.queryParamMap.get('email');
     let code = this.activatedRoute.snapshot.queryParamMap.get('code');
+    let definirSenha = this.activatedRoute.snapshot.queryParamMap.get('definirSenha') == 'True';
 
     if (email && code !== null) {
       let confirmarEmail = new ConfirmarEmail();
       confirmarEmail.email = email;
       confirmarEmail.code = code;
+      confirmarEmail.definirSenha = definirSenha;
 
       this.identidadeService.confirmarEmail(confirmarEmail)
         .subscribe({

@@ -25,6 +25,9 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.ErrosTransmissaoLote.Service
         {
             var erroTransmissaoLote = new ErroTransmissaoLote(Guid.NewGuid(), instituicaoId, mensagem);
 
+            if (_erroTransmissaoLoteRepository.Existe(instituicaoId, null, mensagem))
+                return false;
+
             _erroTransmissaoLoteRepository.Cadastrar(erroTransmissaoLote);
 
             Commit();
@@ -35,6 +38,9 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.ErrosTransmissaoLote.Service
         public bool CadastrarParaVoluntario(Guid instituicaoId, Guid voluntarioId, string mensagem)
         {
             var erroTransmissaoLote = new ErroTransmissaoLote(Guid.NewGuid(), instituicaoId, voluntarioId, mensagem);
+
+            if (_erroTransmissaoLoteRepository.Existe(instituicaoId, voluntarioId, mensagem))
+                return false;
 
             _erroTransmissaoLoteRepository.Cadastrar(erroTransmissaoLote);
 

@@ -119,16 +119,15 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                     if (!_dockerService.ExecutarProcessoInicial(diretorio, imageName, containerName, port))
                         continue;
 
-                    if (!EnviarCuponsFiscais(instituicao.Id, instituicao.EntidadeNomeNFP, cuponsFiscais, port, diretorio, containerName))
-                    {
-                        break;
-                    }
+                    if (!EnviarCuponsFiscais(instituicao.Id, voluntarioId, instituicao.EntidadeNomeNFP, cuponsFiscais, port,
+                        diretorio, containerName))
+                            continue;
                 }
             }
         }
 
-        private bool EnviarCuponsFiscais(Guid instituicaoId, string entidadeNomeNFP, IEnumerable<CupomFiscal> cuponsFiscais, int port,
-            string diretorio, string containerName)
+        private bool EnviarCuponsFiscais(Guid instituicaoId, Guid voluntarioId, string entidadeNomeNFP, 
+            IEnumerable<CupomFiscal> cuponsFiscais, int port, string diretorio, string containerName)
         {
             try
             {
@@ -137,13 +136,12 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                 var seleniumHelper = new SeleniumHelper(port, headless: false);
 
                 EfetuarLogin(seleniumHelper);
-                if (!SelecionarEntidade(seleniumHelper, entidadeNomeNFP))
-                {
-                    _erroTransmissaoLoteService.CadastrarParaInstituicao(instituicaoId, "Não foi possível selecionar a entidade.");
+                if (!SelecionarEntidade(seleniumHelper, instituicaoId, voluntarioId, entidadeNomeNFP))
                     return false; 
-                }
                     
                 CadastrarCupomFiscal(seleniumHelper, cuponsFiscais);
+
+                return true;
             }
             catch (Exception ex)
             {
@@ -164,15 +162,26 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
             loginPage.ClicarAcessoViaCertificadoDigital();
         }
 
-        private bool SelecionarEntidade(SeleniumHelper seleniumHelper, string entidadeNomeNFP)
+        private bool SelecionarEntidade(SeleniumHelper seleniumHelper, Guid instituicaoId, Guid voluntarioId, string entidadeNomeNFP)
         {
             var cadastroNotaEntidadeAviso = new CadastroNotaEntidadeAvisoPage(seleniumHelper);
             cadastroNotaEntidadeAviso.AcessarPagina();
+
+            if (!cadastroNotaEntidadeAviso.EstaNaPagina())
+            {
+                _erroTransmissaoLoteService.CadastrarParaVoluntario(instituicaoId, voluntarioId,
+                    @"Acesse <a href=""https://www.nfp.fazenda.sp.gov.br/"" target=""_blank"">https://www.nfp.fazenda.sp.gov.br/</a> com certificado digital e siga as instruções para normalizar o acesso.");
+                return false;
+            }
+
             cadastroNotaEntidadeAviso.ClicarEmProsseguir();
             
             if (!cadastroNotaEntidadeAviso.SelecionarEntidade(entidadeNomeNFP))
+            {
+                _erroTransmissaoLoteService.CadastrarParaInstituicao(instituicaoId, "Não foi possível selecionar a entidade.");
                 return false;
-
+            }
+            
             cadastroNotaEntidadeAviso.ClicarEmNovaNota();
             cadastroNotaEntidadeAviso.FecharModal();
 
