@@ -4,6 +4,7 @@ using Parametriz.AutoNFP.ConsoleApp.Application.CertificadoDigital;
 using Parametriz.AutoNFP.ConsoleApp.Application.CuponsFiscais;
 using Parametriz.AutoNFP.ConsoleApp.Application.Docker;
 using Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais;
+using Parametriz.AutoNFP.ConsoleApp.Application.ErrosTransmissaoLote.Services;
 using Parametriz.AutoNFP.ConsoleApp.Application.FileSistem;
 using Parametriz.AutoNFP.ConsoleApp.BackgroundServices.EnviarCuponsFiscais;
 using Parametriz.AutoNFP.Core.Configs;
@@ -14,6 +15,7 @@ using Parametriz.AutoNFP.Data.Repository;
 using Parametriz.AutoNFP.Data.Uow;
 using Parametriz.AutoNFP.Domain.Certificados;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
+using Parametriz.AutoNFP.Domain.ErrosTransmissaoLote;
 using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
@@ -33,8 +35,12 @@ namespace Parametriz.AutoNFP.ConsoleApp.Configs
             builder.ConfigureServices(services =>
             {
                 services.AddScoped<ICertificadoRepository, CertificadoRepository>();
+                
                 services.AddScoped<ICupomFiscalRepository, CupomFiscalRepository>();
                 services.AddScoped<ICupomFiscalService, CupomFiscalService>();
+
+                services.AddScoped<IErroTransmissaoLoteRepository, ErroTransmissaoLoteRepository>();
+                services.AddScoped<IErroTransmissaoLoteService, ErroTransmissaoLoteService>();
                 
                 services.AddScoped<ICertificadoDigitalService, CertificadoDigitalService>();
                 services.AddScoped<IFileSystemService, FileSystemService>();
