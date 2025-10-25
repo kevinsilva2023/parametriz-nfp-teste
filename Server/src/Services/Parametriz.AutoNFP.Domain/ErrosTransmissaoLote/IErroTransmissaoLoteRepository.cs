@@ -12,6 +12,6 @@ namespace Parametriz.AutoNFP.Domain.ErrosTransmissaoLote
         Task<IEnumerable<ErroTransmissaoLote>> ObterPorInstituicaoId(Guid instituicaoId);
         Task<IEnumerable<ErroTransmissaoLote>> ObterPorVoluntarioId(Guid voluntarioId, Guid instituicaoId);
 
-        void RemoverPorInstituicaoId(Guid instituicaoId);
+        void ExcluirPorInstituicaoId(Guid instituicaoId);
     }
 }

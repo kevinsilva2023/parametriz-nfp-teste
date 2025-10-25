@@ -46,7 +46,7 @@ namespace Parametriz.AutoNFP.Data.Repository
                 .ToListAsync();
         }
 
-        public void RemoverPorInstituicaoId(Guid instituicaoId)
+        public void ExcluirPorInstituicaoId(Guid instituicaoId)
         {
             var errosTransmissaoLote = _context.ErrosTransmissaoLote
                 .AsNoTracking()
