@@ -21,7 +21,17 @@ namespace Parametriz.AutoNFP.ConsoleApp.PageObjects
 
         public bool EstaNaPagina()
         {
-            return Helper.ValidarConteudoUrl("EntidadesFilantropicas/CadastroNotaEntidadeAviso.aspx");
+            try
+            {
+                if (Helper.ValidarConteudoUrl("EntidadesFilantropicas/CadastroNotaEntidadeAviso.aspx"))
+                    return true;
+
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public void ClicarEmProsseguir()

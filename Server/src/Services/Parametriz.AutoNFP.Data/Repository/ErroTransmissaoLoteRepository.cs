@@ -35,7 +35,16 @@ namespace Parametriz.AutoNFP.Data.Repository
                           e.Mensagem == mensagem);
         }
 
-        public async Task<IEnumerable<ErroTransmissaoLote>> ObterPorInstituicaoId(Guid instituicaoId)
+        public IEnumerable<ErroTransmissaoLote> ObterPorInstituicaoId(Guid instituicaoId)
+        {
+            return _context.ErrosTransmissaoLote
+                .Include(p => p.Voluntario)
+                .AsNoTrackingWithIdentityResolution()
+                .Where(e => e.InstituicaoId == instituicaoId)
+                .ToList();
+        }
+
+        public async Task<IEnumerable<ErroTransmissaoLote>> ObterPorInstituicaoIdAsync(Guid instituicaoId)
         {
             return await _context.ErrosTransmissaoLote
                 .Include(p => p.Voluntario)
@@ -52,16 +61,6 @@ namespace Parametriz.AutoNFP.Data.Repository
                 .Where(e => e.InstituicaoId == instituicaoId &&
                             (e.VoluntarioId == null || e.VoluntarioId == voluntarioId))
                 .ToListAsync();
-        }
-
-        public void ExcluirPorInstituicaoId(Guid instituicaoId)
-        {
-            var errosTransmissaoLote = _context.ErrosTransmissaoLote
-                .AsNoTracking()
-                .Where(e => e.InstituicaoId == instituicaoId)
-                .ToList();
-
-            _context.RemoveRange(errosTransmissaoLote);
         }
     }
 }

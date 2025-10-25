@@ -4,6 +4,7 @@ using Parametriz.AutoNFP.Data.Context;
 using Parametriz.AutoNFP.Data.Repository.Core;
 using Parametriz.AutoNFP.Domain.CuponsFiscais;
 using Parametriz.AutoNFP.Domain.Instituicoes;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,11 +70,23 @@ namespace Parametriz.AutoNFP.Data.Repository
                 .ToList();
         }
 
-        public IEnumerable<CupomFiscal> ObterPorStatusProcessando(Guid instituicaoId)
+        public IEnumerable<Voluntario> ObterVoluntariosComCuponsFiscaisProcessando(Guid instituicaoId)
+        {
+            return _context.CuponsFiscais
+                .Include(p => p.CadastradoPor)
+                .AsNoTrackingWithIdentityResolution()
+                .Where(c => c.Status == CupomFiscalStatus.PROCESSANDO)
+                .Select(c => c.CadastradoPor)
+                .Distinct()
+                .ToList();
+        }
+
+        public IEnumerable<CupomFiscal> ObterPorStatusProcessando(Guid voluntarioId, Guid instituicaoId)
         {
             return _context.CuponsFiscais
                 .AsNoTracking()
                 .Where(c => c.InstituicaoId == instituicaoId &&
+                            c.CadastradoPorId == voluntarioId &&
                             c.Status == CupomFiscalStatus.PROCESSANDO)
                 .ToList();
         }

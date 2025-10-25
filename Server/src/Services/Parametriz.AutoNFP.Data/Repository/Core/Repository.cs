@@ -21,12 +21,22 @@ namespace Parametriz.AutoNFP.Data.Repository.Core
 
         public abstract Task<bool> EhUnico(TEntity obj);
 
-        public virtual async Task Cadastrar(TEntity obj)
+        public void Cadastrar(TEntity obj)
+        {
+            _context.Set<TEntity>().Add(obj);
+        }
+
+        public virtual async Task CadastrarAsync(TEntity obj)
         {
             await _context.Set<TEntity>().AddAsync(obj);
         }
 
-        public virtual async Task CadastrarLista(IEnumerable<TEntity> objs)
+        public void CadastrarLista(IEnumerable<TEntity> objs)
+        {
+            _context.Set<TEntity>().AddRange(objs);
+        }
+
+        public virtual async Task CadastrarListaAsync(IEnumerable<TEntity> objs)
         {
             await _context.Set<TEntity>().AddRangeAsync(objs);
         }

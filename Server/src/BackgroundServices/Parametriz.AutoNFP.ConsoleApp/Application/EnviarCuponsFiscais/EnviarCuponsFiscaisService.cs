@@ -85,22 +85,18 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                     continue;
                 }
 
-                var cuponsFiscais = _cupomFiscalRepository.ObterPorStatusProcessando(instituicao.Id);
-                if (cuponsFiscais.Count() <= 0)
-                    continue;
-
-                var voluntariosId = cuponsFiscais.Select(p => p.CadastradoPorId).Distinct().ToList();
-
-                foreach (var voluntarioId in voluntariosId)
+                var voluntarios = _cupomFiscalRepository.ObterVoluntariosComCuponsFiscaisProcessando(instituicao.Id);
+                
+                foreach (var voluntario in voluntarios)
                 {
-                    var certificado = _certificadoRepository.ObterPorVoluntarioId(voluntarioId);
+                    var certificado = _certificadoRepository.ObterPorVoluntarioId(voluntario.Id);
                     if (certificado == null)
                     {
-                        _erroTransmissaoLoteService.CadastrarParaVoluntario(instituicao.Id, voluntarioId, "Voluntário sem certificado cadastrado.")
+                        _erroTransmissaoLoteService.CadastrarParaVoluntario(instituicao.Id, voluntario.Id, "Voluntário sem certificado cadastrado.");
                         continue;
                     }
                     
-                    var senha = ObterSenha(voluntarioId, certificado);
+                    var senha = ObterSenha(voluntario.Id, certificado);
 
                     var diretorio = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.autonfp/{instituicao.Id}";
 
@@ -109,7 +105,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
 
                     if (!_certificadoDigitalService.EstaValido(certificado, senha))
                     {
-                        _erroTransmissaoLoteService.CadastrarParaVoluntario(instituicao.Id, voluntarioId, "Certificado inválido.");
+                        _erroTransmissaoLoteService.CadastrarParaVoluntario(instituicao.Id, voluntario.Id, "Certificado inválido.");
                         continue;
                     }
                         
@@ -119,18 +115,19 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
                     if (!_dockerService.ExecutarProcessoInicial(diretorio, imageName, containerName, port))
                         continue;
 
-                    if (!EnviarCuponsFiscais(instituicao.Id, voluntarioId, instituicao.EntidadeNomeNFP, cuponsFiscais, port,
-                        diretorio, containerName))
+                    if (!EnviarCuponsFiscais(instituicao.Id, voluntario.Id, instituicao.EntidadeNomeNFP, port, diretorio, containerName))
                             continue;
                 }
             }
         }
 
-        private bool EnviarCuponsFiscais(Guid instituicaoId, Guid voluntarioId, string entidadeNomeNFP, 
-            IEnumerable<CupomFiscal> cuponsFiscais, int port, string diretorio, string containerName)
+        private bool EnviarCuponsFiscais(Guid instituicaoId, Guid voluntarioId, string entidadeNomeNFP, int port, string diretorio, 
+            string containerName)
         {
             try
             {
+                var cuponsFiscais = _cupomFiscalRepository.ObterPorStatusProcessando(voluntarioId, instituicaoId);
+
                 Thread.Sleep(10000);
 
                 var seleniumHelper = new SeleniumHelper(port, headless: false);
@@ -178,7 +175,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
             
             if (!cadastroNotaEntidadeAviso.SelecionarEntidade(entidadeNomeNFP))
             {
-                _erroTransmissaoLoteService.CadastrarParaInstituicao(instituicaoId, "Não foi possível selecionar a entidade.");
+                _erroTransmissaoLoteService.CadastrarParaInstituicao(instituicaoId, "Não foi possível selecionar a entidade. Verifique o nome da Entidade nas configurações da Instituição.");
                 return false;
             }
             

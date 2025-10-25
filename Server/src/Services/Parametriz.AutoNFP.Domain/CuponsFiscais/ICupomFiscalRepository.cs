@@ -1,6 +1,7 @@
 ﻿using Parametriz.AutoNFP.Core.Enums;
 using Parametriz.AutoNFP.Domain.Core.Interfaces;
 using Parametriz.AutoNFP.Domain.Instituicoes;
+using Parametriz.AutoNFP.Domain.Voluntarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Parametriz.AutoNFP.Domain.CuponsFiscais
             Guid? cadastradoPorId = null, CupomFiscalStatus? status = null, int pagina = 1, int registrosPorPagina = 50);
 
         IEnumerable<Instituicao> ObterInstituicoesComCuponsFiscaisProcessando();
-        IEnumerable<CupomFiscal> ObterPorStatusProcessando(Guid instituicaoId);
+        IEnumerable<Voluntario> ObterVoluntariosComCuponsFiscaisProcessando(Guid instituicaoId);
+        IEnumerable<CupomFiscal> ObterPorStatusProcessando(Guid voluntarioId, Guid instituicaoId);
     }
 }
