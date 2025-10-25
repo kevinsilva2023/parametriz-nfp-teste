@@ -91,7 +91,7 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.FileSistem
             #endregion
 
             #region ComContaNoDockerCompartilhada
-            //stream.WriteLine($"maumitsuo/parametriz-autonfp-base-selenium:latest");
+            //stream.WriteLine($"FROM maumitsuo/parametriz-autonfp-base-selenium:latest");
             #endregion ComContaNoDockerCompartilhada
 
             stream.WriteLine($"COPY auto_select_certificate.json /etc/opt/chrome/policies/managed");

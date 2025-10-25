@@ -12,7 +12,6 @@ using Parametriz.AutoNFP.Domain.Certificados;
 
 namespace Parametriz.AutoNFP.Api.Controllers
 {
-    [Authorize(Roles = "Administrador")]
     [Route("api/certificados")]
     public class CertificadosController : MainController
     {

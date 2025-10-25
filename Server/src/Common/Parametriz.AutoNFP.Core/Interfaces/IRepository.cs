@@ -11,9 +11,10 @@ namespace Parametriz.AutoNFP.Core.Interfaces
     {
         Task<bool> EhUnico(TEntity obj);
                 
-        Task Cadastrar(TEntity obj);
-
-        Task CadastrarLista(IEnumerable<TEntity> objs);
+        void Cadastrar(TEntity obj);
+        Task CadastrarAsync(TEntity obj);
+        void CadastrarLista(IEnumerable<TEntity> objs);
+        Task CadastrarListaAsync(IEnumerable<TEntity> objs);
 
         void Atualizar(TEntity obj);
 

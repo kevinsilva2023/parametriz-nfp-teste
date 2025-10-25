@@ -22,7 +22,7 @@ namespace Parametriz.AutoNFP.Api.Application.ErrosTransmissaoLote.Queries
             var administrador = await _voluntarioRepository.EhAdministrador(voluntarioId, instituicaoId);
 
             if (administrador)
-                return (await _erroTransmissaoLoteRepository.ObterPorInstituicaoId(instituicaoId)).ToViewModel();
+                return (await _erroTransmissaoLoteRepository.ObterPorInstituicaoIdAsync(instituicaoId)).ToViewModel();
 
             return (await _erroTransmissaoLoteRepository.ObterPorVoluntarioId(voluntarioId, instituicaoId)).ToViewModel();
         }

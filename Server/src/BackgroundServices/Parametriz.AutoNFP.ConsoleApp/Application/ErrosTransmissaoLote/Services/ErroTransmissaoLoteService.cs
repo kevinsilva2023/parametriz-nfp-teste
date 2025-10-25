@@ -51,7 +51,12 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.ErrosTransmissaoLote.Service
 
         public bool ExcluirPorInstituicaoId(Guid instituicaoId)
         {
-            _erroTransmissaoLoteRepository.ExcluirPorInstituicaoId(instituicaoId);
+            var errosTransmissaoLote = _erroTransmissaoLoteRepository.ObterPorInstituicaoId(instituicaoId);
+
+            if (!errosTransmissaoLote.Any())
+                return true;
+
+            _erroTransmissaoLoteRepository.ExcluirLista(errosTransmissaoLote);
 
             Commit();
 

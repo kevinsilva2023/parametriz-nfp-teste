@@ -66,7 +66,7 @@ namespace Parametriz.AutoNFP.Api.Application.Instituicoes.Services
             if (!await InstituicaoAptaParaCadastrar(instituicao))
                 return false;
 
-            await _instituicaoRepository.Cadastrar(instituicao);
+            await _instituicaoRepository.CadastrarAsync(instituicao);
 
             await Commit();
                

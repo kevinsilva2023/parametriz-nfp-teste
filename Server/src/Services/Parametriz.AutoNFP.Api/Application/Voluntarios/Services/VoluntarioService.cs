@@ -72,7 +72,7 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
             if (!await VoluntarioAptoParaCadastrar(voluntario))
                 return false;
 
-            await _voluntarioRepository.Cadastrar(voluntario);
+            await _voluntarioRepository.CadastrarAsync(voluntario);
 
             await Commit();
 

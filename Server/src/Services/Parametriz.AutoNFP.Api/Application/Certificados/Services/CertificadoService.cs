@@ -90,8 +90,8 @@ namespace Parametriz.AutoNFP.Api.Application.Certificados.Services
                 return NotificarErro("Erro desconhecido. Tente novamente");
             }
 
-            if (!certificadoDigital.Verify())
-                return NotificarErro("Certificado inválido.");
+            //if (!certificadoDigital.Verify())
+            //    return NotificarErro("Certificado inválido.");
 
             var pepper = Encoding.UTF8.GetBytes(_appConfig.SecrectKey);
 
@@ -107,7 +107,7 @@ namespace Parametriz.AutoNFP.Api.Application.Certificados.Services
             if (await _certificadoRepository.ExisteNoVoluntario(VoluntarioId))
                 await _certificadoRepository.Excluir(VoluntarioId);
 
-            await _certificadoRepository.Cadastrar(certificado);
+            await _certificadoRepository.CadastrarAsync(certificado);
 
             await Commit();
 

@@ -53,7 +53,7 @@ namespace Parametriz.AutoNFP.Api.Application.CuponsFiscais.Services
             if (!await CupomFiscalAptoParaCadastrar(cupomFiscal))
                 return false;
 
-            await _cupomFiscalRepository.Cadastrar(cupomFiscal);
+            await _cupomFiscalRepository.CadastrarAsync(cupomFiscal);
 
             await Commit();
 

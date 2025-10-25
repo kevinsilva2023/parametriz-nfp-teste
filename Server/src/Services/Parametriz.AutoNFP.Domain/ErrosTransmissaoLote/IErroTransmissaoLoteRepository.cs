@@ -11,10 +11,9 @@ namespace Parametriz.AutoNFP.Domain.ErrosTransmissaoLote
     {
         bool Existe(Guid instituicaoId, Guid? voluntarioId, string mensagem);
 
-        Task<IEnumerable<ErroTransmissaoLote>> ObterPorInstituicaoId(Guid instituicaoId);
-        Task<IEnumerable<ErroTransmissaoLote>> ObterPorVoluntarioId(Guid voluntarioId, Guid instituicaoId);
+        IEnumerable<ErroTransmissaoLote> ObterPorInstituicaoId(Guid instituicaoId);
+        Task<IEnumerable<ErroTransmissaoLote>> ObterPorInstituicaoIdAsync(Guid instituicaoId);
 
-        void ExcluirPorInstituicaoId(Guid instituicaoId);
-        
+        Task<IEnumerable<ErroTransmissaoLote>> ObterPorVoluntarioId(Guid voluntarioId, Guid instituicaoId);
     }
 }
