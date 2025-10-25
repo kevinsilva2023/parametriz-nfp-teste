@@ -27,6 +27,14 @@ namespace Parametriz.AutoNFP.Data.Repository
                                e.Mensagem == erroTransmissaoLote.Mensagem);
         }
 
+        public bool Existe(Guid instituicaoId, Guid? voluntarioId, string mensagem)
+        {
+            return _context.ErrosTransmissaoLote
+                .Any(e => e.InstituicaoId == instituicaoId &&
+                          e.VoluntarioId == voluntarioId &&
+                          e.Mensagem == mensagem);
+        }
+
         public async Task<IEnumerable<ErroTransmissaoLote>> ObterPorInstituicaoId(Guid instituicaoId)
         {
             return await _context.ErrosTransmissaoLote
@@ -46,7 +54,7 @@ namespace Parametriz.AutoNFP.Data.Repository
                 .ToListAsync();
         }
 
-        public void RemoverPorInstituicaoId(Guid instituicaoId)
+        public void ExcluirPorInstituicaoId(Guid instituicaoId)
         {
             var errosTransmissaoLote = _context.ErrosTransmissaoLote
                 .AsNoTracking()
