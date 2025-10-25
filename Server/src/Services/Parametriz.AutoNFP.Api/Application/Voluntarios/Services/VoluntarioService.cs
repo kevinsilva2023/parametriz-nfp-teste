@@ -41,7 +41,7 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
         private async Task VoluntarioEhUnico(Voluntario voluntario)
         {
             if (!await _voluntarioRepository.EhUnico(voluntario))
-                _notificador.IncluirNotificacao("Voluntário já cadastrado.");
+                _notificador.IncluirNotificacao("Nome, E-mail ou CPF já cadastrado.");
         }
 
         private async Task ExistemOutrosVoluntariosNaInstituicao(Guid voluntarioId)
@@ -237,6 +237,8 @@ namespace Parametriz.AutoNFP.Api.Application.Voluntarios.Services
 
             if (!result.Succeeded)
                 return AdicionarErrosIdentity(result);
+
+            await _userManager.UpdateSecurityStampAsync(user);
 
             return true;
         }

@@ -211,7 +211,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.ChaveDeAcesso", "ChaveDeAcesso", b1 =>
+                    b.OwnsOne("Parametriz.AutoNFP.Domain.CuponsFiscais.CupomFiscal.ChaveDeAcesso#Parametriz.AutoNFP.Core.ValueObjects.ChaveDeAcesso", "ChaveDeAcesso", b1 =>
                         {
                             b1.Property<Guid>("CupomFiscalId")
                                 .HasColumnType("uuid");
@@ -237,12 +237,12 @@ namespace Parametriz.AutoNFP.Data.Migrations
                             b1.HasIndex("Chave")
                                 .IsUnique();
 
-                            b1.ToTable("CuponsFiscais");
+                            b1.ToTable("CuponsFiscais", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CupomFiscalId");
 
-                            b1.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cnpj", b2 =>
+                            b1.OwnsOne("Parametriz.AutoNFP.Domain.CuponsFiscais.CupomFiscal.ChaveDeAcesso#Parametriz.AutoNFP.Core.ValueObjects.ChaveDeAcesso.Cnpj#Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cnpj", b2 =>
                                 {
                                     b2.Property<Guid>("ChaveDeAcessoCupomFiscalId")
                                         .HasColumnType("uuid");
@@ -256,7 +256,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
 
                                     b2.HasKey("ChaveDeAcessoCupomFiscalId");
 
-                                    b2.ToTable("CuponsFiscais");
+                                    b2.ToTable("CuponsFiscais", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("ChaveDeAcessoCupomFiscalId");
@@ -292,7 +292,29 @@ namespace Parametriz.AutoNFP.Data.Migrations
 
             modelBuilder.Entity("Parametriz.AutoNFP.Domain.Instituicoes.Instituicao", b =>
                 {
-                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.Endereco", "Endereco", b1 =>
+                    b.OwnsOne("Parametriz.AutoNFP.Domain.Instituicoes.Instituicao.Cnpj#Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cnpj", b1 =>
+                        {
+                            b1.Property<Guid>("InstituicaoId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("NumeroInscricao")
+                                .IsRequired()
+                                .HasMaxLength(14)
+                                .HasColumnType("character varying(14)")
+                                .HasColumnName("Cnpj");
+
+                            b1.HasKey("InstituicaoId");
+
+                            b1.HasIndex("NumeroInscricao")
+                                .IsUnique();
+
+                            b1.ToTable("Instituicoes", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("InstituicaoId");
+                        });
+
+                    b.OwnsOne("Parametriz.AutoNFP.Domain.Instituicoes.Instituicao.Endereco#Parametriz.AutoNFP.Core.ValueObjects.Endereco", "Endereco", b1 =>
                         {
                             b1.Property<Guid>("InstituicaoId")
                                 .HasColumnType("uuid");
@@ -337,29 +359,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
 
                             b1.HasKey("InstituicaoId");
 
-                            b1.ToTable("Instituicoes");
-
-                            b1.WithOwner()
-                                .HasForeignKey("InstituicaoId");
-                        });
-
-                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cnpj", b1 =>
-                        {
-                            b1.Property<Guid>("InstituicaoId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("NumeroInscricao")
-                                .IsRequired()
-                                .HasMaxLength(14)
-                                .HasColumnType("character varying(14)")
-                                .HasColumnName("Cnpj");
-
-                            b1.HasKey("InstituicaoId");
-
-                            b1.HasIndex("NumeroInscricao")
-                                .IsUnique();
-
-                            b1.ToTable("Instituicoes");
+                            b1.ToTable("Instituicoes", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("InstituicaoId");
@@ -378,7 +378,27 @@ namespace Parametriz.AutoNFP.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.Email", "Email", b1 =>
+                    b.OwnsOne("Parametriz.AutoNFP.Domain.Voluntarios.Voluntario.Cpf#Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cpf", b1 =>
+                        {
+                            b1.Property<Guid>("VoluntarioId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("NumeroInscricao")
+                                .IsRequired()
+                                .HasMaxLength(11)
+                                .HasColumnType("character(11)")
+                                .HasColumnName("Cpf")
+                                .IsFixedLength();
+
+                            b1.HasKey("VoluntarioId");
+
+                            b1.ToTable("Voluntarios", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("VoluntarioId");
+                        });
+
+                    b.OwnsOne("Parametriz.AutoNFP.Domain.Voluntarios.Voluntario.Email#Parametriz.AutoNFP.Core.ValueObjects.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("VoluntarioId")
                                 .HasColumnType("uuid");
@@ -394,27 +414,7 @@ namespace Parametriz.AutoNFP.Data.Migrations
                             b1.HasIndex("Conta")
                                 .IsUnique();
 
-                            b1.ToTable("Voluntarios");
-
-                            b1.WithOwner()
-                                .HasForeignKey("VoluntarioId");
-                        });
-
-                    b.OwnsOne("Parametriz.AutoNFP.Core.ValueObjects.CnpjCpf", "Cpf", b1 =>
-                        {
-                            b1.Property<Guid>("VoluntarioId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("NumeroInscricao")
-                                .IsRequired()
-                                .HasMaxLength(11)
-                                .HasColumnType("character(11)")
-                                .HasColumnName("Cpf")
-                                .IsFixedLength();
-
-                            b1.HasKey("VoluntarioId");
-
-                            b1.ToTable("Voluntarios");
+                            b1.ToTable("Voluntarios", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("VoluntarioId");
