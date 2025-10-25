@@ -128,6 +128,9 @@ namespace Parametriz.AutoNFP.ConsoleApp.Application.EnviarCuponsFiscais
             {
                 var cuponsFiscais = _cupomFiscalRepository.ObterPorStatusProcessando(voluntarioId, instituicaoId);
 
+                if (!cuponsFiscais.Any())
+                    return true;
+
                 Thread.Sleep(10000);
 
                 var seleniumHelper = new SeleniumHelper(port, headless: false);
