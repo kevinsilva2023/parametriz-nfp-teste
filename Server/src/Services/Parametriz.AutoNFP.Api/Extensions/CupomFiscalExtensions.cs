@@ -12,7 +12,7 @@ namespace Parametriz.AutoNFP.Api.Extensions
                 Id = cupomFiscal.Id,
                 InstituicaoId = cupomFiscal.InstituicaoId,
                 Chave = cupomFiscal.ChaveDeAcesso.Chave,
-                Competencia = cupomFiscal.ChaveDeAcesso.Competencia.Value,
+                Competencia = cupomFiscal.ChaveDeAcesso.EmitidoEm.Value,
                 Numero = cupomFiscal.ChaveDeAcesso.Numero,
                 Cnpj = cupomFiscal.ChaveDeAcesso.Cnpj.NumeroInscricao,
                 CadastradoPorId = cupomFiscal.CadastradoPorId,
