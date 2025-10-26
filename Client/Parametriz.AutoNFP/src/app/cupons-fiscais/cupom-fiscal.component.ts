@@ -12,7 +12,7 @@ export class CupomFiscalComponent {
   listarCupomFiscalComponent!: ListarCupomFiscalComponent;
 
   onCupomCadastrado() {
-    this.listarCupomFiscalComponent.obterPorFiltro();
+    this.listarCupomFiscalComponent.obter();
   }
 
 }

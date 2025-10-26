@@ -54,11 +54,18 @@
 <!-- Filtro e Tabela -->
 <div class="card rounded-4 w-100 px-4 py-3 shadow-sm">
   <div class="d-flex gap-3 w-100 p-3 rounded justify-content-center">
-    <mat-form-field appearance="outline" class="w-25">
-      <mat-label>Competência:</mat-label>
-      <input matInput [matDatepicker]="competencia" [(ngModel)]="data" (dateChange)="alterarFiltroCompetencia(data)">
-      <mat-datepicker-toggle matIconSuffix [for]="competencia"></mat-datepicker-toggle>
-      <mat-datepicker #competencia></mat-datepicker>
+    <mat-form-field appearance="outline" class="w-50">
+      <mat-label>Cadastrado Em:</mat-label>
+      <input matInput [matDatepicker]="cadastradoEm" [(ngModel)]="filtroCadastradoEm" (dateChange)="alterarFiltroCadastradoEm(filtroCadastradoEm)">
+      <mat-datepicker-toggle matIconSuffix [for]="cadastradoEm"></mat-datepicker-toggle>
+      <mat-datepicker #cadastradoEm></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-50">
+      <mat-label>Emitido Em:</mat-label>
+      <input matInput [matDatepicker]="emitidoEm" [(ngModel)]="filtroEmitidoEm" (dateChange)="alterarFiltroEmitidoEm(filtroEmitidoEm)">
+      <mat-datepicker-toggle matIconSuffix [for]="emitidoEm"></mat-datepicker-toggle>
+      <mat-datepicker #emitidoEm></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100" *ngIf="usuarioEhAdmin">

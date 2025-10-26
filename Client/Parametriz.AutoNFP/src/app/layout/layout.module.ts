@@ -10,6 +10,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
 import { CnpjPipe } from '../shared/pipe/cnpj.pipe';
 import { PerfilService } from '../perfil/services/perfil.service';
+import { InstituicaoService } from '../configuracoes/instituicoes/services/instituicao.service';
 
 
 
@@ -27,7 +28,8 @@ import { PerfilService } from '../perfil/services/perfil.service';
     MatMenuModule,
     CnpjPipe
   ], providers: [
-    PerfilService
+    PerfilService,
+    InstituicaoService
   ]
 })
 export class LayoutModule { }

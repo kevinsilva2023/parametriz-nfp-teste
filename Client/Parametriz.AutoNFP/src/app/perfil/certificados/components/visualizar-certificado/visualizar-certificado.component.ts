@@ -13,7 +13,7 @@ import { Voluntario } from 'src/app/configuracoes/voluntarios/models/voluntario'
 })
 export class VisualizarCertificadoComponent {
   @Input() errors: [] = [];
-  @Input() voluntario!: Voluntario | null;
+  @Input() certificado!: Certificado | null;
 
   instituicao!: string;
 
@@ -25,7 +25,7 @@ export class VisualizarCertificadoComponent {
     modalRef.closed
       .subscribe((resultado) => {
         if (resultado) {
-          this.voluntario = null;
+          this.certificado = null;
         }
       });
   }

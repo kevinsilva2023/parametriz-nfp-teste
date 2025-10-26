@@ -5,6 +5,7 @@ import { Instituicao } from '../../models/instituicao';
 import { InputUtils } from 'src/app/shared/utils/input-utils';
 import { InstituicaoService } from '../../services/instituicao.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { PerfilService } from 'src/app/perfil/services/perfil.service';
 
 @Component({
   selector: 'app-editar-instituicao',
@@ -112,6 +113,7 @@ export class EditarInstituicaoComponent extends BaseFormComponent implements OnI
 
   processarSucesso() {
     this.limparErros();
+    InstituicaoService.atualizarNavSubject.next(true);
     this.toastr.success('Instituição alterada com sucesso!', 'Sucesso!');
   }
 

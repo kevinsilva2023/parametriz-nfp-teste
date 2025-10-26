@@ -26,12 +26,16 @@ export class CupomFiscalService extends BaseService {
         catchError(this.serviceError));
   }
 
-  obterPorFiltro(competencia: Date, cadastradoPorId: string, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalPaginacao[]> {
+  obterPorFiltro(cadastradoEm: Date, emitidoEm: Date, cadastradoPorId: string, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalPaginacao[]> {
     let params = new HttpParams;
-    let competenciaFormatada = DataUtils.formatarParaParametro(competencia);
 
-    if (!StringUtils.isNullOrEmpty(competenciaFormatada))
-      params = params.append('competencia', competenciaFormatada);
+    let cadastradoEmFormatado = DataUtils.formatarParaParametro(cadastradoEm);
+    if (!StringUtils.isNullOrEmpty(cadastradoEmFormatado))
+      params = params.append('cadastradoEm', cadastradoEmFormatado);
+
+    let emitidoEmFormatado = DataUtils.formatarParaParametro(emitidoEm);
+    if (!StringUtils.isNullOrEmpty(emitidoEmFormatado))
+      params = params.append('emitidoEm', emitidoEmFormatado);
 
     if (!StringUtils.isNullOrEmpty(cadastradoPorId))
       params = params.append('cadastradoPorId', cadastradoPorId);
@@ -48,12 +52,16 @@ export class CupomFiscalService extends BaseService {
       );
   }
 
-  obterPorVoluntario(competencia: Date, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalPaginacao[]> {
+  obterPorVoluntario(cadastradoEm: Date, emitidoEm: Date, status: string, pagina: number, registroPorPagina: number): Observable<CupomFiscalPaginacao[]> {
     let params = new HttpParams;
-    let competenciaFormatada = DataUtils.formatarParaParametro(competencia);
 
-    if (!StringUtils.isNullOrEmpty(competenciaFormatada))
-      params = params.append('competencia', competenciaFormatada);
+    let cadastradoEmFormatado = DataUtils.formatarParaParametro(cadastradoEm);
+    if (!StringUtils.isNullOrEmpty(cadastradoEmFormatado))
+      params = params.append('cadastradoEm', cadastradoEmFormatado);
+
+    let emitidoEmFormatado = DataUtils.formatarParaParametro(emitidoEm);
+    if (!StringUtils.isNullOrEmpty(emitidoEmFormatado))
+      params = params.append('emitidoEm', emitidoEmFormatado);
 
     params = params.append('status', status);
     params = params.append('pagina', pagina);

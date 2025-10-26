@@ -9,6 +9,7 @@ import { CadastrarVoluntarioComponent } from '../cadastrar-voluntario/cadastrar-
 import { DesativarVoluntarioComponent } from '../desativar-voluntario/desativar-voluntario.component';
 import { AtivarVoluntarioComponent } from '../ativar-voluntario/ativar-voluntario.component';
 import { InputUtils } from 'src/app/shared/utils/input-utils';
+import { LocalStorageUtils } from 'src/app/shared/utils/local-storage-utils';
 
 @Component({
   selector: 'app-listar-voluntario',
@@ -37,9 +38,6 @@ import { InputUtils } from 'src/app/shared/utils/input-utils';
   `]
 })
 export class ListarVoluntarioComponent implements OnInit {
-
-  //verificar se email ta ativo
-
   inputUtils = InputUtils;
 
   voluntariosCadastrados!: Voluntario[];
@@ -134,13 +132,23 @@ export class ListarVoluntarioComponent implements OnInit {
   }
 
   habilitarVoluntarioAdm(voluntario: Voluntario, event: any) {
+    let statusAnterior = voluntario.administrador;
     voluntario.administrador = event.checked;
 
     this.voluntarioService.editar(voluntario)
       .subscribe({
-        next: () => this.toastr.success('Voluntario alterado com sucesso'),
-        error: () => this.toastr.error('Erro ao Editar')
+        next: () => this.toastr.success('Acesso do voluntário alterado', 'Sucesso'),
+        error: (fail: any) => {
+          voluntario.administrador = statusAnterior;
+          this.errors = fail?.error?.errors?.mensagens;
+          this.toastr.error('Erro ao alterar o acesso do voluntáro', 'Erro')
+        } 
       })
+  }
+
+  usuarioLogadoEhAdmin(voluntario: Voluntario): boolean {
+    let usuarioLogado = LocalStorageUtils.obterUsuario();
+    return usuarioLogado.id === voluntario.id;
   }
 
   enviarConfirmarEmail(voluntario: Voluntario) {

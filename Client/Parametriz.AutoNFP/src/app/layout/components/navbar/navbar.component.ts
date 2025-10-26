@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription } from 'rxjs';
+import { Instituicao } from 'src/app/configuracoes/instituicoes/models/instituicao';
+import { InstituicaoService } from 'src/app/configuracoes/instituicoes/services/instituicao.service';
 import { Voluntario } from 'src/app/configuracoes/voluntarios/models/voluntario';
 import { PerfilService } from 'src/app/perfil/services/perfil.service';
 import { Claim } from 'src/app/shared/models/claim';
@@ -26,19 +29,24 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private perfilService: PerfilService,
-    private autorizacaoService: AutorizacaoService
+    private instituicaoService: InstituicaoService,
+    private autorizacaoService: AutorizacaoService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.preencherVoluntarioAtivo();
-    this.obterInsituicao();
+    this.preencherInsituicaoAtiva();
 
     PerfilService.atualizarNavSubject
       .subscribe({
-        next: () => {
-          this.preencherVoluntarioAtivo();
-        }
+        next: () => this.preencherVoluntarioAtivo()
       });
+
+    InstituicaoService.atualizarNavSubject
+      .subscribe({
+        next: () => this.preencherInsituicaoAtiva()
+      })
   }
 
   preencherVoluntarioAtivo() {
@@ -55,15 +63,18 @@ export class NavbarComponent implements OnInit {
         this.certificadoStatusNome = voluntario.certificadoStatusNome,
         this.certificadoStatus = voluntario.certificadoStatus
       ),
+      error: () => this.toastr.error("Erro ao carregar voluntário", "Erro!")
     });
-
   }
 
-  obterInsituicao() {
-    var result = LocalStorageUtils.obterUsuario();
-
-    this.razaoSocialInstituicao = result.instituicao.razaoSocial;
-    this.cnpj = result.instituicao.cnpj;
+  preencherInsituicaoAtiva() {
+    this.instituicaoService.obter()
+      .subscribe({
+        next: (instituicao: Instituicao) => {
+          this.razaoSocialInstituicao = instituicao.razaoSocial,
+          this.cnpj = instituicao.cnpj
+        },
+        error: () => this.toastr.error("Erro ao carregar insituição", "Erro!")
+      });
   }
-
 }
