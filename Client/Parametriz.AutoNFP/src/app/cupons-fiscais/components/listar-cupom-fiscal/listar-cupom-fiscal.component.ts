@@ -28,8 +28,8 @@ export class ListarCupomFiscalComponent implements OnInit {
   totalProcessadas!: number;
   percentualSucesso!: number;
 
-  data = new Date
-  filtroCompetencia = this.data;
+  filtroCadastradoEm = new Date();
+  filtroEmitidoEm!: any;
   filtroUsuario = '';
   filtroStatus = '';
 
@@ -50,7 +50,6 @@ export class ListarCupomFiscalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.definirCompetencia();
     this.verificaClaim();
     this.obter();
     this.verificaPossuiErroTransmissaoLote();
@@ -69,40 +68,35 @@ export class ListarCupomFiscalComponent implements OnInit {
     }
   }
 
-  definirCompetencia() {
-    const hoje = new Date();
-    const mes = hoje.getDate() <= 30 //alterar depois para dia 20
-      ? hoje.getMonth() - 1
-      : hoje.getMonth();
-
-    this.data = new Date(hoje.getFullYear(), mes, 1);
-    this.filtroCompetencia = this.data;
-  }
-
   alterarFiltroCadastradoPor(event: any) {
     this.filtroUsuario = event;
-    this.obterPorFiltro();
+    this.obter();
   }
 
   alterarFiltroStatus(event: any) {
     this.filtroStatus = event;
-    this.obterPorFiltro();
+    this.obter();
   }
 
-  alterarFiltroCompetencia(date: Date) {
-    this.filtroCompetencia = date;
-    this.obterPorFiltro();
+  alterarFiltroCadastradoEm(date: Date) {
+    this.filtroCadastradoEm = date;
+    this.obter();
+  }
+
+  alterarFiltroEmitidoEm(date: Date) {
+    this.filtroEmitidoEm = date;
+    this.obter();
   }
 
   alterarFiltroPage(page: number) {
     this.pagina = page;
-    this.obterPorFiltro();
+    this.obter();
   }
 
   alterarFiltroPorPage(event: any) {
     this.filtroRegistroPorPagina = event.value;
     this.pagina = 1;
-    this.obterPorFiltro();
+    this.obter();
   }
 
   obter() {
@@ -113,7 +107,7 @@ export class ListarCupomFiscalComponent implements OnInit {
 
   obterPorFiltro() {
     this.cupomFiscalService
-      .obterPorFiltro(this.filtroCompetencia, this.filtroUsuario, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
+      .obterPorFiltro(this.filtroCadastradoEm, this.filtroEmitidoEm, this.filtroUsuario, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
       .subscribe({
         next: (response: any) => {
           this.cuponsFiscaisResponse = response;
@@ -126,7 +120,7 @@ export class ListarCupomFiscalComponent implements OnInit {
 
   obterPorUsuario() {
     this.cupomFiscalService
-      .obterPorVoluntario(this.filtroCompetencia, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
+      .obterPorVoluntario(this.filtroCadastradoEm, this.filtroEmitidoEm, this.filtroStatus, this.pagina, this.filtroRegistroPorPagina)
       .subscribe({
         next: (response: any) => {
           this.cuponsFiscaisResponse = response;
