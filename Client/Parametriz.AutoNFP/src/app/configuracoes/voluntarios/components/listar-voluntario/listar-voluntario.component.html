@@ -35,7 +35,8 @@
     </mat-form-field>
   </div>
 
-  <ngb-alert type="danger" (onClosed)="limparErros()" class="text-center anima-alert" *ngIf="errors.length > 0">
+  <ngb-alert type="danger" (onClosed)="limparErros()" 
+      class="text-center anima-alert" *ngIf="errors.length > 0">
     <span class="fw-bolder fs-6">Oops...alguma coisa não deu certo:</span> <br>
     <ul>
       <li class="fs-small mt-1" *ngFor="let error of errors">
@@ -106,7 +107,10 @@
           </td>
 
           <td class="text-center">
-            <mat-slide-toggle class="mat-slide-toggle-small" [checked]="voluntario.administrador"
+            <mat-slide-toggle 
+              class="mat-slide-toggle-small" 
+              [checked]="voluntario.administrador"
+              [disabled]="usuarioLogadoEhAdmin(voluntario)"
               (change)="habilitarVoluntarioAdm(voluntario, $event)">
             </mat-slide-toggle>
           </td>
@@ -116,7 +120,6 @@
               {{ voluntario.desativado ? 'Desativado' : 'Ativo' }}
             </span>
           </td>
-
 
           <td class="text-center">
             <button class="btn btn-primary rounded-5" [matMenuTriggerFor]="menu">

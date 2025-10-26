@@ -62,7 +62,7 @@ export class ListarCupomFiscalComponent implements OnInit {
   verificaPossuiErroTransmissaoLote() {
 
     if (this.errosTransmissaoLote.length > 0) {
-      let modalRef = this.modalService.open(ListarErroTransmissaoLoteModalComponent, { size: 'lg' })
+      let modalRef = this.modalService.open(ListarErroTransmissaoLoteModalComponent, { size: 'xl' })
 
       modalRef.componentInstance.errosTransmissaoLote = this.errosTransmissaoLote;
     }
@@ -147,7 +147,7 @@ export class ListarCupomFiscalComponent implements OnInit {
 
     modalRef.closed
       .subscribe({
-        next: () => this.obterPorFiltro()
+        next: () => this.obter()
       });
   }
 

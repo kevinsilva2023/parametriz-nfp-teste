@@ -7,7 +7,12 @@
       "request": "launch",
       "type": "chrome",
       "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}",
+      "skipFiles": [
+        "node_modules/**",
+        "**/node_modules/**/*.js",
+        "<node_internals>/**"
+      ],
     }
   ]
 }
