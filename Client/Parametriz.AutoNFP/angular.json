@@ -44,6 +44,7 @@
             "allowedCommonJsDependencies": [
               "moment"
             ],
+            "browser": "src/main.ts",
             "outputPath": "dist/parametriz.auto-nfp",
             "index": "src/index.html",
             "main": "src/main.ts",
