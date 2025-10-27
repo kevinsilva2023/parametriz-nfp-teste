@@ -46,6 +46,7 @@
             ],
             "outputPath": "dist/parametriz.auto-nfp",
             "index": "src/index.html",
+            "main": "src/main.ts",
             "polyfills": [
               "zone.js",
               "@angular/localize/init"
@@ -62,8 +63,7 @@
               "src/styles/styles.scss",
               "node_modules/ngx-toastr/toastr.css" 
             ],
-            "scripts": [],
-            "browser": "src/main.ts"
+            "scripts": []
           },
           "configurations": {
             "production": {
