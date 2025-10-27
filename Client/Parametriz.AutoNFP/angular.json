@@ -44,9 +44,7 @@
             "allowedCommonJsDependencies": [
               "moment"
             ],
-            "outputPath": {
-              "base": "dist/parametriz.auto-nfp"
-            },
+            "outputPath": "dist/parametriz.auto-nfp",
             "index": "src/index.html",
             "polyfills": [
               "zone.js",
